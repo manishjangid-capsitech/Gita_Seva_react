@@ -1,0 +1,40 @@
+.logo {
+  text-align: center;
+  padding: 0 40px 10px 0;
+}
+.logintitle {
+  font-size: 30px;
+  text-align: center;
+  padding: 0 0 10px;
+}
+.btn_cancel {
+  border: 1px solid #ced4da;
+  outline: none;
+  background-color: #fff;
+  padding: 25px 0 15px;
+  justify-content: flex-end;
+}
+
+.btnlogin {
+  display: flex;
+  flex: 1;
+  margin: 15px;
+  align-items: center;
+  width: 250px;
+  font-size: 20px;
+  border: 1px solid #ced4da;
+}
+
+.btnlogin_in {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  /* width: 250px; */
+  font-size: 20px;
+  border: 0px solid #ced4da;
+  box-shadow: none !important;
+}
+
+.btn-outline-primary {
+  color: black;
+}

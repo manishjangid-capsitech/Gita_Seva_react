@@ -1,0 +1,263 @@
+.audioBox {
+  text-align: center;
+  background-color: #ffffff;
+  border-radius: 7px;
+  padding: 20px;
+  height: 100%;
+  border: 1px solid #ffd186;
+}
+.audioBox p {
+  color: #595551;
+  font-size: 21px;
+  line-height: 25px;
+  margin-top: 20px;
+  font-style: normal;
+  height: 47px;
+  overflow: hidden;
+  margin-bottom: 0;
+}
+.listActive {
+  color: #ff2e12 !important;
+  cursor: pointer;
+  text-decoration: none;
+  /* padding: 0 10px; */
+  font-size: 16px;
+}
+
+.ebooks-nav-text {
+  cursor: pointer;
+  text-decoration: none;
+  padding: 0 10px;
+  font-size: 16px;
+  color: #545454 !important;
+}
+
+.audioBox:hover p {
+  color: #ff2e12;
+}
+.audioBoxlabel:hover label {
+  color: #ff2e12;
+}
+
+.discourseDiv {
+  width: 33%;
+  float: left;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.backcolor {
+  background-color: #ffa820;
+  border: none;
+  padding: 3px;
+  align-items: center;
+}
+
+.play-bar {
+  height: 35px;
+  float: left;
+  margin-right: 30px;
+  display: flex;
+  justify-content: flex-start;
+  flex: 1;
+  padding: 20px 0 0 0;
+}
+.play-bar span {
+  color: #ffffff;
+  font-size: 1.2em;
+  align-self: center;
+}
+.play-bar .bar-bg {
+  background-color: #f7ad2b;
+  width: 100%;
+  height: 5px;
+  border-radius: 10px;
+  align-self: center;
+  margin: 0 5px;
+}
+
+.play-bar .bar-bg .progress {
+  background-color: #ffffff;
+  height: 4px;
+  border-radius: 10px;
+  width: 0%;
+}
+
+.play-bar .bar-bgs {
+  background-color: #f7ad2b;
+  width: 100%;
+  height: 2px;
+  border-radius: 10px;
+  align-self: center;
+  margin: 0 5px;
+}
+.play-bar .bar-bgs .progresss {
+  background-color: #ffffff;
+  height: 4px;
+  border-radius: 10px;
+  width: 0%;
+}
+.lyrics-Data {
+  width: 75%;
+  float: left;
+  text-align: center;
+}
+.rabbit-lyrics {
+  position: relative;
+  height: calc(100vh - 170px) !important;
+  overflow-x: hidden;
+  max-height: 90%;
+  font-family: "ChanakyaUniBold";
+  overflow-y: scroll !important;
+  background-color: transparent !important;
+  border: 0px !important;
+  text-align: center;
+  cursor: pointer;
+}
+.rabbit-lyrics .line {
+  min-height: 1.5em;
+  color: inherit;
+  font-size: 25px;
+}
+
+.rabbit-lyrics__line--active {
+  background-color: transparent !important;
+  font-size: 25px !important;
+}
+.rabbit-lyrics__inline--active {
+  color: #fd7e35 !important;
+  font-size: 30px;
+  text-align: center;
+  font-family: "ChanakyaUni";
+  font-weight: 500;
+}
+
+.rabbit-lyrics .line:after {
+  content: " ";
+  font-size: 14px;
+  display: block;
+}
+.songSidebar {
+  float: left;
+  background-color: #fff;
+}
+
+.ralated-logo {
+  background: #fcf4df;
+  color: #fff;
+  text-align: left;
+  height: 71px;
+  padding-top: 5px;
+}
+.relatedaudiotitle {
+  background: #ffbb30;
+  color: #fff;
+  font-size: 1.5em;
+  text-align: center;
+}
+
+.songCategories {
+  height: calc(100vh - 55px);
+  padding: 0px 30px;
+  margin-bottom: 20px;
+  border-radius: 4px;
+  overflow-y: scroll;
+  text-align: justify;
+  font-size: 22px;
+}
+
+.songCategoriesmobilesize {
+  height: calc(100vh - 55px);
+  padding: 0px 15px;
+  overflow-y: scroll;
+  text-align: justify;
+  width: 135%;
+  background-color: #fefaeb;
+}
+
+.songCategories button:hover,
+.songCategories button:focus {
+  box-shadow: none;
+  text-decoration: none;
+}
+
+.songCategories::-webkit-scrollbar-track {
+  border: 1px solid #fff6dd;
+  padding: 2px 0;
+  background-color: #fff6dd;
+}
+
+.songCategories::-webkit-scrollbar {
+  width: 5px;
+}
+
+.songCategories::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  box-shadow: inset 0 0 6px #fff6dd;
+  background-color: #f6af3e;
+  border: 1px solid #f6af3e;
+}
+
+.closeTab {
+  text-align: right;
+  margin: 6px 6px 0 0;
+  padding: 5px;
+}
+
+.playaudio {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.music-player {
+  width: 100%;
+  padding: 4px;
+  position: fixed;
+  bottom: 0;
+  z-index: 99999;
+  height: 55px;
+}
+
+.pravchanBox {
+  background-color: #ffffff;
+  border-radius: 7px;
+  padding: 20px 0px 10px 10px;
+  height: 100%;
+  border: 1px solid #ffd186;
+}
+
+.pravchanBox p {
+  color: #595551;
+  font-size: 20px;
+  line-height: 25px;
+  font-style: normal;
+  overflow: hidden;
+  margin-bottom: 0;
+  /* padding-left: 10px; */
+}
+
+.pravchanBox:hover p {
+  color: #d11501;
+}
+.butttonres {
+  padding-left: 85px;
+  text-align: right;
+}
+.audioicon {
+  height: 52px;
+}
+.audiolist {
+  padding-left: 200px;
+  text-align: right;
+}
+.downloadbtn {
+  width: 40px;
+}
+.playbtn {
+  width: 40px;
+  margin-right: 10px;
+}
+
+.btns{
+  display: flex;
+}

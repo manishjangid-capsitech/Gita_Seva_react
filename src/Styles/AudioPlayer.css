@@ -1,0 +1,27 @@
+.abouttext {
+  line-height: 2 !important;
+  padding: 30px !important;
+}
+.aboutcolor {
+  background-color: #fff;
+  border: 1px solid #f7ebce;
+}
+.header {
+  color: #ff9c00;
+  display: block;
+  font-size: 1.9em;
+  -webkit-margin-before: 0.67em;
+  -webkit-margin-after: 0.67em;
+  -webkit-margin-start: 0;
+  -webkit-margin-end: 0;
+  font-weight: 700;
+  text-align: center;
+}
+.lyricsnotfoundstyle{
+  height: 500px 
+}
+@media (min-width: 320px) and (max-width: 576px) {
+  .lyricsnotfoundstyle{
+    height: 400px 
+  }
+}

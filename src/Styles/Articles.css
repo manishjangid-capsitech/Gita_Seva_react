@@ -1,0 +1,107 @@
+.articleBox {
+  text-align: center;
+  background-color: #ffffff;
+  border-radius: 7px;
+  padding: 20px;
+  height: 100%;
+  border: 1px solid #ffd186;
+  width: 70%;
+  /* width: '100%'; */
+}
+.articleBox p {
+  color: #595551;
+  font-size: 20px;
+  line-height: 22px;
+  margin-top: 20px;
+  font-style: normal;
+  /* font-weight: 600; */
+  height: 40px;
+  overflow: hidden;
+  margin-bottom: 0;
+}
+
+.articleBox:hover p {
+  color: #d11501;
+}
+
+.discourseDiv {
+  width: 33%;
+  float: left;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.imgsize {
+  width: 28px;
+  height: 34px;
+}
+.mat-card {
+  transition: box-shadow 280ms cubic-bezier(0.4, 0, 0.2, 1);
+  display: block;
+  position: relative;
+  padding: 16px;
+  border-radius: 4px;
+}
+.message-header {
+  background-color: #fef0ce;
+  padding: 25px;
+  margin: 1% 0 4%;
+  width: 100%;
+  float: left;
+}
+.article-content {
+  margin: 15px 15px 15px 15px;
+  background-color: white;
+  padding-left: 25px;
+  padding-right: 25px;
+}
+
+.content-font {
+  color: #2d2a29;
+  font-size: 18px;
+}
+.message-header p label {
+  color: #472d1e;
+  font-weight: 500;
+  width: 115px;
+  margin: 0;
+  font-size: 24px;
+  font-family: "ChanakyaUni";
+}
+
+.message-header h1 {
+  color: #2d2a29;
+  font-size: 40px;
+  font-style: normal;
+  font-weight: 700;
+  font-family: "ChanakyaUni";
+  width: 71%;
+}
+
+.message-header p {
+  font-family: ChanakyaUni, Verdana, NalandaTim, Tunga;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 500;
+  color: #ff7e00;
+  border-bottom: 1px solid #ecd59f;
+  margin: 0 0 5px;
+  width: 75%;
+}
+
+.ebooks-category {
+  border-radius: 6px;
+  background-color: #fff8e8;
+  border: 1px solid #fff;
+  padding: 25px 15px;
+  text-align: center;
+  margin: 0 0 60px;
+  box-shadow: 0 0 20px 0 #ffedc6;
+  width: 100%;
+  font-size: 25px;
+  height: auto;
+}
+
+.bgcolor {
+  background: #fff;
+}

@@ -1,0 +1,272 @@
+/* filter dot color */
+.CategoryList ul li {
+  color: #fb9c34;
+}
+
+.Authorlist ul li {
+  color: #fb9c34;
+}
+
+.LanguageList ul li {
+  color: #fb9c34;
+}
+
+.LyricsList ul li {
+  color: #fb9c34;
+}
+
+.columns {
+  column-count: 1;
+}
+
+.carousel-content.show-2 > * {
+  width: 50%;
+}
+
+.carousel-content.show-3 > * {
+  width: calc(100% / 3);
+}
+
+.carousel-content.show-4 > * {
+  width: calc(100% / 4);
+}
+
+.card-columns {
+  column-count: 4;
+}
+
+.listcolor {
+  background-color: "#fffaf0";
+  box-shadow: 0 0 7px 1px #f5deb1 !important;
+  padding-top: 15px;
+}
+
+.heading {
+  text-align: center;
+  color: #d11501;
+  font-size: 20px;
+  margin: 10px 0 35px;
+  font-style: normal;
+  font-weight: bold;
+  margin: 0 0 18px;
+}
+
+.imgcenter {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+/* .headerbg {
+  background: url(https://gitaseva.org/assets/img/headerBG.png) no-repeat top;
+  padding-bottom: 10px;
+  height: 240px !important;
+  background-color: #ffedbc;
+  border-bottom: 2px solid transparent;
+} */
+
+.headertitle {
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  line-height: 1.2;
+  font-size: 2.5rem !important;
+}
+
+.cat {
+  margin: 10px 23px 17px;
+  text-align: left;
+  float: left;
+  width: 77%;
+  background-color: #fff;
+  padding: 25px 20px;
+  border-radius: 6px;
+  box-shadow: 0 0 10px 0 #d6d1d1;
+}
+
+.cat span {
+  font-family: Verdana, NalandaTim, Tunga;
+  font-size: 22px;
+  font-style: normal;
+  font-weight: 600;
+  color: #472d1e;
+  margin: 0;
+}
+
+.cat img {
+  margin-left: 20px;
+  margin-right: 15px;
+}
+
+.audiogradient {
+  background: linear-gradient(to bottom, #ffedbc 0%, #fffcf4 100%);
+}
+
+.filter1 select {
+  border-radius: 4px;
+  color: #54422d;
+  border: 1px solid #ffc840;
+  background-color: #fff;
+  font-family: Verdana, NalandaTim, Tunga;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 600;
+  padding: 6px 10px;
+  height: 38px;
+  margin-top: 0px;
+  outline: none;
+}
+
+.filter1 label {
+  font-family: ChanakyaUni;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 600;
+  color: #54422d;
+  margin: 6px 15px 0 0;
+}
+
+.mat-expansion-indicator {
+  border-style: solid;
+  border-width: 0 2px 2px 0;
+  content: "";
+  display: inline-block;
+  padding: 3px;
+  transform: rotate(45deg);
+  vertical-align: middle;
+  transform: rotate(180deg);
+}
+.searchData {
+  font-size: 25px;
+  font-weight: 700;
+  color: #d11501;
+  line-height: 30px;
+}
+
+.bookBox {
+  text-align: center;
+  background-color: #ffffff;
+  border-radius: 7px;
+  padding: 20px;
+  height: 100%;
+  border: 1px solid #f7ebce;
+  margin-bottom: 25px;
+}
+
+.bookBox p {
+  margin-top: 20px;
+  font-style: normal;
+  height: 49px;
+  overflow: hidden;
+  margin-bottom: 0;
+
+  font-family: ChanakyaUni, NalandaTim, Tunga;
+  font-size: 17px;
+  font-style: normal;
+  font-weight: 600;
+  color: #3f220d;
+  /* margin: 13px 0 0; */
+  line-height: 18px;
+}
+
+.bookBox:hover p {
+  color: #d11501;
+}
+
+@media (min-width: 320px) and (max-width: 576px) {
+  .filter1 select {
+    border-radius: 4px;
+    color: #54422d;
+    border: 1px solid #ffc840;
+    background-color: #fff;
+    font-family: Verdana, NalandaTim, Tunga;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    padding: 6px 10px;
+    height: 38px;
+    margin-top: 0px;
+    outline: none;
+  }
+  .footer-menu ul li {
+    background: url(http://localhost:3000/static/media/list-icon.ddf60d4….svg)
+      no-repeat left;
+    display: none;
+  }
+  .btntogl {
+    text-align: center;
+    z-index: 3;
+    position: absolute;
+    width: 50%;
+    right: 0;
+    border: none;
+  }
+  .navtogl {
+    width: 100%;
+    justify-content: end;
+    display: flex;
+  }
+}
+@media (min-width: 576px) and (max-width: 768px) {
+  .btntogl {
+    text-align: center;
+    z-index: 3;
+    position: absolute;
+    width: 50%;
+    right: 14%;
+    border: none;
+  }
+  .navtogl {
+    width: 100%;
+    justify-content: end;
+    display: flex;
+  }
+}
+
+/* bookpage */
+.filtertitle {
+  /* text-align: center; */
+  color: #21201f;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: bold;
+  font-family: "ChanakyaUni";
+}
+.boxheadtitle {
+  font-family: ChanakyaUni, NalandaTim, Tunga;
+  font-size: 25px;
+  font-style: normal;
+  font-weight: 700;
+  color: #d11501;
+  line-height: 30px;
+  flex: 1 1 auto;
+  padding: 5px;
+}
+.cardbackground {
+  display: flex;
+  border-bottom: 1px solid #ffdd89;
+  padding-bottom: 10px;
+}
+.resetimg {
+  cursor: pointer;
+  height: 24px;
+  margin-top: 8px;
+}
+.panel-body {
+  font: 400 14px/21px "ChanakyaUni" !important;
+  line-height: 1.5 !important;
+}
+.panel-body ul {
+  padding: 0 0 0 16px;
+  margin: 0;
+}
+.panel-body ul li {
+  color: #fb9c34;
+}
+.panel-body ul li div {
+  font-size: 21px;
+  font-weight: normal;
+  color: #545454;
+}
+.panel-body ul li div:hover,
+.panel-body ul li div:focus {
+  color: #d11501;
+}

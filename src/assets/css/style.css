@@ -1,0 +1,1323 @@
+@import "~@angular/material/prebuilt-themes/deeppurple-amber.css";
+
+body {
+  padding: 0;
+  margin: 0;
+  font-family: "ChanakyaUni" !important;
+  font-style: normal;
+  font-weight: normal;
+}
+
+body a:focus {
+  outline: none;
+  text-decoration: none;
+}
+
+.imgInfo {
+  padding: 12px 0 0px 0px;
+  float: left;
+  height: 41px;
+  width: 29px;
+  margin-right: 8px;
+  cursor: pointer;
+}
+
+.modal-backdrop {
+  z-index: 0 !important;
+}
+.modal-content {
+  width: 100% !important;
+  padding: 0 !important;
+}
+.rabbit-lyrics::-webkit-scrollbar {
+  width: 2px;
+}
+
+.rabbit-lyrics::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+}
+
+.rabbit-lyrics::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
+}
+
+.clear {
+  clear: both;
+}
+
+.containers {
+  width: 1200px;
+  margin: 0 auto;
+}
+
+/*---------- home header -----------*/
+
+#gst-header-image {
+  background: url(/assets/img/header-bg.jpg) no-repeat;
+  background-position: top;
+  position: relative;
+  background-size: cover;
+}
+
+/*
+.daily-audios {
+    background: url(/assets/img/daily-audios-bg.png) no-repeat top;
+    text-align: right;
+    float: right;
+    padding: 8px 28px 2px 24px;
+}
+
+.daily-audios a:hover span {
+    color: #ffd467;
+}
+
+.daily-audios a:hover,
+.daily-audios a:focus,
+.daily-audios a {
+    text-decoration: none;
+    outline: none;
+}
+
+.daily-audios img {
+    float: left;
+    margin-right: 10px;
+}
+
+.daily-audios span {
+    color: #fff;
+    font-size: 21px;
+} */
+
+.blackelements > * {
+  background-color: black !important;
+  color: white !important;
+}
+
+.containers {
+  width: 1200px;
+  margin: 0 auto;
+}
+body a,
+body a:hover,
+body a:focus {
+  text-decoration: none !important;
+  outline: none !important;
+}
+
+.language {
+  padding: 0 0 0 15px;
+  margin: 0;
+  text-align: right;
+  float: right;
+}
+.language li {
+  float: left;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 19px;
+  color: #545454;
+  background-color: #ffa843;
+  padding: 1px 8px;
+  list-style-type: none;
+  margin: 0 4px 0 0;
+  border-radius: 4px;
+  cursor: pointer;
+  height: 26px;
+}
+.activeLanguage {
+  background-color: #fff !important;
+  color: #000 !important;
+}
+
+/*
+
+.gst-menubar ul {
+    padding: 0;
+    margin: 25px 10px 0 0;
+}
+
+.gst-menubar ul li img {
+    vertical-align: inherit;
+}
+
+.gst-menubar ul li {
+    list-style-type: none;
+    display: inline-block;
+    margin-left: 15px;
+}
+
+.gst-menubar ul li a {
+    color: #472d1e;
+    font-size: 22px;
+    text-decoration: none;
+    outline: none;
+    font-style: normal;
+    font-weight: bold;
+}
+
+.gst-menubar ul li a.active,
+.gst-menubar ul li a:focus,
+.gst-menubar ul li a:hover {
+    color: #d11501;
+}
+
+.gst-menubar ul li:last-child::after {
+    content: "";
+    padding: 0;
+}
+
+.gst-menubar ul li::after {
+    content: "::";
+    padding-left: 15px;
+} */
+
+/*---------- home section 1-----------*/
+
+/*---------- footer -----------*/
+
+.sidebar-heading {
+  font-family: "ChanakyaUni", "NalandaTim", "Tunga";
+  font-size: 26px;
+  font-style: normal;
+  font-weight: 600;
+  color: #d11501;
+  margin: 0 0 20px;
+  text-align: center;
+}
+
+.gst-page-content {
+  background-color: #fff6e1;
+  padding: 20px 0 50px;
+}
+
+.panel:last-child {
+  margin-bottom: 0;
+  padding: 0;
+  border-bottom: 0;
+}
+.panel {
+  border-bottom: 1px solid #e9e0ca;
+  margin-bottom: 12px;
+  padding-bottom: 5px;
+}
+.panel-heading a {
+  position: relative;
+  text-decoration: none;
+  display: inherit;
+  color: #111;
+  font-size: 23px;
+  font-style: normal;
+  font-weight: bold;
+}
+.panel-heading a:hover,
+.panel-heading a:focus {
+  color: #111;
+}
+.panel-body {
+  font: 400 14px/21px "ChanakyaUni" !important;
+  line-height: 1.5 !important;
+}
+.panel-body ul {
+  padding: 0 0 0 16px;
+  margin: 0;
+}
+.panel-body ul li {
+  color: #fb9c34;
+}
+.panel-body ul li div {
+  font-size: 21px;
+  font-weight: normal;
+  color: #545454;
+}
+.panel-body ul li div:hover,
+.panel-body ul li div:focus {
+  color: #d11501;
+}
+
+.panel:last-child .panel-heading {
+  transition: border-radius 0.3s linear 0.2s;
+}
+.panel:last-child .panel-heading.active {
+  transition: border-radius linear 0s;
+}
+
+/* #bs-collapse icon scale option */
+.panel-heading a:before {
+  content: "+";
+  width: 17px;
+  height: 17px;
+  line-height: 14px;
+  font-family: Arial;
+  background: #fff;
+  font-size: 14px;
+  font-weight: normal;
+  color: #ffb100;
+  text-align: center;
+  border: 1px solid #eaeaea;
+  position: absolute;
+  top: 5px;
+  right: 8px;
+  border-radius: 2px;
+}
+
+.panel-heading.active a:before {
+  content: "-";
+  width: 17px;
+  height: 17px;
+  line-height: 11px;
+  background: #fff;
+  font-family: Arial;
+  font-size: 21px;
+  font-weight: normal;
+  color: #ffb100;
+  text-align: center;
+  border: 1px solid #eaeaea;
+  position: absolute;
+  top: 5px;
+  right: 8px;
+  border-radius: 2px;
+}
+.collapse.show {
+  display: block;
+}
+
+/*----- End Accordian -----*/
+
+.page-content {
+  background-color: #fff6e1;
+  padding: 3% 0 4% 0;
+}
+
+.breadcrumbs-head {
+  background: none;
+  background-color: #ffedbc !important;
+  height: 240px;
+  border-bottom: 2px solid #fff;
+}
+
+.breadcrumbs {
+  position: absolute;
+  width: 100%;
+  top: 137px;
+}
+
+.breadcrumbs h1 {
+  font-family: "ChanakyaUni", "NalandaTim", "Tunga";
+  font-size: 36px;
+  font-style: normal;
+  font-weight: bold;
+  margin: 0;
+  color: #d11501;
+  line-height: 41px;
+  margin: 2% 0 0 0;
+}
+
+.gst-paragraph {
+  color: #3f220d;
+  font-size: 24px;
+  margin: 0 0 25px 0;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 30px;
+  text-align: justify;
+}
+.esidebarBorderBotom {
+  border-bottom: 4px solid #d11501;
+  width: 84%;
+  margin: -4px 25px 0 25px;
+  padding-top: 0px !important;
+  position: relative;
+}
+
+/*-------------- Introduction ---------------*/
+
+.booksdetail-page {
+  background: #fffaf0;
+  padding: 30px 30px 50px;
+  box-shadow: 0px 0px 7px 1px #ece8dd;
+  border-radius: 2px;
+  height: 100%;
+}
+
+.intro-category-name {
+  margin-bottom: 5%;
+}
+.cat img {
+  margin-left: 20px;
+  margin-right: 15px;
+}
+.cat {
+  /* margin-right: 20px;
+    text-align: center;
+    float: left;
+    width: 36%;
+    background-color: #fff;
+    padding: 25px 20px;
+    border-radius: 6px;
+    box-shadow: 0px 0px 10px 0px #d6d1d1; */
+  margin: 10px 23px 17px 23px;
+  text-align: left;
+  float: left;
+  width: 77%;
+  background-color: #fff;
+  padding: 25px 20px;
+  border-radius: 6px;
+  box-shadow: 0px 0px 10px 0px #d6d1d1;
+}
+.intro-category-name a:hover,
+.intro-category-name a:focus {
+  text-decoration: none;
+  outline: none;
+}
+.cat span {
+  font-family: "ChanakyaUni", "NalandaTim", "Tunga";
+  font-size: 22px;
+  font-style: normal;
+  font-weight: 600;
+  color: #472d1e;
+  margin: 0;
+}
+.intro-category-name a:hover span {
+  color: #d11501;
+  text-decoration: none;
+  outline: none;
+}
+
+.intro-section2 {
+  border-top: none;
+  padding-bottom: 0;
+}
+.important-books {
+  background-color: #ffebb9;
+  padding: 40px 30px 0;
+  border-radius: 4px;
+}
+.sidebar-books-slider {
+  text-align: center;
+}
+.sidebar-books-slider p {
+  font-family: "ChanakyaUni", "NalandaTim", "Tunga";
+  font-size: 22px;
+  font-style: normal;
+  font-weight: 600;
+  color: #9e7001;
+  padding: 15px 0 50px;
+  margin: 0;
+}
+.all-articles:hover {
+  text-decoration: none;
+  outline: none;
+  color: #9e7001;
+}
+.all-articles:focus {
+  text-decoration: none;
+  outline: none;
+}
+.all-articles {
+  text-align: center;
+  font-family: "ChanakyaUni", "NalandaTim", "Tunga";
+  font-size: 22px;
+  font-style: normal;
+  font-weight: 600;
+  color: #d11501;
+  margin: 0;
+  display: inherit;
+}
+.sidebar-books-slider a:hover p {
+  color: #d11501;
+}
+
+.sidebar-books-slider a:hover,
+.sidebar-books-slider a:focus {
+  text-decoration: none;
+  outline: none;
+}
+
+.sidebar-audios-list {
+  border-radius: 4px;
+  background-color: #ffebb9;
+  padding: 40px 28px 0;
+  margin-top: 30px;
+}
+.sidebar-aList {
+  padding: 0;
+  margin: 0;
+}
+.sidebar-aList li:last-child {
+  border: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+.sidebar-aList li {
+  list-style-type: none;
+  margin-bottom: 25px;
+  padding-bottom: 25px;
+  border-bottom: 1px solid #e0d2b3;
+}
+.sidebar-aList img {
+  float: left;
+  margin-right: 15px;
+  margin-top: 6px;
+}
+.sidebar-aList a:hover p {
+  color: #d11501;
+}
+.sidebar-aList a:hover,
+.sidebar-aList a:focus {
+  text-decoration: none;
+  outline: none;
+}
+.sidebar-aList p {
+  font-family: "ChanakyaUni", "NalandaTim", "Tunga";
+  font-size: 22px;
+  font-style: normal;
+  font-weight: 600;
+  color: #9e7001;
+  margin: 0;
+}
+
+.all-ebooks {
+  margin-right: 28px !important;
+}
+.all-ebooks,
+.all-pravchans {
+  text-decoration: none;
+  outline: none;
+  color: #d11501;
+  font-family: "ChanakyaUni", "NalandaTim", "Tunga";
+  font-size: 22px;
+  font-style: normal;
+  font-weight: 600;
+  float: right;
+  margin: 20px 0 0;
+}
+.all-ebooks:hover,
+.all-ebooks:focus,
+.all-pravchans:hover,
+.all-pravchans:focus {
+  text-decoration: none;
+  outline: none;
+  color: #9e7001;
+}
+/*-------------- Discourse & eBooks page---------------*/
+.eb-seach {
+  width: 25%;
+  float: right;
+}
+.eb-seach form {
+  position: relative;
+}
+.eb-seach form input::placeholder {
+  color: #856948;
+}
+.eb-seach form input:focus {
+  outline: none;
+  border: 1px solid #de5653;
+}
+.eb-seach form input {
+  width: 100%;
+  background-color: #fff2d5;
+  border-radius: 4px;
+  font-family: "ChanakyaUni", "NalandaTim", "Tunga";
+  font-size: 22px;
+  font-style: normal;
+  font-weight: 600;
+  color: #856948;
+  border: 1px solid #fbd091;
+  padding: 5px 35px 0px 10px;
+  height: 38px;
+}
+
+.search-button:focus {
+  outline: none;
+  border: none;
+}
+
+.search-button {
+  padding: 0;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  position: absolute;
+  right: 10px;
+  /* top: 10px; */
+  width: 20px;
+  cursor: pointer;
+}
+
+#filter-bar {
+  margin-bottom: 6%;
+}
+
+.filter1 {
+  margin-bottom: 20px;
+}
+.filter1 span {
+  font-family: "ChanakyaUni", "NalandaTim", "Tunga";
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 600;
+  color: #54422d;
+  margin: 6px 15px 0 0;
+}
+.filter2 {
+  width: 54%;
+  float: left;
+  margin-right: 10px;
+}
+.filter3 {
+  width: 25%;
+  float: left;
+  margin-right: 6px;
+}
+/* .ebfil {
+        width: 47% !important;
+    } */
+.f1fil {
+  width: 40% !important;
+}
+.f2fil {
+  width: 65% !important;
+}
+.f3fil2 {
+  width: 30% !important;
+}
+
+.filter1 select:focus,
+.filter2 select:focus,
+.filter3 select:focus {
+  outline: none;
+  border: 1px solid #ffa92b;
+}
+
+.filter1 p {
+  float: left;
+  font-family: "ChanakyaUni", "NalandaTim", "Tunga";
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 600;
+  color: #856948;
+  margin: 6px 15px 0 0;
+}
+.filter1 select {
+  background-color: #fff2d5;
+  border-radius: 4px;
+  font-family: "ChanakyaUni", "NalandaTim", "Tunga";
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 600;
+  color: #54422d;
+  border: 1px solid #ffe4ac;
+  padding: 6px 10px;
+  height: 38px;
+}
+.filter2 select,
+.filter3 select {
+  width: 100%;
+  background-color: #fff2d5;
+  border-radius: 4px;
+  font-family: "ChanakyaUni", "NalandaTim", "Tunga";
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 600;
+  color: #856948;
+  border: 1px solid #fbd091;
+  padding: 6px 10px;
+  height: 38px;
+}
+.grid-views {
+  float: right;
+  width: 18%;
+  text-align: right;
+}
+.grid-views img {
+  border: 1px solid #fbd091;
+  padding: 11px 10px;
+  background-color: #fff2d5;
+  border-radius: 4px;
+  margin-left: 5px;
+  cursor: pointer;
+}
+
+.catActive {
+  color: #d11501 !important;
+}
+
+.authorActive {
+  color: #d11501 !important;
+}
+
+.page-title {
+  padding: 0;
+  margin: 0;
+}
+
+.page-title li:last-child:after {
+  content: "";
+  padding-left: 0;
+}
+
+.page-title li:after {
+  content: " / ";
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.page-title li {
+  list-style-type: none;
+  display: inline-block;
+  margin-right: 4px;
+  color: #2d2a29;
+  line-height: 24px;
+}
+
+.page-title li a {
+  font-family: "ChanakyaUni", "NalandaTim", "Tunga";
+  font-size: 19px;
+  color: #2d2a29 !important;
+  font-style: normal;
+  font-weight: 600;
+}
+
+.page-title li a:hover,
+.page-title li a:focus {
+  text-decoration: none;
+  outline: none;
+  color: #d11501;
+}
+
+.glidView li {
+  width: 46%;
+  float: left;
+  margin-right: 25px;
+}
+.gridActive {
+  background-color: #ffde90 !important;
+}
+.glidView img {
+  margin-bottom: 25px !important;
+  margin-top: 10px;
+}
+.glidView p {
+  padding: 0 !important;
+}
+.glidView li:last-child {
+  margin-bottom: 30px !important;
+  padding-bottom: 30px !important;
+  border-bottom: 1px solid #f3e5c5 !important;
+}
+
+.audio-list {
+  padding: 0 0 0 20px;
+  margin: 0;
+}
+
+.audio-list li:last-child {
+  border-bottom: 0;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.audio-list li {
+  list-style-type: none;
+  margin-bottom: 30px;
+  padding-bottom: 30px;
+  border-bottom: 1px solid #f3e5c5;
+}
+
+.audio-list img {
+  float: left;
+  margin-right: 15px;
+}
+
+.audio-list a:hover p {
+  color: #d11501;
+}
+
+.audio-list a:hover,
+.audio-list a:focus {
+  text-decoration: none;
+  outline: none;
+}
+
+.audio-list p {
+  font-family: "ChanakyaUni", "NalandaTim", "Tunga";
+  font-size: 22px;
+  font-style: normal;
+  font-weight: 600;
+  color: #472d1e;
+  margin: 0;
+  padding: 8px 0 2px;
+}
+
+.ebooksSidebar {
+  background: url("/assets/img/ebooks-sidebar-bg.png") no-repeat top center;
+  float: left;
+  width: 25.33%;
+  height: auto;
+  padding-top: 5%;
+}
+
+.ebboksContents {
+  float: right;
+  width: 70%;
+  /* padding-top: 6%; */
+}
+
+/*------------------ Message sidebar -------------------*/
+
+.message-sidebar {
+  width: 312px;
+  float: left;
+}
+
+.message-content {
+  /* float: right;
+    width: 68%;
+    padding-top: 75px;
+    padding-bottom: 20px; */
+}
+
+.message:hover {
+  box-shadow: 0px 0px 10px 0px #ab8a48;
+  transition: all ease 0.5s;
+}
+.message {
+  transition: all ease 0.5s;
+  text-align: center;
+  background-color: #fff;
+  border-radius: 6px;
+  padding: 20px 30px;
+  box-shadow: 0px 0px 10px 0px #dcd1b8;
+  height: 145px;
+  margin: 6px 0 22px 0;
+}
+.message:hover p {
+  color: #d11501;
+}
+.message p {
+  color: #3f220d;
+  font-size: 18px;
+  line-height: 22px;
+  margin: 20px 0 0;
+  font-style: normal;
+  font-weight: 600;
+}
+.message a {
+}
+.message a:hover p {
+}
+/*------------------ Ngx-Pagination -------------------*/
+.ngx-pagination .current {
+  background: #ff8022 !important;
+}
+
+.ngx-pagination a,
+.ngx-pagination button {
+  text-decoration: none !important;
+}
+
+/*------------------ Epub Main.css -------------------*/
+#tocView li,
+#bookmarksView li :active > a {
+  /* border-bottom: 1px solid rgb(185, 180, 176) !important; */
+  border-bottom: 1px solid #f3e5c5;
+}
+
+a {
+  text-decoration: none !important;
+}
+.aClass {
+  color: black;
+}
+
+.overlay4 {
+  z-index: 9999;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.7);
+  transition: opacity 500ms;
+  visibility: hidden;
+  opacity: 0;
+}
+.overlay4:target {
+  visibility: visible;
+  opacity: 1;
+}
+
+.discourseDiv {
+  width: 33%;
+  float: left;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.ellipsis {
+  vertical-align: middle;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* .pravchanBox:hover{box-shadow: 0px 0px 10px 0px #ab8a48;    transition: all ease 0.5s;} */
+.pravchanBox {
+  position: relative;
+  transition: all ease 0.5s;
+  text-align: center;
+  background-color: #ffcd44;
+  border-radius: 6px;
+  padding: 10px 20px;
+  box-shadow: 0px 0px 10px 0px #dcd1b8;
+  height: 145px;
+  margin: 10px 5px;
+  cursor: pointer;
+}
+.pravchanBox p {
+  color: #3f220d;
+  font-size: 18px;
+  line-height: 22px;
+  margin: 5px 0 0;
+  font-style: normal;
+  font-weight: 600;
+  height: 65px;
+  overflow: hidden;
+}
+
+.pravchanBox:hover p {
+  color: #d11501;
+}
+.labelTag {
+  float: left;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+  width: 32px;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #ffffff;
+  min-width: 150px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  border-radius: 5px;
+  font-size: 20px;
+  left: -108px;
+  margin: 38px 0 0 0;
+}
+
+.dropdown-content::before {
+  content: "";
+  position: absolute;
+  top: -9px;
+  left: 116px;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 9px 9px 9px;
+  border-color: transparent transparent #fff transparent;
+  z-index: 9999;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none !important;
+  display: block;
+}
+
+.dropdown-content a:hover {
+  background-color: #fff0c9;
+  color: #d11501;
+  border-radius: 5px;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.dropdown:hover .whiteUser {
+  background-color: #fff0c9;
+  border-radius: 5px;
+}
+
+/* Bookmark */
+.bookmark_del {
+  float: right;
+  margin-left: 10px;
+  color: red !important;
+}
+
+.epubFooterBar {
+  position: fixed;
+  bottom: 0;
+  font-size: 18px;
+  color: white;
+  background-color: #ff9237;
+  width: 100%;
+  z-index: 3;
+  padding: 15px 0px 10px;
+  text-align: center;
+}
+.epubFooterBar input {
+  vertical-align: middle;
+  margin: 0 auto;
+  height: 3px;
+  border-radius: 2px;
+  width: 40%;
+  float: none;
+}
+
+.black {
+  background-color: #000 !important;
+  color: #fff !important;
+}
+
+.blackfilter {
+  -webkit-filter: invert(1) hue-rotate(180deg);
+  filter: invert(1) hue-rotate(180deg);
+}
+
+.books {
+  float: left;
+  width: 46%;
+  background-color: #fff;
+  padding: 29px 20px;
+  border-radius: 6px;
+  box-shadow: 0px 0px 10px 0px #d6d1d1;
+}
+
+.books p {
+  color: #3f220d;
+  font-size: 19px;
+  margin: 18px 0 0;
+  font-style: normal;
+  font-weight: bold;
+  line-height: 24px;
+}
+.ebooks {
+  border-radius: 6px;
+  background-color: #fff;
+  border: 1px solid #f7ebce;
+  padding: 35px 35px;
+  text-align: center;
+  margin: 0 0 30px 0;
+  height: 300px;
+}
+#otpError {
+  color: #d11501;
+}
+
+.ebooks a:hover {
+  box-shadow: 0px 0px 10px 0px #d2c3a6;
+  transition: all ease 0.5s;
+}
+
+.ebooks a:hover p {
+  color: #d11501;
+}
+
+.ebooks p {
+  font-family: "ChanakyaUni", "NalandaTim", "Tunga";
+  font-size: 17px;
+  font-style: normal;
+  font-weight: 600;
+  color: #3f220d;
+  margin: 13px 0 0 0;
+  line-height: 18px;
+}
+
+.ebooks-category {
+  border-radius: 6px;
+  background-color: #fff8e8;
+  border: 1px solid #fff;
+  padding: 25px 15px;
+  text-align: center;
+  margin: 0 0 60px 0;
+  box-shadow: 0px 0px 20px 0px #ffedc6;
+  height: 325px;
+}
+
+.ebooks-category a:hover,
+.ebooks-category a:focus {
+  text-decoration: none;
+  outline: none;
+}
+
+.ebooks-category a:hover p {
+  color: #d11501;
+}
+
+.ebooks-category p {
+  font-family: "ChanakyaUni", "NalandaTim", "Tunga";
+  font-size: 17px;
+  font-style: normal;
+  font-weight: 600;
+  color: #472d1e;
+  margin: 20px 0 0;
+  line-height: 28px;
+}
+
+.heading {
+  text-align: center;
+  color: #d11501;
+  font-size: 30px;
+  margin: 10px 0 35px;
+  font-style: normal;
+  font-weight: bold;
+}
+
+.audios {
+  float: right;
+  width: 46%;
+  background-color: #ffcd44;
+  padding: 26px 20px;
+  border-radius: 6px;
+  box-shadow: 0px 0px 10px 0px #d6d1d1;
+}
+
+.audios p {
+  color: #3f220d;
+  font-size: 19px;
+  margin: 18px 0 0;
+  font-style: normal;
+  font-weight: bold;
+  line-height: 24px;
+}
+
+.overlays {
+  position: absolute;
+  left: 0;
+  right: 0;
+  opacity: 0.9;
+  top: 0;
+  border-radius: 6px;
+  background-color: #faa307;
+  overflow: hidden;
+  width: 100%;
+  height: 145px;
+  margin: 0;
+  transition: 0.5s ease;
+  display: none;
+}
+
+.pravchanBox:hover .overlays {
+  bottom: 0;
+  height: 145px;
+  display: block;
+}
+
+.pravchanBox img {
+  display: inline-block;
+}
+
+.sliderWidth .important-pravchan:hover .overlays {
+  bottom: 0;
+  height: 142px;
+  display: block;
+}
+
+.slider-books {
+  height: 320px;
+  width: 193px !important;
+  margin: 0 11px;
+  background-color: #fff8e8;
+  border: 1px solid #f3e2e2;
+  padding: 15px;
+  border-radius: 6px;
+  float: left;
+  text-align: center;
+}
+
+.slider-books p {
+  color: #3f220d;
+  font-size: 18px;
+  margin: 20px 0 0;
+  font-style: normal;
+  font-weight: bold;
+  line-height: 22px;
+  text-align: center;
+}
+
+.slider-books a:hover p {
+  color: #d11501;
+}
+
+.booksdetail-page .slider-books {
+  background-color: #fff;
+}
+
+/* for card and left filter */
+.card-gst {
+  padding: 20px;
+  background: #fffaf0;
+  box-shadow: 0 0 7px 1px #f5deb1 !important;
+  height: 100%;
+  font-family: "ChanakyaUni" !important;
+}
+
+mat-card-header ::ng-deep .mat-card-header-text {
+  flex: 1 1 auto !important;
+}
+
+.mat-card-header .mat-card-title {
+  font-family: ChanakyaUni, NalandaTim, Tunga;
+  font-size: 25px;
+  font-style: normal;
+  font-weight: 700;
+  color: #d11501;
+  margin-bottom: 0 !important;
+}
+.mat-expansion-panel-header {
+  font-family: inherit;
+  position: relative;
+  text-decoration: none;
+  color: #111;
+  font-size: 20px !important;
+  font-style: normal !important;
+  font-weight: 700 !important;
+  padding: 0 14px !important;
+  border-radius: unset !important;
+  border-top: solid #f0e68c 1px;
+}
+
+.mat-expansion-panel-header.mat-expanded:focus,
+.mat-expansion-panel-header.mat-expanded:hover {
+  background: initial !important;
+}
+
+.mat-expansion-panel {
+  box-sizing: content-box;
+  display: inherit !important;
+  margin: 0;
+  border-radius: 4px;
+  overflow: hidden;
+  transition: margin 225ms cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 280ms cubic-bezier(0.4, 0, 0.2, 1);
+  border-bottom: 1px solid #e9e0ca;
+  margin-bottom: 12px;
+}
+
+.mat-expansion-panel-spacing {
+  margin: 10px 0 !important;
+}
+
+.mat-expansion-panel {
+  color: inherit !important;
+  margin: 10px 0 !important;
+}
+
+.mat-expansion-panel-body {
+  padding: 0 5px 16px 15px !important;
+}
+
+.listActive {
+  color: #d11501 !important;
+}
+
+.filterheader {
+  font-family: ChanakyaUni, NalandaTim, Tunga;
+  font-size: 25px;
+  font-style: normal;
+  font-weight: 700;
+  color: #d11501;
+  line-height: 30px;
+  flex: 1 1 auto;
+  padding: 5px 5px 5px 5px;
+}
+
+.message-header {
+  background-color: #fef0ce;
+  padding: 25px;
+  margin: 1% 0 4%;
+  width: 100%;
+  float: left;
+}
+.message-header img {
+  float: left;
+  margin-right: 35px;
+}
+.message-header h1 {
+  color: #2d2a29;
+  font-size: 40px;
+  font-style: normal;
+  font-weight: bold;
+  /* margin: 40px 0 0; */
+}
+
+.message-header p {
+  font-family: "ChanakyaUni", "NalandaTim", "Tunga";
+  font-size: 24px;
+  font-style: normal;
+  font-weight: normal;
+  color: #ff7e00;
+  margin: 0;
+  border-bottom: 1px solid #ecd59f;
+  margin-bottom: 5px;
+}
+
+.message-header p label {
+  color: #472d1e;
+  font-weight: normal;
+  width: 115px;
+  margin: 0;
+}
+.message-content h2 {
+  color: #ff731f;
+  margin: 0;
+}
+.message-content p {
+  color: #2d2a29;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: normal;
+}
+
+.btnSubmit {
+  font-family: "ChanakyaUni", "NalandaTim", "Tunga";
+  cursor: pointer;
+  color: #fff;
+  background-color: #ff4e2a;
+  border: 1px solid #ff4e2a;
+  outline: none;
+  font-size: 20px;
+  padding: 8px 28px 4px;
+  border-radius: 4px;
+  font-style: normal;
+  font-weight: normal;
+  margin-top: 12px;
+}
+
+.btnSubmit:hover {
+  background-color: #d11501;
+  border: 1px solid #d11501;
+}
+.important-article {
+  background-color: #fff;
+  box-shadow: 0px 0px 10px 0px #dcd1b8;
+  text-align: center;
+  border-radius: 6px;
+  padding: 30px 10px;
+  margin: 10px;
+}
+
+.important-article p {
+  color: #3f220d;
+  font-size: 18px;
+  line-height: 27px;
+  margin: 20px 0 0;
+  font-style: normal;
+  font-weight: 600;
+}
+.important-article img {
+  display: inline-block;
+  width: auto !important;
+}

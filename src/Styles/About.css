@@ -1,0 +1,353 @@
+.AboutData {
+  font-family: Verdana, Geneva, sans-serif;
+}
+
+.abouttext {
+  line-height: 2 !important;
+  padding: 30px !important;
+}
+.aboutcolor {
+  background-color: #fff;
+  border: 1px solid #ffe198;
+  border-radius: 11px;
+}
+
+a {
+  color: #337ab7;
+  text-decoration: none;
+}
+
+.page-title {
+  padding: 0;
+  margin: 0;
+}
+
+.page-title li {
+  list-style-type: none;
+  display: inline-block;
+  margin-right: 12px;
+  color: #2d2a29;
+  line-height: normal;
+}
+.page-title li a {
+  font-family: Verdana, NalandaTim, Tunga;
+  font-size: 19px;
+  color: #2d2a29 !important;
+  font-style: normal;
+  font-weight: 600;
+}
+.page-title li:after {
+  content: " / ";
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.page-title li:last-child:after {
+  content: "";
+  padding-left: 0;
+}
+
+.faqs .panel,
+.faqs .panel-default .panel-heading {
+  background-color: #fff;
+}
+.panel-group .panel {
+  margin-bottom: 0;
+  border-radius: 4px;
+}
+
+.panel-default {
+  border-color: #ddd;
+}
+.panel-heading {
+  padding: 10px 15px;
+  border-bottom: 1px solid transparent;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+}
+.collapse.in {
+  display: block;
+}
+.panel-title {
+  margin-top: 0;
+  margin-bottom: 0;
+  font-size: 16px;
+  color: inherit;
+}
+.faqs .panel-title a,
+.faqs .panel-body {
+  color: #222424;
+}
+.panel-default > .panel-heading + .panel-collapse > .panel-body {
+  border-top-color: #ddd;
+}
+.panel-group .panel-heading + .panel-collapse > .list-group,
+.panel-group .panel-heading + .panel-collapse > .panel-body {
+  border-top: 1px solid #ddd;
+}
+.panel {
+  margin-bottom: 20px;
+  background-color: #fff;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+}
+.faqs .panel-heading [data-toggle="collapse"]:after {
+  font-family: "Glyphicons Halflings";
+  content: "\e072";
+  float: right;
+  color: #f58723;
+  font-size: 18px;
+  line-height: 22px;
+  -webkit-transform: rotate(-90deg);
+  -moz-transform: rotate(-90deg);
+  -ms-transform: rotate(-90deg);
+  -o-transform: rotate(-90deg);
+  transform: rotate(-90deg);
+}
+.collapse {
+  display: none;
+}
+
+.qrcode {
+  float: left;
+
+  text-align: center;
+  background-color: #fb8c1c;
+  padding: 5px;
+  border-radius: 6px;
+  margin-left: 25px;
+  color: #fff;
+}
+
+.qrcode img {
+  width: 100%;
+}
+
+.section3 {
+  /* background-color: #fff0ce; */
+  padding: 50px 0;
+  margin: 2% 0 0;
+}
+.section4 {
+  background-color: #fff6e1;
+  padding: 50px 0 60px;
+}
+.pravachan-audio-list {
+  float: left;
+  width: 45%;
+  background-color: #ffcd44;
+  padding: 20px 10px;
+  border-radius: 6px;
+  box-shadow: 0px 0px 10px 0px #d6d1d1;
+  margin: 0 7px 10px;
+  height: 118px;
+}
+.audio-box {
+  width: 33%;
+  float: left;
+  padding: 0 45px;
+  text-align: center;
+  border-right: 1px solid;
+  -webkit-border-image: -webkit-gradient(
+      linear,
+      0 100%,
+      0 0,
+      from(#ffcd44),
+      to(rgba(0, 0, 0, 0))
+    )
+    20 100%;
+  -webkit-border-image: -webkit-linear-gradient(top, #ffcd44, rgba(0, 0, 0, 0))
+    20 100%;
+  -moz-border-image: -moz-linear-gradient(top, #ffcd44, rgba(0, 0, 0, 0)) 20
+    100%;
+  -o-border-image: -o-linear-gradient(top, #ffcd44, rgba(0, 0, 0, 0)) 20 100%;
+  border-image: linear-gradient(to top, #ffcd44, rgba(0, 0, 0, 0)) 20 100%;
+}
+
+.audio-box h2 {
+  color: #3f220d;
+  font-size: 22px;
+  margin: 0 0 35px;
+  font-style: normal;
+  font-weight: 600;
+}
+
+.audio-box a:hover,
+.audio-box a:focus {
+  text-decoration: none;
+  outline: none;
+}
+
+.audio-box a:hover p {
+  color: #d11501;
+}
+
+.backgroundimg {
+  background: url(https://gitaseva.org/assets/img/message-box-bg.png) no-repeat
+    top;
+  height: 150px;
+  width: 100%;
+  padding-top: 94px;
+}
+
+.imgcenter {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* .nav {
+  display: block !important;
+} */
+
+.btnSubmit {
+  font-family: Verdana, NalandaTim, Tunga;
+  cursor: pointer;
+  color: #fff;
+  background-color: #ff4e2a;
+  border: 1px solid #ff4e2a;
+  outline: none;
+  font-size: 20px;
+  padding: 8px 28px 4px;
+  border-radius: 4px;
+  margin-top: 12px;
+}
+
+.headerimg {
+  background-color: #fff6e1;
+  background: url(https://gitaseva.org/assets/img/headerBG.) no-repeat;
+  padding: 0px 0 50px;
+}
+
+/* page footer */
+.gstfooter {
+  font-size: 24px;
+  border-bottom: 3px solid #ffcf73;
+  padding-bottom: 8px;
+  margin-bottom: 12px;
+  font-weight: 700;
+}
+.footer-author {
+  list-style-type: none;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #ffd78c;
+  padding-bottom: 5px;
+  font-size: 21px;
+  font-style: normal;
+  color: #472d1e;
+  display: inline-block !important;
+}
+.socialicons {
+  text-align: center;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  border-bottom: 3px solid #fee3a3;
+  display: inline-block;
+}
+
+.socialapp {
+  text-align: center;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+
+  display: inline-block;
+}
+.pravchan1 {
+  text-align: center;
+  background: url(https://gitaseva.org/assets/img/lyrix-bg.png) no-repeat 50%;
+  background-color: #ffc72f;
+  padding: 20px 0 3px 20px;
+  border-radius: 6px;
+  float: left;
+  width: 445px;
+  z-index: 1;
+  position: absolute;
+  border-bottom: 5px solid #f4b919;
+  height: 238px;
+}
+.pravchan2 {
+  text-align: center;
+  color: #3f220d;
+  font-size: 24px;
+  background-color: #ff9509;
+  padding: 40px 44px 20px 68px;
+  border-radius: 6px;
+  float: right;
+  line-height: 32px;
+  width: 415px;
+  z-index: 0;
+  position: relative;
+  border-bottom: 5px solid #ec8600;
+  height: 238px;
+}
+.fa-play-circle:before {
+  content: \f144;
+}
+
+.fa {
+  display: inline-block;
+  font: normal normal normal 14px/1 FontAwesome;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+}
+.fa-volume-up:before {
+  content: \f028;
+}
+
+.fas {
+  -webkit-font-smoothing: antialiased;
+  font-style: normal;
+  font-variant: normal;
+  text-rendering: auto;
+  line-height: 1;
+}
+
+.jumbotron {
+  padding: 0px !important;
+}
+
+.heading {
+  text-align: center;
+  color: #d11501;
+  font-size: 20px;
+  margin: 10px 0 35px;
+  font-style: normal;
+  font-weight: 700;
+}
+
+.gst-page-content {
+  margin-top: 30px;
+}
+
+@media (min-width: 320px) and (max-width: 576px) {
+  .btntogl {
+    text-align: center;
+    z-index: 3;
+    position: absolute;
+    width: 50%;
+    right: 0;
+    border: none;
+  }
+  .navtogl {
+    width: 100%;
+    justify-content: end;
+    display: flex;
+  }
+}
+@media (min-width: 576px) and (max-width: 768px) {
+  .btntogl {
+    text-align: center;
+    z-index: 3;
+    position: absolute;
+    width: 50%;
+    right: 14%;
+    border: none;
+  }
+  .navtogl {
+    width: 100%;
+    justify-content: end;
+    display: flex;
+  }
+} 

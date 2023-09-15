@@ -1,0 +1,208 @@
+.pagecontentbackground {
+  /* padding: 24px; */
+  background-color: rgb(255, 255, 255 0.38);
+  /* margin-top: 30px; */
+  border-radius: 11px;
+  background: #fff;
+}
+
+.lyricsList:active {
+  color: #fff;
+}
+
+.sidebar {
+  padding: 20px;
+  border-radius: 11px;
+  /* background: rgb(240, 237, 227); */
+  background: #fffaec;
+}
+
+.detailbg {
+  padding: 20px;
+  border-radius: 11px;
+  background: rgb(255, 255, 255);
+}
+
+.sidebarmargin {
+  margin-bottom: 10px;
+}
+
+.resultnotfound {
+  width: 100%;
+  font-size: 25px;
+  height: auto;
+}
+
+.filterheader {
+  font-family: Verdana, NalandaTim, Tunga;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 700;
+  color: #d11501;
+  line-height: 20px;
+  flex: 1 1 auto;
+}
+
+.col h1 {
+  font-size: 20px !important;
+  font-style: normal !important;
+  font-weight: 700 !important;
+  padding: 20px 0px 15px;
+}
+
+.panel-body li:hover {
+  color: #d11501;
+}
+
+.panel-body ul {
+  padding: 0;
+  margin: 0;
+  font-size: 22px;
+  font-weight: 400;
+}
+
+.panel-body ul li {
+  color: #545454 !important;
+  /* background: url('../Images/iconcategory.png') no-repeat left; */
+  /* background: url(../Images/list-icon.svg) no-repeat left; */
+  padding-left: 25px;
+  list-style: none;
+  /* line-height: normal; */
+  margin-bottom: 15px;
+  /* background-position-y: 1px; */
+}
+
+.panel-body ul li:active {
+  color: #d11501 !important;
+}
+
+.panel-body ul li::marker {
+  unicode-bidi: isolate;
+  font-variant-numeric: tabular-nums;
+  text-transform: none;
+  text-indent: 0px !important;
+  text-align: start !important;
+  text-align-last: start !important;
+}
+
+/* for pravachan page */
+.filteryearmonth select {
+  border-radius: 4px;
+  color: #54422d;
+  border: 1px solid #ffc840;
+  background-color: #fff;
+  font-family: Verdana, NalandaTim, Tunga;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 600;
+  padding: 6px 10px;
+  height: 38px;
+  margin-top: 0px;
+  outline: none;
+  width: inherit;
+}
+select[disabled] {
+  background-color: #c2bfbf;
+}
+.filteryearmonth span {
+  font-family: Verdana, NalandaTim, Tunga;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 600;
+  color: #54422d;
+  margin: 6px 15px 0 0;
+}
+
+.filter1 span {
+  font-family: Verdana, NalandaTim, Tunga;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 600;
+  color: #54422d;
+  margin: 6px 15px 0 0;
+}
+
+.filter1 select {
+  border-radius: 4px;
+  color: #54422d;
+  border: 1px solid #ffc840;
+  background-color: #fff;
+  font-family: Verdana, NalandaTim, Tunga;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 600;
+  padding: 6px 10px;
+  height: 38px;
+  margin-top: 0px;
+  outline: none;
+}
+
+.filter1 span {
+  font-family: Verdana, NalandaTim, Tunga;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 600;
+  color: #54422d;
+  margin: 6px 15px 0 0;
+}
+
+.resetimg {
+  padding: "0 10px";
+  cursor: "pointer";
+  float: "right";
+  height: 24px;
+}
+
+.cardbackground {
+  display: flex;
+  border-bottom: 1px solid #ffdd89;
+  padding-bottom: 10px;
+}
+
+.col-lg-9 img {
+  border-radius: 7px;
+}
+/* submenu */
+
+.parentdiv {
+  display: flex;
+  align-items: center;
+  margin-bottom: -20px;
+}
+header listtext {
+  font-size: 40px;
+}
+
+@media (min-width: 320px) and (max-width: 576px) {
+  .btntogl {
+    text-align: center;
+    z-index: 3;
+    position: absolute;
+    width: 50%;
+    right: 0;
+    border: none;
+  }
+  .navtogl {
+    width: 100%;
+    justify-content: end;
+    display: flex;
+  }
+  .header listtext {
+    font-size: 20px;
+  }
+}
+@media (min-width: 576px) and (max-width: 768px) {
+  .btntogl {
+    text-align: center;
+    z-index: 3;
+    position: absolute;
+    width: 50%;
+    right: 14%;
+    border: none;
+  }
+  .navtogl {
+    width: 100%;
+    justify-content: end;
+    display: flex;
+  }
+}

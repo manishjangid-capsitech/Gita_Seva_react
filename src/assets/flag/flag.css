@@ -1,0 +1,806 @@
+
+.gst-flag {
+    width: 20px; }
+    .gst-flag.be {
+      width: 18px; }
+    .gst-flag.ch {
+      width: 15px; }
+    .gst-flag.mc {
+      width: 19px; }
+    .gst-flag.ne {
+      width: 18px; }
+    .gst-flag.np {
+      width: 13px; }
+    .gst-flag.va {
+      width: 15px; }
+    @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+      .gst-flag {
+        background-size: 5652px 15px; } }
+    .gst-flag.ac {
+      height: 10px;
+      background-position: 0px 0px; }
+    .gst-flag.ad {
+      height: 14px;
+      background-position: -22px 0px; }
+    .gst-flag.ae {
+      height: 10px;
+      background-position: -44px 0px; }
+    .gst-flag .af {
+      height: 14px;
+      background-position: -66px 0px; }
+    .gst-flag.ag {
+      height: 14px;
+      background-position: -88px 0px; }
+    .gst-flag.ai {
+      height: 10px;
+      background-position: -110px 0px; }
+    .gst-flag.al {
+      height: 15px;
+      background-position: -132px 0px; }
+    .gst-flag.am {
+      height: 10px;
+      background-position: -154px 0px; }
+    .gst-flag.ao {
+      height: 14px;
+      background-position: -176px 0px; }
+    .gst-flag.aq {
+      height: 14px;
+      background-position: -198px 0px; }
+    .gst-flag.ar {
+      height: 13px;
+      background-position: -220px 0px; }
+    .gst-flag.as {
+      height: 10px;
+      background-position: -242px 0px; }
+    .gst-flag.at {
+      height: 14px;
+      background-position: -264px 0px; }
+    .gst-flag.au {
+      height: 10px;
+      background-position: -286px 0px; }
+    .gst-flag.aw {
+      height: 14px;
+      background-position: -308px 0px; }
+    .gst-flag.ax {
+      height: 13px;
+      background-position: -330px 0px; }
+    .gst-flag.az {
+      height: 10px;
+      background-position: -352px 0px; }
+    .gst-flag.ba {
+      height: 10px;
+      background-position: -374px 0px; }
+    .gst-flag.bb {
+      height: 14px;
+      background-position: -396px 0px; }
+    .gst-flag.bd {
+      height: 12px;
+      background-position: -418px 0px; }
+    .gst-flag.be {
+      height: 15px;
+      background-position: -440px 0px; }
+    .gst-flag.bf {
+      height: 14px;
+      background-position: -460px 0px; }
+    .gst-flag.bg {
+      height: 12px;
+      background-position: -482px 0px; }
+    .gst-flag.bh {
+      height: 12px;
+      background-position: -504px 0px; }
+    .gst-flag.bi {
+      height: 12px;
+      background-position: -526px 0px; }
+    .gst-flag.bj {
+      height: 14px;
+      background-position: -548px 0px; }
+    .gst-flag.bl {
+      height: 14px;
+      background-position: -570px 0px; }
+    .gst-flag.bm {
+      height: 10px;
+      background-position: -592px 0px; }
+    .gst-flag.bn {
+      height: 10px;
+      background-position: -614px 0px; }
+    .gst-flag.bo {
+      height: 14px;
+      background-position: -636px 0px; }
+    .gst-flag.bq {
+      height: 14px;
+      background-position: -658px 0px; }
+    .gst-flag.br {
+      height: 14px;
+      background-position: -680px 0px; }
+    .gst-flag.bs {
+      height: 10px;
+      background-position: -702px 0px; }
+    .gst-flag.bt {
+      height: 14px;
+      background-position: -724px 0px; }
+    .gst-flag.bv {
+      height: 15px;
+      background-position: -746px 0px; }
+    .gst-flag.bw {
+      height: 14px;
+      background-position: -768px 0px; }
+    .gst-flag.by {
+      height: 10px;
+      background-position: -790px 0px; }
+    .gst-flag.bz {
+      height: 14px;
+      background-position: -812px 0px; }
+    .gst-flag.ca {
+      height: 10px;
+      background-position: -834px 0px; }
+    .gst-flag.cc {
+      height: 10px;
+      background-position: -856px 0px; }
+    .gst-flag.cd {
+      height: 15px;
+      background-position: -878px 0px; }
+    .gst-flag.cf {
+      height: 14px;
+      background-position: -900px 0px; }
+    .gst-flag.cg {
+      height: 14px;
+      background-position: -922px 0px; }
+    .gst-flag.ch {
+      height: 15px;
+      background-position: -944px 0px; }
+    .gst-flag.ci {
+      height: 14px;
+      background-position: -961px 0px; }
+    .gst-flag.ck {
+      height: 10px;
+      background-position: -983px 0px; }
+    .gst-flag.cl {
+      height: 14px;
+      background-position: -1005px 0px; }
+    .gst-flag.cm {
+      height: 14px;
+      background-position: -1027px 0px; }
+    .gst-flag.cn {
+      height: 14px;
+      background-position: -1049px 0px; }
+    .gst-flag.co {
+      height: 14px;
+      background-position: -1071px 0px; }
+    .gst-flag.cp {
+      height: 14px;
+      background-position: -1093px 0px; }
+    .gst-flag.cr {
+      height: 12px;
+      background-position: -1115px 0px; }
+    .gst-flag.cu {
+      height: 10px;
+      background-position: -1137px 0px; }
+    .gst-flag.cv {
+      height: 12px;
+      background-position: -1159px 0px; }
+    .gst-flag.cw {
+      height: 14px;
+      background-position: -1181px 0px; }
+    .gst-flag.cx {
+      height: 10px;
+      background-position: -1203px 0px; }
+    .gst-flag.cy {
+      height: 14px;
+      background-position: -1225px 0px; }
+    .gst-flag.cz {
+      height: 14px;
+      background-position: -1247px 0px; }
+    .gst-flag.de {
+      height: 12px;
+      background-position: -1269px 0px; }
+    .gst-flag.dg {
+      height: 10px;
+      background-position: -1291px 0px; }
+    .gst-flag.dj {
+      height: 14px;
+      background-position: -1313px 0px; }
+    .gst-flag.dk {
+      height: 15px;
+      background-position: -1335px 0px; }
+    .gst-flag.dm {
+      height: 10px;
+      background-position: -1357px 0px; }
+    .gst-flag.do {
+      height: 14px;
+      background-position: -1379px 0px; }
+    .gst-flag.dz {
+      height: 14px;
+      background-position: -1401px 0px; }
+    .gst-flag.ea {
+      height: 14px;
+      background-position: -1423px 0px; }
+    .gst-flag.ec {
+      height: 14px;
+      background-position: -1445px 0px; }
+    .gst-flag.ee {
+      height: 13px;
+      background-position: -1467px 0px; }
+    .gst-flag.eg {
+      height: 14px;
+      background-position: -1489px 0px; }
+    .gst-flag.eh {
+      height: 10px;
+      background-position: -1511px 0px; }
+    .gst-flag.er {
+      height: 10px;
+      background-position: -1533px 0px; }
+    .gst-flag.es {
+      height: 14px;
+      background-position: -1555px 0px; }
+    .gst-flag.et {
+      height: 10px;
+      background-position: -1577px 0px; }
+    .gst-flag.eu {
+      height: 14px;
+      background-position: -1599px 0px; }
+    .gst-flag.fi {
+      height: 12px;
+      background-position: -1621px 0px; }
+    .gst-flag.fj {
+      height: 10px;
+      background-position: -1643px 0px; }
+    .gst-flag.fk {
+      height: 10px;
+      background-position: -1665px 0px; }
+    .gst-flag.fm {
+      height: 11px;
+      background-position: -1687px 0px; }
+    .gst-flag.fo {
+      height: 15px;
+      background-position: -1709px 0px; }
+    .gst-flag.fr {
+      height: 14px;
+      background-position: -1731px 0px; }
+    .gst-flag.ga {
+      height: 15px;
+      background-position: -1753px 0px; }
+    .gst-flag.gb {
+      height: 10px;
+      background-position: -1775px 0px; }
+    .gst-flag.gd {
+      height: 12px;
+      background-position: -1797px 0px; }
+    .gst-flag.ge {
+      height: 14px;
+      background-position: -1819px 0px; }
+    .gst-flag.gf {
+      height: 14px;
+      background-position: -1841px 0px; }
+    .gst-flag.gg {
+      height: 14px;
+      background-position: -1863px 0px; }
+    .gst-flag.gh {
+      height: 14px;
+      background-position: -1885px 0px; }
+    .gst-flag.gi {
+      height: 10px;
+      background-position: -1907px 0px; }
+    .gst-flag.gl {
+      height: 14px;
+      background-position: -1929px 0px; }
+    .gst-flag.gm {
+      height: 14px;
+      background-position: -1951px 0px; }
+    .gst-flag.gn {
+      height: 14px;
+      background-position: -1973px 0px; }
+    .gst-flag.gp {
+      height: 14px;
+      background-position: -1995px 0px; }
+    .gst-flag.gq {
+      height: 14px;
+      background-position: -2017px 0px; }
+    .gst-flag.gr {
+      height: 14px;
+      background-position: -2039px 0px; }
+    .gst-flag.gs {
+      height: 10px;
+      background-position: -2061px 0px; }
+    .gst-flag.gt {
+      height: 13px;
+      background-position: -2083px 0px; }
+    .gst-flag.gu {
+      height: 11px;
+      background-position: -2105px 0px; }
+    .gst-flag.gw {
+      height: 10px;
+      background-position: -2127px 0px; }
+    .gst-flag.gy {
+      height: 12px;
+      background-position: -2149px 0px; }
+    .gst-flag.hk {
+      height: 14px;
+      background-position: -2171px 0px; }
+    .gst-flag.hm {
+      height: 10px;
+      background-position: -2193px 0px; }
+    .gst-flag.hn {
+      height: 10px;
+      background-position: -2215px 0px; }
+    .gst-flag.hr {
+      height: 10px;
+      background-position: -2237px 0px; }
+    .gst-flag.ht {
+      height: 12px;
+      background-position: -2259px 0px; }
+    .gst-flag.hu {
+      height: 10px;
+      background-position: -2281px 0px; }
+    .gst-flag.ic {
+      height: 14px;
+      background-position: -2303px 0px; }
+    .gst-flag.id {
+      height: 14px;
+      background-position: -2325px 0px; }
+    .gst-flag.ie {
+      height: 10px;
+      background-position: -2347px 0px; }
+    .gst-flag.il {
+      height: 15px;
+      background-position: -2369px 0px; }
+    .gst-flag.im {
+      height: 10px;
+      background-position: -2391px 0px; }
+    .gst-flag.in {
+      height: 14px;
+      background-position: -2413px 0px; }
+    .gst-flag.io {
+      height: 10px;
+      background-position: -2435px 0px; }
+    .gst-flag.iq {
+      height: 14px;
+      background-position: -2457px 0px; }
+    .gst-flag.ir {
+      height: 12px;
+      background-position: -2479px 0px; }
+    .gst-flag.is {
+      height: 15px;
+      background-position: -2501px 0px; }
+    .gst-flag.it {
+      height: 14px;
+      background-position: -2523px 0px; }
+    .gst-flag.je {
+      height: 12px;
+      background-position: -2545px 0px; }
+    .gst-flag.jm {
+      height: 10px;
+      background-position: -2567px 0px; }
+    .gst-flag.jo {
+      height: 10px;
+      background-position: -2589px 0px; }
+    .gst-flag.jp {
+      height: 14px;
+      background-position: -2611px 0px; }
+    .gst-flag.ke {
+      height: 14px;
+      background-position: -2633px 0px; }
+    .gst-flag.kg {
+      height: 12px;
+      background-position: -2655px 0px; }
+    .gst-flag.kh {
+      height: 13px;
+      background-position: -2677px 0px; }
+    .gst-flag.ki {
+      height: 10px;
+      background-position: -2699px 0px; }
+    .gst-flag.km {
+      height: 12px;
+      background-position: -2721px 0px; }
+    .gst-flag.kn {
+      height: 14px;
+      background-position: -2743px 0px; }
+    .gst-flag.kp {
+      height: 10px;
+      background-position: -2765px 0px; }
+    .gst-flag.kr {
+      height: 14px;
+      background-position: -2787px 0px; }
+    .gst-flag.kw {
+      height: 10px;
+      background-position: -2809px 0px; }
+    .gst-flag.ky {
+      height: 10px;
+      background-position: -2831px 0px; }
+    .gst-flag.kz {
+      height: 10px;
+      background-position: -2853px 0px; }
+    .gst-flag.la {
+      height: 14px;
+      background-position: -2875px 0px; }
+    .gst-flag.lb {
+      height: 14px;
+      background-position: -2897px 0px; }
+    .gst-flag.lc {
+      height: 10px;
+      background-position: -2919px 0px; }
+    .gst-flag.li {
+      height: 12px;
+      background-position: -2941px 0px; }
+    .gst-flag.lk {
+      height: 10px;
+      background-position: -2963px 0px; }
+    .gst-flag.lr {
+      height: 11px;
+      background-position: -2985px 0px; }
+    .gst-flag.ls {
+      height: 14px;
+      background-position: -3007px 0px; }
+    .gst-flag.lt {
+      height: 12px;
+      background-position: -3029px 0px; }
+    .gst-flag.lu {
+      height: 12px;
+      background-position: -3051px 0px; }
+    .gst-flag.lv {
+      height: 10px;
+      background-position: -3073px 0px; }
+    .gst-flag.ly {
+      height: 10px;
+      background-position: -3095px 0px; }
+    .gst-flag.ma {
+      height: 14px;
+      background-position: -3117px 0px; }
+    .gst-flag.mc {
+      height: 15px;
+      background-position: -3139px 0px; }
+    .gst-flag.md {
+      height: 10px;
+      background-position: -3160px 0px; }
+    .gst-flag.me {
+      height: 10px;
+      background-position: -3182px 0px; }
+    .gst-flag.mf {
+      height: 14px;
+      background-position: -3204px 0px; }
+    .gst-flag.mg {
+      height: 14px;
+      background-position: -3226px 0px; }
+    .gst-flag.mh {
+      height: 11px;
+      background-position: -3248px 0px; }
+    .gst-flag.mk {
+      height: 10px;
+      background-position: -3270px 0px; }
+    .gst-flag.ml {
+      height: 14px;
+      background-position: -3292px 0px; }
+    .gst-flag.mm {
+      height: 14px;
+      background-position: -3314px 0px; }
+    .gst-flag.mn {
+      height: 10px;
+      background-position: -3336px 0px; }
+    .gst-flag.mo {
+      height: 14px;
+      background-position: -3358px 0px; }
+    .gst-flag.mp {
+      height: 10px;
+      background-position: -3380px 0px; }
+    .gst-flag.mq {
+      height: 14px;
+      background-position: -3402px 0px; }
+    .gst-flag.mr {
+      height: 14px;
+      background-position: -3424px 0px; }
+    .gst-flag.ms {
+      height: 10px;
+      background-position: -3446px 0px; }
+    .gst-flag.mt {
+      height: 14px;
+      background-position: -3468px 0px; }
+    .gst-flag.mu {
+      height: 14px;
+      background-position: -3490px 0px; }
+    .gst-flag.mv {
+      height: 14px;
+      background-position: -3512px 0px; }
+    .gst-flag.mw {
+      height: 14px;
+      background-position: -3534px 0px; }
+    .gst-flag.mx {
+      height: 12px;
+      background-position: -3556px 0px; }
+    .gst-flag.my {
+      height: 10px;
+      background-position: -3578px 0px; }
+    .gst-flag.mz {
+      height: 14px;
+      background-position: -3600px 0px; }
+    .gst-flag.na {
+      height: 14px;
+      background-position: -3622px 0px; }
+    .gst-flag.nc {
+      height: 10px;
+      background-position: -3644px 0px; }
+    .gst-flag.ne {
+      height: 15px;
+      background-position: -3666px 0px; }
+    .gst-flag.nf {
+      height: 10px;
+      background-position: -3686px 0px; }
+    .gst-flag.ng {
+      height: 10px;
+      background-position: -3708px 0px; }
+    .gst-flag.ni {
+      height: 12px;
+      background-position: -3730px 0px; }
+    .gst-flag.nl {
+      height: 14px;
+      background-position: -3752px 0px; }
+    .gst-flag.no {
+      height: 15px;
+      background-position: -3774px 0px; }
+    .gst-flag.np {
+      height: 15px;
+      background-position: -3796px 0px; }
+    .gst-flag.nr {
+      height: 10px;
+      background-position: -3811px 0px; }
+    .gst-flag.nu {
+      height: 10px;
+      background-position: -3833px 0px; }
+    .gst-flag.nz {
+      height: 10px;
+      background-position: -3855px 0px; }
+    .gst-flag.om {
+      height: 10px;
+      background-position: -3877px 0px; }
+    .gst-flag.pa {
+      height: 14px;
+      background-position: -3899px 0px; }
+    .gst-flag.pe {
+      height: 14px;
+      background-position: -3921px 0px; }
+    .gst-flag.pf {
+      height: 14px;
+      background-position: -3943px 0px; }
+    .gst-flag.pg {
+      height: 15px;
+      background-position: -3965px 0px; }
+    .gst-flag.ph {
+      height: 10px;
+      background-position: -3987px 0px; }
+    .gst-flag.pk {
+      height: 14px;
+      background-position: -4009px 0px; }
+    .gst-flag.pl {
+      height: 13px;
+      background-position: -4031px 0px; }
+    .gst-flag.pm {
+      height: 14px;
+      background-position: -4053px 0px; }
+    .gst-flag.pn {
+      height: 10px;
+      background-position: -4075px 0px; }
+    .gst-flag.pr {
+      height: 14px;
+      background-position: -4097px 0px; }
+    .gst-flag.ps {
+      height: 10px;
+      background-position: -4119px 0px; }
+    .gst-flag.pt {
+      height: 14px;
+      background-position: -4141px 0px; }
+    .gst-flag.pw {
+      height: 13px;
+      background-position: -4163px 0px; }
+    .gst-flag.py {
+      height: 11px;
+      background-position: -4185px 0px; }
+    .gst-flag.qa {
+      height: 8px;
+      background-position: -4207px 0px; }
+    .gst-flag.re {
+      height: 14px;
+      background-position: -4229px 0px; }
+    .gst-flag.ro {
+      height: 14px;
+      background-position: -4251px 0px; }
+    .gst-flag.rs {
+      height: 14px;
+      background-position: -4273px 0px; }
+    .gst-flag.ru {
+      height: 14px;
+      background-position: -4295px 0px; }
+    .gst-flag.rw {
+      height: 14px;
+      background-position: -4317px 0px; }
+    .gst-flag.sa {
+      height: 14px;
+      background-position: -4339px 0px; }
+    .gst-flag.sb {
+      height: 10px;
+      background-position: -4361px 0px; }
+    .gst-flag.sc {
+      height: 10px;
+      background-position: -4383px 0px; }
+    .gst-flag.sd {
+      height: 10px;
+      background-position: -4405px 0px; }
+    .gst-flag.se {
+      height: 13px;
+      background-position: -4427px 0px; }
+    .gst-flag.sg {
+      height: 14px;
+      background-position: -4449px 0px; }
+    .gst-flag.sh {
+      height: 10px;
+      background-position: -4471px 0px; }
+    .gst-flag.si {
+      height: 10px;
+      background-position: -4493px 0px; }
+    .gst-flag.sj {
+      height: 15px;
+      background-position: -4515px 0px; }
+    .gst-flag.sk {
+      height: 14px;
+      background-position: -4537px 0px; }
+    .gst-flag.sl {
+      height: 14px;
+      background-position: -4559px 0px; }
+    .gst-flag.sm {
+      height: 15px;
+      background-position: -4581px 0px; }
+    .gst-flag.sn {
+      height: 14px;
+      background-position: -4603px 0px; }
+    .gst-flag.so {
+      height: 14px;
+      background-position: -4625px 0px; }
+    .gst-flag.sr {
+      height: 14px;
+      background-position: -4647px 0px; }
+    .gst-flag.ss {
+      height: 10px;
+      background-position: -4669px 0px; }
+    .gst-flag.st {
+      height: 10px;
+      background-position: -4691px 0px; }
+    .gst-flag.sv {
+      height: 12px;
+      background-position: -4713px 0px; }
+    .gst-flag.sx {
+      height: 14px;
+      background-position: -4735px 0px; }
+    .gst-flag.sy {
+      height: 14px;
+      background-position: -4757px 0px; }
+    .gst-flag.sz {
+      height: 14px;
+      background-position: -4779px 0px; }
+    .gst-flag.ta {
+      height: 10px;
+      background-position: -4801px 0px; }
+    .gst-flag.tc {
+      height: 10px;
+      background-position: -4823px 0px; }
+    .gst-flag.td {
+      height: 14px;
+      background-position: -4845px 0px; }
+    .gst-flag.tf {
+      height: 14px;
+      background-position: -4867px 0px; }
+    .gst-flag.tg {
+      height: 13px;
+      background-position: -4889px 0px; }
+    .gst-flag.th {
+      height: 14px;
+      background-position: -4911px 0px; }
+    .gst-flag.tj {
+      height: 10px;
+      background-position: -4933px 0px; }
+    .gst-flag.tk {
+      height: 10px;
+      background-position: -4955px 0px; }
+    .gst-flag.tl {
+      height: 10px;
+      background-position: -4977px 0px; }
+    .gst-flag.tm {
+      height: 14px;
+      background-position: -4999px 0px; }
+    .gst-flag.tn {
+      height: 14px;
+      background-position: -5021px 0px; }
+    .gst-flag.to {
+      height: 10px;
+      background-position: -5043px 0px; }
+    .gst-flag.tr {
+      height: 14px;
+      background-position: -5065px 0px; }
+    .gst-flag.tt {
+      height: 12px;
+      background-position: -5087px 0px; }
+    .gst-flag.tv {
+      height: 10px;
+      background-position: -5109px 0px; }
+    .gst-flag.tw {
+      height: 14px;
+      background-position: -5131px 0px; }
+    .gst-flag.tz {
+      height: 14px;
+      background-position: -5153px 0px; }
+    .gst-flag.ua {
+      height: 14px;
+      background-position: -5175px 0px; }
+    .gst-flag.ug {
+      height: 14px;
+      background-position: -5197px 0px; }
+    .gst-flag.um {
+      height: 11px;
+      background-position: -5219px 0px; }
+    .gst-flag.un {
+      height: 14px;
+      background-position: -5241px 0px; }
+    .gst-flag.us {
+      height: 11px;
+      background-position: -5263px 0px; }
+    .gst-flag.uy {
+      height: 14px;
+      background-position: -5285px 0px; }
+    .gst-flag.uz {
+      height: 10px;
+      background-position: -5307px 0px; }
+    .gst-flag.va {
+      height: 15px;
+      background-position: -5329px 0px; }
+    .gst-flag.vc {
+      height: 14px;
+      background-position: -5346px 0px; }
+    .gst-flag.ve {
+      height: 14px;
+      background-position: -5368px 0px; }
+    .gst-flag.vg {
+      height: 10px;
+      background-position: -5390px 0px; }
+    .gst-flag.vi {
+      height: 14px;
+      background-position: -5412px 0px; }
+    .gst-flag.vn {
+      height: 14px;
+      background-position: -5434px 0px; }
+    .gst-flag.vu {
+      height: 12px;
+      background-position: -5456px 0px; }
+    .gst-flag.wf {
+      height: 14px;
+      background-position: -5478px 0px; }
+    .gst-flag.ws {
+      height: 10px;
+      background-position: -5500px 0px; }
+    .gst-flag.xk {
+      height: 15px;
+      background-position: -5522px 0px; }
+    .gst-flag.ye {
+      height: 14px;
+      background-position: -5544px 0px; }
+    .gst-flag.yt {
+      height: 14px;
+      background-position: -5566px 0px; }
+    .gst-flag.za {
+      height: 14px;
+      background-position: -5588px 0px; }
+    .gst-flag.zm {
+      height: 14px;
+      background-position: -5610px 0px; }
+    .gst-flag.zw {
+      height: 10px;
+      background-position: -5632px 0px; }
+  
+  .gst-flag {
+    height: 15px;
+    width: 25px;
+    background-position: -87px 0px;
+    background-image: url(/assets/flag/flags.png);
+    background-repeat: no-repeat;
+  }
+    @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+      .gst-flag {
+        background-image: url("flags@2x.png"); } }
+  
+  .gst-flag.np {
+    background-color: transparent; }

@@ -1,0 +1,143 @@
+.pravchanBox {
+  background-color: #ffffff;
+  border-radius: 7px;
+  padding: 20px;
+  height: 100%;
+  border: 1px solid #ffd186;
+}
+
+.pravchanBox p {
+  color: #595551;
+  font-size: 21px;
+  line-height: 25px;
+  /* margin-top: 20px; */
+  font-style: normal;
+  font-weight: 600;
+  height: 47px;
+  overflow: hidden;
+  margin-bottom: 0;
+  padding-left: 27px;
+}
+
+.pravchanBox:hover p {
+  color: #d11501;
+}
+
+.discourseDiv {
+  width: 33%;
+  float: left;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.backcolor {
+  background-color: #ffc052;
+  border: none;
+  padding: 9px;
+  align-items: center;
+}
+
+.play-bar {
+  height: 35px;
+  float: left;
+  margin-right: 30px;
+  display: flex;
+  justify-content: flex-start;
+  flex: 1;
+  padding: 20px 0 0 0;
+}
+/* line 71, ../scss/_audio-player.scss */
+.play-bar span {
+  color: #ffffff;
+  font-size: 1.2em;
+  align-self: center;
+}
+/* line 77, ../scss/_audio-player.scss */
+.play-bar .bar-bg {
+  background-color: #f7ad2b;
+  width: 100%;
+  height: 5px;
+  border-radius: 10px;
+  align-self: center;
+  margin: 0 5px;
+}
+/* line 85, ../scss/_audio-player.scss */
+.play-bar .bar-bg .progress {
+  background-color: #ffffff;
+  height: 4px;
+  border-radius: 10px;
+  width: 0%;
+}
+.play-bar .bar-bgs {
+  background-color: #f7ad2b;
+  width: 100%;
+  height: 2px;
+  border-radius: 10px;
+  align-self: center;
+  margin: 0 5px;
+}
+/* line 85, ../scss/_audio-player.scss */
+.play-bar .bar-bgs .progresss {
+  background-color: #ffffff;
+  height: 4px;
+  border-radius: 10px;
+  width: 0%;
+}
+.lyrics-Data {
+  width: 75%;
+  float: left;
+  text-align: center;
+}
+.rabbit-lyrics {
+  position: relative;
+  height: calc(100vh - 237px);
+  overflow-x: hidden;
+  max-height: 90%;
+  overflow-y: scroll;
+}
+.rabbit-lyrics .line {
+  min-height: 1.5em;
+  color: inherit;
+  font-size: 25px;
+}
+
+.rabbit-lyrics .line:after {
+  content: " ";
+  font-size: 14px;
+  display: block;
+}
+.songSidebar {
+  float: left;
+  background-color: #fff;
+}
+.ralated-logo {
+  background: #ffc052;
+  color: #fff;
+  text-align: left;
+}
+.relatedaudiotitle {
+  background: #f5ad43;
+  color: #fff;
+  font-size: 1.5em;
+  text-align: center;
+}
+.songCategories {
+  height: calc(100vh - 237px);
+  padding: 30px;
+  margin-bottom: 20px;
+  border-radius: 4px;
+  overflow-y: scroll;
+  text-align: justify;
+  font-size: 22px;
+}
+.closeTab {
+  text-align: right;
+  margin: 6px 6px 0 0;
+  float: right;
+  padding: 5px;
+}
+
+.playpravachan {
+  display: flex;
+  flex-wrap: wrap;
+}

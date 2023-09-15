@@ -1,0 +1,260 @@
+.logo {
+  width: 207px;
+  height: 133px;
+}
+
+@media (min-width: 1200px) {
+  .container,
+  .container-lg,
+  .container-md,
+  .container-sm,
+  .container-xl {
+    max-width: 1226px !important;
+  }
+}
+#header-navbar-nav {
+  justify-content: flex-start !important;
+}
+
+.allCatSearch {
+  background-color: #ffb968;
+  font-size: 19px;
+  font-style: normal;
+  font-weight: 600;
+  color: #ea7a05;
+  border: 1px solid #ffb968;
+  padding: 0;
+  border-radius: 4px;
+  line-height: normal;
+}
+
+.category .allCatSearch {
+  position: absolute !important;
+}
+
+.shrihari {
+  color: rgb(172, 39, 39);
+  font-size: 20px;
+  text-align: center;
+  font-family: Verdana !important;
+  position: relative;
+  z-index: 0;
+}
+.hari {
+  position: relative;
+  padding-top: 5px;
+}
+.category {
+  float: left;
+  margin-left: 212px;
+}
+.select-lang {
+  float: right;
+}
+.dropdown-toggle .nav-link {
+  color: #ea7a05;
+  vertical-align: 0;
+}
+.searchlang {
+  position: absolute;
+  right: 0;
+  z-index: 1;
+  top: 0;
+  /* width: 50%; */
+  margin-top: 5px;
+  padding-top: 10px;
+}
+
+.select-lang .nav-link,
+#searchdata-nav-dropdown {
+  background-color: #ffb968;
+  font-size: 19px;
+  font-style: normal;
+  font-weight: 600;
+  color: #ea7a05;
+  border: 1px solid #ffb968;
+  padding: 3px 10px;
+  border-radius: 4px;
+  line-height: normal;
+}
+
+.searchlang .dropdown-toggle::after,
+.select-lang .dropdown-toggle::after {
+  vertical-align: 0;
+}
+
+body {
+  font-family: Verdana !important;
+  font-size: 20px;
+}
+.select-languages {
+  float: right;
+}
+.search-box {
+  float: right;
+}
+
+.navbar-nav a::after {
+  content: "::";
+  margin: 0 15px;
+}
+.navbar-nav a:last-child:after {
+  content: "";
+  margin: 0;
+}
+.navbar-nav a {
+  /* color: #472d1e !important; */
+  font-size: 22px;
+  font-weight: 700;
+  padding: 0 !important;
+}
+.navbar {
+  padding: 0 !important;
+  top: -51px;
+}
+
+.card-body {
+  padding: 0.75rem !important;
+}
+
+.align {
+  text-align: center;
+}
+.caret {
+  position: absolute;
+  right: 10px;
+}
+
+.caret::after {
+  border-style: solid;
+  border-width: 0 2px 2px 0;
+  content: "";
+  display: inline-block;
+  padding: 3px;
+  transform: rotate(45deg);
+  vertical-align: middle;
+}
+.caret:after {
+  color: rgba(0, 0, 0, 0.54);
+}
+
+.header {
+  position: relative;
+}
+
+.headerbg {
+  background: url(https://gitaseva.org/assets/img/headerBG.svg) no-repeat top;
+  padding-bottom: 10px;
+}
+
+.btn_google,
+.btn_facebook,
+.btn_mobile {
+  border: 1px solid #ced4da;
+  padding: 4px 14px;
+  width: 318px;
+  border-radius: 50px;
+  text-align: left;
+  margin-bottom: 14px;
+  outline: none;
+  background-color: white;
+  font-family: "Verdana" !important;
+  font-size: 20px;
+}
+
+.btn_google img,
+.btn_facebook img,
+.btn_mobile img {
+  margin-right: 8px;
+  margin-left: 17px;
+  margin-top: 3px;
+}
+
+.navbar {
+  /* position: revert !important; */
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 1rem;
+}
+
+.searchbar {
+  width: 100%;
+  font-family: Verdana, NalandaTim, Tunga;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  color: #000;
+  padding: 8px 35px 8px 8px;
+  height: 30px;
+}
+
+/* .navbar .justify-content-end div a:focus,
+.navbar .justify-content-end div a:hover {
+  color: #d11501 !important;
+} */
+
+.usericon {
+  border-radius: 50%;
+  border: none;
+}
+
+.searchData {
+  font-size: 25px;
+  font-weight: 700;
+  color: #d11501;
+  line-height: 30px;
+}
+
+.navbar-dark .navbar-nav .nav-link.active {
+  color: #d11501 !important;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+  color: #472d1e !important;
+}
+
+.listActive {
+  color: #d11501 !important;
+}
+
+/* .breadcrumbs h1 {
+  font-family: ChanakyaUni, NalandaTim, Tunga;
+  font-size: 36px;
+  font-style: normal;
+  font-weight: 700;
+  color: #ff2e12;
+  line-height: 41px;
+  margin: 2% 0 0;
+  text-align: left;
+} */
+
+.breadcrumbs {
+  text-align: left;
+  margin-top: 15px;
+  margin-left: 15px;
+  font-family: Verdana, NalandaTim, Tunga;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  color: #d11501;
+  line-height: 41px;
+  margin: 0;
+}
+
+@media (min-width: 320px) and (max-width: 576px) {
+  .btntogl {
+    text-align: center;
+    z-index: 3;
+    position: absolute;
+    width: 50%;
+    right: 0;
+    border: none;
+  }
+  .navtogl {
+    width: 100%;
+    justify-content: end;
+    display: flex;
+  }
+}

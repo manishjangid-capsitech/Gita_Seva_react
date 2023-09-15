@@ -1,0 +1,16 @@
+.textCenter {
+  text-align: -webkit-center;
+}
+
+.loginbuttons {
+  padding: 4px 14px;
+  border: 1px solid #ced4da;
+  margin-bottom: 14px;
+  border-radius: 50px;
+  width: 318px;
+  text-align: left;
+  outline: none;
+  background-color: #fff;
+  font-family: ChanakyaUni;
+  font-size: 20px;
+}

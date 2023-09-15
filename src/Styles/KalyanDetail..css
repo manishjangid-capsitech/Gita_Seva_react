@@ -1,0 +1,124 @@
+.mat-card {
+  transition: box-shadow 280ms cubic-bezier(0.4, 0, 0.2, 1);
+  display: block;
+  position: relative;
+  padding: 16px;
+  border-radius: 4px;
+}
+
+.containers {
+  width: 1180px;
+  margin: 0 auto;
+}
+.card-gst {
+  padding: 20px;
+  background: #fffaf0;
+  box-shadow: 0 0 7px 1px #f5deb1 !important;
+  height: 100%;
+  font-family: Verdana !important;
+}
+
+.single-book-heading {
+  border-bottom: 2px solid #ffe3a1;
+  padding-bottom: 25px;
+  margin-bottom: 25px;
+}
+
+.single-product {
+  background-color: #fff;
+  border-radius: 6px;
+  border: 1px solid #eadfc8;
+  float: left;
+  margin-right: 50px;
+}
+
+.single-product-author {
+  float: left;
+  width: 65%;
+}
+
+label {
+  display: inline-block;
+}
+
+.single-product-author p {
+  font-size: 19px;
+  font-style: normal;
+  font-weight: 400;
+  color: #ff731f;
+  border-bottom: 1px solid #ffe3a1;
+  padding-bottom: 20px;
+  margin: 0 0 20px;
+}
+
+.single-product-author p label {
+  color: #472d1e;
+  font-weight: 400;
+  width: 115px;
+  margin: 0;
+}
+
+.single-product-author h1 {
+  font-size: 24px !important;
+  font-weight: 700;
+  color: #472d1e;
+  margin: 0;
+}
+
+.next-read {
+  margin-top: 45px;
+  color: #fff;
+}
+
+.next-read a {
+  background-color: #ff6427;
+  padding: 10px 30px 6px;
+  border-radius: 6px;
+  color: #fff;
+  font-size: 22px;
+  font-style: normal;
+  line-height: normal;
+  font-weight: 400;
+  width: 27%;
+}
+.carouselSlideMain {
+  width: 100%;
+}
+
+.owl-theme {
+  display: block;
+}
+
+.owl-carousel {
+  display: none;
+  width: 100%;
+  -webkit-tap-highlight-color: transparent;
+  position: relative;
+  z-index: 1;
+}
+
+.owl-carousel .owl-stage-outer {
+  position: relative;
+  overflow: hidden;
+  -webkit-transform: translateZ(0);
+}
+
+.imgcenter {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.full-description {
+  border-bottom: 1px solid #ffe3a1;
+  padding: 0 1% 5%;
+}
+.heading {
+  text-align: center;
+  color: #d11501;
+  font-size: 20px;
+  margin: 10px 0 35px;
+  font-style: normal;
+  font-weight: 700;
+  text-align: center;
+}

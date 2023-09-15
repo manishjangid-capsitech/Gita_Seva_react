@@ -1,0 +1,14 @@
+.footermenu {
+    margin-bottom: 10px;
+    border-bottom: 1px solid #ffd78c;
+    padding-bottom: 5px;
+  }
+  .legendname a:hover{
+color: black;
+cursor: pointer;
+  }
+ .hmenu a.active,
+.hmenu a:focus,
+.hmenu a:hover {
+  color: #d11501;
+}

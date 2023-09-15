@@ -1,0 +1,271 @@
+.audioBox {
+  position: relative;
+  transition: all ease 0.5s;
+  text-align: center;
+  background-color: #ffcd44;
+  border-radius: 6px;
+  padding: 10px 20px;
+  box-shadow: 0px 0px 10px 0px #dcd1b8;
+  height: 145px;
+  margin: 10px 5px;
+  cursor: pointer;
+}
+.audioBox p {
+  color: #3f220d;
+  font-size: 20px;
+  line-height: 22px;
+  margin: 5px 0 0;
+  font-style: normal;
+  font-weight: 600;
+  height: 65px;
+  overflow: hidden;
+}
+
+.audioBox:hover p {
+  color: #d11501;
+}
+
+.discourseDiv {
+  width: 33%;
+  float: left;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.backcolor {
+  background-color: #ffc052;
+  border: none;
+  padding: 9px;
+  align-items: center;
+}
+
+.play-bar {
+  height: 35px;
+  float: left;
+  margin-right: 30px;
+  display: flex;
+  justify-content: flex-start;
+  flex: 1;
+  padding: 20px 0 0 0;
+}
+/* line 71, ../scss/_audio-player.scss */
+.play-bar span {
+  color: #ffffff;
+  font-size: 1.2em;
+  align-self: center;
+}
+/* line 77, ../scss/_audio-player.scss */
+.play-bar .bar-bg {
+  background-color: #f7ad2b;
+  width: 100%;
+  height: 5px;
+  border-radius: 10px;
+  align-self: center;
+  margin: 0 5px;
+}
+/* line 85, ../scss/_audio-player.scss */
+.play-bar .bar-bg .progress {
+  background-color: #ffffff;
+  height: 4px;
+  border-radius: 10px;
+  width: 0%;
+}
+.play-bar .bar-bgs {
+  background-color: #f7ad2b;
+  width: 100%;
+  height: 2px;
+  border-radius: 10px;
+  align-self: center;
+  margin: 0 5px;
+}
+/* line 85, ../scss/_audio-player.scss */
+.play-bar .bar-bgs .progresss {
+  background-color: #ffffff;
+  height: 4px;
+  border-radius: 10px;
+  width: 0%;
+}
+.lyrics-Data {
+  width: 75%;
+  float: left;
+  text-align: center;
+}
+.rabbit-lyrics {
+  position: relative;
+  height: calc(100vh - 237px);
+  overflow-x: hidden;
+  max-height: 90%;
+  overflow-y: scroll;
+}
+.rabbit-lyrics .line {
+  min-height: 1.5em;
+  color: inherit;
+  font-size: 25px;
+}
+
+.rabbit-lyrics .line:after {
+  content: " ";
+  font-size: 14px;
+  display: block;
+}
+.songSidebar {
+  float: left;
+  background-color: #fff;
+}
+.ralated-logo {
+  background: #ffc052;
+  color: #fff;
+  text-align: left;
+}
+.relatedaudiotitle {
+  background: #f5ad43;
+  color: #fff;
+  font-size: 1.5em;
+  text-align: center;
+}
+.songCategories {
+  height: calc(100vh - 237px);
+  padding: 30px;
+  margin-bottom: 20px;
+  border-radius: 4px;
+  overflow-y: scroll;
+}
+.closeTab {
+  text-align: right;
+  margin: 6px 6px 0 0;
+  float: right;
+  padding: 5px;
+}
+.profile-detailView input {
+  font-size: 23px;
+  font-style: normal;
+  font-weight: 400;
+  color: #ff731f;
+  background-color: #fff6e1;
+  padding: 8px 10px;
+  margin: 0 0 25px;
+}
+
+.profile-detailView label {
+  color: #472d1e;
+  font-weight: 400;
+  margin: 0;
+  font-size: 22px;
+  padding-left: 10px;
+}
+.profile-list {
+  cursor: pointer;
+  font-family: Verdana;
+  font-weight: 500;
+  font-style: normal;
+  color: #472d1e;
+  font-size: 21px;
+  list-style-type: none;
+  padding: 0 20px 8px;
+  margin-bottom: 16px;
+  border-bottom: 1px solid #f5dca0;
+}
+.picprofile {
+  padding: 15px 15px 15px 15px;
+  margin-left: 37px;
+  margin-bottom: 45px;
+}
+
+/* ProfileFav Page */
+
+.favebooks {
+  border-radius: 6px;
+  background-color: #fff;
+  border: 1px solid #f7ebce;
+  padding: 35px;
+  text-align: center;
+  margin: 0 0 30px;
+  height: 300px;
+}
+
+.favebooks p {
+  font-family: ChanakyaUni, NalandaTim, Tunga;
+  font-size: 19px;
+  font-style: normal;
+  font-weight: 600;
+  color: #3f220d;
+  margin: 13px 0 0;
+  line-height: 18px;
+}
+
+.favpagebooks {
+  height: 275px;
+  width: 175px !important;
+  margin: 0 2px;
+  background-color: #fff;
+  border: 1px solid #f3e2e2;
+  padding: 15px 0 0 0;
+  border-radius: 6px;
+  float: left;
+}
+
+.favpagebooks p {
+  text-align: center;
+  color: #3f220d;
+  font-size: 17px;
+  line-height: 22px;
+  margin: 25px 0 0;
+  font-style: normal;
+  font-weight: 600;
+}
+
+.favpagebooks a:hover p {
+  color: #d11501;
+}
+
+.favitems {
+  color: #ff7e00;
+  font-size: 23px;
+  font-style: normal;
+  font-weight: 600;
+  font-family: ChanakyaUni;
+  border: none;
+  background: none;
+}
+
+/* Profilecontact page */
+
+.inputbutton {
+  font-size: 20px;
+  background-color: #ff4e2a;
+  outline: none;
+  border: 1px solid #ff4e2a;
+  color: #fff;
+  font-style: normal;
+  font-weight: 400;
+  padding: 8px 50px 2px;
+  border-radius: 4px;
+  cursor: pointer;
+  float: left;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  display: none;
+}
+
+.inputDiv {
+  display: flex;
+  padding: 8px 21px;
+  margin: 0 0 15px;
+}
+
+.inputBoxHeading {
+  color: #472d1e;
+  font-weight: 400;
+  margin: 0;
+  font-size: 22px;
+  font-family: ChanakyaUni;
+}
+.inputBoxStyle {
+  width: 500px;
+  height: 30px;
+  font-size: 21px;
+  border: 1px solid gray;
+  border-radius: 4px;
+}
