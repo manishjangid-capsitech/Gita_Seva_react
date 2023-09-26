@@ -76,10 +76,8 @@ const FooterPage = () => {
     menuid(MenuId);
   }, [MenuId]);
   return (
-      <footer className=""  style={{ marginTop: 'auto' }}
-      //  style={{ marginTop: '10%', position: 'absolute', width: '100%' }}
-       >
-        <div className="gst-footer" style={{ padding: "2% 0 164px 0" }}>
+    <div style={{ marginTop: 'auto' }}>
+        <div className="gst-footer">
           <div className="containers">
             <div className="row">
               <div className="col-3">
@@ -88,7 +86,7 @@ const FooterPage = () => {
                   {authors?.map((author: any) => (
                     <NavLink
                       className="ftmenulink"
-                      to={"/author/ + "}
+                      to={"/author/ +"}
                       state={{ authorId: author.id, authorName: author.name }}
                       style={({ isActive }) => {
                         return { color: isActive ? "#d11501" : "#472d1e" };
@@ -306,7 +304,7 @@ const FooterPage = () => {
             </span>
           </p>
         </div>
-      </footer>
+      </div>
   );
 };
 export default FooterPage;

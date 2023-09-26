@@ -8,7 +8,7 @@ import "../Styles/Epub.css";
 import React, { useState, useEffect, useRef } from "react";
 import { EpubReader } from "../Components/EpubReader";
 import * as CryptoJS from "crypto-js";
-import { Router, useLocation, useNavigate, Link } from "react-router-dom";
+import { useLocation, useNavigate, Link } from "react-router-dom";
 import $ from "jquery";
 import EpubServices from "../Services/Epub";
 import plus from "../Images/plus.svg";
@@ -21,7 +21,7 @@ export enum BookContentType {
   kalyans,
   kalpatru,
   magazine,
-  vivekvani,
+  vivek,
 }
 const EpubPage = () => {
   var signKey = localStorage.getItem("SignKey");
@@ -62,6 +62,7 @@ const EpubPage = () => {
   const renditionRef = useRef<any>(undefined);
 
   const getSecureKey = (url: any) => {
+    debugger;
     let securekey =
       userid +
       "|" +
@@ -78,7 +79,7 @@ const EpubPage = () => {
   };
 
   const [page, setPage] = useState("");
-  const [cfiresult, setcfi] = useState<any>("");
+  const [cfiresult, setcfi] = useState<any>("0");
 
   const tocRef = useRef<any>(undefined);
 
@@ -98,17 +99,18 @@ const EpubPage = () => {
 
   const locationDetail = useLocation();
   const state = locationDetail?.state as {
-    vivekvaniDetailId: string;
     bookDetailId: string;
     kalyanDetailId: string;
     kalpatrauDetailId: string;
     magazineDetailId: string;
+    vivekvaniDetailId: string;
     bookName: string;
     slug: string;
     type: BookContentType;
   };
 
   const getUrlBytype = (type: BookContentType) => {
+    debugger
     let value = "";
     switch (type) {
       case BookContentType.books:
@@ -123,8 +125,8 @@ const EpubPage = () => {
       case BookContentType.magazine:
         value = `MonthlyMagazines/${state?.magazineDetailId}`;
         break;
-      case BookContentType.vivekvani:
-        value = `vivekvani/${state?.vivekvaniDetailId}`;
+      case BookContentType.vivek:
+        value = `vivekVanis/${state?.vivekvaniDetailId}`;
         break;
       default:
         break;
@@ -138,11 +140,13 @@ const EpubPage = () => {
     )}/epubstrem/`
     // `${process.env.REACT_APP_API_URL}/api/${state?.magazineDetailId}/epubstrem/`
     // `${process.env.REACT_APP_API_URL}/api/MonthlyMagazines/633aa65c695a0c595f8579b9/epubstrem/`
-    //`http://localhost:55049/v1/api/books/6285140c81021b3600e67d88/epubstrem/`
+    // `${process.env.REACT_APP_API_URL}/api/MonthlyMagazines/633aa65c695a0c595f8579b9/epubstrem/`
+    // `${process.env.REACT_APP_API_URL}/api/VivekVanis/64de212fd06c418558f180f2/epubstrem/`
+    //`http://localhost:55049/v1/api/VivekVanis/64de212fd06c418558f180f2/epubstrem/`
   );
 
   const [location, setLocation] = useState<any>(undefined);
-
+  console.log("cfiresult", cfiresult);
   const locationChanged = (epubcifi: any) => {
     // epubcifi =
     // "epubcfi(/6/2[The-Secrets-of-Gita]!/4[The-Secrets-of-Gita]/2/2[toc_marker-1]/2/1:0)";
@@ -151,6 +155,7 @@ const EpubPage = () => {
     setLocation(epubcifi);
 
     if (renditionRef?.current && tocRef?.current) {
+      debugger
       const { displayed, href } = renditionRef?.current?.location?.start;
       const chapter = tocRef?.current?.find((item: any) => item?.href === href);
       setPage(
@@ -181,31 +186,35 @@ const EpubPage = () => {
       "lastposition" ||
         "kalyanlastposition" ||
         "kalyankalpatarulastposition" ||
-        "monthlymagazinelastposition",
+        "monthlymagazinelastposition" ||
+        "vivekvanilastposition",
       state?.bookDetailId ||
-        state.kalyanDetailId ||
+        state?.kalyanDetailId ||
         state?.kalpatrauDetailId ||
-        state.magazineDetailId ||
-        state.vivekvaniDetailId
+        state?.magazineDetailId ||
+        state?.vivekvaniDetailId
     ).then((res) => {
       if (res.status) {
         if (res.result != null && res.result !== "") {
+          console.log("cfiresult", cfiresult);
           setcfi(res.result.cfi);
         }
       }
     });
   }
+  
 
   function saveLstPositionAndClose() {
     EpubServices.SaveLastPositionAndClose(
       "lastposition" ||
         "kalyanlastposition" ||
         "kalyankalpatarulastposition" ||
-        "monthlymagazinelastposition",
+        "monthlymagazinelastposition" ||
+        "vivekvanilastposition",
       state?.bookDetailId ||
-        state.kalyanDetailId ||
+        state?.kalyanDetailId ||
         state?.kalpatrauDetailId ||
-        state.magazineDetailId ||
+        state?.magazineDetailId ||
         state?.vivekvaniDetailId,
       location,
       "100"
@@ -220,6 +229,7 @@ const EpubPage = () => {
 
   useEffect(() => {
     setTimeout(() => {
+      debugger;
       GetLstPosition(state?.bookDetailId);
       setLocation(cfiresult);
     }, 400);
@@ -479,7 +489,7 @@ const EpubPage = () => {
   const KalyanId = state?.kalyanDetailId;
   const KalpataruId = state?.kalpatrauDetailId;
   const MagazineId = state?.magazineDetailId;
-  const VivekvaniId = state?.vivekvaniDetailId;
+  const VivekId = state?.vivekvaniDetailId;
 
   const closebutton = () => {
     if (BookId) {
@@ -502,9 +512,8 @@ const EpubPage = () => {
         state: { MonthId: state?.magazineDetailId },
       });
     }
-    if (VivekvaniId) {
-      console.log("Id", VivekvaniId);
-      navigate(`/vivekvani/` + state.slug, {
+    if (VivekId) {
+      navigate(`/vivekvani/` + state?.slug, {
         state: { vivekId: state?.vivekvaniDetailId },
       });
     }

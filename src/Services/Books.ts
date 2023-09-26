@@ -4,15 +4,25 @@ class BooksService {
   route = "/posts";
   bookRoute = "/api/books?lang=";
   categoryRoute = "/api/settings/filters?lang=";
-  authorRoute = "/api/authors/slug-"
+  authorRoute = "/api/authors/slug-";
+  languagebyid = "/api/languages/";
 
   get = (id: string) => ApiUtility.getResult(`${this.route}/${id}`);
 
   getFilters = (productFor: string) => {
     return ApiUtility.get(
-      this.categoryRoute + localStorage.getItem("lan") + "&productFor=" + productFor
+      this.categoryRoute +
+        localStorage.getItem("lan") +
+        "&productFor=" +
+        productFor
     );
   };
+
+  GetLanguageDataById(id: string) {
+    return ApiUtility.get(
+      this.languagebyid + id + "?lang=" + localStorage.getItem("lan")
+    );
+  }
 
   getepubstream(bookId: string, headerWithAuth: any) {
     return ApiUtility.get(
@@ -35,7 +45,7 @@ class BooksService {
   ) => {
     return ApiUtility.get(
       this.bookRoute +
-      localStorage.getItem("lan") +
+        localStorage.getItem("lan") +
         "&start=" +
         start +
         "&length=" +
@@ -43,7 +53,7 @@ class BooksService {
         "&IsChildLiterature=" +
         IsChildLiterature +
         "&categoryId=" +
-        categoryId +       
+        categoryId +
         "&authorId=" +
         authorId +
         "&search=" +
@@ -58,11 +68,7 @@ class BooksService {
   };
 
   GetAuthorDataById = (id: string, lang: string) => {
-    return ApiUtility.get(
-      this.authorRoute +
-        id +
-        "?lang=" 
-    );
-  }
+    return ApiUtility.get(this.authorRoute + id + "?lang=");
+  };
 }
 export default new BooksService();

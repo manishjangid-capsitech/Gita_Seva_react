@@ -5,7 +5,11 @@ import "../Styles/About.css";
 import i18n, { _get_i18Lang } from "../i18n";
 import Loading from "../Components/Loading";
 import { Link } from "react-router-dom";
-import { Accordion, AccordionDetails, AccordionSummary } from "@material-ui/core";
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+} from "@material-ui/core";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 
 const TermsOfUse = () => {
@@ -20,10 +24,6 @@ const TermsOfUse = () => {
     });
   }, [i18n.language]);
 
-  //   function createMarkup() {
-  //     return { __html: tearms.__html };
-  //   }
-
   return (
     <>
       <div
@@ -35,6 +35,7 @@ const TermsOfUse = () => {
           backgroundColor: "#ffedbc",
           height: "240px",
           borderBottom: "2px solid #fff",
+          paddingTop: 0,
         }}
       >
         <div className="breadcrumbs">
@@ -94,28 +95,46 @@ const TermsOfUse = () => {
           </div>
 
           {tearms ? (
-            tearms.slice(0,8).map((tearm: any) => (
+            tearms.slice(0, 8).map((tearm: any) => (
               <div>
                 <div
-                  style={
-                    {
-                      padding: "10px",
-                    
-                    }
-                  }
+                  style={{
+                    padding: "10px",
+                  }}
                 >
-                  <Accordion>
+                  <Accordion elevation={0}>
                     <AccordionSummary
                       expandIcon={<ExpandMore />}
                       style={{
                         height: "10px",
-                        borderBottom: "2px solid #ddd",
+                        borderBottom: "1px solid #ddd",
+                        padding: 0,
                       }}
                     >
-                      <p style={{ color: "#222424", fontSize: '20px',fontFamily: 'ChanakyaUni', padding: '20px 0 0 10px', background: '#fff'}}>{tearm.title}</p>
+                      <p
+                        style={{
+                          color: "#222424",
+                          fontFamily:
+                            "Helvetica Neue, Helvetica, Arial, sans-serif",
+                          fontSize: "16px",
+                          background: "#fff",
+                        }}
+                      >
+                        {tearm.title}
+                      </p>
                     </AccordionSummary>
-                    <AccordionDetails>
-                      <p style={{ color: "#222424", fontSize: '20px',fontFamily: 'ChanakyaUni', padding: '20px 0 0 10px', background: '#fff' }}>{tearm.content}</p>
+                    <AccordionDetails style={{ padding: 0 }}>
+                      <p
+                        style={{
+                          color: "#222424",
+                          fontFamily:
+                            "Helvetica Neue, Helvetica, Arial, sans-serif",
+                          fontSize: "14px",
+                          background: "#fff",
+                        }}
+                      >
+                        {tearm.content}
+                      </p>
                     </AccordionDetails>
                   </Accordion>
                 </div>

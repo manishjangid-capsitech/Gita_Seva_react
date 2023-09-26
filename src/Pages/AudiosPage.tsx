@@ -6,12 +6,11 @@ import WithoutLyrics from "../Images/audiolyrics.svg";
 import WithLyrics from "../Images/audiowithoutlyrics.svg";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import Reset from "../Images/reset.png";
-import dot from "../assets/img/Dot.svg";
 import ListPagination from "../Components/ListPagination";
 import "../Styles/Audios.css";
 import "../Styles/Sidebar.css";
 import { useTranslation } from "react-i18next";
-import i18n, { _get_i18Lang } from "../i18n";
+import i18n from "../i18n";
 import $ from "jquery";
 import imgpause from "../assets/audioPlayer/img/yellowplay.svg";
 import Loading from "../Components/Loading";
@@ -47,7 +46,7 @@ const AudiosPage = () => {
   const [LyricsId, setLyricsId] = useState<any>("");
   const [Singer, setSinger] = useState<any>("");
   const [SingerId, setSingerId] = useState<any>("");
-  const { fav, setFav } = useUser();
+  const [fav, setFav] = useState(false);
 
   const [audiohash, setAudioHash] = useState("");
 
@@ -100,7 +99,7 @@ const AudiosPage = () => {
       SortValue,
       "",
       window.location.pathname === "/audios/special" ? true : false,
-      "audios",
+      Type,
       LyricsId,
       "",
       "",
@@ -228,11 +227,13 @@ const AudiosPage = () => {
     });
     return;
   };
+  const [bread, showBread] = useState("");
 
-  const [active, setActive] = useState(false);
-  const handleClick = () => {
-    setActive(!active);
-  };
+  useEffect(() => {
+    AudiosService.GetAuthorDataById(state?.authorId).then((res) => {
+      showBread(res?.result?.name);
+    });
+  }, [i18n.language, refresh]);
 
   return (
     <>
@@ -245,6 +246,7 @@ const AudiosPage = () => {
           backgroundColor: "#ffedbc",
           height: "240px",
           borderBottom: "2px solid #fff",
+          paddingTop: 0,
         }}
       >
         <div className="breadcrumbs">
@@ -254,15 +256,17 @@ const AudiosPage = () => {
               fontSize: "36px",
               fontWeight: 700,
               color: "rgb(209, 21, 1)",
-              marginLeft: "238px",
+              // marginLeft: "238px",
               top: "155px",
             }}
           >
-            {state?.authorName
-              ? state?.authorName
-              : window.location.pathname === "/audios/special"
-              ? t("Special_Audios_tr")
-              : t("Audios_tr")}
+            {state?.authorName ? (
+              <label>{bread}</label>
+            ) : window.location.pathname === "/audios/special" ? (
+              t("Special_Audios_tr")
+            ) : (
+              t("Audios_tr")
+            )}
             <div
               style={{
                 fontSize: "19px",
@@ -283,7 +287,7 @@ const AudiosPage = () => {
                   }}
                   style={{ marginRight: "8px", color: "#2d2a29" }}
                 >
-                  / {state?.authorName}
+                  / {bread}
                 </Link>
               ) : (
                 ""
@@ -303,186 +307,194 @@ const AudiosPage = () => {
         style={{
           userSelect: "none",
           backgroundColor: "rgb(255, 246, 225)",
-          height: "1410px",
-          marginTop: -"3px",
-          paddingTop: "1px",
+          padding: "1px 0 3% 0",
         }}
       >
         <div className="containers">
           <div
             className="gst-page-content pagecontentbackground"
-            style={{ backgroundColor: "#ffffff" }}
+            style={{ backgroundColor: "#FFF6E1" }}
           >
             <div className="row">
-              <div
-                className="col-lg-3"
-                style={{
-                  display: "block",
-                  padding: "16px",
-                  borderRadius: "4px",
-                  background: "#FFFAF0",
-                  boxShadow: "0 0 7px 1px #f5deb1",
-                  fontFamily: "ChanakyaUni",
-                }}
-              >
-                <div>
-                  <div className="cardbackground" style={{ cursor: "pointer" }}>
-                    <span className="boxheadtitle">{t("Filter_tr")}</span>
-                    <img
-                      alt="reset"
-                      src={Reset}
-                      className="resetimg"
-                      onClick={() => {
-                        ResetData();
-                      }}
-                    />
-                  </div>
-
-                  <div style={{ backgroundColor: "#fffaec" }}>
-                    {/* audio list */}
-                    <Accordion defaultExpanded elevation={0}>
-                      <AccordionSummary
-                        expandIcon={<ExpandMore />}
-                        style={{
-                          height: "10px",
-                          background: "#FFFAF0",
-                        }}
-                      >
-                        <h2 className="filtertitle">{t("audioList_tr")}</h2>
-                      </AccordionSummary>
-
-                      <AccordionDetails
-                        style={{ display: "block", background: "#FFFAF0" }}
-                      >
-                        <SideBar
-                          items={categories!}
-                          onClick={(value: any) => {
-                            if (value) {
-                              if (value.items === null) setCategoryId(value.id);
-                            }
-                          }}
-                          onRefresh={ResetData}
-                        />
-                      </AccordionDetails>
-                    </Accordion>
-                    {/* Preacher  */}
-                    <Accordion
-                      elevation={0}
-                      style={{ display: state?.authorId ? "none" : "block" }}
+              <div className="col-lg-3">
+                <div
+                  style={{
+                    display: "block",
+                    padding: "16px",
+                    borderRadius: "4px",
+                    background: "#FFFAF0",
+                    boxShadow: "0 0 7px 1px #f5deb1",
+                    fontFamily: "ChanakyaUni",
+                    height: "100%",
+                  }}
+                >
+                  <div>
+                    <div
+                      className="cardbackground"
+                      style={{ cursor: "pointer" }}
                     >
-                      <AccordionSummary
-                        expandIcon={<ExpandMore />}
-                        style={{
-                          height: "10px",
-                          background: "#FFFAF0",
+                      <span className="boxheadtitle">{t("Filter_tr")}</span>
+                      <img
+                        alt="reset"
+                        src={Reset}
+                        className="resetimg"
+                        onClick={() => {
+                          ResetData();
                         }}
-                      >
-                        <h2 className="filtertitle">{t("Singer_tr")}</h2>
-                      </AccordionSummary>
-                      <AccordionDetails
-                        style={{
-                          display: "block",
-                          background: "#FFFAF0",
-                          padding: 0,
-                        }}
-                      >
-                        {Singer && Singer.length > 0
-                          ? Singer?.map((Singer: any) => (
-                              <div
-                                key={`c-${Singer.id}`}
-                                className="Authorlist"
-                                onClick={() => {
-                                  setSingerId(Singer.id);
-                                }}
-                              >
-                                <ul style={{ margin: 0 }}>
-                                  <li>
-                                    <div
-                                      style={{
-                                        fontSize: "21px",
-                                        cursor: "pointer",
-                                        fontWeight: 400,
-                                        color: "#545454",
-                                        fontFamily: "ChanakyaUni",
-                                      }}
-                                      id={`sin-${Singer.id}`}
-                                    >
-                                      {Singer.name}
-                                    </div>
-                                  </li>
-                                </ul>
-                              </div>
-                            ))
-                          : ""}
-                      </AccordionDetails>
-                    </Accordion>
-                    {/* lyrics & without lyrics */}
-                    <Accordion elevation={0}>
-                      <AccordionSummary
-                        expandIcon={<ExpandMore />}
-                        style={{
-                          height: "10px",
-                          background: "#FFFAF0",
-                        }}
-                      >
-                        <h2 className="filtertitle">{t("Lyrics_tr")}</h2>
-                      </AccordionSummary>
+                      />
+                    </div>
 
-                      <AccordionDetails
-                        style={{
-                          display: "block",
-                          background: "#FFFAF0",
-                          padding: 0,
-                        }}
+                    <div style={{ backgroundColor: "#fffaec" }}>
+                      {/* audio list */}
+                      <Accordion defaultExpanded elevation={0}>
+                        <AccordionSummary
+                          expandIcon={<ExpandMore />}
+                          style={{
+                            height: "10px",
+                            background: "#FFFAF0",
+                          }}
+                        >
+                          <h2 className="filtertitle">{t("audioList_tr")}</h2>
+                        </AccordionSummary>
+
+                        <AccordionDetails
+                          style={{ display: "block", background: "#FFFAF0" }}
+                        >
+                          <SideBar
+                            items={categories!}
+                            onClick={(value: any) => {
+                              if (value) {
+                                if (value.items === null)
+                                  setCategoryId(value.id);
+                              }
+                            }}
+                            onRefresh={ResetData}
+                          />
+                        </AccordionDetails>
+                      </Accordion>
+                      {/* Preacher  */}
+                      <Accordion
+                        elevation={0}
+                        style={{ display: state?.authorId ? "none" : "block" }}
                       >
-                        <div className="">
-                          <div className="LyricsList">
-                            <ul style={{ margin: 0 }}>
-                              <li
-                                key={1}
-                                onClick={() => {
-                                  handleItemClick(1);
-                                  setLyricsId(1);
-                                }}
-                              >
+                        <AccordionSummary
+                          expandIcon={<ExpandMore />}
+                          style={{
+                            height: "10px",
+                            background: "#FFFAF0",
+                          }}
+                        >
+                          <h2 className="filtertitle">{t("Singer_tr")}</h2>
+                        </AccordionSummary>
+                        <AccordionDetails
+                          style={{
+                            display: "block",
+                            background: "#FFFAF0",
+                            padding: 0,
+                          }}
+                        >
+                          {Singer && Singer.length > 0
+                            ? Singer?.map((Singer: any) => (
                                 <div
-                                  style={{
-                                    color:
-                                      activeIndex === 1 ? "#FF2E12" : "#545454",
-                                    cursor: "pointer",
-                                    fontSize: "21px",
-                                    fontWeight: 400,
-                                    fontFamily: "ChanakyaUni",
+                                  key={`c-${Singer.id}`}
+                                  className="Authorlist"
+                                  onClick={() => {
+                                    setSingerId(Singer.id);
                                   }}
                                 >
-                                  {t("Lyrics_tr")}
+                                  <ul style={{ margin: 0 }}>
+                                    <li>
+                                      <div
+                                        style={{
+                                          fontSize: "21px",
+                                          cursor: "pointer",
+                                          fontWeight: 400,
+                                          color: "#545454",
+                                          fontFamily: "ChanakyaUni",
+                                        }}
+                                        id={`sin-${Singer.id}`}
+                                      >
+                                        {Singer.name}
+                                      </div>
+                                    </li>
+                                  </ul>
                                 </div>
-                              </li>
-                              <li
-                                key={2}
-                                onClick={() => {
-                                  handleItemClick(2);
-                                  setLyricsId(2);
-                                }}
-                              >
-                                <div
-                                  style={{
-                                    color:
-                                      activeIndex === 2 ? "#FF2E12" : "#545454",
-                                    cursor: "pointer",
-                                    fontSize: "21px",
-                                    fontWeight: 400,
-                                    fontFamily: "ChanakyaUni",
+                              ))
+                            : ""}
+                        </AccordionDetails>
+                      </Accordion>
+                      {/* lyrics & without lyrics */}
+                      <Accordion elevation={0}>
+                        <AccordionSummary
+                          expandIcon={<ExpandMore />}
+                          style={{
+                            height: "10px",
+                            background: "#FFFAF0",
+                          }}
+                        >
+                          <h2 className="filtertitle">{t("Lyrics_tr")}</h2>
+                        </AccordionSummary>
+
+                        <AccordionDetails
+                          style={{
+                            display: "block",
+                            background: "#FFFAF0",
+                            padding: 0,
+                          }}
+                        >
+                          <div className="">
+                            <div className="LyricsList">
+                              <ul style={{ margin: 0 }}>
+                                <li
+                                  key={1}
+                                  onClick={() => {
+                                    handleItemClick(1);
+                                    setLyricsId(1);
                                   }}
                                 >
-                                  {t("Without_Lyrics_tr")}
-                                </div>
-                              </li>
-                            </ul>
+                                  <div
+                                    style={{
+                                      color:
+                                        activeIndex === 1
+                                          ? "#FF2E12"
+                                          : "#545454",
+                                      cursor: "pointer",
+                                      fontSize: "21px",
+                                      fontWeight: 400,
+                                      fontFamily: "ChanakyaUni",
+                                    }}
+                                  >
+                                    {t("Lyrics_tr")}
+                                  </div>
+                                </li>
+                                <li
+                                  key={2}
+                                  onClick={() => {
+                                    handleItemClick(2);
+                                    setLyricsId(2);
+                                  }}
+                                >
+                                  <div
+                                    style={{
+                                      color:
+                                        activeIndex === 2
+                                          ? "#FF2E12"
+                                          : "#545454",
+                                      cursor: "pointer",
+                                      fontSize: "21px",
+                                      fontWeight: 400,
+                                      fontFamily: "ChanakyaUni",
+                                    }}
+                                  >
+                                    {t("Without_Lyrics_tr")}
+                                  </div>
+                                </li>
+                              </ul>
+                            </div>
                           </div>
-                        </div>
-                      </AccordionDetails>
-                    </Accordion>
+                        </AccordionDetails>
+                      </Accordion>
+                    </div>
                   </div>
                 </div>
               </div>

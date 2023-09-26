@@ -273,16 +273,7 @@ const HeaderPage = () => {
                             });
                           }}
                         >
-                          <p
-                            style={{
-                              margin: 0,
-                              color: "#ea7a05",
-                              fontSize: "19px",
-                              fontWeight: 600,
-                            }}
-                          >
-                            हिंदी
-                          </p>
+                          <p>हिंदी</p>
                         </div>
                         <div
                           className="activelang"
@@ -303,16 +294,7 @@ const HeaderPage = () => {
                             });
                           }}
                         >
-                          <p
-                            style={{
-                              margin: 0,
-                              color: "#ea7a05",
-                              fontSize: "19px",
-                              fontWeight: 600,
-                            }}
-                          >
-                            english
-                          </p>
+                          <p>english</p>
                         </div>
                       </div>
                     )}

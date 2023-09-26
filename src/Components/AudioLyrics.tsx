@@ -13,9 +13,6 @@ const AudioLyrics = () => {
   React.useEffect(() => {
     if (currentAudio) {
       if (refLrc.current) {
-        console.log("refLrc",refLrc)
-        console.log("refLrc.current",refLrc.current)
-        console.log("currentAudio",currentAudio)
         new RabbitLyrics(
           refLrc.current,
           document.getElementById(`audio-${currentAudio?.id}`) as any

@@ -143,27 +143,23 @@
 
 .bookBox {
   text-align: center;
-  background-color: #ffffff;
-  border-radius: 7px;
-  padding: 20px;
-  height: 100%;
+  background-color: #fff;
+  border-radius: 6px;
+  padding: 35px;
+  height: 300px;
   border: 1px solid #f7ebce;
-  margin-bottom: 25px;
+  margin: 0 0 30px;
 }
 
 .bookBox p {
-  margin-top: 20px;
-  font-style: normal;
-  height: 49px;
   overflow: hidden;
   margin-bottom: 0;
-
   font-family: ChanakyaUni, NalandaTim, Tunga;
   font-size: 17px;
   font-style: normal;
   font-weight: 600;
   color: #3f220d;
-  /* margin: 13px 0 0; */
+  margin: 13px 0 0;
   line-height: 18px;
 }
 

@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
-import DefaultBook from "../Images/defaultBook.svg";
+import DefaultBook from "../Images/defaultBook.png";
 import VikekDetailService from "../Services/VivekvaniDetails";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import "../Styles/BookDetail.css";
@@ -14,6 +14,7 @@ import { useTranslation } from "react-i18next";
 import { userId } from "../Contexts/LocaleContext";
 import "react-toastify/dist/ReactToastify.css";
 import { LogInModel } from "./LogInoutModel";
+import { toast } from "react-toastify";
 
 export interface ISingleBook {
   bookLanguageId: string;
@@ -52,6 +53,7 @@ const VivekvaniDetailPage = () => {
     slidesToScroll: 1,
     // autoplay: true,
     autoplaySpeed: 2000,
+    arrows: false,
   };
 
   const [logIn, setLogIn] = useState<boolean>(false);
@@ -60,23 +62,32 @@ const VivekvaniDetailPage = () => {
     setLogIn(false);
   };
 
-  // new file
-
   const [isLiked, setIsLiked] = React.useState<boolean>(false);
   const [toggleFav, setToggleFav] = React.useState<boolean>(false);
 
+  const notify = () => {
+    isLiked
+      ? toast(
+          localStorage.getItem("lang") === "hindi"
+            ? "पत्रिका को सफलतापूर्वक मेरी पसंद में जोड़ा गया है।"
+            : "Magazine has been successfully added to the favourites"
+        )
+      : toast(
+          localStorage.getItem("lang") === "hindi"
+            ? "पत्रिका मेरी पसंद से हटा दी गई है।"
+            : "Magazine has been removed from favourites"
+        );
+  };
+
   const toggleLike = () => {
-    if (!isLiked) {
-      VikekDetailService.addFavourite(state.vivekId).then((res) => {
-        res.status && setIsLiked(true);
-        console.log("favres", res);
-      });
-    } else {
-      VikekDetailService.removeFavourite(state.vivekId).then((res) => {
-        res.status && setIsLiked(false);
-        console.log("removeres", res);
-      });
-    }
+    !isLiked
+      ? VikekDetailService.addFavourite(state.vivekId).then((res) => {
+          res.status && setIsLiked(true);
+        })
+      : VikekDetailService.removeFavourite(state.vivekId).then((res) => {
+          res.status && setIsLiked(false);
+        });
+
     setToggleFav((x) => !x);
   };
 
@@ -86,7 +97,6 @@ const VivekvaniDetailPage = () => {
       UserIdentity !== "" ? UserIdentity : ""
     ).then((res: any) => {
       setVaniDetail(res.result);
-      console.log("bookres", res);
       setIsLiked(res.result.isFavourite);
     });
   }, []);
@@ -105,7 +115,11 @@ const VivekvaniDetailPage = () => {
   return (
     <div
       className="newcontainer"
-      style={{ backgroundColor: "#FFF6E1", padding: "1px 0", marginTop: 0 }}
+      style={{
+        backgroundColor: "#FFF6E1",
+        padding: "1px 0px 4% 0",
+        marginTop: 0,
+      }}
     >
       <div
         className="breadcrumbs-head newcontainer"
@@ -116,6 +130,7 @@ const VivekvaniDetailPage = () => {
           backgroundColor: "#ffedbc",
           height: "240px",
           borderBottom: "2px solid #fff",
+          paddingTop: 0,
         }}
       >
         <div className="breadcrumbs">
@@ -125,7 +140,6 @@ const VivekvaniDetailPage = () => {
               fontSize: "36px",
               fontWeight: 700,
               color: "rgb(209, 21, 1)",
-              marginLeft: "14%",
               top: "155px",
             }}
           >
@@ -163,16 +177,12 @@ const VivekvaniDetailPage = () => {
                     width: "100%",
                     marginTop: "25px",
                     backgroundColor: "#FFFAF0",
-                    border: "1px solid #ffd186",
                     boxShadow: "0px 0px 10px 0px #dcd1b8",
-                    borderBottom: "#FFFAF0",
-                    borderTopLeftRadius: "5px",
-                    borderTopRightRadius: "5px",
                   }}
                 >
                   <div className="mat-card row" key={`book-${vaniDetail.id}`}>
-                    <div style={{ padding: "35px" }}>
-                      <div className="single-product col-lg-4 col-xs-12 col-sm-12 col-md-12">
+                    <div style={{ padding: "15px" }}>
+                      <div className="single-product col-lg-3">
                         <a>
                           <div
                             style={{
@@ -181,12 +191,15 @@ const VivekvaniDetailPage = () => {
                               background: "#fff",
                               borderRadius: "5px",
                               textAlign: "center",
+                              width: "125%",
                             }}
                           >
                             <img
-                              src={vaniDetail.vivekVaniThumbPath === null
-                              ? DefaultBook
-                            : vaniDetail.vivekVaniThumbPath}
+                              src={
+                                vaniDetail.vivekVaniThumbPath === null
+                                  ? DefaultBook
+                                  : vaniDetail.vivekVaniThumbPath
+                              }
                               onError={(e) => {
                                 e.currentTarget.src = DefaultBook;
                               }}
@@ -200,7 +213,7 @@ const VivekvaniDetailPage = () => {
                         </a>
                       </div>
 
-                      <div className="single-product-author col-lg-8 col-xs-12 col-sm-12 col-md-12">
+                      <div className="single-product-author col-lg-8">
                         <div className="single-book-heading">
                           <div
                             style={{
@@ -263,21 +276,80 @@ const VivekvaniDetailPage = () => {
                             onClick={() => {
                               setLogIn(true);
                               if (UserIdentity) {
-                                navigate(`/reader/vivekvani/` + vaniDetail.slug, {
-                                  state: {
-                                    vivekvaniDetailId: vaniDetail.id,
-                                    bookName: vaniDetail.name,
-                                    slug: vaniDetail.slug,
-                                    label: vaniDetail.label,
-                                    type: BookContentType.vivekvani,
-                                  },
-                                });
+                                navigate(
+                                  `/reader/vivekvanis/` + vaniDetail.slug,
+                                  {
+                                    state: {
+                                      vivekvaniDetailId: vaniDetail.id,
+                                      bookName: vaniDetail.name,
+                                      slug: vaniDetail.slug,
+                                      label: vaniDetail.label,
+                                      type: BookContentType.vivek,
+                                      
+                                    },
+                                  }
+                                );                                
                               }
                             }}
                           >
                             {t("Read_the_book_tr")}
                           </p>
                         </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="clsslide row">
+                    <div>
+                      <h1
+                        style={{ fontSize: "30px!important" }}
+                        className="heading-related"
+                      >
+                        {t("Related_e_books_tr")}
+                      </h1>
+
+                      <div style={{ paddingBottom: "20px", display: "flex" }}>
+                        <Slider {...settings}>
+                          {relateds && relateds.length > 0
+                            ? relateds.map((related) => (
+                                <div
+                                  style={{ display: "flex" }}
+                                  className="slider-books sidebarmargin"
+                                  key={`related-${related.id}`}
+                                  onClick={() => {
+                                    navigate(`/vivekvani/` + related.slug, {
+                                      state: {
+                                        vivekvaniId: related.id,
+                                        bookName: related.name,
+                                      },
+                                    });
+                                    window.location.reload();
+                                  }}
+                                >
+                                  <div style={{ display: "flex" }}>
+                                    <a>
+                                      <img
+                                        style={{ cursor: "pointer" }}
+                                        className="imgcenter"
+                                        src={
+                                          related.vivekVaniThumbPath == null
+                                            ? DefaultBook
+                                            : related.vivekVaniThumbPath
+                                        }
+                                        onError={(e) => {
+                                          e.currentTarget.src = DefaultBook;
+                                        }}
+                                        alt={related.name}
+                                        title={related.name}
+                                        width="117"
+                                        height="165"
+                                      />
+                                      <p>{related?.name}</p>
+                                    </a>
+                                  </div>
+                                </div>
+                              ))
+                            : ""}
+                        </Slider>
                       </div>
                     </div>
                   </div>
@@ -288,78 +360,6 @@ const VivekvaniDetailPage = () => {
             </div>
           </div>
           <LogInModel opens={logIn} onCloses={closeModal} />
-          <div className="clsslide row" style={{ paddingBottom: "50px" }}>
-            <div>
-              <div
-                style={{
-                  backgroundColor: "#FFFAF0",
-                  border: "1px solid #ffd186",
-                  //   boxShadow: "0px 0px 10px 0px #dcd1b8",
-                  borderTop: "#FFFAF0",
-                  borderBottomLeftRadius: "5px",
-                  borderBottomRightRadius: "5px",
-                }}
-              >
-                <h1
-                  style={{ fontSize: "30px!important" }}
-                  className="heading fontfamily"
-                >
-                  {t("Related_e_books_tr")}
-                </h1>
-
-                <div style={{ paddingBottom: "70px", display:'flex'}}>
-                  <Slider {...settings}>
-                    {relateds && relateds.length > 0
-                      ? relateds.map((related) => (
-                          <div
-                          style={{ display:'flex' }}
-                            className="slider-books sidebarmargin"
-                            key={`related-${related.id}`}
-                            onClick={() => {
-                              navigate(`/vivekvani/` + related.slug, {
-                                state: {
-                                  vivekvaniId: related.id,
-                                  bookName: related.name,
-                                },
-                              });
-                              window.location.reload();
-                            }}
-                          >
-                            <div style={{ display:'flex' }}>
-                              <a>
-                                <img
-                                  style={{ cursor: "pointer" }}
-                                  className="imgcenter"
-                                  src={
-                                    related.vivekVaniThumbPath
-                                     == null
-                                      ? DefaultBook
-                                      : related.vivekVaniThumbPath
-                                  }
-                                  onError={(e) => {
-                                    e.currentTarget.src = DefaultBook;
-                                  }}
-                                  alt={related.name}
-                                  title={related.name}
-                                  width="117"
-                                  height="165"
-                                />
-                                <p>
-                                  {/* {related.name != null && related.name.length > 20
-              ? related.name.slice(0, 25)
-              : related.name} */}
-                                  {related?.name}
-                                </p>
-                              </a>
-                            </div>
-                          </div>
-                        ))
-                      : ""}
-                  </Slider>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </div>

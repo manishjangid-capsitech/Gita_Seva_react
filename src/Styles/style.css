@@ -59,7 +59,7 @@ h4,
 h5,
 h6 {
   /* color: #3d2b31; */
-  font-family: "VerdanaBold";
+  font-family: 'ChanakyaUni';
 }
 
 a {
@@ -97,6 +97,13 @@ a:hover {
 }
 
 /*----- Start Header CSS -----*/
+
+.activelang p {
+  margin: 0;
+  color: #ea7a05;
+  font-size: 19px;
+  font-weight: 600;
+}
 
 .activelang p:hover {
   background: blue;
@@ -308,9 +315,9 @@ li.link-active a:focus {
   display: none;
 }
 .containers {
-  width: 1180px;
+  width: 1200px;
   margin: 0 auto;
-  height: 142px;
+  /* height: 142px; */
   position: relative;
 }
 img {
@@ -396,7 +403,7 @@ img {
 /* footer css */
 .gst-footer {
   background-color: #ffeaba;
-  padding: 2% 0 115px 0;
+  padding: 2% 0 20px 0;
 }
 .gst-footer h2 {
   border-bottom: 3px solid #ffcf73;
@@ -473,4 +480,86 @@ img {
 
 .socialicons img:hover {
   filter: grayscale(100%) !important;
+}
+/* loader */
+
+#preloader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
+  z-index: 999999999;
+}
+
+#loader {
+  display: block;
+  position: relative;
+  left: 50%;
+  top: 50%;
+  width: 100px;
+  height: 100px;
+  margin: -75px 0 0 -75px;
+  border-radius: 50%;
+  border: 3px solid transparent;
+  border-top-color: #ff8a00;
+  -webkit-animation: spin 2s linear infinite;
+  animation: spin 2s linear infinite;
+}
+
+#loader:before {
+  content: "";
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  right: 5px;
+  bottom: 5px;
+  border-radius: 50%;
+  border: 3px solid transparent;
+  border-top-color: #ff8a00;
+  -webkit-animation: spin 3s linear infinite;
+  animation: spin 3s linear infinite;
+}
+
+#loader:after {
+  content: "";
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  right: 15px;
+  bottom: 15px;
+  border-radius: 50%;
+  border: 3px solid transparent;
+  border-top-color: #ffd857;
+  -webkit-animation: spin 1.5s linear infinite;
+  animation: spin 1.5s linear infinite;
+}
+
+@-webkit-keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+
+  100% {
+    -webkit-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+
+  100% {
+    -webkit-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
 }

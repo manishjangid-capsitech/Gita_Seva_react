@@ -1,10 +1,9 @@
-import { ISingleBook } from "../Pages/BookDetailPage";
 import { ApiUtility } from "./ApiUtility";
 
 class VikekDetailService {
   route = "/posts";
   bookdetailRoute = "/api/VivekVanis/";           
-  faviroute = "/api/books/";
+  faviroute = "/api/VivekVanis/";
 
   VikekDetailService = (id: string, userId: string) => {
     return ApiUtility.get(

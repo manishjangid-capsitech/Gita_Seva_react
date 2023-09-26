@@ -9,7 +9,7 @@ import ListPagination from "../Components/ListPagination";
 import "../Styles/Audios.css";
 import "../Styles/Sidebar.css";
 import { useTranslation } from "react-i18next";
-import i18n, { _get_i18Lang } from "../i18n";
+import i18n from "../i18n";
 import Loading from "../Components/Loading";
 import articalIcon from "../assets/img/article-icon.png";
 import {
@@ -18,18 +18,18 @@ import {
   AccordionSummary,
 } from "@material-ui/core";
 import ExpandMore from "@mui/icons-material/ExpandMore";
-import dot from "../assets/img/Dot.svg";
 import ArticlesService from "../Services/Articles";
 
 const ArticlesPage = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [refresh, setRefresh] = useState(false);
-  const [SortValue, setSortValue] = useState("0");
+  const [SortValue, setSortValue] = useState("2");
   const [Category, setCategory] = useState<any>("");
   const [CategoryId, setCategoryId] = useState<any>("");
   const [Authors, setAuthors] = useState<any>("");
   const [AuthorsId, setAuthorsId] = useState<any>("");
+  const [bread, showBread] = useState("");
 
   const [articles, setArticles] = useState<any[] | undefined>(undefined);
   const [pagination, setPagination] = useState({
@@ -44,7 +44,7 @@ const ArticlesPage = () => {
   function ResetData() {
     setCategoryId("");
     setAuthorsId("");
-    setSortValue("0");
+    setSortValue("2");
     setPagination({
       ...pagination,
       pageNo: 0,
@@ -116,6 +116,12 @@ const ArticlesPage = () => {
     });
   }, [refresh, SortValue, i18n.language]);
 
+  useEffect(() => {
+    ArticlesService.GetAuthorDataById(state?.authorId).then((res) => {
+      showBread(res?.result?.name);
+    });
+  }, [i18n.language, refresh]);
+
   return (
     <>
       <div
@@ -127,6 +133,7 @@ const ArticlesPage = () => {
           backgroundColor: "#ffedbc",
           height: "240px",
           borderBottom: "2px solid #fff",
+          paddingTop: 0,
         }}
       >
         <div className="breadcrumbs">
@@ -136,15 +143,16 @@ const ArticlesPage = () => {
               fontSize: "36px",
               fontWeight: 700,
               color: "rgb(209, 21, 1)",
-              marginLeft: "258px",
               top: "155px",
             }}
           >
-            {state?.authorName
-              ? state?.authorName
-              : window.location.pathname === "/articles/special"
-              ? t("Special_Article_tr")
-              : t("Article_tr")}
+            {state?.authorName ? (
+              <label>{bread}</label>
+            ) : window.location.pathname === "/articles/special" ? (
+              t("Special_Article_tr")
+            ) : (
+              t("Article_tr")
+            )}
             <div
               style={{
                 fontSize: "19px",
@@ -165,7 +173,7 @@ const ArticlesPage = () => {
                   }}
                   style={{ marginRight: "8px", color: "#2d2a29" }}
                 >
-                  / {state?.authorName}
+                  / {bread}
                 </Link>
               ) : (
                 ""
@@ -185,29 +193,27 @@ const ArticlesPage = () => {
         style={{
           userSelect: "none",
           backgroundColor: "rgb(255, 246, 225)",
-          height: "1045px",
-          marginTop: -"3px",
-          paddingTop: "1px",
+          padding: "1px 0 3% 0",
         }}
       >
         <div className="containers">
           <div
             className="gst-page-content pagecontentbackground"
-            style={{ backgroundColor: "#ffffff" }}
+            style={{ backgroundColor: "#FFF6E1" }}
           >
             <div className="row">
-              <div
-                className="col-lg-3"
-                style={{
-                  display: "block",
-                  padding: "16px",
-                  borderRadius: "4px",
-                  background: "#FFFAF0",
-                  boxShadow: "0 0 7px 1px #f5deb1",
-                  fontFamily: "ChanakyaUni",
-                }}
-              >
-                <div>
+              <div className="col-lg-3">
+                <div
+                  style={{
+                    display: "block",
+                    padding: "16px",
+                    borderRadius: "4px",
+                    background: "#FFFAF0",
+                    boxShadow: "0 0 7px 1px #f5deb1",
+                    fontFamily: "ChanakyaUni",
+                    height: "100%",
+                  }}
+                >
                   <div className="cardbackground" style={{ cursor: "pointer" }}>
                     <span className="boxheadtitle">{t("Filter_tr")}</span>
                     <img

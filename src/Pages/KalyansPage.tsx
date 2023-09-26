@@ -3,7 +3,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useEffect, useState } from "react";
 import KalyansServices from "../Services/Kalyan";
-import DefaultBook from "../Images/defaultBook.svg";
+import DefaultBook from "../Images/defaultBook.png";
 import ListPagination from "../Components/ListPagination";
 import { Link, useNavigate } from "react-router-dom";
 import "../Styles/Books.css";
@@ -129,6 +129,7 @@ const KalyansPage = () => {
           backgroundColor: "#ffedbc",
           height: "240px",
           borderBottom: "2px solid #fff",
+          paddingTop: 0,
         }}
       >
         <div className="breadcrumbs">
@@ -138,7 +139,7 @@ const KalyansPage = () => {
               fontSize: "36px",
               fontWeight: 700,
               color: "rgb(209, 21, 1)",
-              marginLeft: "14%",
+              marginLeft: "15%",
               top: "155px",
             }}
           >
@@ -164,93 +165,96 @@ const KalyansPage = () => {
         style={{
           userSelect: "none",
           backgroundColor: "rgb(255, 246, 225)",
-          height: "1350px",
-          marginTop: -"3px",
-          paddingTop: "1px",
+          padding: "1px 0 3% 0",
         }}
       >
         <div className="containers">
-          <div className="gst-page-content pagecontentbackground">
+          <div
+            className="gst-page-content pagecontentbackground"
+            style={{ backgroundColor: "#FFF6E1" }}
+          >
             <div className="row">
-              <div
-                className="col-lg-3"
-                style={{
-                  display: "block",
-                  padding: "16px",
-                  borderRadius: "4px",
-                  background: "#FFFAF0",
-                  boxShadow: "0 0 7px 1px #f5deb1",
-                  fontFamily: "ChanakyaUni",
-                }}
-              >
+              <div className="col-lg-3">
                 <div
-                  className="cardbackground"
                   style={{
-                    cursor: "pointer",
-                    display: "flex",
-                    justifyContent: "space-between",
+                    display: "block",
+                    padding: "16px",
+                    borderRadius: "4px",
+                    background: "#FFFAF0",
+                    boxShadow: "0 0 7px 1px #f5deb1",
+                    fontFamily: "ChanakyaUni",
+                    height: "100%",
                   }}
                 >
-                  <span className="boxheadtitle">{t("Filter_tr")}</span>
-                  <img
-                    alt="reset"
-                    src={Reset}
-                    className="resetimg"
-                    onClick={() => {
-                      ResetData();
+                  <div
+                    className="cardbackground"
+                    style={{
+                      cursor: "pointer",
+                      display: "flex",
+                      justifyContent: "space-between",
                     }}
-                  />
-                </div>
-                <div>
-                  {/*  Kalyan_Point  */}
-                  <Accordion elevation={0} defaultExpanded>
-                    <AccordionSummary
-                      expandIcon={<ExpandMore />}
-                      style={{
-                        height: "10px",
-                        background: "#FFFAF0",
+                  >
+                    <span className="boxheadtitle">{t("Filter_tr")}</span>
+                    <img
+                      alt="reset"
+                      src={Reset}
+                      className="resetimg"
+                      onClick={() => {
+                        ResetData();
                       }}
-                    >
-                      <h2 className="filtertitle">{t("Kalyan_Points_tr")}</h2>
-                    </AccordionSummary>
+                    />
+                  </div>
+                  <div>
+                    {/*  Kalyan_Point  */}
+                    <Accordion elevation={0} defaultExpanded>
+                      <AccordionSummary
+                        expandIcon={<ExpandMore />}
+                        style={{
+                          height: "10px",
+                          background: "#FFFAF0",
+                        }}
+                      >
+                        <h2 className="filtertitle">{t("Kalyan_Points_tr")}</h2>
+                      </AccordionSummary>
 
-                    <AccordionDetails
-                      style={{
-                        display: "block",
-                        background: "#FFFAF0",
-                        padding: 0,
-                      }}
-                    >
-                      {Category && Category.length > 0
-                        ? Category?.map((category: any) => (
-                            <div
-                              key={`c-${category.id}`}
-                              className="CategoryList"
-                              onClick={() => {
-                                setCategoryId(category.id);
-                              }}
-                            >
-                              <ul style={{ margin: 0 }}>
-                                <li>
-                                  <div
-                                    style={{
-                                      fontSize: "21px",
-                                      cursor: "pointer",
-                                      fontWeight: 400,
-                                      color: "#545454",
-                                      fontFamily: "ChanakyaUni",
-                                    }}
-                                    id={`cat-${category.id}`}
-                                  >
-                                    {category.name}
-                                  </div>
-                                </li>
-                              </ul>
-                            </div>
-                          ))
-                        : ""}
-                    </AccordionDetails>
-                  </Accordion>
+                      <AccordionDetails
+                        style={{
+                          display: "block",
+                          background: "#FFFAF0",
+                          padding: 0,
+                        }}
+                      >
+                        {Category && Category.length > 0
+                          ? Category?.map((category: any) => (
+                              <div
+                                key={`c-${category.id}`}
+                                className="CategoryList"
+                                onClick={() => {
+                                  setCategoryId(category.id);
+                                }}
+                              >
+                                <ul style={{ margin: 0 }}>
+                                  <li>
+                                    <div
+                                      style={{
+                                        fontSize: "21px",
+                                        cursor: "pointer",
+                                        fontWeight: 400,
+                                        color: "#545454",
+                                        fontFamily: "ChanakyaUni",
+                                      }}
+                                      id={`cat-${category.id}`}
+                                    >
+                                      {category.name}
+                                    </div>
+                                  </li>
+                                </ul>
+                              </div>
+                            ))
+                          : ""}
+                      </AccordionDetails>
+                    </Accordion>
+                  </div>
                 </div>
               </div>
               <div className="col-lg-9">
@@ -315,7 +319,10 @@ const KalyansPage = () => {
                                 <div className="bookBox">
                                   <a>
                                     <img
-                                      style={{ cursor: "pointer", borderRadius:0 }}
+                                      style={{
+                                        cursor: "pointer",
+                                        borderRadius: 0,
+                                      }}
                                       src={kalyan.kalyanThumbPath}
                                       onError={(e) => {
                                         e.currentTarget.src = DefaultBook;

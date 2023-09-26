@@ -50,10 +50,10 @@
   float: left;
 }
 .article-content {
-  margin: 15px 15px 15px 15px;
+  /* margin: 15px;
   background-color: white;
   padding-left: 25px;
-  padding-right: 25px;
+  padding-right: 25px; */
 }
 
 .content-font {

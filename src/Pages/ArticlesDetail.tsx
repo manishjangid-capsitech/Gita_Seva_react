@@ -1,17 +1,15 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import { useTranslation } from "react-i18next";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Loading from "../Components/Loading";
 import ArticlesDetailService from "../Services/ArticlesDetail";
 import { Link, useLocation } from "react-router-dom";
 import "../Styles/Articles.css";
 import artimg from "../Images/atul-assets-img.png";
 import i18n, { _get_i18Lang } from "../i18n";
-import { useUser } from "../Contexts/UserContext";
-import Favadd from "../assets/img/favadd.png";
-import Favicon from "../assets/img/fav.png";
-import { toast } from "react-toastify";
+import Favfill from "../assets/img/favadd.png";
+import Favempty from "../assets/img/fav.png";
 import { LogInModel } from "./LogInoutModel";
 
 const ArticlesDetailPage = (props: any) => {
@@ -20,7 +18,7 @@ const ArticlesDetailPage = (props: any) => {
   });
   const { t } = useTranslation();
   const location = useLocation();
-  const { fav, setFav } = useUser();
+  const [isLiked, setIsLiked] = useState<boolean>(false);
   const state = location.state as {
     articleId: string;
     authorName: string;
@@ -30,40 +28,27 @@ const ArticlesDetailPage = (props: any) => {
   const [refresh, setRefresh] = useState(false);
 
   const [logIn, setLogIn] = useState<boolean>(false);
-
+  const [toggleFav, setToggleFav] = useState<boolean>(false);
   const closeModal = () => {
     setLogIn(false);
   };
 
   const UserIdentity = localStorage.getItem("UserId") as any;
 
-  function FavArticleAdd() {
-    ArticlesDetailService.addArticlesFavourite(state?.articleId).then(
-      (res: any) => {
-        setFav(true);
-        toast.success(
-          localStorage.getItem("lang") === "hindi"
-            ? "पुस्तक को सफलतापूर्वक मेरी पसंद में जोड़ा गया है।"
-            : "Book has been successfully added to the favourites"
+  const toggleLike = () => {
+    !isLiked
+      ? ArticlesDetailService.addArticlesFavourite(state?.articleId).then(
+          (res: any) => {
+            setIsLiked(true);
+          }
+        )
+      : ArticlesDetailService.removeArticlesFaviourite(state?.articleId).then(
+          (res: any) => {
+            setIsLiked(false);
+          }
         );
-      }
-    );
-    return;
-  }
-
-  function FavArticleRemove() {
-    ArticlesDetailService.removeArticlesFaviourite(state?.articleId).then(
-      (res: any) => {
-        setFav(false);
-        toast.success(
-          localStorage.getItem("lang") === "hindi"
-            ? "पुस्तक मेरी पसंद से हटा दी गई है।"
-            : "Book has been removed from favourites"
-        );
-      }
-    );
-    return;
-  }
+    setToggleFav((x) => !x);
+  };
 
   useEffect(() => {
     if (state?.articleId) {
@@ -75,7 +60,7 @@ const ArticlesDetailPage = (props: any) => {
         if (res.status) {
           setArticlesDetail(res?.result);
           setarticleContent({ __html: res?.result?.articleContent });
-          setFav(res?.result?.isFavourite);
+          setIsLiked(res?.result?.isFavourite);
         }
       });
     }
@@ -99,6 +84,7 @@ const ArticlesDetailPage = (props: any) => {
           backgroundColor: "#ffedbc",
           height: "240px",
           borderBottom: "2px solid #fff",
+          paddingTop: 0,
         }}
       >
         <div className="breadcrumbs">
@@ -144,20 +130,19 @@ const ArticlesDetailPage = (props: any) => {
           </div>
         </div>
       </div>
-      <div className="container">
+      <div className="container" style={{ paddingTop: "10px"}}>
         <div>
           {ArticlesDetail ? (
             <div
               key={`articledetail-${ArticlesDetail.id}`}
-              style={{ backgroundColor: "#fff6e1", padding: "20px 0 50px" }}
+              style={{ backgroundColor: "#fff6e1", padding: "1px 0px 3% 0", }}
             >
               <div
                 style={{
                   backgroundColor: "rgb(255, 250, 240)",
-                  border: "1px solid rgb(255, 209, 134)",
+                  boxShadow: "0 0 7px 1px #f5deb1",
                   padding: "30px 40px",
                   margin: "10px 0px",
-                  boxShadow: "rgb(220, 209, 184) 0px 0px 10px 0px",
                 }}
               >
                 <div className="message-header">
@@ -183,23 +168,16 @@ const ArticlesDetailPage = (props: any) => {
                             if (!UserIdentity) setLogIn(true);
                           }}
                         >
-                          {UserIdentity && fav ? (
-                            <label
-                              onClick={() => {
-                                FavArticleRemove();
-                              }}
-                            >
-                              <img src={Favadd} alt="Favadd" />
-                            </label>
-                          ) : (
-                            <label
-                              onClick={() => {
-                                FavArticleAdd();
-                              }}
-                            >
-                              <img src={Favicon} alt="Favicon" />
-                            </label>
-                          )}
+                          <label
+                            onClick={() => {
+                              toggleLike();
+                            }}
+                          >
+                            <img
+                              src={isLiked ? Favfill : Favempty}
+                              alt="Favicon"
+                            />
+                          </label>
                         </label>
                       </div>
 
@@ -214,12 +192,24 @@ const ArticlesDetailPage = (props: any) => {
                     </div>
                   </div>
                 </div>
-                <div style={{ color: "#ff731f", marginRight: "15px" }}>
-                  <h2>{t("Description_tr")}</h2>
+                <div>
+                  <h2
+                    style={{
+                      color: "#ff731f",
+                      margin: 0,
+                      fontSize: "32px",
+                      fontFamily: "ChanakyaUni",
+                    }}
+                  >
+                    {t("Description_tr")}
+                  </h2>
                 </div>
                 <div
-                  style={{ fontSize: "22px", background: "#FFFAF0" }}
-                  className="article-content content-font fontfamily"
+                  style={{
+                    fontSize: "24px",
+                    fontFamily: "ChanakyaUni",
+                  }}
+                  className="article-content content-font"
                   dangerouslySetInnerHTML={createMarkup()}
                 ></div>
               </div>

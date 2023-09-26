@@ -62,7 +62,10 @@ class KalyansServices {
 
   getRelatedKalyans(id: string, userId: string) {
     return ApiUtility.get(
-      this.kalyandetailRoute + id + "/related?lang=" + localStorage.getItem("lan") + "&userId=" + userId
+      this.kalyandetailRoute +
+        id +
+        "/related?lang=" +
+        localStorage.getItem("lan")
     );
   }
 

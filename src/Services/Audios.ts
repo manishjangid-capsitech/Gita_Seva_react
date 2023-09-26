@@ -1,3 +1,4 @@
+import { userId } from "../Contexts/LocaleContext";
 import { ApiUtility } from "./ApiUtility";
 
 class AudiosService {
@@ -7,8 +8,18 @@ class AudiosService {
   categoryRouteAudio = "/api/Audios/Categories?lang=";
   pravachanfav = "/api/pravachans/";
   audiofavroute = "/api/audios/";
+  articlelang =  "/api/authors/slug-";
 
-  get = (id: string) => ApiUtility.getResult(`${this.route}/${id}`);
+  GetAuthorDataById = (id: string) => {
+    return ApiUtility.get(
+      this.articlelang +
+        id +
+        "?lang=" +
+        localStorage.getItem("lan") +
+        "&userId=" +
+        userId
+    );
+  }
 
   getPravachanFilters = (productFor: string) => {
     return ApiUtility.get(
@@ -132,5 +143,6 @@ class AudiosService {
   removeAudioFavourite(id: string) {
     return ApiUtility.delete(this.audiofavroute + id + "/favourite");
   }
+
 }
 export default new AudiosService();

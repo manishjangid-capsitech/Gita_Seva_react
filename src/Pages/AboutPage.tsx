@@ -26,6 +26,17 @@ const AboutPage = () => {
 
   return (
     <>
+      {/* <BreadCrumbs
+        bdcrHeadPageName={t("Introduction_tr")}
+        bdcrPageName={""}
+        bdcrDetailPageName={""}
+        bdcrDetailPageNameWithauthor={""}
+        bdcrDetailPageNameWithisSpecial={""}
+        navigateto={() => {
+          navigate(`/kalyans/`);
+        }}
+        home={t("Home_tr")}
+      /> */}
       <div
         className="breadcrumbs-head newcontainer"
         style={{
@@ -35,6 +46,7 @@ const AboutPage = () => {
           backgroundColor: "#ffedbc",
           height: "240px",
           borderBottom: "2px solid #fff",
+          paddingTop: 0,
         }}
       >
         <div className="breadcrumbs">
@@ -44,7 +56,6 @@ const AboutPage = () => {
               fontSize: "36px",
               fontWeight: 700,
               color: "rgb(209, 21, 1)",
-              marginLeft: "14%",
               top: "155px",
             }}
           >
@@ -69,7 +80,7 @@ const AboutPage = () => {
         style={{
           userSelect: "none",
           backgroundColor: "#fff6e1",
-          padding: "20px 0 50px",
+          padding: "1px 0 50px",
         }}
       >
         <div className="container">

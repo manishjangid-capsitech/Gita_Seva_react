@@ -23,12 +23,16 @@
 .card-gst {
   padding: 20px;
   background: #ffffff;
-  box-shadow: 0 0 7px 1px #ffffff !important;
+  box-shadow: 0 0 7px 1px #f5deb1 !important;
   height: 100%;
   font-family: ChanakyaUni !important;
 }
 
 .single-book-heading {
+  padding-bottom: 40px;
+}
+
+.single-bookdetail-heading {
   border-bottom: 2px solid #ffe3a1;
   padding-bottom: 25px;
   margin-bottom: 25px;
@@ -126,15 +130,16 @@ label {
   padding: 0 1% 5%;
 }
 
-.heading {
-  text-align: center;
+.heading-related {
   color: #d11501;
-  font-size: 25px;
-  margin: 0 0 35px;
+  font-size: 30px;
+  margin: 25px 0 35px;
   font-style: normal;
   font-weight: 700;
   text-align: center;
-  padding-top: 30px;
+  padding-top: 10px;
+  border-top: 1px solid #ffe3a1;
+  font-family: "ChanakyaUni";
 }
 
 .full-description {
@@ -149,9 +154,9 @@ label {
   background: #ffffff;
 }
 
-.container img {
+/* .container img {
   border-radius: 7px;
-}
+} */
 
 .slider-books {
   height: 320px;
@@ -170,7 +175,7 @@ label {
   font-size: 18px;
   margin: 20px 0 0;
   font-style: normal;
-  font-weight: bold;
+  font-weight: 700;
   line-height: 22px;
   text-align: center;
 }
@@ -181,7 +186,6 @@ label {
 }
 
 @media (min-width: 320px) and (max-width: 576px) {
-
   .single-product-author p label {
     width: 35%;
   }

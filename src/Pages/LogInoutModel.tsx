@@ -17,11 +17,13 @@ import signinfacebook from "../assets/img/loginwithfacebook.svg";
 import signinmobileno from "../assets/img/loginwithmobileno.png";
 import "../Styles/Login.css";
 import "../Styles/Profile.css";
-import DefaultBook from "../Images/defaultBook.svg";
+import DefaultBook from "../Images/defaultBook.png";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import WithoutLyrics from "../Images/audiolyrics.svg";
 import WithLyrics from "../Images/audiowithoutlyrics.svg";
 import articalIcon from "../assets/img/article-icon.png";
+import Loading from "../Components/Loading";
+import { t } from "i18next";
 
 interface LogOutModalProps {
   open: boolean;
@@ -73,6 +75,7 @@ export const LogOutModel: React.FC<LogOutModalProps> = ({ open, onClose }) => {
             localStorage.removeItem("mobileNo");
             localStorage.removeItem("Token");
             if (window.location.pathname?.includes("profile")) navigate(`/`);
+            window.location.reload();
             onClose();
           }}
           style={{
@@ -278,9 +281,6 @@ export const BookListButton = ({
       case "geetgovind":
         imgpath = book.monthlyMagazineThumbPath ?? DefaultBook;
         break;
-      // case "prabachan":
-      //   imgpath = book.kalyanKalpataruThumbPath ?? DefaultBook;
-      //   break;
       default:
         imgpath = DefaultBook;
     }
@@ -289,22 +289,22 @@ export const BookListButton = ({
 
   return (
     <div>
-      {books.length > 0 && (
+      {books.length > 0 ? (
         <div>
           <div>
+            <p
+              style={{
+                fontFamily: "ChanakyaUni",
+                fontWeight: 700,
+                fontStyle: "normal",
+                color: "#b42a38",
+                fontSize: "26px",
+                margin: "0 0 10px",
+              }}
+            >
+              {title}
+            </p>
             <div>
-              <p
-                style={{
-                  fontFamily: "ChanakyaUni",
-                  fontWeight: 700,
-                  fontStyle: "normal",
-                  color: "#b42a38",
-                  fontSize: "26px",
-                  margin: "0 0 10px",
-                }}
-              >
-                {title}
-              </p>
               <div className="row" style={{ marginBottom: "21px" }}>
                 {books.slice(0, displayCount).map((book: any) => (
                   <div className="col-3" style={{ marginTop: "15px" }}>
@@ -323,7 +323,10 @@ export const BookListButton = ({
                       >
                         <div>
                           <img
-                            style={{ cursor: "pointer", borderRadius: "5px" }}
+                            style={{
+                              cursor: "pointer",
+                              borderRadius: "5px",
+                            }}
                             className="imgcenter"
                             src={getValueType(type, book)}
                             onError={(e) => {
@@ -366,6 +369,10 @@ export const BookListButton = ({
             </div>
           )}
         </div>
+      ) : (
+        <div className="ebooks-category resultnotfound">
+          <Loading />
+        </div>
       )}
     </div>
   );
@@ -394,7 +401,7 @@ export const AudioListButton = ({
 
   return (
     <div>
-      {audios.length > 0 && (
+      {audios.length > 0 ? (
         <div>
           <div>
             <div>
@@ -488,6 +495,10 @@ export const AudioListButton = ({
             </div>
           )}
         </div>
+      ) : (
+        <div className="ebooks-category resultnotfound">
+          <Loading />
+        </div>
       )}
     </div>
   );
@@ -516,7 +527,7 @@ export const FavouriteArticals = ({
 
   return (
     <div>
-      {article.length > 0 && (
+      {article.length > 0 ? (
         <div>
           <div>
             <p
@@ -596,240 +607,14 @@ export const FavouriteArticals = ({
             </div>
           )}
         </div>
+      ) : (
+        <div className="ebooks-category resultnotfound">
+          <Loading />
+        </div>
       )}
     </div>
   );
 };
-
-export const ProfileSidebar = () =>
-  //   {
-  //   title,
-  //   getNavigate,
-  // }: {
-  //   title: string;
-  //   getNavigate: (value: any) => void;
-  // }
-  {
-    const UserImage = localStorage.getItem("Image");
-    const navigate = useNavigate();
-    const { t } = useTranslation();
-    const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
-    const handleCloseDialog = () => {
-      setIsDialogOpen(false);
-    };
-    return (
-      <div
-        className="col-3"
-        style={{
-          backgroundColor: "#FFFAF0",
-          padding: "16px",
-          boxShadow: "0 0 7px 1px #f5deb1",
-        }}
-      >
-        <div
-          style={{
-            textAlign: "center",
-            backgroundColor: "#fb8c1c",
-            padding: "7px",
-            borderRadius: "2px",
-          }}
-        >
-          {UserImage ? (
-            <img
-              id="userimg"
-              src={UserImage}
-              title="User Login"
-              alt="user"
-              style={{ width: "200px", height: "200px" }}
-            />
-          ) : (
-            <img
-              id="userimg"
-              src="https://gitaseva.org/assets/img/profile-image1.png"
-              title="User Login"
-              className="nousericon"
-              alt="user"
-              style={{ width: "200px", height: "200px" }}
-            />
-          )}
-          <h6
-            style={{
-              fontFamily: "ChanakyaUni",
-              color: "#fff6e1",
-              margin: "15px 0 -5px",
-              fontSize: "21px",
-            }}
-          >
-            {localStorage.getItem("userName")}
-          </h6>
-        </div>
-
-        <nav>
-          <div
-            className="nav nav-tabs"
-            id="nav-tab"
-            role="tablist"
-            style={{ display: "grid", border: "none" }}
-          >
-            <div style={{ borderBottom: "1px solid #f5dca0" }}>
-              <div style={{ margin: "10px 100px 0px 60px" }}>
-                <img
-                  src="https://gitaseva.org/assets/img/profile-icon1.png"
-                  alt="profile"
-                  style={{
-                    height: "22px",
-                    width: "20px",
-                    marginTop: "5px",
-                  }}
-                />
-                {/* {MenuItem.map((menu: any) => {
-                return ( */}
-                <button
-                  style={{
-                    color: "#472D1E",
-                    fontSize: "25px",
-                    fontFamily: "ChanakyaUni",
-                    padding: "0 16px",
-                    border: "none",
-                    background: "#FFFAF0",
-                    borderBottom: "1px solid #f5dca0",
-                  }}
-                  className="nav-link active"
-                  id="e-books-tab"
-                  data-bs-toggle="tab"
-                  data-bs-target="#e-books"
-                  type="button"
-                  role="tab"
-                  aria-controls="e-books"
-                  aria-selected="true"
-                  onClick={() => {
-                    // getNavigate(`/Profile`);
-                    navigate(`/profile`);
-                  }}
-                >
-                  {t("Profile_tr")}
-                  {/* {menu.name} */}
-                </button>
-                {/* );
-              })} */}
-              </div>
-            </div>
-            <div style={{ borderBottom: "1px solid #f5dca0" }}>
-              <div style={{ margin: "10px 75px 0px 60px" }}>
-                <img
-                  src="https://gitaseva.org/assets/img/profile-icon2.png"
-                  alt="profile"
-                  style={{
-                    height: "22px",
-                    width: "20px",
-                    marginTop: "5px",
-                  }}
-                />
-                <button
-                  style={{
-                    color: "#FF984D",
-                    fontSize: "25px",
-                    fontFamily: "ChanakyaUni",
-                    padding: "0 16px",
-                    border: "none",
-                    // fontWeight: 600,
-                    background: "#FFFAF0",
-                    borderBottom: "1px solid #f5dca0",
-                  }}
-                  className="nav-link"
-                  id="audios-tab"
-                  data-bs-toggle="tab"
-                  data-bs-target="#audios"
-                  type="button"
-                  role="tab"
-                  aria-controls="audios"
-                  aria-selected="false"
-                  onClick={() => {
-                    navigate(`/profile/fav`);
-                  }}
-                >
-                  {t("Favourite_tr")}
-                </button>
-              </div>
-            </div>
-            <div style={{ borderBottom: "1px solid #f5dca0" }}>
-              <div style={{ margin: "10px 62px 0px 60px" }}>
-                <img
-                  src="https://gitaseva.org/assets/img/profile-icon4.png"
-                  alt="profile"
-                  style={{
-                    height: "22px",
-                    width: "20px",
-                    marginTop: "5px",
-                  }}
-                />
-                <button
-                  style={{
-                    color: "#472D1E",
-                    fontSize: "25px",
-                    fontFamily: "ChanakyaUni",
-                    padding: "0 16px",
-                    border: "none",
-                    // fontWeight: 600,
-                    background: "#FFFAF0",
-                    borderBottom: "1px solid #f5dca0",
-                  }}
-                  className="nav-link"
-                  id="pravachans-tab"
-                  data-bs-toggle="tab"
-                  data-bs-target="#pravachans"
-                  type="button"
-                  role="tab"
-                  aria-controls="pravachans"
-                  aria-selected="false"
-                  onClick={() => {
-                    navigate(`/profile/feedback`);
-                  }}
-                >
-                  {t("Help_tr")}
-                </button>
-              </div>
-            </div>
-            <div style={{ margin: "10px 90px 0px 60px" }}>
-              <img
-                src="https://gitaseva.org/assets/img/logout.png"
-                alt="profile"
-                style={{
-                  height: "22px",
-                  width: "20px",
-                  marginTop: "5px",
-                }}
-              />
-              <button
-                style={{
-                  color: "#472D1E",
-                  fontSize: "25px",
-                  fontFamily: "ChanakyaUni",
-                  padding: "0 16px",
-                  // fontWeight: 600,
-                  background: "#FFFAF0",
-                }}
-                className="nav-link"
-                id="articles-tab"
-                data-bs-toggle="tab"
-                data-bs-target="#articles"
-                type="button"
-                role="tab"
-                aria-controls="articles"
-                aria-selected="false"
-                onClick={() => {
-                  setIsDialogOpen(true);
-                }}
-              >
-                {t("LogOut_tr")}
-              </button>
-            </div>
-          </div>
-        </nav>
-        <LogOutModel open={isDialogOpen} onClose={handleCloseDialog} />
-      </div>
-    );
-  };
 
 export const UploadProfileImage = () => {
   const [image, setImage] = useState(null);
@@ -852,3 +637,75 @@ export const UploadProfileImage = () => {
     </>
   );
 };
+
+// export const BreadCrumbs = ({
+//   bdcrHeadPageName,
+//   home,
+//   bdcrPageName,
+//   bdcrDetailPageName,
+//   bdcrDetailPageNameWithauthor,
+//   bdcrDetailPageNameWithisSpecial,
+//   navigateto,
+// }: {
+//   bdcrHeadPageName: string;
+//   home: string;
+//   bdcrPageName: string;
+//   bdcrDetailPageName: string;
+//   bdcrDetailPageNameWithauthor: string;
+//   bdcrDetailPageNameWithisSpecial: string;
+//   navigateto: void;
+// }) => {
+//   return (
+//     <div
+//       className="breadcrumbs-head newcontainer"
+//       style={{
+//         width: "100%",
+//         marginTop: "-175px",
+//         background: "none",
+//         backgroundColor: "#ffedbc",
+//         height: "240px",
+//         borderBottom: "2px solid #fff",
+//       }}
+//     >
+//       <div className="breadcrumbs">
+//         <div
+//           className="containers"
+//           style={{
+//             fontSize: "36px",
+//             fontWeight: 700,
+//             color: "rgb(209, 21, 1)",
+//             marginLeft: "14%",
+//             top: "155px",
+//           }}
+//         >
+//           {bdcrHeadPageName}
+//         </div>
+//         <div
+//           style={{
+//             fontSize: "19px",
+//             fontWeight: 600,
+//             color: "#2d2a29",
+//             // marginTop: "-8px",
+//           }}
+//         >
+//           <ul>
+//             <li
+//               onClick={() => {
+//                 navigateto()
+//               }}
+//             >
+//               <p style={{ marginRight: "8px", color: "#2d2a29" }}>{home}</p>
+//             </li>
+//             <li
+//               onClick={() => {
+//                 navigateto()
+//               }}
+//             >
+//               {bdcrDetailPageName}
+//             </li>
+//           </ul>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };

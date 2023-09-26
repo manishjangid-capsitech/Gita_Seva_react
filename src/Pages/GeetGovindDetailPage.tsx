@@ -1,14 +1,14 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
-import DefaultBook from "../Images/defaultBook.svg";
+import DefaultBook from "../Images/defaultBook.png";
 import GeetGovindServices from "../Services/GeetGovind";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import "../Styles/BookDetail.css";
 import { useTranslation } from "react-i18next";
 import i18n, { _get_i18Lang } from "../i18n";
-import Favadd from "../assets/img/favadd.png";
-import Favicon from "../assets/img/fav.png";
+import Favfill from "../assets/img/favadd.png";
+import Favempty from "../assets/img/fav.png";
 import { BookContentType } from "./Epub";
 import { useUser } from "../Contexts/UserContext";
 import { toast } from "react-toastify";
@@ -19,42 +19,45 @@ const GeetGovindDetailPage = (props: any) => {
   const navigate = useNavigate();
   const [magzineDetail, setMagzineDetail] = useState<any>(undefined);
   const [refresh, setRefresh] = useState(false);
-  const [MagzineId, setMagzineId] = useState("");
-
   const location = useLocation();
+  const [MagzineId, setMagzineId] = useState("");
   const state = location.state as { MonthId: string };
-  const { fav, setFav } = useUser();
+  const [isLiked, setIsLiked] = useState<boolean>(false);
 
   const [logIn, setLogIn] = useState<boolean>(false);
 
   const closeModal = () => {
     setLogIn(false);
   };
+
+  const [toggleFav, setToggleFav] = useState<boolean>(false);
+
   const UserIdentity = localStorage.getItem("UserId") as any;
 
-  function FavMagzineAdd() {
-    GeetGovindServices.addMagzineFavourite(MagzineId).then((res) => {
-      setFav(true);
-      toast(
-        localStorage.getItem("lang") === "hindi"
-          ? "पत्रिका को सफलतापूर्वक मेरी पसंद में जोड़ा गया है।"
-          : "Magazine has been successfully added to the favourites"
-      );
-    });
-    return;
-  }
+  const notify = () => {
+    isLiked
+      ? toast(
+          localStorage.getItem("lang") === "hindi"
+            ? "पत्रिका को सफलतापूर्वक मेरी पसंद में जोड़ा गया है।"
+            : "Magazine has been successfully added to the favourites"
+        )
+      : toast(
+          localStorage.getItem("lang") === "hindi"
+            ? "पत्रिका मेरी पसंद से हटा दी गई है।"
+            : "Magazine has been removed from favourites"
+        );
+  };
 
-  function FavMagzineRemove() {
-    GeetGovindServices.removeMagzineFavourite(MagzineId).then((res) => {
-      setFav(false);
-      toast(
-        localStorage.getItem("lang") === "hindi"
-          ? "पत्रिका मेरी पसंद से हटा दी गई है।"
-          : "Magazine has been removed from favourites"
-      );
-    });
-    return;
-  }
+  const toggleLike = () => {
+    !isLiked
+      ? GeetGovindServices.addMagzineFavourite(MagzineId).then((res) => {
+          setIsLiked(true);
+        })
+      : GeetGovindServices.removeMagzineFavourite(MagzineId).then((res) => {
+          setIsLiked(false);
+        });
+    setToggleFav((x) => !x);
+  };
 
   useEffect(() => {
     if (location.state) {
@@ -69,9 +72,9 @@ const GeetGovindDetailPage = (props: any) => {
         state?.MonthId,
         UserIdentity !== "" ? UserIdentity : ""
       ).then((res) => {
-        if (res) {
+        if (res.status) {
           setMagzineDetail(res.result);
-          setFav(res?.result?.isFavourite);
+          setIsLiked(res?.result?.isFavourite);
         }
       });
     }
@@ -82,7 +85,7 @@ const GeetGovindDetailPage = (props: any) => {
       className="newcontainer"
       style={{
         backgroundColor: "#FFF6E1",
-        padding: "1px 0 85px 0",
+        padding: "1px 0px 4% 0",
         marginTop: 0,
       }}
     >
@@ -95,6 +98,7 @@ const GeetGovindDetailPage = (props: any) => {
           backgroundColor: "#ffedbc",
           height: "240px",
           borderBottom: "2px solid #fff",
+          paddingTop: 0,
         }}
       >
         <div className="breadcrumbs">
@@ -104,7 +108,6 @@ const GeetGovindDetailPage = (props: any) => {
               fontSize: "36px",
               fontWeight: 700,
               color: "rgb(209, 21, 1)",
-              marginLeft: "14%",
               top: "155px",
             }}
           >
@@ -132,16 +135,7 @@ const GeetGovindDetailPage = (props: any) => {
         </div>
       </div>
       <div className="container">
-        <div
-          style={
-            {
-              // margin: "10px 0",
-              // border: "1px solid #ffd186",
-              // boxShadow: "0px 0px 10px 0px #dcd1b8",
-              // backgroundColor: "#FFFAF0"
-            }
-          }
-        >
+        <div>
           <div className="row">
             <div>
               {magzineDetail ? (
@@ -160,8 +154,8 @@ const GeetGovindDetailPage = (props: any) => {
                     className="mat-card row"
                     key={`book-${magzineDetail.id}`}
                   >
-                    <div style={{ padding: "35px" }}>
-                      <div className="single-product col-lg-4 col-xs-12 col-sm-12 col-md-12">
+                    <div style={{ padding: "35px", margin: "0 0 25px 0" }}>
+                      <div className="single-product col-lg-3">
                         <a>
                           <div
                             style={{
@@ -170,6 +164,7 @@ const GeetGovindDetailPage = (props: any) => {
                               background: "#fff",
                               borderRadius: "5px",
                               textAlign: "center",
+                              width: "125%",
                             }}
                           >
                             <img
@@ -187,7 +182,7 @@ const GeetGovindDetailPage = (props: any) => {
                         </a>
                       </div>
 
-                      <div className="single-product-author col-lg-8 col-xs-12 col-sm-12 col-md-12">
+                      <div className="single-product-author col-lg-8">
                         <div className="single-book-heading">
                           <div
                             style={{
@@ -198,8 +193,7 @@ const GeetGovindDetailPage = (props: any) => {
                             <label
                               style={{
                                 fontFamily: "ChanakyaUni",
-                                fontSize: "26px",
-                                fontWeight: 700,
+                                fontSize: "40px",
                                 color: "#472d1e",
                                 marginTop: "7px",
                               }}
@@ -211,23 +205,16 @@ const GeetGovindDetailPage = (props: any) => {
                                 if (!UserIdentity) setLogIn(true);
                               }}
                             >
-                              {UserIdentity && fav ? (
-                                <label
-                                  onClick={() => {
-                                    FavMagzineRemove();
-                                  }}
-                                >
-                                  <img src={Favadd} alt="Favadd" />
-                                </label>
-                              ) : (
-                                <label
-                                  onClick={() => {
-                                    FavMagzineAdd();
-                                  }}
-                                >
-                                  <img src={Favicon} alt="Favicon" />
-                                </label>
-                              )}
+                              <label
+                                onClick={() => {
+                                  toggleLike();
+                                }}
+                              >
+                                <img
+                                  src={isLiked ? Favfill : Favempty}
+                                  alt="Favicon"
+                                />
+                              </label>
                             </label>
                           </div>
                         </div>

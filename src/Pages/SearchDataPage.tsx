@@ -37,7 +37,6 @@ const SearchDataPage = () => {
 
   useEffect(() => {
     if (params?.usr !== undefined) {
-      debugger
       SearchDataService.searchData({
         language: params?.usr.language,
         productType: params?.usr.productType,

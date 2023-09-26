@@ -350,4 +350,9 @@ a {
     justify-content: end;
     display: flex;
   }
+  .tearmsuse p{
+    padding: 0;
+    font-size: 16px;
+    font-family: ChanakyaUni;
+  }
 } 

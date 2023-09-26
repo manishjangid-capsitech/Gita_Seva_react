@@ -13,7 +13,6 @@
   position: inherit;
   background-size: cover;
   width: 100%;
-  height: 1000px;
   margin-top: -68px;
 }
 
@@ -119,7 +118,6 @@ nav {
 
 .tab-pane {
   background-color: #fffbf3;
-  padding: 70px 30px 50px;
 }
 .tab-row {
   display: flex;
@@ -219,7 +217,6 @@ input::-webkit-inner-spin-button {
 
 .tabscroll {
   padding: 0 0 35px 0;
-  overflow-x: scroll;
   text-align: justify;
   display: flex;
   overflow-y: hidden;
@@ -318,7 +315,6 @@ input::-webkit-inner-spin-button {
 
 .newcontainer {
   background-color: #fff0ce;
-  height: 460px;
   padding-top: 20px;
   margin-top: 59%;
 }
@@ -358,7 +354,6 @@ input::-webkit-inner-spin-button {
   line-height: 30px;
   flex: 1 1 auto;
   padding: 5px;
-  text-align: center;
 }
 
 /* विशेष ऑडियो  */

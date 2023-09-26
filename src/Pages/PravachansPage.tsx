@@ -69,6 +69,7 @@ const PravachansPage = () => {
   };
 
   const [activeIndex, setActiveIndex] = useState(null);
+  const [bread, showBread] = useState("");
 
   const handleItemClick = (index: any) => {
     setActiveIndex(index);
@@ -112,6 +113,7 @@ const PravachansPage = () => {
     ).then((res) => {
       if (res) {
         setAudios(res?.result?.items);
+
         setPagination({
           ...pagination,
           pageNo: 1,
@@ -196,6 +198,12 @@ const PravachansPage = () => {
   }, [isSelected, setItemColored]);
 
   useEffect(() => {
+    AudiosService.GetAuthorDataById(state?.authorId).then((res) => {
+      showBread(res?.result?.name);
+    });
+  }, [i18n.language, refresh]);
+
+  useEffect(() => {
     setRefresh(false);
     AudiosService.getAudios(
       pagination.pageNo === 0
@@ -216,7 +224,7 @@ const PravachansPage = () => {
       1,
       UserIdentity
     ).then((res) => {
-      if (res) setAudios(res.result?.items);
+      if (res.status) setAudios(res.result?.items);
       setFav(res?.result?.items.isFavourite);
       setPagination({
         ...pagination,
@@ -237,6 +245,7 @@ const PravachansPage = () => {
           backgroundColor: "#ffedbc",
           height: "240px",
           borderBottom: "2px solid #fff",
+          paddingTop: 0,
         }}
       >
         <div className="breadcrumbs">
@@ -246,16 +255,17 @@ const PravachansPage = () => {
               fontSize: "36px",
               fontWeight: 700,
               color: "rgb(209, 21, 1)",
-              marginLeft: "238px",
               top: "155px",
             }}
           >
             {/* {state?.authorName ? state?.authorName : t("Pravachan_tr")} */}
-            {state?.authorName
-              ? state?.authorName
-              : window.location.pathname === "/pravachans/special"
-              ? t("Special_Pravachan_tr")
-              : t("Pravachan_tr")}
+            {state?.authorName ? (
+              <span>{bread}</span>
+            ) : window.location.pathname === "/pravachans/special" ? (
+              t("Special_Pravachan_tr")
+            ) : (
+              t("Pravachan_tr")
+            )}
             {/* {t("Pravachan_tr")} */}
             <div
               style={{
@@ -277,7 +287,7 @@ const PravachansPage = () => {
                   }}
                   style={{ marginRight: "8px", color: "#2d2a29" }}
                 >
-                  / {state?.authorName}
+                  / {bread}
                 </Link>
               ) : (
                 ""
@@ -297,7 +307,7 @@ const PravachansPage = () => {
         style={{
           userSelect: "none",
           backgroundColor: "rgb(255, 246, 225)",
-          height: "1410px",
+          height: "1440px",
           marginTop: -"3px",
           paddingTop: "1px",
         }}
@@ -305,278 +315,283 @@ const PravachansPage = () => {
         <div className="containers">
           <div
             className="gst-page-content pagecontentbackground"
-            style={{ backgroundColor: "#ffffff" }}
+            style={{ backgroundColor: "#FFF6E1" }}
           >
             <div className="row">
-              <div
-                className="col-lg-3"
-                style={{
-                  display: "block",
-                  padding: "16px",
-                  borderRadius: "4px",
-                  background: "#FFFAF0",
-                  boxShadow: "0 0 7px 1px #f5deb1",
-                  fontFamily: "ChanakyaUni",
-                }}
-              >
-                <div>
-                  <div className="cardbackground" style={{ cursor: "pointer" }}>
-                    <span className="boxheadtitle">{t("Filter_tr")}</span>
-                    <img
-                      alt="reset"
-                      src={Reset}
-                      className="resetimg"
-                      onClick={() => {
-                        ResetData();
-                      }}
-                    />
-                  </div>
-
+              <div className="col-lg-3">
+                <div
+                  style={{
+                    display: "block",
+                    padding: "16px",
+                    borderRadius: "4px",
+                    background: "#FFFAF0",
+                    boxShadow: "0 0 7px 1px #f5deb1",
+                    fontFamily: "ChanakyaUni",
+                    height: "100%",
+                  }}
+                >
                   <div>
+                    <div
+                      className="cardbackground"
+                      style={{ cursor: "pointer" }}
+                    >
+                      <span className="boxheadtitle">{t("Filter_tr")}</span>
+                      <img
+                        alt="reset"
+                        src={Reset}
+                        className="resetimg"
+                        onClick={() => {
+                          ResetData();
+                        }}
+                      />
+                    </div>
+
+                    <div>
+                      <div
+                        className="filteryearmonth"
+                        style={{
+                          marginTop: "15px",
+                          display: "flex",
+                          alignItems: "baseline",
+                        }}
+                      >
+                        <div style={{ width: "30%" }}>
+                          <span>{t("Year_tr")}</span>
+                        </div>
+
+                        <div style={{ width: "70%" }}>
+                          <select
+                            onChange={(e) => {
+                              setSortYearValue(e.target.value);
+                            }}
+                            value={SortYearValue}
+                          >
+                            <option value="0">All</option>
+                            <option value="1990">1990</option>
+                            <option value="1991">1991</option>
+                            <option value="1992">1992</option>
+                            <option value="1993">1993</option>
+                            <option value="1994">1994</option>
+                            <option value="1995">1995</option>
+                            <option value="1996">1996</option>
+                            <option value="1997">1997</option>
+                            <option value="1998">1998</option>
+                            <option value="1999">1999</option>
+                            <option value="2000">2000</option>
+                            <option value="2001">2001</option>
+                            <option value="2002">2002</option>
+                            <option value="2003">2003</option>
+                            <option value="2004">2004</option>
+                            <option value="2005">2005</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+
                     <div
                       className="filteryearmonth"
                       style={{
-                        marginTop: "15px",
-                        display: "flex",
+                        paddingTop: "5px",
                         alignItems: "baseline",
+                        display: "flex",
                       }}
                     >
                       <div style={{ width: "30%" }}>
-                        <span>{t("Year_tr")}</span>
+                        <span>{t("Month_tr")}</span>
                       </div>
-
                       <div style={{ width: "70%" }}>
                         <select
+                          disabled={SortYearValue !== "0" ? false : true}
                           onChange={(e) => {
-                            setSortYearValue(e.target.value);
+                            setSortMonthValue(e.target.value);
                           }}
-                          value={SortYearValue}
+                          value={SortMonthValue}
                         >
                           <option value="0">All</option>
-                          <option value="1990">1990</option>
-                          <option value="1991">1991</option>
-                          <option value="1992">1992</option>
-                          <option value="1993">1993</option>
-                          <option value="1994">1994</option>
-                          <option value="1995">1995</option>
-                          <option value="1996">1996</option>
-                          <option value="1997">1997</option>
-                          <option value="1998">1998</option>
-                          <option value="1999">1999</option>
-                          <option value="2000">2000</option>
-                          <option value="2001">2001</option>
-                          <option value="2002">2002</option>
-                          <option value="2003">2003</option>
-                          <option value="2004">2004</option>
-                          <option value="2005">2005</option>
+                          <option value="1">January</option>
+                          <option value="2">February</option>
+                          <option value="3">March</option>
+                          <option value="4">April</option>
+                          <option value="5">May</option>
+                          <option value="6">June</option>
+                          <option value="7">July</option>
+                          <option value="8">August</option>
+                          <option value="9">September</option>
+                          <option value="10">October</option>
+                          <option value="11">November</option>
+                          <option value="12">December</option>
                         </select>
                       </div>
                     </div>
-                  </div>
 
-                  <div
-                    className="filteryearmonth"
-                    style={{
-                      paddingTop: "5px",
-                      alignItems: "baseline",
-                      display: "flex",
-                    }}
-                  >
-                    <div style={{ width: "30%" }}>
-                      <span>{t("Month_tr")}</span>
-                    </div>
-                    <div style={{ width: "70%" }}>
-                      <select
-                        disabled={SortYearValue !== "0" ? false : true}
-                        onChange={(e) => {
-                          setSortMonthValue(e.target.value);
-                        }}
-                        value={SortMonthValue}
+                    <div style={{ backgroundColor: "#fffaec" }}>
+                      {/* Preacher */}
+                      <Accordion
+                        defaultExpanded
+                        elevation={0}
+                        style={{ display: state?.authorId ? "none" : "block" }}
                       >
-                        <option value="0">All</option>
-                        <option value="1">January</option>
-                        <option value="2">February</option>
-                        <option value="3">March</option>
-                        <option value="4">April</option>
-                        <option value="5">May</option>
-                        <option value="6">June</option>
-                        <option value="7">July</option>
-                        <option value="8">August</option>
-                        <option value="9">September</option>
-                        <option value="10">October</option>
-                        <option value="11">November</option>
-                        <option value="12">December</option>
-                      </select>
-                    </div>
-                  </div>
+                        <AccordionSummary
+                          expandIcon={<ExpandMore />}
+                          style={{
+                            background: "#FFFAF0",
+                            height: "10px",
+                          }}
+                        >
+                          <h2 className="filtertitle">{t("Preacher_tr")}</h2>
+                        </AccordionSummary>
 
-                  <div style={{ backgroundColor: "#fffaec" }}>
-                    {/* Preacher */}
-                    <Accordion
-                      defaultExpanded
-                      elevation={0}
-                      style={{ display: state?.authorId ? "none" : "block" }}
-                    >
-                      <AccordionSummary
-                        expandIcon={<ExpandMore />}
-                        style={{
-                          background: "#FFFAF0",
-                          height: "10px",
-                        }}
-                      >
-                        <h2 className="filtertitle">{t("Preacher_tr")}</h2>
-                      </AccordionSummary>
+                        <AccordionDetails
+                          style={{
+                            display: "block",
+                            background: "#FFFAF0",
+                            padding: 0,
+                          }}
+                        >
+                          {Preacher && Preacher.length > 0
+                            ? Preacher?.map((preacher: any) => (
+                                <div
+                                  key={`c-${preacher.id}`}
+                                  className="CategoryList"
+                                  onClick={() => {
+                                    setPreacherId(preacher.id);
+                                  }}
+                                >
+                                  <ul style={{ margin: 0 }}>
+                                    <li>
+                                      <div
+                                        style={{
+                                          fontSize: "21px",
+                                          cursor: "pointer",
+                                          fontWeight: 400,
+                                          color: "#545454",
+                                          fontFamily: "ChanakyaUni",
+                                        }}
+                                        id={`par-${preacher.id}`}
+                                      >
+                                        {preacher.name}
+                                      </div>
+                                    </li>
+                                  </ul>
+                                </div>
+                              ))
+                            : ""}
+                        </AccordionDetails>
+                      </Accordion>
+                      {/* Pravachanlist  */}
+                      <Accordion elevation={0}>
+                        <AccordionSummary
+                          expandIcon={<ExpandMore />}
+                          style={{
+                            height: "10px",
+                            background: "#FFFAF0",
+                          }}
+                        >
+                          <h2 className="filtertitle">{t("Category_tr")}</h2>
+                        </AccordionSummary>
+                        <AccordionDetails
+                          style={{
+                            display: "block",
+                            background: "#FFFAF0",
+                            padding: 0,
+                          }}
+                        >
+                          {Category && Category.length > 0
+                            ? Category?.map((categorie: any) => (
+                                <div
+                                  key={`c-${categorie.id}`}
+                                  className="Authorlist"
+                                  onClick={() => {
+                                    setCategoryId(categorie.id);
+                                  }}
+                                >
+                                  <ul style={{ margin: 0 }}>
+                                    <li>
+                                      <div
+                                        style={{
+                                          fontSize: "21px",
+                                          cursor: "pointer",
+                                          fontWeight: 400,
+                                          color: "#545454",
+                                          fontFamily: "ChanakyaUni",
+                                        }}
+                                        id={`aut-${categorie.id}`}
+                                      >
+                                        {categorie.name}
+                                      </div>
+                                    </li>
+                                  </ul>
+                                </div>
+                              ))
+                            : ""}
+                        </AccordionDetails>
+                      </Accordion>
+                      {/* lyrics & without lyrics */}
+                      <Accordion elevation={0}>
+                        <AccordionSummary
+                          expandIcon={<ExpandMore />}
+                          style={{
+                            height: "10px",
+                            background: "#FFFAF0",
+                          }}
+                        >
+                          <h2 className="filtertitle">{t("Lyrics_tr")}</h2>
+                        </AccordionSummary>
 
-                      <AccordionDetails
-                        style={{
-                          display: "block",
-                          background: "#FFFAF0",
-                          padding: 0,
-                        }}
-                      >
-                        {Preacher && Preacher.length > 0
-                          ? Preacher?.map((preacher: any) => (
-                              <div
-                                key={`c-${preacher.id}`}
-                                className="CategoryList"
+                        <AccordionDetails
+                          style={{
+                            display: "block",
+                            background: "#FFFAF0",
+                            padding: 0,
+                          }}
+                        >
+                          <div className="LyricsList">
+                            <ul style={{ margin: 0 }}>
+                              <li
+                                key={1}
                                 onClick={() => {
-                                  setPreacherId(preacher.id);
+                                  handleItemClick(1);
+                                  setLyricsId(1);
                                 }}
                               >
-                                <ul style={{ margin: 0 }}>
-                                  <li>
-                                    <div
-                                      style={{
-                                        fontSize: "21px",
-                                        cursor: "pointer",
-                                        fontWeight: 400,
-                                        color: "#545454",
-                                        fontFamily: "ChanakyaUni",
-                                      }}
-                                      id={`par-${preacher.id}`}
-                                    >
-                                      {preacher.name}
-                                    </div>
-                                  </li>
-                                </ul>
-                              </div>
-                            ))
-                          : ""}
-                      </AccordionDetails>
-                    </Accordion>
-                    {/* Pravachanlist  */}
-                    <Accordion elevation={0}>
-                      <AccordionSummary
-                        expandIcon={<ExpandMore />}
-                        style={{
-                          height: "10px",
-                          background: "#FFFAF0",
-                        }}
-                      >
-                        <h2 className="filtertitle">{t("Category_tr")}</h2>
-                      </AccordionSummary>
-                      <AccordionDetails
-                        style={{
-                          display: "block",
-                          background: "#FFFAF0",
-                          padding: 0,
-                        }}
-                      >
-                        {Category && Category.length > 0
-                          ? Category?.map((categorie: any) => (
-                              <div
-                                key={`c-${categorie.id}`}
-                                className="Authorlist"
+                                <div
+                                  style={{
+                                    color:
+                                      activeIndex === 1 ? "#FF2E12" : "#545454",
+                                    cursor: "pointer",
+                                    fontSize: "21px",
+                                    fontWeight: 400,
+                                    fontFamily: "ChanakyaUni",
+                                  }}
+                                >
+                                  {t("Lyrics_tr")}
+                                </div>
+                              </li>
+                              <li
+                                key={2}
                                 onClick={() => {
-                                  setCategoryId(categorie.id);
+                                  handleItemClick(2);
+                                  setLyricsId(2);
                                 }}
                               >
-                                <ul style={{ margin: 0 }}>
-                                  <li>
-                                    <div
-                                      style={{
-                                        fontSize: "21px",
-                                        cursor: "pointer",
-                                        fontWeight: 400,
-                                        color: "#545454",
-                                        fontFamily: "ChanakyaUni",
-                                      }}
-                                      id={`aut-${categorie.id}`}
-                                    >
-                                      {categorie.name}
-                                    </div>
-                                  </li>
-                                </ul>
-                              </div>
-                            ))
-                          : ""}
-                      </AccordionDetails>
-                    </Accordion>
-                    {/* lyrics & without lyrics */}
-                    <Accordion elevation={0}>
-                      <AccordionSummary
-                        expandIcon={<ExpandMore />}
-                        style={{
-                          height: "10px",
-                          background: "#FFFAF0",
-                        }}
-                      >
-                        <h2 className="filtertitle">{t("Lyrics_tr")}</h2>
-                      </AccordionSummary>
-
-                      <AccordionDetails
-                        style={{
-                          display: "block",
-                          background: "#FFFAF0",
-                          padding: 0,
-                        }}
-                      >
-                        <div className="LyricsList">
-                          <ul style={{ margin: 0 }}>
-                            <li
-                              key={1}
-                              onClick={() => {
-                                handleItemClick(1);
-                                setLyricsId(1);
-                              }}
-                            >
-                              <div
-                                style={{
-                                  color:
-                                    activeIndex === 1 ? "#FF2E12" : "#545454",
-                                  cursor: "pointer",
-                                  fontSize: "21px",
-                                  fontWeight: 400,
-                                  fontFamily: "ChanakyaUni",
-                                }}
-                              >
-                                {t("Lyrics_tr")}
-                              </div>
-                            </li>
-                            <li
-                              key={2}
-                              onClick={() => {
-                                handleItemClick(2);
-                                setLyricsId(2);
-                              }}
-                            >
-                              <div
-                                style={{
-                                  color:
-                                    activeIndex === 2 ? "#FF2E12" : "#545454",
-                                  cursor: "pointer",
-                                  fontSize: "21px",
-                                  fontWeight: 400,
-                                  fontFamily: "ChanakyaUni",
-                                }}
-                              >
-                                {t("Without_Lyrics_tr")}
-                              </div>
-                            </li>
-                          </ul>
-                        </div>
-                      </AccordionDetails>
-                    </Accordion>
+                                <div
+                                  style={{
+                                    color:
+                                      activeIndex === 2 ? "#FF2E12" : "#545454",
+                                    cursor: "pointer",
+                                    fontSize: "21px",
+                                    fontWeight: 400,
+                                    fontFamily: "ChanakyaUni",
+                                  }}
+                                >
+                                  {t("Without_Lyrics_tr")}
+                                </div>
+                              </li>
+                            </ul>
+                          </div>
+                        </AccordionDetails>
+                      </Accordion>
+                    </div>
                   </div>
                 </div>
               </div>

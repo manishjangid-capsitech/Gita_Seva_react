@@ -1,15 +1,17 @@
+/* eslint-disable react/jsx-no-undef */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useEffect, useState } from "react";
 import ProfileService from "../Services/Profile";
 import i18n, { _get_i18Lang } from "../i18n";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import EditIcon from "../assets/img/mark-grey.png";
 import BackArrow from "../assets/img/leftArrow1.png";
 import $ from "jquery";
-import { LogOutModel, UploadProfileImage } from "./LogInoutModel";
+import { UploadProfileImage } from "./LogInoutModel";
 import "../Styles/Profile.css";
+import ProfileSidePanel from "./ProfileSidePanel";
 
 export interface IUserModel {
   userId?: string;
@@ -31,11 +33,9 @@ export interface IUserModel {
 }
 
 const Profile = () => {
-  const navigate = useNavigate();
   const { t } = useTranslation();
 
   const UserImage = localStorage.getItem("Image");
-  const [selectedMenu, setSelectedMenu] = useState<any>("");
   const [hide, setHide] = useState(false);
   const [states, setStates] = useState<any>([]);
   const [district, setDistrict] = useState<any[]>([]);
@@ -58,12 +58,6 @@ const Profile = () => {
     displaycountry: "",
     displaystate: "",
   });
-
-  const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
-
-  const handleCloseDialog = () => {
-    setIsDialogOpen(false);
-  };
 
   useEffect(() => {
     setRefresh(false);
@@ -133,28 +127,12 @@ const Profile = () => {
   };
 
   useEffect(() => {
-    $(".CategoryList > span").removeClass("#000000");
-    $("#profile-" + selectedMenu).addClass("#000000");
-  }, [selectedMenu]);
-
-  useEffect(() => {
-    if (window.location.pathname === "/profile") {
-      $(".CategoryList > span").removeClass("listActive");
-      $("#profile-" + selectedMenu).addClass("listActive");
-    }
-  }, [selectedMenu]);
-
-  function activetab(PId: string) {
-    $("#nav-tab > button").removeClass("active");
-    $("#" + PId + "-tab").addClass("active");
-    $("#nav-tabContent > div").removeClass("show active");
-    $("#" + PId).addClass("show active");
-  }
-  useEffect(() => {
     if (data.phoneNumber.length > 10) {
       data.phoneNumber.slice(0, 3);
     }
   }, []);
+
+  const colors = "#FF9800";
 
   return (
     <div>
@@ -167,6 +145,7 @@ const Profile = () => {
           backgroundColor: "#ffedbc",
           height: "240px",
           borderBottom: "2px solid #fff",
+          paddingTop: 0,
         }}
       >
         <div className="breadcrumbs">
@@ -176,7 +155,6 @@ const Profile = () => {
               fontSize: "36px",
               fontWeight: 700,
               color: "rgb(209, 21, 1)",
-              marginLeft: "14%",
               top: "155px",
             }}
           >
@@ -201,227 +179,13 @@ const Profile = () => {
         className="newcontainer"
         style={{
           backgroundColor: "#fffaf0",
-          padding: "27px 0 0 0",
+          padding: "25px 0px 3% 0",
           marginTop: 0,
         }}
       >
-        <div className="containers" style={{ height: "800px" }}>
-          <div className="row">
-            <div
-              className="col-3"
-              style={{
-                backgroundColor: "#FFFAF0",
-                padding: "16px",
-                boxShadow: "0 0 7px 1px #f5deb1",
-              }}
-            >
-              <div
-                style={{
-                  textAlign: "center",
-                  backgroundColor: "#fb8c1c",
-                  padding: "7px",
-                  borderRadius: "2px",
-                }}
-              >
-                {UserImage ? (
-                  <img
-                    id="userimg"
-                    src={UserImage}
-                    // src="https://gitaseva.org/assets/img/profile-image1.png"
-                    title="User Login"
-                    alt="user"
-                    style={{ width: "200px", height: "200px" }}
-                  />
-                ) : (
-                  <img
-                    id="userimg"
-                    src="https://gitaseva.org/assets/img/profile-image1.png"
-                    title="User Login"
-                    className="nousericon"
-                    alt="user"
-                    style={{ width: "200px", height: "200px" }}
-                  />
-                )}
-                <h6
-                  style={{
-                    fontFamily: "ChanakyaUni",
-                    color: "#fffaf0",
-                    margin: "15px 0 -5px",
-                    fontSize: "21px",
-                  }}
-                >
-                  {localStorage.getItem("userName")}
-                </h6>
-              </div>
-
-              <nav>
-                <div
-                  className="nav nav-tabs"
-                  id="nav-tab"
-                  role="tablist"
-                  style={{ display: "grid", border: "none" }}
-                >
-                  <div style={{ borderBottom: "1px solid #f5dca0" }}>
-                    <div style={{ margin: "10px 100px 0px 60px" }}>
-                      <img
-                        src="https://gitaseva.org/assets/img/profile-icon1.png"
-                        alt="profile"
-                        style={{
-                          height: "22px",
-                          width: "20px",
-                          marginTop: "5px",
-                        }}
-                      />
-                      <button
-                        style={{
-                          color: "#FF984D",
-                          fontSize: "25px",
-                          fontFamily: "ChanakyaUni",
-                          padding: "0 16px",
-                          border: "none",
-                          // fontWeight: 600,
-                          background: "#FFFAF0",
-                          borderBottom: "1px solid #f5dca0",
-                        }}
-                        className="nav-link active"
-                        id="e-books-tab"
-                        data-bs-toggle="tab"
-                        data-bs-target="#e-books"
-                        type="button"
-                        role="tab"
-                        aria-controls="e-books"
-                        aria-selected="true"
-                        onClick={() => {
-                          activetab("e-books");
-                          navigate(`/profile`);
-                        }}
-                      >
-                        {t("Profile_tr")}
-                      </button>
-                    </div>
-                  </div>
-                  <div style={{ borderBottom: "1px solid #f5dca0" }}>
-                    <div style={{ margin: "10px 55px 0px 60px" }}>
-                      <img
-                        src="https://gitaseva.org/assets/img/profile-icon2.png"
-                        alt="profile"
-                        style={{
-                          height: "22px",
-                          width: "20px",
-                          marginTop: "5px",
-                        }}
-                      />
-                      <button
-                        style={{
-                          color: "#472D1E",
-                          fontSize: "25px",
-                          fontFamily: "ChanakyaUni",
-                          padding: "0 35px 0 0",
-                          border: "none",
-                          // fontWeight: 600,
-                          background: "#FFFAF0",
-                          borderBottom: "1px solid #f5dca0",
-                        }}
-                        className="nav-link"
-                        id="audios-tab"
-                        data-bs-toggle="tab"
-                        data-bs-target="#audios"
-                        type="button"
-                        role="tab"
-                        aria-controls="audios"
-                        aria-selected="false"
-                        onClick={() => {
-                          activetab("audios");
-                          navigate(`/profile/fav`);
-                        }}
-                      >
-                        {t("Favourite_tr")}
-                      </button>
-                    </div>
-                  </div>
-                  <div style={{ borderBottom: "1px solid #f5dca0" }}>
-                    <div style={{ margin: "10px 38px 0px 60px" }}>
-                      <img
-                        src="https://gitaseva.org/assets/img/profile-icon4.png"
-                        alt="profile"
-                        style={{
-                          height: "22px",
-                          width: "20px",
-                          marginTop: "5px",
-                        }}
-                      />
-                      <button
-                        style={{
-                          color: "#472D1E",
-                          fontSize: "25px",
-                          fontFamily: "ChanakyaUni",
-                          padding: "0 40px 0 0",
-                          border: "none",
-                          // fontWeight: 600,
-                          background: "#FFFAF0",
-                          borderBottom: "1px solid #f5dca0",
-                        }}
-                        className="nav-link"
-                        id="pravachans-tab"
-                        data-bs-toggle="tab"
-                        data-bs-target="#pravachans"
-                        type="button"
-                        role="tab"
-                        aria-controls="pravachans"
-                        aria-selected="false"
-                        onClick={() => {
-                          activetab("pravachans");
-                          navigate(`/profile/feedback`);
-                        }}
-                      >
-                        {t("Help_tr")}
-                      </button>
-                    </div>
-                  </div>
-                  <div>
-                    <div style={{ margin: "10px 105px 0px 60px" }}>
-                      <img
-                        src="https://gitaseva.org/assets/img/logout.png"
-                        alt="profile"
-                        style={{
-                          height: "22px",
-                          width: "20px",
-                          marginTop: "5px",
-                        }}
-                      />
-                      <button
-                        style={{
-                          color: "#472D1E",
-                          fontSize: "25px",
-                          fontFamily: "ChanakyaUni",
-                          padding: "0 ",
-                          border: "none",
-                          // fontWeight: 600,
-                          background: "#FFFAF0",
-                        }}
-                        className="nav-link"
-                        id="articles-tab"
-                        data-bs-toggle="tab"
-                        data-bs-target="#articles"
-                        type="button"
-                        role="tab"
-                        aria-controls="articles"
-                        aria-selected="false"
-                        onClick={() => {
-                          activetab("articles");
-                          setIsDialogOpen(true);
-                        }}
-                      >
-                        {t("LogOut_tr")}
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </nav>
-              <LogOutModel open={isDialogOpen} onClose={handleCloseDialog} />
-            </div>
-            {/* <ProfileSidebar /> */}
-
+        <div className="containers">
+          <div className="row">          
+            <ProfileSidePanel color={colors} />
             <div className="col-9">
               <div
                 className="tab-content"

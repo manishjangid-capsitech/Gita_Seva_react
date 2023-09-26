@@ -1,12 +1,13 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
-import DefaultBook from "../Images/defaultBook.svg";
+import DefaultBook from "../Images/defaultBook.png";
 import BookDetailService from "../Services/BookDetail";
+import BooksService from "../Services/Books";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import "../Styles/BookDetail.css";
 import Slider from "react-slick";
-import { _get_i18Lang } from "../i18n";
+import i18n, { _get_i18Lang } from "../i18n";
 import Favfill from "../assets/img/favadd.png";
 import Favempty from "../assets/img/fav.png";
 import { BookContentType } from "./Epub";
@@ -14,6 +15,7 @@ import { useTranslation } from "react-i18next";
 import { userId } from "../Contexts/LocaleContext";
 import "react-toastify/dist/ReactToastify.css";
 import { LogInModel } from "./LogInoutModel";
+import { toast } from "react-toastify";
 
 export interface ISingleBook {
   bookLanguageId: string;
@@ -36,15 +38,20 @@ const BookDetailPage = (props: any) => {
   const navigate = useNavigate();
   const [bookDetail, setBookDetail] = useState<any>(undefined);
   const [refresh, setRefresh] = useState(false);
-  // const [bookId, setBookId] = useState("");
   const [relateds, setRelatedBooks] = useState<any[] | undefined>(undefined);
-  // const [bookFav, setBookFav] = useState<boolean>(false);
-  // const [getBookFav, setGetBookFav] = useState()
 
   const UserIdentity = localStorage.getItem("UserId") as any;
 
   const location = useLocation();
-  const state = location.state as { bookId: string; bookName: string };
+  const state = location.state as {
+    bookId: string;
+    bookName: string;
+    authorId: string;
+    authorName: string;
+    special: string;
+    langId: string;
+    catId: string;
+  };
   const settings = {
     infinite: true,
     speed: 500,
@@ -52,6 +59,7 @@ const BookDetailPage = (props: any) => {
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 2000,
+    arrows: false,
   };
 
   const [logIn, setLogIn] = useState<boolean>(false);
@@ -60,45 +68,62 @@ const BookDetailPage = (props: any) => {
     setLogIn(false);
   };
 
-  // new file
+  const [isLiked, setIsLiked] = useState<boolean>(false);
+  const [toggleFav, setToggleFav] = useState<boolean>(false);
 
-  const [isLiked, setIsLiked] = React.useState<boolean>(false);
-  const [toggleFav, setToggleFav] = React.useState<boolean>(false);
+  function notify() {
+    if (!isLiked) {
+      toast(
+        localStorage.getItem("lang") === "hindi"
+          ? "पुस्तक को सफलतापूर्वक मेरी पसंद में जोड़ा गया है।"
+          : "Book has been successfully added to the favourites"
+      );
+    } else {
+      toast(
+        localStorage.getItem("lang") === "hindi"
+          ? "पुस्तक मेरी पसंद से हटा दी गई है।"
+          : "Book has been removed from favourites"
+      );
+    }
+  }
 
   const toggleLike = () => {
-    if (!isLiked) {
-      BookDetailService.addFavourite(state.bookId).then((res) => {
-        res.status && setIsLiked(true);
-      });
-    } else {
-      BookDetailService.removeFavourite(state.bookId).then((res) => {
-        res.status && setIsLiked(false);
-      });
-    }
+    !isLiked
+      ? BookDetailService.addFavourite(state.bookId).then((res) => {
+          res.status && setIsLiked(true);
+        })
+      : BookDetailService.removeFavourite(state.bookId).then((res) => {
+          res.status && setIsLiked(false);
+        });
     setToggleFav((x) => !x);
   };
 
   useEffect(() => {
+    setRefresh(false);
     BookDetailService.getCurrentBook(
       state.bookId,
       UserIdentity !== "" ? UserIdentity : ""
     ).then((res: any) => {
       setBookDetail(res.result);
-      console.log("bookres", res);
       setIsLiked(res.result.isFavourite);
     });
-  }, []);
+  }, [refresh, i18n.language]);
 
   useEffect(() => {
     setRefresh(false);
-    BookDetailService.getRelatedBooks(state.bookId, "").then(
-      (res) => {
-        if (res.status) {
-          setRelatedBooks(res.result);
-        }
+    BookDetailService.getRelatedBooks(state.bookId, "").then((res) => {
+      if (res.status) {
+        setRelatedBooks(res.result);
       }
-    );
-  }, [refresh]);
+    });
+  }, [refresh, i18n.language]);
+
+  const [lang, showLang] = useState("");
+  useEffect(() => {
+    BooksService.GetLanguageDataById(state?.langId).then((res) => {
+      showLang(res?.result?.name);
+    });   
+  }, [i18n.language]);
 
   return (
     <div
@@ -114,6 +139,7 @@ const BookDetailPage = (props: any) => {
           backgroundColor: "#ffedbc",
           height: "240px",
           borderBottom: "2px solid #fff",
+          paddingTop: 0,
         }}
       >
         <div className="breadcrumbs">
@@ -123,11 +149,15 @@ const BookDetailPage = (props: any) => {
               fontSize: "36px",
               fontWeight: 700,
               color: "rgb(209, 21, 1)",
-              marginLeft: "14%",
+              // marginLeft: "15%",
               top: "155px",
             }}
           >
-            {t("E_books_tr")}
+            {state?.special === "/books" && t("E_books_tr")}
+            {state?.catId !== undefined && t("E_books_tr")}
+            {state?.special === "/books/special" && t("Special_E_books_tr")}
+            {state?.authorId && <span>{bookDetail?.author}</span>}
+            {state?.langId !== undefined && <span>{lang}</span>}
             <div
               style={{
                 fontSize: "19px",
@@ -136,22 +166,81 @@ const BookDetailPage = (props: any) => {
                 marginTop: "-8px",
               }}
             >
-              <Link style={{ marginRight: "4px", color: "#2d2a29" }} to="/">
+              <Link style={{ marginRight: "8px", color: "#2d2a29" }} to="/">
                 {t("Home_tr")}
               </Link>
-              <Link
-                style={{ marginRight: "6px", color: "#2d2a29" }}
-                to="/books"
-              >
-                / {t("E_books_tr")}
-              </Link>
-              <span style={{ color: "#2d2a29" }}>/ {bookDetail?.name}</span>
+              {state?.special === "/books" && (
+                <span style={{ marginRight: "6px" }}>/ {t("E_books_tr")}</span>
+              )}
+              {state?.special === "/books/special" && (
+                <Link
+                  to={"/books/special"}
+                  style={{ marginRight: "8px", color: "#2d2a29" }}
+                >
+                  / {t("Special_E_books_tr")}
+                </Link>
+              )}
+              {state?.authorId && (
+                <>
+                  <Link
+                    to={"/author/ +"}
+                    state={{
+                      authorId: state?.authorId,
+                      authorName: state?.authorName,
+                    }}
+                    style={{ marginRight: "8px", color: "#2d2a29" }}
+                  >
+                    / {bookDetail?.author}
+                  </Link>
+                  <Link
+                    to={"/books/author/ +"}
+                    state={{
+                      authorId: state?.authorId,
+                      authorName: state?.authorName,
+                    }}
+                    style={{ marginRight: "8px", color: "#2d2a29" }}
+                  >
+                    / {t("E_books_tr")}
+                  </Link>
+                </>
+              )}
+              {state?.catId !== undefined && (
+                <Link
+                  to={"/books"}
+                  style={{ marginRight: "8px", color: "#2d2a29" }}
+                >
+                  / {t("E_books_tr")}
+                </Link>
+              )}
+              {state?.langId !== undefined && (
+                <>
+                  <Link
+                    to={"/books/language/ +"}
+                    state={{
+                      langId: state?.langId,
+                    }}
+                    style={{ marginRight: "8px", color: "#2d2a29" }}
+                  >
+                    / {lang}
+                  </Link>
+                  <Link
+                   to={"/books/language/ +"}
+                   state={{
+                     langId: state?.langId,
+                   }}
+                    style={{ marginRight: "8px", color: "#2d2a29" }}
+                  >
+                    / {t("E_books_tr")}
+                  </Link>
+                </>
+              )}
+              <span>/ {bookDetail?.name}</span>
             </div>
           </div>
         </div>
       </div>
       <div className="container">
-        <div>
+        <div style={{ marginBottom: "75px" }}>
           <div className="row">
             <div>
               {bookDetail ? (
@@ -161,43 +250,38 @@ const BookDetailPage = (props: any) => {
                     width: "100%",
                     marginTop: "25px",
                     backgroundColor: "#FFFAF0",
-                    border: "1px solid #ffd186",
                     boxShadow: "0px 0px 10px 0px #dcd1b8",
-                    borderBottom: "#FFFAF0",
-                    borderTopLeftRadius: "5px",
-                    borderTopRightRadius: "5px",
                   }}
                 >
                   <div className="mat-card row" key={`book-${bookDetail.id}`}>
-                    <div style={{ padding: "35px" }}>
-                      <div className="single-product col-lg-4 col-xs-12 col-sm-12 col-md-12">
-                        <a>
-                          <div
-                            style={{
-                              border: "1px solid #eadfc8",
-                              padding: "35px 0",
-                              background: "#fff",
-                              borderRadius: "5px",
-                              textAlign: "center",
+                    <div style={{ padding: "15px", margin: "0 0 25px 0" }}>
+                      <div className="single-product col-lg-3">
+                        <div
+                          style={{
+                            border: "1px solid #eadfc8",
+                            padding: "30px",
+                            background: "#fff",
+                            borderRadius: "5px",
+                            textAlign: "center",
+                            width: "125%",
+                          }}
+                        >
+                          <img
+                            src={bookDetail.bookPath}
+                            onError={(e) => {
+                              e.currentTarget.src = DefaultBook;
                             }}
-                          >
-                            <img
-                              src={bookDetail.bookPath}
-                              onError={(e) => {
-                                e.currentTarget.src = DefaultBook;
-                              }}
-                              alt={bookDetail.name}
-                              title={bookDetail.name}
-                              className="bkdetailimg"
-                              width="256"
-                              height="362"
-                            />
-                          </div>
-                        </a>
+                            alt={bookDetail.name}
+                            title={bookDetail.name}
+                            className="bkdetailimg"
+                            width="256"
+                            height="362"
+                          />
+                        </div>
                       </div>
 
-                      <div className="single-product-author col-lg-8 col-xs-12 col-sm-12 col-md-12">
-                        <div className="single-book-heading">
+                      <div className="single-product-author col-8">
+                        <div className="single-bookdetail-heading">
                           <div
                             style={{
                               display: "flex",
@@ -207,10 +291,10 @@ const BookDetailPage = (props: any) => {
                             <label
                               style={{
                                 fontFamily: "ChanakyaUni",
-                                fontSize: "26px",
+                                fontSize: "30px",
                                 fontWeight: 700,
                                 color: "#472d1e",
-                                marginTop: "7px",
+                                margin: "12px 0 0",
                               }}
                             >
                               {bookDetail.name}
@@ -223,6 +307,7 @@ const BookDetailPage = (props: any) => {
                               <label
                                 onClick={() => {
                                   toggleLike();
+                                  notify();
                                 }}
                               >
                                 <img
@@ -277,85 +362,70 @@ const BookDetailPage = (props: any) => {
                       </div>
                     </div>
                   </div>
+
+                  <div className="clsslide">
+                    <div>
+                      <h1
+                        style={{ fontSize: "30px!important" }}
+                        className="heading-related"
+                      >
+                        {t("Related_e_books_tr")}
+                      </h1>
+
+                      <div style={{ paddingBottom: "20px" }}>
+                        <Slider {...settings}>
+                          {relateds && relateds.length > 0
+                            ? relateds.map((related) => (
+                                <div
+                                  className="slider-books sidebarmargin"
+                                  key={`related-${related.id}`}
+                                  onClick={() => {
+                                    navigate(`/books/` + related.slug, {
+                                      state: {
+                                        bookId: related.id,
+                                        bookName: related.name,
+                                      },
+                                    });
+                                    window.location.reload();
+                                  }}
+                                >
+                                  <div>
+                                    <img
+                                      style={{
+                                        cursor: "pointer",
+                                      }}
+                                      className="imgcenter"
+                                      src={
+                                        related.bookThumbPath == null
+                                          ? DefaultBook
+                                          : related.bookThumbPath
+                                      }
+                                      onError={(e) => {
+                                        e.currentTarget.src = DefaultBook;
+                                      }}
+                                      alt={related.name}
+                                      title={related.name}
+                                      width="150"
+                                      height="212"
+                                    />
+                                    <p>{related?.name}</p>
+                                  </div>
+                                </div>
+                              ))
+                            : ""}
+                        </Slider>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               ) : (
                 ""
               )}
             </div>
           </div>
-          <LogInModel opens={logIn} onCloses={closeModal} />
-          <div className="clsslide row" style={{ paddingBottom: "50px" }}>
-            <div>
-              <div
-                style={{
-                  backgroundColor: "#FFFAF0",
-                  border: "1px solid #ffd186",
-                  //   boxShadow: "0px 0px 10px 0px #dcd1b8",
-                  borderTop: "#FFFAF0",
-                  borderBottomLeftRadius: "5px",
-                  borderBottomRightRadius: "5px",
-                }}
-              >
-                <h1
-                  style={{ fontSize: "30px!important" }}
-                  className="heading fontfamily"
-                >
-                  {t("Related_e_books_tr")}
-                </h1>
-
-                <div style={{ paddingBottom: "70px" }}>
-                  <Slider {...settings}>
-                    {relateds && relateds.length > 0
-                      ? relateds.map((related) => (
-                          <div
-                            className="slider-books sidebarmargin"
-                            key={`related-${related.id}`}
-                            onClick={() => {
-                              navigate(`/vivekvani/` + related.slug, {
-                                state: {
-                                  bookId: related.id,
-                                  bookName: related.name,
-                                },
-                              });
-                              window.location.reload();
-                            }}
-                          >
-                            <div>
-                              <a>
-                                <img
-                                  style={{ cursor: "pointer" }}
-                                  className="imgcenter"
-                                  src={
-                                    related.bookThumbPath == null
-                                      ? DefaultBook
-                                      : related.bookThumbPath
-                                  }
-                                  onError={(e) => {
-                                    e.currentTarget.src = DefaultBook;
-                                  }}
-                                  alt={related.name}
-                                  title={related.name}
-                                  width="117"
-                                  height="165"
-                                />
-                                <p>
-                                  {/* {related.name != null && related.name.length > 20
-              ? related.name.slice(0, 25)
-              : related.name} */}
-                                  {related?.name}
-                                </p>
-                              </a>
-                            </div>
-                          </div>
-                        ))
-                      : ""}
-                  </Slider>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
+      <LogInModel opens={logIn} onCloses={closeModal} />
     </div>
   );
 };

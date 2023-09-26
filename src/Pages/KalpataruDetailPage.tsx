@@ -1,23 +1,22 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
-import DefaultBook from "../Images/defaultBook.svg";
+import DefaultBook from "../Images/defaultBook.png";
 import KalpataruServices from "../Services/Kalpataru";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import "../Styles/BookDetail.css";
 import Slider from "react-slick";
 import { useTranslation } from "react-i18next";
 import i18n, { _get_i18Lang } from "../i18n";
-import Favadd from "../assets/img/favadd.png";
-import Favicon from "../assets/img/fav.png";
+import Favfill from "../assets/img/favadd.png";
+import Favempty from "../assets/img/fav.png";
 import { BookContentType } from "./Epub";
-import { useUser } from "../Contexts/UserContext";
 import { toast } from "react-toastify";
 import { LogInModel } from "./LogInoutModel";
 
 const KalpataruDetailPage = (props: any) => {
   const { t } = useTranslation();
-  const { fav, setFav } = useUser();
+  const [isLiked, setIsLiked] = useState<boolean>(false);
   const navigate = useNavigate();
   const [kalpatrauDetail, setKalpatrauDetail] = useState<any>(undefined);
   const [refresh, setRefresh] = useState(false);
@@ -35,6 +34,7 @@ const KalpataruDetailPage = (props: any) => {
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 2000,
+    arrows: false,
   };
 
   const [logIn, setLogIn] = useState<boolean>(false);
@@ -43,31 +43,34 @@ const KalpataruDetailPage = (props: any) => {
     setLogIn(false);
   };
 
+  const [toggleFav, setToggleFav] = useState<boolean>(false);
+
   const UserIdentity = localStorage.getItem("UserId") as any;
 
-  function FavKalpatruAdd() {
-    KalpataruServices.addKalpatruFavourite(kalpatruId).then((res) => {
-      setFav(true);
-      toast(
-        localStorage.getItem("lang") === "hindi"
-        ? "पत्रिका को सफलतापूर्वक मेरी पसंद में जोड़ा गया है।"
-        : "Magazine has been successfully added to the favourites"
-      );
-    });   
-    return;
-  }
+  const notify = () => {
+    isLiked
+      ? toast(
+          localStorage.getItem("lang") === "hindi"
+            ? "पत्रिका को सफलतापूर्वक मेरी पसंद में जोड़ा गया है।"
+            : "Magazine has been successfully added to the favourites"
+        )
+      : toast(
+          localStorage.getItem("lang") === "hindi"
+            ? "पत्रिका मेरी पसंद से हटा दी गई है।"
+            : "Magazine has been removed from favourites"
+        );
+  };
 
-  function FavkalpatruRemove() {
-    KalpataruServices.removeKalpatruFavourite(kalpatruId).then((res) => {
-      setFav(false);
-      toast(
-        localStorage.getItem("lang") === "hindi"
-        ? "पत्रिका मेरी पसंद से हटा दी गई है।"
-        : "Magazine has been removed from favourites"
-      );
-    });
-    return;
-  }
+  const toggleLike = () => {
+    !isLiked
+      ? KalpataruServices.addKalpatruFavourite(kalpatruId).then((res) => {
+          res.status && setIsLiked(true);
+        })
+      : KalpataruServices.removeKalpatruFavourite(kalpatruId).then((res) => {
+          res.status && setIsLiked(false);
+        });
+    setToggleFav((x) => !x);
+  };
 
   useEffect(() => {
     if (location.state) {
@@ -78,10 +81,13 @@ const KalpataruDetailPage = (props: any) => {
   useEffect(() => {
     if (kalpatruId) {
       setRefresh(false);
-      KalpataruServices.getcurrentKalpatarul(state?.kalpatruId, UserIdentity !== "" ? UserIdentity : "").then((res) => {
+      KalpataruServices.getcurrentKalpatarul(
+        state?.kalpatruId,
+        UserIdentity !== "" ? UserIdentity : ""
+      ).then((res) => {
         if (res) {
           setKalpatrauDetail(res.result);
-          setFav(res?.result?.isFavourite)
+          setIsLiked(res?.result?.isFavourite);
         }
       });
     }
@@ -101,7 +107,11 @@ const KalpataruDetailPage = (props: any) => {
   return (
     <div
       className="newcontainer"
-      style={{ backgroundColor: "#FFF6E1", padding: "1px 0", marginTop: 0 }}
+      style={{
+        backgroundColor: "#FFF6E1",
+        padding: "1px 0px 4% 0",
+        marginTop: 0,
+      }}
     >
       <div
         className="breadcrumbs-head newcontainer"
@@ -112,6 +122,7 @@ const KalpataruDetailPage = (props: any) => {
           backgroundColor: "#ffedbc",
           height: "240px",
           borderBottom: "2px solid #fff",
+          paddingTop: 0,
         }}
       >
         <div className="breadcrumbs">
@@ -121,7 +132,6 @@ const KalpataruDetailPage = (props: any) => {
               fontSize: "36px",
               fontWeight: 700,
               color: "rgb(209, 21, 1)",
-              marginLeft: "14%",
               top: "155px",
             }}
           >
@@ -161,19 +171,15 @@ const KalpataruDetailPage = (props: any) => {
                     width: "100%",
                     marginTop: "25px",
                     backgroundColor: "#FFFAF0",
-                    border: "1px solid #ffd186",
                     boxShadow: "0px 0px 10px 0px #dcd1b8",
-                    borderBottom: "#FFFAF0",
-                    borderTopLeftRadius: "5px",
-                    borderTopRightRadius: "5px",
                   }}
                 >
                   <div
                     className="mat-card row"
                     key={`book-${kalpatrauDetail.id}`}
                   >
-                    <div style={{ padding: "35px" }}>
-                      <div className="single-product col-lg-4 col-xs-12 col-sm-12 col-md-12">
+                    <div style={{ padding: "15px", margin: "0 0 25px 0" }}>
+                      <div className="single-product col-lg-3">
                         <a>
                           <div
                             style={{
@@ -182,6 +188,7 @@ const KalpataruDetailPage = (props: any) => {
                               background: "#fff",
                               borderRadius: "5px",
                               textAlign: "center",
+                              width: "137%",
                             }}
                           >
                             <img
@@ -199,7 +206,7 @@ const KalpataruDetailPage = (props: any) => {
                         </a>
                       </div>
 
-                      <div className="single-product-author col-lg-8 col-xs-12 col-sm-12 col-md-12">
+                      <div className="single-product-author col-lg-8">
                         <div className="single-book-heading">
                           <div
                             style={{
@@ -207,39 +214,31 @@ const KalpataruDetailPage = (props: any) => {
                               justifyContent: "space-between",
                             }}
                           >
-                            <label
+                            <h1
                               style={{
                                 fontFamily: "ChanakyaUni",
-                                fontSize: "26px",
-                                fontWeight: 700,
+                                fontSize: "40px",
                                 color: "#472d1e",
-                                marginTop: "7px",
+                                margin: "0 0 8px",
                               }}
                             >
                               {kalpatrauDetail.name}
-                            </label>
+                            </h1>
                             <label
                               onClick={() => {
                                 if (!UserIdentity) setLogIn(true);
                               }}
                             >
-                              {UserIdentity && fav ? (
-                                <label
-                                  onClick={() => {
-                                    FavkalpatruRemove();
-                                  }}
-                                >
-                                  <img src={Favadd} alt="Favadd" />
-                                </label>
-                              ) : (
-                                <label
-                                  onClick={() => {
-                                    FavKalpatruAdd()
-                                  }}
-                                >
-                                  <img src={Favicon} alt="Favicon" />
-                                </label>
-                              )}
+                              <label
+                                onClick={() => {
+                                  toggleLike();
+                                }}
+                              >
+                                <img
+                                  src={isLiked ? Favfill : Favempty}
+                                  alt="Favicon"
+                                />
+                              </label>
                             </label>
                           </div>
                         </div>
@@ -294,6 +293,66 @@ const KalpataruDetailPage = (props: any) => {
                       </div>
                     </div>
                   </div>
+                  <div className="clsslide row">
+                    <div>
+                      <div>
+                        <h1 className="heading-related">
+                          {t("Related_Kalyan_Kalpataru_tr")}
+                        </h1>
+
+                        <div style={{ paddingBottom: "20px" }}>
+                          <Slider {...settings}>
+                            {relateds && relateds.length > 0
+                              ? relateds.map((related) => (
+                                  <div
+                                    className="slider-books sidebarmargin"
+                                    key={`related-${related.id}`}
+                                    onClick={() => {
+                                      navigate(
+                                        `/kalyanskalpataru/` + related.slug,
+                                        {
+                                          state: {
+                                            bookId: related.id,
+                                            bookName: related.name,
+                                          },
+                                        }
+                                      );
+                                      window.location.reload();
+                                    }}
+                                  >
+                                    <div>
+                                      <a>
+                                        <img
+                                          style={{
+                                            cursor: "pointer",
+                                            borderRadius: 0,
+                                          }}
+                                          className="imgcenter"
+                                          src={
+                                            related.kalyanKalpataruThumbPath ==
+                                            null
+                                              ? DefaultBook
+                                              : related.kalyanKalpataruThumbPath
+                                          }
+                                          onError={(e) => {
+                                            e.currentTarget.src = DefaultBook;
+                                          }}
+                                          alt={related.name}
+                                          title={related.name}
+                                          width="150"
+                                          height="212"
+                                        />
+                                        <p>{related?.name}</p>
+                                      </a>
+                                    </div>
+                                  </div>
+                                ))
+                              : ""}
+                          </Slider>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               ) : (
                 // <Loading />
@@ -302,74 +361,6 @@ const KalpataruDetailPage = (props: any) => {
             </div>
           </div>
           <LogInModel opens={logIn} onCloses={closeModal} />
-          <div className="clsslide row" style={{ paddingBottom: "50px" }}>
-            <div>
-              <div
-                style={{
-                  backgroundColor: "#FFFAF0",
-                  border: "1px solid #ffd186",
-                  //   boxShadow: "0px 0px 10px 0px #dcd1b8",
-                  borderTop: "#FFFAF0",
-                  borderBottomLeftRadius: "5px",
-                  borderBottomRightRadius: "5px",
-                }}
-              >
-                <h1
-                  style={{ fontSize: "30px!important" }}
-                  className="heading fontfamily"
-                >
-                  {t("Related_Kalyan_Kalpataru_tr")}
-                </h1>
-
-                <div style={{ paddingBottom: "70px" }}>
-                  <Slider {...settings}>
-                    {relateds && relateds.length > 0
-                      ? relateds.map((related) => (
-                          <div
-                            className="slider-books sidebarmargin"
-                            key={`related-${related.id}`}
-                            onClick={() => {
-                              navigate(`/kalyanskalpataru/` + related.slug, {
-                                state: {
-                                  bookId: related.id,
-                                  bookName: related.name,
-                                },
-                              });
-                              window.location.reload();
-                            }}
-                          >
-                            <div>
-                              <a>
-                                <img
-                                  style={{
-                                    cursor: "pointer",
-                                    borderRadius: 0,
-                                  }}
-                                  className="imgcenter"
-                                  src={
-                                    related.kalyanKalpataruThumbPath == null
-                                      ? DefaultBook
-                                      : related.kalyanKalpataruThumbPath
-                                  }
-                                  onError={(e) => {
-                                    e.currentTarget.src = DefaultBook;
-                                  }}
-                                  alt={related.name}
-                                  title={related.name}
-                                  width="150"
-                                  height="212"
-                                />
-                                <p>{related?.name}</p>
-                              </a>
-                            </div>
-                          </div>
-                        ))
-                      : ""}
-                  </Slider>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </div>

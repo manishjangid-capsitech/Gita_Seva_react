@@ -3,7 +3,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useEffect, useState } from "react";
 import AuthorService from "../Services/AuthorsService";
-import DefaultBook from "../Images/defaultBook.svg";
+import DefaultBook from "../Images/defaultBook.png";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import "../Styles/Authors.css";
 import i18n, { _get_i18Lang } from "../i18n";
@@ -101,6 +101,7 @@ const AuthorsDataPage = () => {
           backgroundColor: "#ffedbc",
           height: "240px",
           borderBottom: "2px solid #fff",
+          paddingTop: 0
         }}
       >
         <div className="breadcrumbs">
@@ -147,7 +148,7 @@ const AuthorsDataPage = () => {
             <div className="col-lg-8" style={{ padding: 0 }}>
               <h5
                 style={{
-                  fontSize: "25px",
+                  fontSize: "40px",
                   color: "#212529",
                   margin: "0 0 8px 0",
                   fontWeight: 500,
@@ -158,7 +159,7 @@ const AuthorsDataPage = () => {
               {authorIntro && authorIntro.__html.length > 0 ? (
                 <p
                   style={{
-                    fontSize: "20px",
+                    fontSize: "24px",
                     fontFamily: "font-weight: 500;",
                     color: "#3f22od",
                     margin: "0 0 16px 0",

@@ -1,11 +1,22 @@
+import { userId } from "../Contexts/LocaleContext";
 import { ApiUtility } from "./ApiUtility";
 
 class ArticlesService {
   route = "/posts";
   articleRoute = "/api/articles?lang=";
   categoryRoute = "/api/settings/filters?lang=";
+  authorlang =  "/api/authors/slug-";
 
-  get = (id: string) => ApiUtility.getResult(`${this.route}/${id}`);
+  GetAuthorDataById = (id: string) => {
+    return ApiUtility.get(
+      this.authorlang +
+        id +
+        "?lang=" +
+        localStorage.getItem("lan") +
+        "&userId=" +
+        userId
+    );
+  }
 
   getList = (
     start: number,

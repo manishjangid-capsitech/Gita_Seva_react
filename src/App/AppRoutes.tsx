@@ -86,14 +86,30 @@ const AppRoutes = () => {
       ></Route>
       <Route
         element={<WithHeaderFooter element={<BooksPage />} />}
-        path="/books/:cat/:langid"
+        path="/books/category/:id"
       ></Route>
 
       {/* Book Detail */}
 
       <Route
         element={<WithHeaderFooter element={<BookDetailPage />} />}
-        path="/books/:id"
+        path="/books/:bookid"
+      ></Route>
+      <Route
+        element={<WithHeaderFooter element={<BookDetailPage />} />}
+        path="/books/special/:bookid"
+      ></Route>
+      <Route
+        element={<WithHeaderFooter element={<BookDetailPage />} />}
+        path="/books/author/:authorId/:bookid"
+      ></Route>
+      <Route
+        element={<WithHeaderFooter element={<BookDetailPage />} />}
+        path="/books/language/:langId/:bookid"
+      ></Route>
+      <Route
+        element={<WithHeaderFooter element={<BookDetailPage />} />}
+        path="/books/category/:categoryId/:bookid"
       ></Route>
 
       {/* epub */}
@@ -141,11 +157,11 @@ const AppRoutes = () => {
       ></Route>
       <Route
         element={<WithHeaderFooter element={<VivekvaniDetailPage />} />}
-        path="/vivekvani/category/:catid/:vaniid"
+        path="/vivekvani/category/:catid"
       ></Route>
       <Route
         element={<WithHeaderFooter element={<VivekvaniDetailPage />} />}
-        path="/vivekvani/language/:langid/:vaniid"
+        path="/vivekvani/language/:langid"
       ></Route>
 
       {/* Kalyans */}

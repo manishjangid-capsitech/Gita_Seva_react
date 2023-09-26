@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useTranslation } from "react-i18next";
 import React from "react";
 import TermsOfUseService from "../Services/TermsOfUse";
@@ -35,6 +36,7 @@ const TermsOfUse = () => {
           backgroundColor: "#ffedbc",
           height: "240px",
           borderBottom: "2px solid #fff",
+          paddingTop: 0,
         }}
       >
         <div className="breadcrumbs">
@@ -69,17 +71,20 @@ const TermsOfUse = () => {
         style={{
           userSelect: "none",
           backgroundColor: "#fff",
-          padding: "20px 0 50px",
+          padding: "9px 0 3% 0",
         }}
       >
         <div className="container">
           {tearms && tearms.__html.length > 0 ? (
-            <div>
-              <div
-                className=""
-                style={{padding:0}}
+            <div className="tearmsuse">
+              <p                
+                style={{
+                  padding: 0,
+                  fontSize: "16px",
+                  fontFamily: "ChanakyaUni",
+                }}
                 dangerouslySetInnerHTML={createMarkup()}
-              ></div>
+              ></p>
             </div>
           ) : (
             <div className="ebooks-category resultnotfound">

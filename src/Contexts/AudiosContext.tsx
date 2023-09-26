@@ -129,9 +129,7 @@ export function AudioProvider(props: { children: any }) {
   };
 
   const LoadLyrics = (id: string) => {
-    console.log("currentAudio",currentAudio)
     setTimeout(function () {
-      debugger
       const script = document.createElement("script");     
       script.type = "text/javascript";
       script.id = "rabbitlyrics";
@@ -200,7 +198,6 @@ export function AudioProvider(props: { children: any }) {
           setLoading(false);
         }
       });
-      console.log("currentaudio", currentAudio);
       if (currentAudio?.lyricsPath !== "") LoadLyrics(audioId);
     }
   }, [audioId, Type, suff]);
