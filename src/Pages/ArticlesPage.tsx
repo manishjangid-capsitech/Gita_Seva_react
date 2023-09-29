@@ -52,15 +52,6 @@ const ArticlesPage = () => {
     setRefresh(true);
   }
 
-  useEffect(() => {
-    ClickOnFilter(CategoryId, AuthorsId);
-    $(".CategoryList > ul > li > div").removeClass("listActive");
-    $("#cat-" + CategoryId).addClass("listActive");
-
-    $(".Authorlist > ul > li > div").removeClass("listActive");
-    $("#aut-" + AuthorsId).addClass("listActive");
-  }, [CategoryId, AuthorsId]);
-
   function ClickOnFilter(CategoryId: string, AuthorsId: string) {
     setRefresh(false);
     ArticlesService.getArticles(
@@ -83,6 +74,15 @@ const ArticlesPage = () => {
       }
     });
   }
+
+  useEffect(() => {
+    ClickOnFilter(CategoryId, AuthorsId);
+    $(".CategoryList > ul > li > div").removeClass("listActive");
+    $("#cat-" + CategoryId).addClass("listActive");
+
+    $(".Authorlist > ul > li > div").removeClass("listActive");
+    $("#aut-" + AuthorsId).addClass("listActive");
+  }, [CategoryId, AuthorsId]);
 
   useEffect(() => {
     ArticlesService.getFilters("article").then((res) => {
@@ -179,10 +179,11 @@ const ArticlesPage = () => {
                 ""
               )}
               <span style={{ color: "#2d2a29" }}>
-                /
-                {window.location.pathname === "/articles/special"
-                  ? t("Special_Article_tr")
-                  : t("Article_tr")}
+                {window.location.pathname === "/articles/special" ? (
+                  <span>/ {t("Special_Article_tr")}</span>
+                ) : (
+                  <span> / {t("Article_tr")}</span>
+                )}
               </span>
             </div>
           </div>
@@ -404,8 +405,8 @@ const ArticlesPage = () => {
                                   navigate(`/articles/` + article.slug, {
                                     state: {
                                       articleId: article.id,
-                                      authorName: state?.authorName,
                                       articleName: article.name,
+                                      authorName: state?.authorName,
                                     },
                                   });
                                 }}

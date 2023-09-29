@@ -56,7 +56,7 @@ export const ContactPage = () => {
         ...data,
         contactType: parseInt(data.contactType),
       };
-      
+
       if (
         data.name !== "" &&
         data.email !== "" &&
@@ -133,7 +133,7 @@ export const ContactPage = () => {
             }}
           >
             <form>
-              <div className="row" style={{ display: 'flex' }}>
+              <div className="row" style={{ display: "flex" }}>
                 <div className="col-lg-6 col-md-12 col-xs-12">
                   <input
                     name="name"
@@ -170,7 +170,9 @@ export const ContactPage = () => {
                     }}
                   />
                   {error.name && (
-                    <small style={{ color: "red", marginLeft: 5, fontSize: '18px' }}>
+                    <small
+                      style={{ color: "red", marginLeft: 5, fontSize: "18px" }}
+                    >
                       {error.name}
                     </small>
                   )}
@@ -219,7 +221,9 @@ export const ContactPage = () => {
                     }}
                   />
                   {error.number && (
-                    <small style={{ color: "red", marginLeft: 5, fontSize: '18px' }}>
+                    <small
+                      style={{ color: "red", marginLeft: 5, fontSize: "18px" }}
+                    >
                       {error.number}
                     </small>
                   )}
@@ -266,7 +270,9 @@ export const ContactPage = () => {
                     required
                   />
                   {error.email && (
-                    <small style={{ color: "red", marginLeft: 5, fontSize: '18px' }}>
+                    <small
+                      style={{ color: "red", marginLeft: 5, fontSize: "18px" }}
+                    >
                       {error.email}
                     </small>
                   )}
@@ -286,7 +292,7 @@ export const ContactPage = () => {
                     }}
                     style={{
                       marginRight: "22px",
-                      width: "-webkit-fill-available",
+                      width: "-webkit-fill-available",                    
                     }}
                   >
                     <option value="1">{t("generalQuery_tr")}</option>
@@ -335,7 +341,9 @@ export const ContactPage = () => {
                     }}
                   />
                   {error.note && (
-                    <small style={{ color: "red", marginLeft: 5, fontSize: '18px' }}>
+                    <small
+                      style={{ color: "red", marginLeft: 5, fontSize: "18px" }}
+                    >
                       {error.note}
                     </small>
                   )}
@@ -346,7 +354,7 @@ export const ContactPage = () => {
                   className="inputbutton"
                   onClick={handleSubmit}
                   formNoValidate
-                  style={{ fontSize: '20px' }}
+                  style={{ fontSize: "20px" }}
                 >
                   {t("send_tr")}
                 </button>
@@ -354,7 +362,6 @@ export const ContactPage = () => {
             </form>
           </div>
         </div>
-       
       </div>
     </div>
   );

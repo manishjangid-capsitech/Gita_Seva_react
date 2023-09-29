@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable react/jsx-no-undef */
 import { useEffect, useRef, useState } from "react";
@@ -37,6 +38,26 @@ const HeaderPage = () => {
   const handleCloseDialog = () => {
     setIsDialogOpen(false);
   };
+
+  const [logIn, setLogIn] = useState<boolean>(false);
+
+  const closeModal = () => {
+    setLogIn(false);
+  };
+
+  const handleClickOutside = (event: any) => {
+    if (dropdownRef.current && isOpened === true) {
+      setIsOpened(false);
+    }
+    if (dropdownRef.current && showLang === true) {
+      setShowLang(false);
+    }
+    if (dropdownRef.current && menu === true) {
+      setMenu(false);
+    }
+  };
+
+  const dropdownRef = useRef(null);
 
   function toggleLang() {
     setShowLang((wasOpened) => !wasOpened);
@@ -89,7 +110,6 @@ const HeaderPage = () => {
           localStorage.setItem("UserId", res?.result?.userId);
           localStorage.setItem("userName", res?.result?.name);
           localStorage.setItem("Image", res?.result?.imageThumbPath);
-          // localStorage.setItem("UserImage", UserImage);
           localStorage.setItem("PhoneNumber", res?.result?.phoneNumber);
           localStorage.setItem("Token", res?.result?.token);
           localStorage.setItem("SignKey", res?.result?.signKey);
@@ -97,26 +117,6 @@ const HeaderPage = () => {
       );
     }
   }, [mobileNumber]);
-
-  const [logIn, setLogIn] = useState<boolean>(false);
-
-  const closeModal = () => {
-    setLogIn(false);
-  };
-
-  const dropdownRef = useRef(null);
-
-  const handleClickOutside = (event: any) => {
-    if (dropdownRef.current && isOpened === true) {
-      setIsOpened(false);
-    }
-    if (dropdownRef.current && showLang === true) {
-      setShowLang(false);
-    }
-    if (dropdownRef.current && menu === true) {
-      setMenu(false);
-    }
-  };
 
   useEffect(() => {
     document.addEventListener("click", handleClickOutside);
@@ -166,6 +166,8 @@ const HeaderPage = () => {
                     <option value="audios">{t("Audios_tr")}</option>
                     <option value="pravachan">{t("Pravachan_tr")}</option>
                     <option value="article">{t("Article_tr")}</option>
+                    <option value="vivekvani">{t("vivek_vani_tr")}</option>
+
                   </select>
                 </div>
                 <div className="searchbar" style={{ marginRight: "5px" }}>
@@ -175,7 +177,7 @@ const HeaderPage = () => {
                       name="search"
                       className="search-field"
                       value={searchValue.searchValue}
-                      style={{ width: "232px", padding: "8px 35px 8px 30px" }}
+                      style={{ width: "232px", padding: "8px 35px 8px 10px" }}
                       onChange={(e) => {
                         setSearchValue({
                           ...searchValue,
@@ -196,12 +198,12 @@ const HeaderPage = () => {
                     <img
                       style={{
                         width: "22px",
-                        padding: "4px 3px 0 0",
+                        padding: "5px 4px 0px 0px",
                         backgroundColor: "transparent",
                         border: "none",
                         outline: "none",
                         position: "absolute",
-                        right: "-60px",
+                        right: "-55px",
                         cursor: "pointer",
                       }}
                       src="https://gitaseva.org/assets/img/search-icons.png"
@@ -492,7 +494,7 @@ const HeaderPage = () => {
                       margin: "15px 0 0 0",
                     }}
                   >
-                    {image && userId ? (
+                    {image || userId ? (
                       <img
                         id="userimg"
                         src={

@@ -1,8 +1,7 @@
-/* eslint-disable array-callback-return */
+/* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable jsx-a11y/anchor-is-valid */
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import Reset from "../Images/reset.png";
 import AudiosService from "../Services/Audios";
 import WithoutLyrics from "../Images/audiolyrics.svg";
@@ -20,29 +19,25 @@ import Loading from "../Components/Loading";
 import { useUser } from "../Contexts/UserContext";
 import Favadd from "../assets/img/favouritefilled.png";
 import Favicon from "../assets/img/pravachanfavbtn.png";
-
 import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
 } from "@material-ui/core";
 import ExpandMore from "@mui/icons-material/ExpandMore";
-import dot from "../assets/img/Dot.svg";
-import { userId } from "../Contexts/LocaleContext";
-import { toast } from "react-toastify";
+import { LogInModel } from "./LogInoutModel";
 
 const PravachansPage = () => {
   const { isSelected, setItemColored } = useUser();
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [audios, setAudios] = useState<any[] | undefined>(undefined);
-  const [pravhash, setPravachanHash] = useState("");
-  const { fav, setFav } = useUser();
   const [refresh, setRefresh] = useState(false);
   const [SortValue, setSortValue] = useState("4");
   const [Type, setType] = useState<any | undefined>(undefined);
   const [SortMonthValue, setSortMonthValue] = useState<string>("0");
   const [SortYearValue, setSortYearValue] = useState<string>("0");
+  const [isLiked, setIsLiked] = useState<boolean>(false);
 
   const [Lyrics, setLyrics] = useState<any>("");
   const [LyricsId, setLyricsId] = useState<any>("");
@@ -50,8 +45,7 @@ const PravachansPage = () => {
   const [CategoryId, setCategoryId] = useState<any>("");
   const [Preacher, setPreacher] = useState<any>("");
   const [PreacherId, setPreacherId] = useState<any>("");
-  const [likeFav, setLikeFev] = useState<boolean>(false);
-  const ref = useRef(null);
+  const UserIdentity = localStorage.getItem("UserId") as any;
 
   const [pagination, setPagination] = useState({
     pageNo: 0,
@@ -63,18 +57,17 @@ const PravachansPage = () => {
   const state = location.state as { authorId: string; authorName: string };
 
   const [logIn, setLogIn] = useState<boolean>(false);
-
   const closeModal = () => {
     setLogIn(false);
   };
 
   const [activeIndex, setActiveIndex] = useState(null);
   const [bread, showBread] = useState("");
+  const [toggleFav, setToggleFav] = useState<boolean>(false);
 
   const handleItemClick = (index: any) => {
     setActiveIndex(index);
   };
-  const UserIdentity = localStorage.getItem("UserId") as any;
 
   function ResetData() {
     setPreacherId("");
@@ -90,6 +83,33 @@ const PravachansPage = () => {
     });
     setRefresh(true);
   }
+
+  const [pravachanId, setPravachanId] = useState("");
+
+  const toggleLike = (audioId: any) => {
+    !isLiked
+      ? AudiosService.addPravachanFavourite(audioId).then((res) => {
+          setAudios(
+            audios?.map((a: any) => {
+              if (a.id === res.result?.productId) {
+                res.status && setIsLiked(true);
+              }
+              return a;
+            })
+          );
+        })
+      : AudiosService.removePravachanFaviourite(audioId).then((res) => {
+          setAudios(
+            audios?.map((a: any) => {
+              if (a.id === audioId) {
+                res.status && setIsLiked(false);
+              }
+              return a;
+            })
+          );
+        });
+    setToggleFav((x) => !x);
+  };
 
   function ClickOnFilter(par: string, cat: string, lyric: string) {
     setRefresh(false);
@@ -123,46 +143,6 @@ const PravachansPage = () => {
     });
   }
 
-  const [pravachanId, setPravachanId] = useState("");
-
-  const FavPravachanAdd = (audioId: any) => {
-    AudiosService.addPravachanFavourite(audioId).then((res) => {
-      setAudios(
-        audios?.map((a: any) => {
-          if (a.id === res.result?.productId) {
-            setFav(true);
-          }
-          return a;
-        })
-      );
-      toast(
-        localStorage.getItem("lang") === "hindi"
-          ? "पुस्तक को सफलतापूर्वक मेरी पसंद में जोड़ा गया है।"
-          : "Book has been successfully added to the favourites"
-      );
-    });
-    return;
-  };
-
-  const FavPravachanRemove = (audioId: any) => {
-    AudiosService.removePravachanFaviourite(audioId).then((res) => {
-      setAudios(
-        audios?.map((a: any) => {
-          if (a.id === audioId) {
-            setFav(false);
-          }
-          return a;
-        })
-      );
-      toast(
-        localStorage.getItem("lang") === "hindi"
-          ? "पुस्तक मेरी पसंद से हटा दी गई है।"
-          : "Book has been removed from favourites"
-      );
-    });
-    return;
-  };
-
   useEffect(() => {
     if (SortYearValue === "0") {
       setSortMonthValue("0");
@@ -189,7 +169,6 @@ const PravachansPage = () => {
 
     $(".LanguageList > span").removeClass("listActive");
     $("#lan-" + 1).addClass("listActive");
-    // }
   }, [PreacherId, SortMonthValue, SortYearValue, CategoryId, LyricsId]);
 
   useEffect(() => {
@@ -225,7 +204,7 @@ const PravachansPage = () => {
       UserIdentity
     ).then((res) => {
       if (res.status) setAudios(res.result?.items);
-      setFav(res?.result?.items.isFavourite);
+      setIsLiked(res?.result?.items.isFavourite);
       setPagination({
         ...pagination,
         // recordsPerPage: 12,
@@ -258,7 +237,6 @@ const PravachansPage = () => {
               top: "155px",
             }}
           >
-            {/* {state?.authorName ? state?.authorName : t("Pravachan_tr")} */}
             {state?.authorName ? (
               <span>{bread}</span>
             ) : window.location.pathname === "/pravachans/special" ? (
@@ -266,7 +244,6 @@ const PravachansPage = () => {
             ) : (
               t("Pravachan_tr")
             )}
-            {/* {t("Pravachan_tr")} */}
             <div
               style={{
                 fontSize: "19px",
@@ -293,10 +270,11 @@ const PravachansPage = () => {
                 ""
               )}
               <span style={{ color: "#2d2a29" }}>
-                /
-                {window.location.pathname === "/pravachans/special"
-                  ? t("Special_Pravachan_tr")
-                  : t("Pravachan_tr")}
+                {window.location.pathname === "/pravachans/special" ? (
+                  <span>/ {t("Special_Pravachan_tr")}</span>
+                ) : (
+                  <span>/ {t("Pravachan_tr")}</span>
+                )}
               </span>
             </div>
           </div>
@@ -689,7 +667,6 @@ const PravachansPage = () => {
                                       fontWeight: "600",
                                     }}
                                     onClick={() => {
-                                      //navigate(`/audios/${audio.id}`);
                                       navigate(`/pravachans/` + audio.slug, {
                                         state: {
                                           audioId: audio.id,
@@ -710,7 +687,6 @@ const PravachansPage = () => {
                                   </p>
                                   <p
                                     onClick={() => {
-                                      //navigate(`/audios/${audio.id}`);
                                       navigate(`/pravachans/` + audio.slug, {
                                         state: {
                                           audioId: audio.id,
@@ -729,44 +705,26 @@ const PravachansPage = () => {
                               </div>
                               <div
                                 onClick={() => {
-                                  if (!userId) setLogIn(true);
+                                  if (!UserIdentity) setLogIn(true);
                                 }}
                               >
-                                {audio.isFavourite ? (
-                                  <label
-                                    id={`${audio.id}`}
-                                    onClick={() => {
-                                      FavPravachanRemove(audio?.id);
+                                <label
+                                  id={`${audio.id}`}
+                                  onClick={() => {
+                                    if (!UserIdentity && logIn)
+                                      toggleLike(audio?.id);
+                                  }}
+                                >
+                                  <img
+                                    src={isLiked ? Favadd : Favicon}
+                                    alt="Favadd"
+                                    style={{
+                                      width: "36px",
+                                      marginRight: "8px",
+                                      marginTop: "2px",
                                     }}
-                                  >
-                                    <img
-                                      src={Favadd}
-                                      alt="Favadd"
-                                      style={{
-                                        width: "36px",
-                                        marginRight: "8px",
-                                        marginTop: "2px",
-                                      }}
-                                    />
-                                  </label>
-                                ) : (
-                                  <label
-                                    id={`${audio.id}`}
-                                    onClick={() => {
-                                      FavPravachanAdd(audio?.id);
-                                    }}
-                                  >
-                                    <img
-                                      src={Favicon}
-                                      alt="Favicon"
-                                      style={{
-                                        width: "36px",
-                                        marginRight: "8px",
-                                        marginTop: "2px",
-                                      }}
-                                    />
-                                  </label>
-                                )}
+                                  />
+                                </label>
                               </div>
                               <div className="btns">
                                 <div className="buttonres">
@@ -777,7 +735,6 @@ const PravachansPage = () => {
                                       `${process.env.REACT_APP_API_URL}/api/Pravachans/` +
                                       audio.id +
                                       "/pravachan?t=" +
-                                      pravhash +
                                       "&download_attachment=true"
                                     }
                                   >
@@ -797,7 +754,6 @@ const PravachansPage = () => {
                                   <img
                                     alt=""
                                     onClick={() => {
-                                      //navigate(`/audios/${audio.id}`);
                                       navigate(`/pravachans/` + audio.slug, {
                                         state: {
                                           audioId: audio.id,
@@ -849,6 +805,7 @@ const PravachansPage = () => {
           </div>
         </div>
       </div>
+      <LogInModel opens={logIn} onCloses={closeModal} />
     </>
   );
 };

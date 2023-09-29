@@ -171,13 +171,13 @@ nav {
   font-family: Arial; */
 
   outline: none;
-  /* border: none; */
   border-radius: 5px;
   background-color: #fffbf3;
   padding: 8px 15px;
   height: 40px;
   color: #3f220d;
   font-size: 20px;
+  border: 1px solid;
 }
 
 .inputbutton {
@@ -358,21 +358,6 @@ input::-webkit-inner-spin-button {
 
 /* विशेष ऑडियो  */
 
-.pravchanBox {
-  /* width: 283px;
-  height: 145px;
-  border: 1px solid #ffd186;
-  position: relative;
-  transition: all ease 0.5s;
-  text-align: center;
-  background-color: #ffcd44;
-  border-radius: 6px;
-  padding: 5px 20px;
-  box-shadow: 0px 0px 10px 0px #dcd1b8;
- 
-  margin: 10px 5px;
-  cursor: pointer; */
-}
 .pravchanBox p {
   color: #3f220d;
   font-size: 18px;

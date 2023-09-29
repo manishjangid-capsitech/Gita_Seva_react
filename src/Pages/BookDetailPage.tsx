@@ -1,8 +1,8 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import DefaultBook from "../Images/defaultBook.png";
-import BookDetailService from "../Services/BookDetail";
 import BooksService from "../Services/Books";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import "../Styles/BookDetail.css";
@@ -51,6 +51,8 @@ const BookDetailPage = (props: any) => {
     special: string;
     langId: string;
     catId: string;
+    searched: string;
+    index: number;
   };
   const settings = {
     infinite: true,
@@ -70,29 +72,28 @@ const BookDetailPage = (props: any) => {
 
   const [isLiked, setIsLiked] = useState<boolean>(false);
   const [toggleFav, setToggleFav] = useState<boolean>(false);
+  const [lang, showLang] = useState("");
 
-  function notify() {
-    if (!isLiked) {
-      toast(
-        localStorage.getItem("lang") === "hindi"
-          ? "पुस्तक को सफलतापूर्वक मेरी पसंद में जोड़ा गया है।"
-          : "Book has been successfully added to the favourites"
-      );
-    } else {
-      toast(
-        localStorage.getItem("lang") === "hindi"
-          ? "पुस्तक मेरी पसंद से हटा दी गई है।"
-          : "Book has been removed from favourites"
-      );
-    }
-  }
+  const notify = () => {
+    !isLiked
+      ? toast(
+          localStorage.getItem("lang") === "hindi"
+            ? "पुस्तक को सफलतापूर्वक मेरी पसंद में जोड़ा गया है।"
+            : "Book has been successfully added to the favourites"
+        )
+      : toast(
+          localStorage.getItem("lang") === "hindi"
+            ? "पुस्तक मेरी पसंद से हटा दी गई है।"
+            : "Book has been removed from favourites"
+        );
+  };
 
   const toggleLike = () => {
     !isLiked
-      ? BookDetailService.addFavourite(state.bookId).then((res) => {
+      ? BooksService.addFavourite(state.bookId).then((res) => {
           res.status && setIsLiked(true);
         })
-      : BookDetailService.removeFavourite(state.bookId).then((res) => {
+      : BooksService.removeFavourite(state.bookId).then((res) => {
           res.status && setIsLiked(false);
         });
     setToggleFav((x) => !x);
@@ -100,7 +101,7 @@ const BookDetailPage = (props: any) => {
 
   useEffect(() => {
     setRefresh(false);
-    BookDetailService.getCurrentBook(
+    BooksService.getCurrentBook(
       state.bookId,
       UserIdentity !== "" ? UserIdentity : ""
     ).then((res: any) => {
@@ -111,19 +112,23 @@ const BookDetailPage = (props: any) => {
 
   useEffect(() => {
     setRefresh(false);
-    BookDetailService.getRelatedBooks(state.bookId, "").then((res) => {
+    BooksService.getRelatedBooks(state.bookId, "").then((res) => {
       if (res.status) {
         setRelatedBooks(res.result);
       }
     });
   }, [refresh, i18n.language]);
 
-  const [lang, showLang] = useState("");
   useEffect(() => {
     BooksService.GetLanguageDataById(state?.langId).then((res) => {
       showLang(res?.result?.name);
-    });   
+    });
   }, [i18n.language]);
+
+  useEffect(() => {
+    debugger;
+    console.log("state", state);
+  }, []);
 
   return (
     <div
@@ -153,6 +158,11 @@ const BookDetailPage = (props: any) => {
               top: "155px",
             }}
           >
+            {state?.index >= 0 ? t("E_books_tr") : ""}
+            {/* {(state?.searched === "/searchdata/all" && state?.index) ||
+              ("/searchdata/books" && t("E_books_tr"))} */}
+            {state?.special === "/profile/fav" && t("E_books_tr")}
+            {state?.special === "/home" && t("E_books_tr")}
             {state?.special === "/books" && t("E_books_tr")}
             {state?.catId !== undefined && t("E_books_tr")}
             {state?.special === "/books/special" && t("Special_E_books_tr")}
@@ -169,8 +179,39 @@ const BookDetailPage = (props: any) => {
               <Link style={{ marginRight: "8px", color: "#2d2a29" }} to="/">
                 {t("Home_tr")}
               </Link>
+              {state?.special === "/profile/fav" && (
+                <Link
+                  to={"/books"}
+                  style={{ marginRight: "6px", color: "#2d2a29" }}
+                >
+                  / {t("E_books_tr")}
+                </Link>
+              )}
+              {state?.special === "/home" && (
+                <Link
+                  to={"/books"}
+                  style={{ marginRight: "6px", color: "#2d2a29" }}
+                >
+                  / {t("E_books_tr")}
+                </Link>
+              )}
+              {state?.index >= 0 ? (
+                <Link
+                  to={"/books"}
+                  style={{ marginRight: "6px", color: "#2d2a29" }}
+                >
+                  / {t("E_books_tr")}
+                </Link>
+              ) : (
+                ""
+              )}
               {state?.special === "/books" && (
-                <span style={{ marginRight: "6px" }}>/ {t("E_books_tr")}</span>
+                <Link
+                  to={"/books"}
+                  style={{ marginRight: "6px", color: "#2d2a29" }}
+                >
+                  / {t("E_books_tr")}
+                </Link>
               )}
               {state?.special === "/books/special" && (
                 <Link
@@ -224,10 +265,10 @@ const BookDetailPage = (props: any) => {
                     / {lang}
                   </Link>
                   <Link
-                   to={"/books/language/ +"}
-                   state={{
-                     langId: state?.langId,
-                   }}
+                    to={"/books/language/ +"}
+                    state={{
+                      langId: state?.langId,
+                    }}
                     style={{ marginRight: "8px", color: "#2d2a29" }}
                   >
                     / {t("E_books_tr")}

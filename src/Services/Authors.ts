@@ -3,13 +3,16 @@ import { ApiUtility } from "./ApiUtility";
 class AuthorsService {
   route = "/posts";
   authorRoute = "/api/authors/slug-";
-  autroute =  "/api/authors?lang="
+  autroute = "/api/authors?lang=";
+  // authordata = "/api/authors/slug-";
 
   get = (id: string) => ApiUtility.getResult(`${this.route}/${id}`);
 
-  getAuthorData = (authorfor: string, limit: number) => 
-    ApiUtility.get(this.autroute + localStorage.getItem("lan"), { authorfor, limit })
-  
+  getAuthorData = (authorfor: string, limit: number) =>
+    ApiUtility.get(this.autroute + localStorage.getItem("lan"), {
+      authorfor,
+      limit,
+    });
 
   getList = (
     start: number,
@@ -33,6 +36,12 @@ class AuthorsService {
         lang +
         "&userId=" +
         userId
+    );
+  };
+
+  GetAuthorDataById = (id: string, lang: string, userId: string) => {
+    return ApiUtility.get(
+      this.authorRoute + id + "?lang=" + lang + "&userId=" + userId
     );
   };
 }

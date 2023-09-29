@@ -2,7 +2,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import DefaultBook from "../Images/defaultBook.png";
-import VikekDetailService from "../Services/VivekvaniDetails";
+import VivekService from "../Services/Vivekvani";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import "../Styles/BookDetail.css";
 import Slider from "react-slick";
@@ -37,10 +37,7 @@ const VivekvaniDetailPage = () => {
   const navigate = useNavigate();
   const [vaniDetail, setVaniDetail] = useState<any>(undefined);
   const [refresh, setRefresh] = useState(false);
-  // const [bookId, setBookId] = useState("");
   const [relateds, setRelatedBooks] = useState<any[] | undefined>(undefined);
-  // const [bookFav, setBookFav] = useState<boolean>(false);
-  // const [getBookFav, setGetBookFav] = useState()
 
   const UserIdentity = localStorage.getItem("UserId") as any;
 
@@ -51,7 +48,7 @@ const VivekvaniDetailPage = () => {
     speed: 500,
     slidesToShow: 2,
     slidesToScroll: 1,
-    // autoplay: true,
+    autoplay: true,
     autoplaySpeed: 2000,
     arrows: false,
   };
@@ -81,10 +78,10 @@ const VivekvaniDetailPage = () => {
 
   const toggleLike = () => {
     !isLiked
-      ? VikekDetailService.addFavourite(state.vivekId).then((res) => {
+      ? VivekService.addFavourite(state.vivekId).then((res) => {
           res.status && setIsLiked(true);
         })
-      : VikekDetailService.removeFavourite(state.vivekId).then((res) => {
+      : VivekService.removeFavourite(state.vivekId).then((res) => {
           res.status && setIsLiked(false);
         });
 
@@ -92,7 +89,7 @@ const VivekvaniDetailPage = () => {
   };
 
   useEffect(() => {
-    VikekDetailService.VikekDetailService(
+    VivekService.VikekDetailService(
       state.vivekId,
       UserIdentity !== "" ? UserIdentity : ""
     ).then((res: any) => {
@@ -103,7 +100,7 @@ const VivekvaniDetailPage = () => {
 
   useEffect(() => {
     setRefresh(false);
-    VikekDetailService.getRelatedVanis(state.vivekId, _get_i18Lang(), "").then(
+    VivekService.getRelatedVanis(state.vivekId, _get_i18Lang(), "").then(
       (res) => {
         if (res.status) {
           setRelatedBooks(res.result);
@@ -143,7 +140,7 @@ const VivekvaniDetailPage = () => {
               top: "155px",
             }}
           >
-            {t("E_books_tr")}
+            {t("vivek_vani_tr")}
             <div
               style={{
                 fontSize: "19px",
@@ -157,9 +154,12 @@ const VivekvaniDetailPage = () => {
               </Link>
               <Link
                 style={{ marginRight: "6px", color: "#2d2a29" }}
-                to="/books"
+                to="/vivekvani"
               >
-                / {t("E_books_tr")}
+                /{" "}
+                {window.location.pathname === "/vivekvani/special"
+                  ? t("Special_vivek_vani_tr")
+                  : t("vivek_vani_tr")}
               </Link>
               <span style={{ color: "#2d2a29" }}>/ {vaniDetail?.name}</span>
             </div>
@@ -240,6 +240,7 @@ const VivekvaniDetailPage = () => {
                               <label
                                 onClick={() => {
                                   toggleLike();
+                                  notify();
                                 }}
                               >
                                 <img
@@ -285,10 +286,9 @@ const VivekvaniDetailPage = () => {
                                       slug: vaniDetail.slug,
                                       label: vaniDetail.label,
                                       type: BookContentType.vivek,
-                                      
                                     },
                                   }
-                                );                                
+                                );
                               }
                             }}
                           >

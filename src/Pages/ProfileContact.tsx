@@ -125,8 +125,7 @@ export const ProfileContact = () => {
         });
       })
       .catch((error) => console.error("Error fetching data:", error));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [data]);
 
   return (
     <div>
@@ -201,7 +200,6 @@ export const ProfileContact = () => {
                           padding: "10px 20px",
                           boxShadow: "0 0 7px 1px #f5deb1!important",
                           height: "555px",
-                          // width: "130%",
                           fontFamily: "ChanakyaUni",
                         }}
                       >
@@ -213,16 +211,12 @@ export const ProfileContact = () => {
                               margin: "0 0 10px",
                               fontStyle: "normal",
                               fontFamily: "ChanakyaUniBold",
-                              //   marginTop: "30px",
                             }}
                           >
                             {t("contact_tr")}
                           </span>
                           <div
                             style={{
-                              //   border: "1px solid #e8d7d7",
-                              //   padding: "20px",
-                              //   borderRadius: "10px",
                               padding: "20px",
                               borderRadius: "10px",
                               width: "80%",
@@ -232,23 +226,6 @@ export const ProfileContact = () => {
                             <form>
                               <div className="row" style={{ display: "flex" }}>
                                 <div style={{ display: "flex" }}>
-                                  {/* <span
-                                    style={{
-                                      //   fontSize: "22px",
-                                      marginLeft: "10px",
-                                      color: "#777",
-                                      float: "left",
-                                      //   width: "20%",
-                                      //   color: "#472d1e",
-                                      fontWeight: 400,
-                                      width: "115px",
-                                      //   margin: 0,
-                                      fontSize: "23px",
-                                      fontFamily: "ChanakyaUni",
-                                    }}
-                                  >
-                                    {t("Name_tr")}
-                                  </span> */}
                                   <input
                                     style={{
                                       width: "500px",
@@ -293,17 +270,6 @@ export const ProfileContact = () => {
                                       }
                                     }}
                                   />
-                                  {/* {error.name && (
-                                    <small
-                                      style={{
-                                        color: "red",
-                                        marginLeft: 5,
-                                        fontSize: "18px",
-                                      }}
-                                    >
-                                      {error.name}
-                                    </small>
-                                  )} */}
                                 </div>
                                 <div>
                                   <input
@@ -330,25 +296,6 @@ export const ProfileContact = () => {
                                     }}
                                     value={data.phoneNumber}
                                     className="input contactContent"
-                                    // onBlur={(e) => {
-                                    //   let value =
-                                    //     e.currentTarget?.value ?? undefined;
-                                    //   if (
-                                    //     value !== undefined &&
-                                    //     value.length !== 10
-                                    //   ) {
-                                    //     setError((e) => ({
-                                    //       ...e,
-                                    //       number:
-                                    //         "Please enter 10 digit mobile number",
-                                    //     }));
-                                    //   } else {
-                                    //     setData({
-                                    //       ...data,
-                                    //       phoneNumber: value?.trim(),
-                                    //     });
-                                    //   }
-                                    // }}
                                   />
                                 </div>
                               </div>
@@ -381,17 +328,6 @@ export const ProfileContact = () => {
                                     className="contactContent"
                                     required
                                   />
-                                  {/* {error.email && (
-                                    <small
-                                      style={{
-                                        color: "red",
-                                        marginLeft: 5,
-                                        fontSize: "18px",
-                                      }}
-                                    >
-                                      {error.email}
-                                    </small>
-                                  )} */}
                                 </div>
                                 <div>
                                   <select
@@ -400,8 +336,6 @@ export const ProfileContact = () => {
                                       height: "35px",
                                       fontSize: "22px",
                                       marginRight: "22px",
-                                      // padding: "0 0 0 10px",
-                                      // marginBottom: "15px",
                                     }}
                                     name="contactType"
                                     defaultValue={"1"}
@@ -440,10 +374,7 @@ export const ProfileContact = () => {
                                 className="row"
                                 style={{ marginTop: "15px" }}
                               >
-                                <div
-                                  //   className="col-12"
-                                  style={{ display: "grid" }}
-                                >
+                                <div style={{ display: "grid" }}>
                                   <textarea
                                     name="messageContent"
                                     placeholder={t("your_suggestions_tr")}
@@ -463,7 +394,6 @@ export const ProfileContact = () => {
                                     className="contactContent"
                                     style={{
                                       width: "500px",
-                                      // height: "35px",
                                       fontSize: "22px",
                                       marginRight: "22px",
                                       marginBottom: "15px",

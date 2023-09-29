@@ -53,6 +53,12 @@ const HomePage = () => {
   const [refresh, setRefresh] = useState(false);
   const [messages, setmessages] = useState<any[] | undefined>(undefined);
 
+  const [defaultlyrics, setDefaultAudLyrics] = useState("");
+
+  const [playing, setPlaying] = React.useState(false);
+  const refAudio = React.useRef<HTMLAudioElement>(null);
+  const refLrc = React.useRef<any>(null);
+
   const settings = {
     infinite: true,
     speed: 500,
@@ -83,86 +89,6 @@ const HomePage = () => {
     arrows: false,
   };
 
-  const [defaultlyrics, setDefaultAudLyrics] = useState("");
-
-  function stopHomeAudio(x: any) {
-    if (x === 1) {
-      var stopId = document.getElementById("stopIcon");
-      var startIcon = document.getElementById("startIcon");
-      var myaudio = document.getElementById("audios");
-      var myaudio3 = document.getElementById("audio3");
-
-      if (myaudio3 != null) {
-        refAudio.current?.pause();
-        //  myaudio3.pause();
-        $(".play").show();
-        $(".pause").hide();
-      }
-      // stopId.style.display = "none";
-      // startIcon.style.display = "block";
-      refAudio.current?.play();
-      // myaudio.play();
-    } else if (x === 2) {
-      var stopId = document.getElementById("stopIcon");
-      var startIcon = document.getElementById("startIcon");
-      var myaudio = document.getElementById("audios");
-      var myaudio3 = document.getElementById("audio3");
-
-      if (myaudio3 != null) {
-        refAudio.current?.pause();
-        // myaudio3.pause();
-        $(".play").show();
-        $(".pause").hide();
-      }
-      // stopId.style.display = "block";
-      // startIcon.style.display = "none";
-      refAudio.current?.pause();
-      // myaudio.pause();
-    }
-  }
-
-  useEffect(() => {
-    HomeService.getHomeData(_get_i18Lang(), "").then((res) => {
-      if (res) {
-        setbanners(res.result?.banners);
-        setspecialBooks(res.result?.specialBooks);
-        setspecialAudios(res.result?.specialAudios);
-        setspecialPravachans(res.result?.specialPravachans);
-        setspecialArticles(res.result?.specialArticles);
-      }
-    });
-  }, [refresh, i18n.language]);
-
-  useEffect(() => {
-    setRefresh(false);
-    AuthorsService.getAuthorData("", 3).then((res) => {
-      if (res.status) {
-        setallauthordata(res?.result);
-      }
-    });
-  }, [refresh, i18n.language]);
-
-  useEffect(() => {
-    setRefresh(false);
-    HomeService.getMessage(_get_i18Lang(), 0, 3).then((res) => {
-      if (res.status) {
-        setmessages(res.result?.items);
-        setarticleContent(res.result.items);
-        setFetchArticle(true);
-      }
-    });
-  }, [refresh, i18n.language]);
-
-  useEffect(() => {
-    fetch(text)
-      .then((response) => response?.text())
-      .then((textContent) => {
-        var lyrics = textContent.replace(/\[[^\]]+\]/g, "").trim();
-        // console.log(lyrics);
-        setDefaultAudLyrics(lyrics);
-      });
-  }, [defaultlyrics]);
-
   function createMarkuparticle(index: number) {
     return {
       __html: fetchArticle
@@ -190,6 +116,7 @@ const HomePage = () => {
         navigate("/books/" + slug, {
           state: {
             bookId: targetId,
+            special: window.location.pathname,
           },
         });
         break;
@@ -312,17 +239,53 @@ const HomePage = () => {
     }
   }
 
-  const [playing, setPlaying] = React.useState(false);
-  const refAudio = React.useRef<HTMLAudioElement>(null);
-  const refLrc = React.useRef<any>(null);
+  useEffect(() => {
+    HomeService.getHomeData(_get_i18Lang(), "").then((res) => {
+      if (res) {
+        setbanners(res.result?.banners);
+        setspecialBooks(res.result?.specialBooks);
+        setspecialAudios(res.result?.specialAudios);
+        setspecialPravachans(res.result?.specialPravachans);
+        setspecialArticles(res.result?.specialArticles);
+      }
+    });
+  }, [refresh, i18n.language]);
+
+  useEffect(() => {
+    setRefresh(false);
+    AuthorsService.getAuthorData("", 3).then((res) => {
+      if (res.status) {
+        setallauthordata(res?.result);
+      }
+    });
+  }, [refresh, i18n.language]);
+
+  useEffect(() => {
+    setRefresh(false);
+    HomeService.getMessage(_get_i18Lang(), 0, 3).then((res) => {
+      if (res.status) {
+        setmessages(res.result?.items);
+        setarticleContent(res.result.items);
+        setFetchArticle(true);
+      }
+    });
+  }, [refresh, i18n.language]);
+
+  useEffect(() => {
+    fetch(text)
+      .then((response) => response?.text())
+      .then((textContent) => {
+        var lyrics = textContent.replace(/\[[^\]]+\]/g, "").trim();
+        // console.log(lyrics);
+        setDefaultAudLyrics(lyrics);
+      });
+  }, [defaultlyrics]);
 
   useEffect(() => {
     if (refLrc.current) {
       new RabbitLyrics(refLrc.current, refAudio.current as any);
     }
   }, []);
-
-  // console.log(defaultlyrics.replace(/\r/g, "").split(/\|{1,2}/));
 
   return (
     <>
@@ -1152,7 +1115,7 @@ const HomePage = () => {
             <div
               style={{
                 margin: "auto",
-                width: "197px",
+                width: "250px",
                 padding: "10px",
                 textAlign: "center",
                 marginTop: "30px",
@@ -1178,7 +1141,7 @@ const HomePage = () => {
             marginTop: "0px",
             backgroundColor: "#fff6e1",
             paddingTop: "20px",
-            paddingBottom: "20px"
+            paddingBottom: "20px",
           }}
         >
           <div>
@@ -1238,7 +1201,7 @@ const HomePage = () => {
             <div
               style={{
                 margin: "auto",
-                width: "197px",
+                width: "230px",
                 padding: "10px",
                 textAlign: "center",
                 marginTop: "30px",

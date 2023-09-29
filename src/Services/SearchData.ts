@@ -9,19 +9,19 @@ export interface ISearchParams {
 
 class SearchDataService {
   route = "/posts";
-  searchRoute = "/api/settings/search?searchtext="
+  searchRoute = "/api/settings/search?searchtext=";
 
   get = (id: string) => ApiUtility.getResult(`${this.route}/${id}`);
 
   searchData = (value: ISearchParams) => {
     return ApiUtility.get(
-        this.searchRoute +
+      this.searchRoute +
         value.searchValue +
         "&product=" +
         value.productType +
         "&lang=" +
-        value.language +
-        "&authorId=" + 
+        localStorage.getItem("lan") +
+        "&authorId=" +
         value.authorId
     );
   };

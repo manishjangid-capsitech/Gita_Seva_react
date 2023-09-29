@@ -1,14 +1,13 @@
 /* eslint-disable react/jsx-no-undef */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import ProfileService from "../Services/Profile";
 import i18n, { _get_i18Lang } from "../i18n";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import EditIcon from "../assets/img/mark-grey.png";
 import BackArrow from "../assets/img/leftArrow1.png";
-import $ from "jquery";
 import { UploadProfileImage } from "./LogInoutModel";
 import "../Styles/Profile.css";
 import ProfileSidePanel from "./ProfileSidePanel";
@@ -58,6 +57,8 @@ const Profile = () => {
     displaycountry: "",
     displaystate: "",
   });
+
+  const colors = "#FF9800";
 
   useEffect(() => {
     setRefresh(false);
@@ -132,8 +133,6 @@ const Profile = () => {
     }
   }, []);
 
-  const colors = "#FF9800";
-
   return (
     <div>
       <div
@@ -184,7 +183,7 @@ const Profile = () => {
         }}
       >
         <div className="containers">
-          <div className="row">          
+          <div className="row">
             <ProfileSidePanel color={colors} />
             <div className="col-9">
               <div
@@ -601,221 +600,6 @@ const Profile = () => {
                 </div>
               </div>
             </div>
-            {/* <div className="col-9">
-              <div
-                className="tab-pane fade show active"
-                id="e-books"
-                role="tabpanel"
-                style={{ overflow: "hidden" }}
-                aria-labelledby="e-books-tab"
-              >
-                <div className="tab-row">
-                  <div className="tabscroll">
-                    <div style={{ background: "#FFFAF0", padding: "10px 0" }}>
-                      // books 
-                      <div>
-                        <p
-                          style={{
-                            fontFamily: "ChanakyaUni",
-                            fontWeight: 700,
-                            fontStyle: "normal",
-                            color: "#b42a38",
-                            fontSize: "26px",
-                            margin: "0 0 15px"
-                          }}
-                        >
-                          {t("E_books_tr")}
-                        </p>
-                        <div>
-                          {[
-                            bookFav.length > 0 &&
-                              bookFav?.map((item: any) => (
-                                <div
-                                  className="sliderbooks"
-                                  style={{ margin: "10px 11px" }}
-                                  key={`related-${item.id}`}
-                                  onClick={() => {
-                                    navigate(`/books/` + item.slug, {
-                                      state: {
-                                        bookId: item.id,
-                                        bookName: item.name,
-                                      },
-                                    });
-                                    window.location.reload();
-                                  }}
-                                >
-                                  <div
-                                    style={{
-                                      display: "flex",
-                                      justifyContent: "center",
-                                    }}
-                                  >
-                                    <a>
-                                      <img
-                                        style={{ cursor: "pointer" }}
-                                        className="imgcenter"
-                                        src={
-                                          item.bookThumbPath == null
-                                            ? DefaultBook
-                                            : item.bookThumbPath
-                                        }
-                                        onError={(e) => {
-                                          e.currentTarget.src = DefaultBook;
-                                        }}
-                                        alt={item.name}
-                                        title={item.name}
-                                        width="117"
-                                        height="165"
-                                      />
-                                      <p>
-                                        {item?.name?.length > 20
-                                          ? item?.name.slice(0, 18) + "..."
-                                          : item?.name}
-                                      </p>
-                                    </a>
-                                  </div>
-                                </div>
-                              )),
-                          ]}
-                        </div>
-                      </div>
-                      // kalyan 
-                      {kalyan.length > 0 && (
-                        <div>
-                          <p
-                            style={{
-                              fontFamily: "ChanakyaUni",
-                              fontWeight: 700,
-                              fontStyle: "normal",
-                              color: "#b42a38",
-                              fontSize: "26px",
-                              margin: "0 0 15px"
-                            }}
-                          >
-                            {t("Kalyan_tr")}
-                          </p>
-                          {[
-                            kalyan.length > 0 &&
-                              kalyan?.map((item: any) => (
-                                <div
-                                  className="sliderbooks"
-                                  key={`related-${item.id}`}
-                                  onClick={() => {
-                                    navigate(`/books/` + item.slug, {
-                                      state: {
-                                        bookId: item.id,
-                                        bookName: item.name,
-                                      },
-                                    });
-                                    window.location.reload();
-                                  }}
-                                >
-                                  <div
-                                    style={{
-                                      display: "flex",
-                                      justifyContent: "center",
-                                    }}
-                                  >
-                                    <a>
-                                      <img
-                                        style={{ cursor: "pointer" }}
-                                        className="imgcenter"
-                                        src={
-                                          item.bookThumbPath == null
-                                            ? DefaultBook
-                                            : item.bookThumbPath
-                                        }
-                                        onError={(e) => {
-                                          e.currentTarget.src = DefaultBook;
-                                        }}
-                                        alt={item.name}
-                                        title={item.name}
-                                        width="117"
-                                        height="165"
-                                      />
-                                      <p>
-                                        {item?.name?.length > 20
-                                          ? item?.name.slice(0, 18) + "..."
-                                          : item?.name}
-                                      </p>
-                                    </a>
-                                  </div>
-                                </div>
-                              )),
-                          ]}
-                        </div>
-                      )}
-                      // kalpatru 
-                      {kalpatru.length > 0 && (
-                        <div>
-                          <p
-                            style={{
-                              fontFamily: "ChanakyaUni",
-                              fontWeight: 700,
-                              fontStyle: "normal",
-                              color: "#b42a38",
-                              fontSize: "26px",
-                              margin: "0 0 15px"
-                            }}
-                          >
-                            {t("Kalpataru_tr")}
-                          </p>
-                          {[
-                            kalpatru.length > 0 &&
-                              kalpatru?.map((item: any) => (
-                                <div
-                                  className="sliderbooks"
-                                  key={`related-${item.id}`}
-                                  onClick={() => {
-                                    navigate(`/books/` + item.slug, {
-                                      state: {
-                                        bookId: item.id,
-                                        bookName: item.name,
-                                      },
-                                    });
-                                    window.location.reload();
-                                  }}
-                                >
-                                  <div
-                                    style={{
-                                      display: "flex",
-                                      justifyContent: "center",
-                                    }}
-                                  >
-                                    <a>
-                                      <img
-                                        style={{ cursor: "pointer" }}
-                                        className="imgcenter"
-                                        src={
-                                          item.bookThumbPath == null
-                                            ? DefaultBook
-                                            : item.bookThumbPath
-                                        }
-                                        onError={(e) => {
-                                          e.currentTarget.src = DefaultBook;
-                                        }}
-                                        alt={item.name}
-                                        title={item.name}
-                                        width="117"
-                                        height="165"
-                                      />
-                                      <p>
-                                        {item?.name?.length > 20
-                                          ? item?.name.slice(0, 18) + "..."
-                                          : item?.name}
-                                      </p>
-                                    </a>
-                                  </div>
-                                </div>
-                              )),
-                          ]}
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div> */}
           </div>
         </div>
       </div>

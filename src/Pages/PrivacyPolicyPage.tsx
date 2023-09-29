@@ -1,5 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useTranslation } from "react-i18next";
-import React from "react";
+import React, { useEffect } from "react";
 import PrivacyPolicyService from "../Services/PrivacyPolicy";
 import "../Styles/About.css";
 import i18n, { _get_i18Lang } from "../i18n";
@@ -12,7 +13,7 @@ const PrivacyPage = () => {
     __html: "",
   });
 
-  React.useEffect(() => {
+  useEffect(() => {
     PrivacyPolicyService.getPrivacyPolicyData(_get_i18Lang()).then((result) => {
       if (result) {
         setPolicy({ __html: result.result.content });
@@ -45,7 +46,6 @@ const PrivacyPage = () => {
               fontSize: "36px",
               fontWeight: 700,
               color: "rgb(209, 21, 1)",
-              marginLeft: "235px",
               top: "155px",
             }}
           >

@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useTranslation } from "react-i18next";
-import React from "react";
+import React, { useEffect } from "react";
 import TermsOfUseService from "../Services/TermsOfUse";
 import "../Styles/About.css";
 import i18n, { _get_i18Lang } from "../i18n";
@@ -13,7 +13,7 @@ const TermsOfUse = () => {
     __html: "",
   });
 
-  React.useEffect(() => {
+  useEffect(() => {
     TermsOfUseService.getTermsOfUseData(_get_i18Lang()).then((result) => {
       if (result) {
         setTearms({ __html: result.result.content });
@@ -46,7 +46,6 @@ const TermsOfUse = () => {
               fontSize: "36px",
               fontWeight: 700,
               color: "rgb(209, 21, 1)",
-              marginLeft: "235px",
               top: "155px",
             }}
           >
@@ -77,7 +76,7 @@ const TermsOfUse = () => {
         <div className="container">
           {tearms && tearms.__html.length > 0 ? (
             <div className="tearmsuse">
-              <p                
+              <p
                 style={{
                   padding: 0,
                   fontSize: "16px",

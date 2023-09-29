@@ -10,7 +10,6 @@ import i18n, { _get_i18Lang } from "../i18n";
 import Favfill from "../assets/img/favadd.png";
 import Favempty from "../assets/img/fav.png";
 import { BookContentType } from "./Epub";
-import { useUser } from "../Contexts/UserContext";
 import { toast } from "react-toastify";
 import { LogInModel } from "./LogInoutModel";
 
@@ -51,10 +50,10 @@ const GeetGovindDetailPage = (props: any) => {
   const toggleLike = () => {
     !isLiked
       ? GeetGovindServices.addMagzineFavourite(MagzineId).then((res) => {
-          setIsLiked(true);
+          res.status && setIsLiked(true);
         })
       : GeetGovindServices.removeMagzineFavourite(MagzineId).then((res) => {
-          setIsLiked(false);
+          res.status && setIsLiked(false);
         });
     setToggleFav((x) => !x);
   };
@@ -208,6 +207,7 @@ const GeetGovindDetailPage = (props: any) => {
                               <label
                                 onClick={() => {
                                   toggleLike();
+                                  notify();
                                 }}
                               >
                                 <img

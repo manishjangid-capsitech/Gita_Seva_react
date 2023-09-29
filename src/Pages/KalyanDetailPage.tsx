@@ -46,39 +46,29 @@ const KalyanDetailPage = (props: any) => {
   const [toggleFav, setToggleFav] = useState<boolean>(false);
 
   function notify() {
-    if (!isLiked) {
-      toast(
-        localStorage.getItem("lang") === "hindi"
-          ? "पत्रिका को सफलतापूर्वक मेरी पसंद में जोड़ा गया है।"
-          : "Magazine has been successfully added to the favourites"
-      );
-    } else {
-      toast(
-        localStorage.getItem("lang") === "hindi"
-          ? "पत्रिका मेरी पसंद से हटा दी गई है।"
-          : "Magazine has been removed from favourites"
-      );
-    }
+    !isLiked
+      ? toast(
+          localStorage.getItem("lang") === "hindi"
+            ? "पत्रिका को सफलतापूर्वक मेरी पसंद में जोड़ा गया है।"
+            : "Magazine has been successfully added to the favourites"
+        )
+      : toast(
+          localStorage.getItem("lang") === "hindi"
+            ? "पत्रिका मेरी पसंद से हटा दी गई है।"
+            : "Magazine has been removed from favourites"
+        );
   }
 
   const toggleLike = () => {
     !isLiked
       ? KalyansServices.addKalyanFavourite(kalyanId).then((res) => {
-          setIsLiked(true);
+          res.status && setIsLiked(true);
         })
       : KalyansServices.removeKalyanFavourite(kalyanId).then((res) => {
-          setIsLiked(false);
+          res.status && setIsLiked(false);
         });
     setToggleFav((x) => !x);
   };
-
-  function FavKalyanAdd() {
-    return;
-  }
-
-  function FavKalyanRemove() {
-    return;
-  }
 
   useEffect(() => {
     if (location.state) {
@@ -140,7 +130,6 @@ const KalyanDetailPage = (props: any) => {
               fontSize: "36px",
               fontWeight: 700,
               color: "rgb(209, 21, 1)",
-              marginLeft: "14%",
               top: "155px",
             }}
           >
@@ -168,211 +157,195 @@ const KalyanDetailPage = (props: any) => {
         </div>
       </div>
       <div className="container">
-        <div
-          style={
-            {
-              // margin: "10px 0",
-              // border: "1px solid #ffd186",
-              // boxShadow: "0px 0px 10px 0px #dcd1b8",
-              // backgroundColor: "#FFFAF0"
-            }
-          }
-        >
-          <div className="row">
-            <div>
-              {kalyanDetail ? (
-                <div
-                  className="containers card-gst"
-                  style={{
-                    width: "100%",
-                    marginTop: "25px",
-                    backgroundColor: "#FFFAF0",
-                    boxShadow: "0px 0px 10px 0px #dcd1b8",
-                  }}
-                >
-                  <div className="mat-card row" key={`book-${kalyanDetail.id}`}>
-                    <div style={{ padding: "15px", margin: "0 0 25px 0" }}>
-                      <div className="single-product col-lg-3">
-                        <div
-                          style={{
-                            border: "1px solid #eadfc8",
-                            padding: "30px",
-                            background: "#fff",
-                            borderRadius: "5px",
-                            textAlign: "center",
-                            width: "125%",
-                          }}
-                        >
-                          <img
-                            src={kalyanDetail.kalyanThumbPath}
-                            onError={(e) => {
-                              e.currentTarget.src = DefaultBook;
-                            }}
-                            alt={kalyanDetail.name}
-                            title={kalyanDetail.name}
-                            className="bkdetailimg"
-                            width="256"
-                            height="365"
-                          />
-                        </div>
-                      </div>
-
-                      <div className="single-product-author col-lg-8">
-                        <div className="single-book-heading">
-                          <div
-                            style={{
-                              display: "flex",
-                              justifyContent: "space-between",
-                            }}
-                          >
-                            <h1
-                              style={{
-                                fontFamily: "ChanakyaUni",
-                                fontSize: "40px",
-                                color: "#472d1e",
-                                marginTop: "7px",
-                              }}
-                            >
-                              {kalyanDetail.name}
-                            </h1>
-                            <label
-                              onClick={() => {
-                                if (!userId) setLogIn(true);
-                              }}
-                            >
-                              <label
-                                onClick={() => {
-                                  toggleLike();
-                                }}
-                              >
-                                <img
-                                  src={isLiked ? Favfill : Favempty}
-                                  alt="Favicon"
-                                />
-                              </label>
-                            </label>
-                          </div>
-                        </div>
-                        {kalyanDetail.author ? (
-                          <div>
-                            <p>
-                              <label>{t("Authors_tr")} </label>
-                              {kalyanDetail.author}
-                            </p>
-                          </div>
-                        ) : (
-                          ""
-                        )}
-                        {kalyanDetail.kalyanLanguage ? (
-                          <div>
-                            <p>
-                              <label>{t("Language_tr")} </label>
-                              {kalyanDetail.kalyanLanguage}
-                            </p>
-                          </div>
-                        ) : (
-                          ""
-                        )}
-                        <div
-                          className="next-read"
-                          style={{ marginTop: "50px" }}
-                        >
-                          <p
-                            style={{ cursor: "pointer", display: "inline" }}
-                            onClick={() => {
-                              setLogIn(true);
-                              if (UserIdentity) {
-                                navigate(
-                                  `/reader/kalyans/` + kalyanDetail.slug,
-                                  {
-                                    state: {
-                                      kalyanDetailId: kalyanDetail.id,
-                                      bookName: kalyanDetail.name,
-                                      slug: kalyanDetail.slug,
-                                      label: kalyanDetail.label,
-                                      type: BookContentType.kalyans,
-                                    },
-                                  }
-                                );
-                              }
-                            }}
-                          >
-                            {t("read_magazine_tr")}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="clsslide row">
-                    <div>
+        <div className="row">
+          <div>
+            {kalyanDetail ? (
+              <div
+                className="containers card-gst"
+                style={{
+                  width: "100%",
+                  marginTop: "25px",
+                  backgroundColor: "#FFFAF0",
+                  boxShadow: "0px 0px 10px 0px #dcd1b8",
+                }}
+              >
+                <div className="mat-card row" key={`book-${kalyanDetail.id}`}>
+                  <div style={{ padding: "15px", margin: "0 0 25px 0" }}>
+                    <div className="single-product col-lg-3">
                       <div
                         style={{
-                          backgroundColor: "#FFFAF0",
+                          border: "1px solid #eadfc8",
+                          padding: "30px",
+                          background: "#fff",
+                          borderRadius: "5px",
+                          textAlign: "center",
+                          width: "125%",
                         }}
                       >
-                        <h1
-                          style={{ fontSize: "30px!important" }}
-                          className="heading-related"
-                        >
-                          {t("Related_Kalyan_tr")}
-                        </h1>
+                        <img
+                          src={kalyanDetail.kalyanThumbPath}
+                          onError={(e) => {
+                            e.currentTarget.src = DefaultBook;
+                          }}
+                          alt={kalyanDetail.name}
+                          title={kalyanDetail.name}
+                          className="bkdetailimg"
+                          width="256"
+                          height="365"
+                        />
+                      </div>
+                    </div>
 
-                        <div style={{ paddingBottom: "20px" }}>
-                          <Slider {...settings}>
-                            {relateds && relateds.length > 0
-                              ? relateds.map((related) => (
-                                  <div
-                                    className="slider-books sidebarmargin"
-                                    key={`related-${related.id}`}
-                                    onClick={() => {
-                                      navigate(`/kalyans/` + related.slug, {
-                                        state: {
-                                          kalyanId: related.id,
-                                        },
-                                      });
-                                      window.location.reload();
-                                    }}
-                                  >
-                                    <div>
-                                      <a>
-                                        <img
-                                          style={{
-                                            cursor: "pointer",
-                                            borderRadius: 0,
-                                          }}
-                                          className="imgcenter"
-                                          src={
-                                            related.kalyanThumbPath == null
-                                              ? DefaultBook
-                                              : related.kalyanThumbPath
-                                          }
-                                          onError={(e) => {
-                                            e.currentTarget.src = DefaultBook;
-                                          }}
-                                          alt={related.name}
-                                          title={related.name}
-                                          width="150"
-                                          height="212"
-                                        />
-                                        <p>{related?.name}</p>
-                                      </a>
-                                    </div>
-                                  </div>
-                                ))
-                              : ""}
-                          </Slider>
+                    <div className="single-product-author col-lg-8">
+                      <div className="single-book-heading">
+                        <div
+                          style={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                          }}
+                        >
+                          <h1
+                            style={{
+                              fontFamily: "ChanakyaUni",
+                              fontSize: "40px",
+                              color: "#472d1e",
+                              marginTop: "7px",
+                            }}
+                          >
+                            {kalyanDetail.name}
+                          </h1>
+                          <label
+                            onClick={() => {
+                              if (!userId) setLogIn(true);
+                            }}
+                          >
+                            <label
+                              onClick={() => {
+                                toggleLike();
+                                notify();
+                              }}
+                            >
+                              <img
+                                src={isLiked ? Favfill : Favempty}
+                                alt="Favicon"
+                              />
+                            </label>
+                          </label>
                         </div>
+                      </div>
+                      {kalyanDetail.author ? (
+                        <div>
+                          <p>
+                            <label>{t("Authors_tr")} </label>
+                            {kalyanDetail.author}
+                          </p>
+                        </div>
+                      ) : (
+                        ""
+                      )}
+                      {kalyanDetail.kalyanLanguage ? (
+                        <div>
+                          <p>
+                            <label>{t("Language_tr")} </label>
+                            {kalyanDetail.kalyanLanguage}
+                          </p>
+                        </div>
+                      ) : (
+                        ""
+                      )}
+                      <div className="next-read" style={{ marginTop: "50px" }}>
+                        <p
+                          style={{ cursor: "pointer", display: "inline" }}
+                          onClick={() => {
+                            setLogIn(true);
+                            if (UserIdentity) {
+                              navigate(`/reader/kalyans/` + kalyanDetail.slug, {
+                                state: {
+                                  kalyanDetailId: kalyanDetail.id,
+                                  bookName: kalyanDetail.name,
+                                  slug: kalyanDetail.slug,
+                                  label: kalyanDetail.label,
+                                  type: BookContentType.kalyans,
+                                },
+                              });
+                            }
+                          }}
+                        >
+                          {t("read_magazine_tr")}
+                        </p>
                       </div>
                     </div>
                   </div>
                 </div>
-              ) : (
-                ""
-              )}
-            </div>
+                <div className="clsslide row">
+                  <div>
+                    <div
+                      style={{
+                        backgroundColor: "#FFFAF0",
+                      }}
+                    >
+                      <h1
+                        style={{ fontSize: "30px!important" }}
+                        className="heading-related"
+                      >
+                        {t("Related_Kalyan_tr")}
+                      </h1>
+
+                      <div style={{ paddingBottom: "20px" }}>
+                        <Slider {...settings}>
+                          {relateds && relateds.length > 0
+                            ? relateds.map((related) => (
+                                <div
+                                  className="slider-books sidebarmargin"
+                                  key={`related-${related.id}`}
+                                  onClick={() => {
+                                    navigate(`/kalyans/` + related.slug, {
+                                      state: {
+                                        kalyanId: related.id,
+                                      },
+                                    });
+                                    window.location.reload();
+                                  }}
+                                >
+                                  <div>
+                                    <a>
+                                      <img
+                                        style={{
+                                          cursor: "pointer",
+                                          borderRadius: 0,
+                                        }}
+                                        className="imgcenter"
+                                        src={
+                                          related.kalyanThumbPath == null
+                                            ? DefaultBook
+                                            : related.kalyanThumbPath
+                                        }
+                                        onError={(e) => {
+                                          e.currentTarget.src = DefaultBook;
+                                        }}
+                                        alt={related.name}
+                                        title={related.name}
+                                        width="150"
+                                        height="212"
+                                      />
+                                      <p>{related?.name}</p>
+                                    </a>
+                                  </div>
+                                </div>
+                              ))
+                            : ""}
+                        </Slider>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              ""
+            )}
           </div>
-          <LogInModel opens={logIn} onCloses={closeModal} />
         </div>
+        <LogInModel opens={logIn} onCloses={closeModal} />
       </div>
     </div>
   );

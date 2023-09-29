@@ -139,7 +139,6 @@ const KalyansPage = () => {
               fontSize: "36px",
               fontWeight: 700,
               color: "rgb(209, 21, 1)",
-              marginLeft: "15%",
               top: "155px",
             }}
           >

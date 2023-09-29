@@ -36,13 +36,20 @@ const BooksPage = () => {
   const [Category, setCategory] = useState<any>("");
   const [CategoryId, setCategoryId] = useState<any>("");
   const [writer, setWriter] = React.useState<any>("");
-  const [lang, setLang] = useState<any>("");
-
+  const [bread, showBread] = useState("");
   const [pagination, setPagination] = useState({
     pageNo: 1,
     recordsPerPage: 12,
     totalRecords: 0,
   });
+
+  const location = useLocation();
+  const state = location.state as {
+    authorId: string;
+    authorName: string;
+    langId: string;
+    catId: string;
+  };
 
   function ResetData() {
     setSortValue("2");
@@ -53,16 +60,7 @@ const BooksPage = () => {
       ...pagination,
       pageNo: 0,
     });
-    // setRefresh(true);
   }
-
-  const location = useLocation();
-  const state = location.state as {
-    authorId: string;
-    authorName: string;
-    langId: string;
-    catId: string;
-  };
 
   function ClickOnFilter(lan: string, cat: string, aut: string) {
     setRefresh(false);
@@ -135,9 +133,6 @@ const BooksPage = () => {
         if (state?.authorId !== "") {
           setWriter(res?.result?.items[0]?.author);
         }
-        if (state?.langId !== "") {
-          setLang(res?.result?.items[0]?.bookLanguage);
-        }
         setPagination({
           ...pagination,
           recordsPerPage: 12,
@@ -147,7 +142,6 @@ const BooksPage = () => {
     });
   }, [refresh, i18n.language, SortValue, pagination?.totalRecords]);
 
-  const [bread, showBread] = useState("");
   useEffect(() => {
     if (state?.authorId) {
       showBread(state?.authorName);
@@ -160,6 +154,7 @@ const BooksPage = () => {
       showBread(t("Special_E_books_tr"));
     } else showBread(t("E_books_tr"));
   }, [i18n.language]);
+
   return (
     <>
       <div
@@ -181,7 +176,6 @@ const BooksPage = () => {
               fontSize: "36px",
               fontWeight: 700,
               color: "rgb(209, 21, 1)",
-              // marginLeft: "15%",
               top: "155px",
             }}
           >
@@ -215,18 +209,12 @@ const BooksPage = () => {
                 </>
               ) : (
                 <>
-                  <Link
-                    to={"/language/ + "}
-                    state={{
-                      langId: state?.langId,
-                    }}
-                    style={{ marginRight: "8px", color: "#2d2a29" }}
-                  >
+                  <span style={{ marginRight: "8px", color: "#2d2a29" }}>
                     / {bread}
-                  </Link>
+                  </span>
                   {state?.langId ? (
                     <label style={{ marginRight: "8px", color: "#2d2a29" }}>
-                      /{t("E_books_tr")}
+                      / {t("E_books_tr")}
                     </label>
                   ) : (
                     ""

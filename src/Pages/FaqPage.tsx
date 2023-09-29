@@ -1,5 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useTranslation } from "react-i18next";
-import React from "react";
+import React, { useEffect } from "react";
 import FaqService from "../Services/Faq";
 import "../Styles/About.css";
 import i18n, { _get_i18Lang } from "../i18n";
@@ -16,7 +17,7 @@ const TermsOfUse = () => {
   const { t } = useTranslation();
   const [tearms, setTearms] = React.useState<any>("");
 
-  React.useEffect(() => {
+  useEffect(() => {
     FaqService.getFaqData(_get_i18Lang()).then((result) => {
       if (result) {
         setTearms(result.result.items);
@@ -45,7 +46,6 @@ const TermsOfUse = () => {
               fontSize: "36px",
               fontWeight: 700,
               color: "rgb(209, 21, 1)",
-              marginLeft: "235px",
               top: "155px",
             }}
           >
@@ -84,16 +84,26 @@ const TermsOfUse = () => {
           >
             <span
               style={{
-                fontSize: "32px",
-                fontFamily: "VerdanaBold",
-
-                fontWeight: 500,
+                fontSize: "36px",
+                fontFamily:
+                  "Verda,Helvetica Neue,Helvetica,Arial,sans-serifnaBold",
+                color: "#000",
               }}
             >
               Frequently Asked Questions
             </span>
           </div>
-
+          <span
+            style={{
+              fontSize: "27px",
+              fontFamily:
+                "Verda,Helvetica Neue,Helvetica,Arial,sans-serifnaBold",
+              color: "#000",
+              margin: "20px",
+            }}
+          >
+            General questions
+          </span>
           {tearms ? (
             tearms.slice(0, 8).map((tearm: any) => (
               <div>

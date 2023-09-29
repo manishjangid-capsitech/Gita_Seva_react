@@ -13,7 +13,6 @@ import { useTranslation } from "react-i18next";
 import Loading from "../Components/Loading";
 import { useUser } from "../Contexts/UserContext";
 import Reset from "../Images/reset.png";
-import dot from "../assets/img/Dot.svg";
 import $ from "jquery";
 import {
   Accordion,
@@ -24,11 +23,9 @@ import ExpandMore from "@mui/icons-material/ExpandMore";
 
 const VivekvaniPage = () => {
   const { isSelected, setItemColored } = useUser();
-
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [vivek, setVivek] = useState<any[] | undefined>(undefined);
-
   const [refresh, setRefresh] = useState(false);
   const [SortValue, setSortValue] = useState("3");
   const [language, setLanguage] = useState<any>("");
@@ -54,7 +51,6 @@ const VivekvaniPage = () => {
       ...pagination,
       pageNo: 0,
     });
-    // setRefresh(true);
   }
 
   const location = useLocation();
@@ -139,6 +135,7 @@ const VivekvaniPage = () => {
       }
     });
   }, [refresh, i18n.language, SortValue]);
+
   return (
     <>
       <div
@@ -179,27 +176,7 @@ const VivekvaniPage = () => {
               <Link style={{ marginRight: "8px", color: "#2d2a29" }} to="/">
                 {t("Home_tr")}
               </Link>
-              {writer ? (
-                <Link
-                  to={"/author/ + "}
-                  state={{
-                    authorId: state?.authorId,
-                    authorName: state?.authorName,
-                  }}
-                  style={{ marginRight: "8px", color: "#2d2a29" }}
-                >
-                  / {writer}
-                </Link>
-              ) : (
-                ""
-              )}
-
-              <label>
-                /
-                {window.location.pathname === "/vivekvani/special"
-                  ? t("Special_vivek_vani_tr")
-                  : t("vivek_vani_tr")}
-              </label>
+              <label>/ {t("vivek_vani_tr")}</label>
             </div>
           </div>
         </div>

@@ -6,6 +6,10 @@ class VivekService {
   categoryRoute = "/api/settings/filters?lang=";
   authorRoute = "/api/authors/slug-";
 
+  vivekdetailRoute = "/api/VivekVanis/";           
+  faviroute = "/api/VivekVanis/";
+
+
   get = (id: string) => ApiUtility.getResult(`${this.route}/${id}`);
 
   getFilters = (productFor: string) => {
@@ -55,5 +59,44 @@ class VivekService {
   GetAuthorDataById = (id: string, lang: string) => {
     return ApiUtility.get(this.authorRoute + id + "?lang=");
   };
+
+  // vivek vani details
+
+
+  VikekDetailService = (id: string, userId: string) => {
+    return ApiUtility.get(
+      this.vivekdetailRoute +
+        id +
+        "?UserId=" +
+        userId +
+        "&lang=" +
+        localStorage.getItem("lan")
+    );
+  };
+
+  getRelatedVanis = (id: string, lang: string, authorId: string) => {
+    if (id === "") {
+      id = "null";
+    }
+    return ApiUtility.get(
+      this.vivekdetailRoute +
+        id +
+        "/related?lang=" +
+        localStorage.getItem("lan") +
+        "&authorId=" +
+        authorId
+    );
+  };
+
+  addFavourite = (id: string) => ApiUtility.post(`/api/VivekVanis/${id}/favourite`, {
+    Headers:{
+      authorization: localStorage.getItem("UserId"),
+      Accept: "application/json"
+    }
+  });
+
+  removeFavourite = (id: string) => ApiUtility.delete(`/api/VivekVanis/${id}/favourite`);
+  
+
 }
 export default new VivekService();

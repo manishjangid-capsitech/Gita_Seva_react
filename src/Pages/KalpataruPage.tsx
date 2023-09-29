@@ -92,7 +92,6 @@ const KalpataruPage = () => {
         }
       }
     );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [i18n.language]);
 
   useEffect(() => {
@@ -142,7 +141,6 @@ const KalpataruPage = () => {
               fontSize: "36px",
               fontWeight: 700,
               color: "rgb(209, 21, 1)",
-              // marginLeft: "15%",
               top: "155px",
             }}
           >

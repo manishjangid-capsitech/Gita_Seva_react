@@ -11,13 +11,22 @@ import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
 import { toast, Toaster } from "react-hot-toast";
 import leftArrow from "../assets/img/leftArrow1.png";
 import LoginServices from "../Services/Login";
+import FacebookLogin from "react-facebook-login";
 
 const provider = new GoogleAuthProvider();
 export const auth = getAuth(app);
 
 // sign in with facebook
 
-export const SignInWithFB = () => {};
+export const SignInWithFB = () => {
+  return (
+    <FacebookLogin
+      appId="291301805425699"
+      autoLoad={false}
+      fields="name, email, picture"
+    />
+  );
+};
 // sign in with mobile number
 const SignWithOtp = () => {
   const { setPhoneModel } = useUser();

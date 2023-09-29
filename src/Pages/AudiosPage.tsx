@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useEffect, useState } from "react";
@@ -22,10 +23,8 @@ import {
   AccordionSummary,
 } from "@material-ui/core";
 import ExpandMore from "@mui/icons-material/ExpandMore";
-import toast from "react-hot-toast";
 import Favadd from "../assets/img/favouritefilled.png";
 import Favicon from "../assets/img/pravachanfavbtn.png";
-import { userId } from "../Contexts/LocaleContext";
 import { LogInModel } from "./LogInoutModel";
 import { SideBar } from "./SubMenu";
 
@@ -46,7 +45,7 @@ const AudiosPage = () => {
   const [LyricsId, setLyricsId] = useState<any>("");
   const [Singer, setSinger] = useState<any>("");
   const [SingerId, setSingerId] = useState<any>("");
-  const [fav, setFav] = useState(false);
+  const [isLiked, setIsLiked] = useState<boolean>(false);
 
   const [audiohash, setAudioHash] = useState("");
 
@@ -63,11 +62,14 @@ const AudiosPage = () => {
   });
 
   const [logIn, setLogIn] = useState<boolean>(false);
+  const [toggleFav, setToggleFav] = useState<boolean>(false);
 
   const closeModal = () => {
     setLogIn(false);
   };
   const UserIdentity = localStorage.getItem("UserId") as any;
+  const location = useLocation();
+  const state = location.state as { authorId: string; authorName: string };
 
   function ResetData() {
     setCategoryId("");
@@ -151,9 +153,6 @@ const AudiosPage = () => {
     });
   }, [i18n.language]);
 
-  const location = useLocation();
-  const state = location.state as { authorId: string; authorName: string };
-
   useEffect(() => {
     ResetData();
   }, [isSelected]);
@@ -180,7 +179,7 @@ const AudiosPage = () => {
       UserIdentity
     ).then((res) => {
       if (res) setAudios(res.result?.items);
-      setFav(res?.result?.isFavourite);
+      setIsLiked(res?.result?.isFavourite);
       // setLegend(res.result?.items[0]?.author)
       setPagination({
         ...pagination,
@@ -189,44 +188,31 @@ const AudiosPage = () => {
     });
   }, [refresh, SortValue, i18n.language]);
 
-  const FavAudioAdd = (audioId: any) => {
-    AudiosService.addAudioFavourite(audioId).then((res) => {
-      setAudios(
-        audios?.map((a: any) => {
-          if (a.id === res.result?.productId) {
-            setFav(true);
-          }
-          return a;
+  const toggleLike = (audioId: any) => {
+    !isLiked
+      ? AudiosService.addAudioFavourite(audioId).then((res) => {
+          setAudios(
+            audios?.map((a: any) => {
+              if (a.id === res.result?.productId) {
+                res.status && setIsLiked(true);
+              }
+              return a;
+            })
+          );
         })
-      );
-      console.log(toast);
-      toast(
-        localStorage.getItem("lang") === "hindi"
-          ? "पुस्तक को सफलतापूर्वक मेरी पसंद में जोड़ा गया है।"
-          : "Book has been successfully added to the favourites"
-      );
-    });
-    return;
+      : AudiosService.removeAudioFavourite(audioId).then((res) => {
+          setAudios(
+            audios?.map((a: any) => {
+              if (a.id === audioId) {
+                res.status && setIsLiked(false);
+              }
+              return a;
+            })
+          );
+        });
+    setToggleFav((x) => !x);
   };
 
-  const FavAudioRemove = (audioId: any) => {
-    AudiosService.removeAudioFavourite(audioId).then((res) => {
-      setAudios(
-        audios?.map((a: any) => {
-          if (a.id === audioId) {
-            setFav(false);
-          }
-          return a;
-        })
-      );
-      toast(
-        localStorage.getItem("lang") === "hindi"
-          ? "पुस्तक मेरी पसंद से हटा दी गई है।"
-          : "Book has been removed from favourites"
-      );
-    });
-    return;
-  };
   const [bread, showBread] = useState("");
 
   useEffect(() => {
@@ -631,44 +617,26 @@ const AudiosPage = () => {
                               </div>
                               <div
                                 onClick={() => {
-                                  if (!userId) setLogIn(true);
+                                  if (!UserIdentity) setLogIn(true);
                                 }}
                               >
-                                {audio.isFavourite ? (
-                                  <label
-                                    id={`${audio.id}`}
-                                    onClick={() => {
-                                      FavAudioRemove(audio?.id);
+                                <label
+                                  id={`${audio.id}`}
+                                  onClick={() => {
+                                    if (!UserIdentity && logIn)
+                                      toggleLike(audio?.id);
+                                  }}
+                                >
+                                  <img
+                                    src={isLiked ? Favadd : Favicon}
+                                    alt="Favadd"
+                                    style={{
+                                      width: "36px",
+                                      marginRight: "8px",
+                                      marginTop: "2px",
                                     }}
-                                  >
-                                    <img
-                                      src={Favadd}
-                                      alt="Favadd"
-                                      style={{
-                                        width: "36px",
-                                        marginRight: "8px",
-                                        marginTop: "2px",
-                                      }}
-                                    />
-                                  </label>
-                                ) : (
-                                  <label
-                                    id={`${audio.id}`}
-                                    onClick={() => {
-                                      FavAudioAdd(audio?.id);
-                                    }}
-                                  >
-                                    <img
-                                      src={Favicon}
-                                      alt="Favicon"
-                                      style={{
-                                        width: "36px",
-                                        marginRight: "8px",
-                                        marginTop: "2px",
-                                      }}
-                                    />
-                                  </label>
-                                )}
+                                  />
+                                </label>
                               </div>
                               <div className="btns">
                                 <div className="buttonres">

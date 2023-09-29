@@ -62,7 +62,6 @@ const EpubPage = () => {
   const renditionRef = useRef<any>(undefined);
 
   const getSecureKey = (url: any) => {
-    debugger;
     let securekey =
       userid +
       "|" +
@@ -110,7 +109,6 @@ const EpubPage = () => {
   };
 
   const getUrlBytype = (type: BookContentType) => {
-    debugger
     let value = "";
     switch (type) {
       case BookContentType.books:
@@ -155,7 +153,6 @@ const EpubPage = () => {
     setLocation(epubcifi);
 
     if (renditionRef?.current && tocRef?.current) {
-      debugger
       const { displayed, href } = renditionRef?.current?.location?.start;
       const chapter = tocRef?.current?.find((item: any) => item?.href === href);
       setPage(
@@ -202,7 +199,6 @@ const EpubPage = () => {
       }
     });
   }
-  
 
   function saveLstPositionAndClose() {
     EpubServices.SaveLastPositionAndClose(
@@ -229,7 +225,6 @@ const EpubPage = () => {
 
   useEffect(() => {
     setTimeout(() => {
-      debugger;
       GetLstPosition(state?.bookDetailId);
       setLocation(cfiresult);
     }, 400);
@@ -490,12 +485,9 @@ const EpubPage = () => {
   const KalpataruId = state?.kalpatrauDetailId;
   const MagazineId = state?.magazineDetailId;
   const VivekId = state?.vivekvaniDetailId;
-
   const closebutton = () => {
     if (BookId) {
-      navigate(`/books/` + state.slug, {
-        state: { bookId: state?.bookDetailId },
-      });
+      navigate(-1);
     }
     if (KalyanId) {
       navigate(`/kalyans/` + state.slug, {

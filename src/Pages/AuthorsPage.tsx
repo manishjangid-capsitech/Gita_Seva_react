@@ -2,7 +2,7 @@
 /* eslint-disable array-callback-return */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useEffect, useState } from "react";
-import AuthorService from "../Services/AuthorsService";
+import AuthorService from "../Services/Authors";
 import DefaultBook from "../Images/defaultBook.png";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import "../Styles/Authors.css";

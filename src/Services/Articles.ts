@@ -6,6 +6,7 @@ class ArticlesService {
   articleRoute = "/api/articles?lang=";
   categoryRoute = "/api/settings/filters?lang=";
   authorlang =  "/api/authors/slug-";
+  faviroute = "/api/articles/";
 
   GetAuthorDataById = (id: string) => {
     return ApiUtility.get(
@@ -72,6 +73,29 @@ class ArticlesService {
         "&isSpecial=" +
         isSpecial
     );
+  };
+
+  // article detail
+
+  get = (id: string) => ApiUtility.getResult(`${this.route}/${id}`);
+
+  getArticlesDetail = (id: string, userId: string) => {
+    return ApiUtility.get(
+      this.articleRoute +
+        id +
+        "?UserId=" +
+        userId +
+        "&lang=" +
+        localStorage.getItem("lan")
+    );
+  };
+
+  addArticlesFavourite = (ArticleId: string) => {
+    return ApiUtility.post(this.faviroute + ArticleId + "/favourite", {});
+  };
+
+  removeArticlesFaviourite = (ArticleId: string) => {
+    return ApiUtility.delete(this.faviroute + ArticleId + "/favourite");
   };
 }
 export default new ArticlesService();

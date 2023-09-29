@@ -5,7 +5,6 @@ import ProfileService from "../Services/Profile";
 import i18n, { _get_i18Lang } from "../i18n";
 import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import $ from "jquery";
 import "../Styles/Profile.css";
 import {
   AudioListButton,
@@ -39,9 +38,10 @@ export const ProfileFav = () => {
   const [pravachan, getPravachan] = useState<any>([]);
   const [audio, getAudio] = useState<any>([]);
   const [article, getArticle] = useState<any>([]);
+  const [vivek, getVivek] = useState<any>([]);
   const [refresh, setRefresh] = useState<boolean>(false);
 
-  const [selectedMenu, setSelectedMenu] = useState<any>("");
+  const colors = "#FF9800";
 
   const initialDisplayCount = 4;
 
@@ -55,22 +55,10 @@ export const ProfileFav = () => {
       getPravachan(res?.result?.pravachans);
       getAudio(res?.result?.audios);
       getArticle(res?.result?.articles);
+      getVivek(res?.result?.vivekVanis);
     });
   }, [refresh, i18n.language]);
 
-  useEffect(() => {
-    $(".CategoryList > span").removeClass("#000000");
-    $("#profile-" + selectedMenu).addClass("#000000");
-  }, [selectedMenu]);
-
-  useEffect(() => {
-    if (window.location.pathname === "/profile") {
-      $(".CategoryList > span").removeClass("listActive");
-      $("#profile-" + selectedMenu).addClass("listActive");
-    }
-  }, [selectedMenu]);
-
-  const colors = "#FF9800";
   return (
     <div>
       <div
@@ -116,7 +104,7 @@ export const ProfileFav = () => {
         className="newcontainer"
         style={{
           backgroundColor: "#FFF6E1",
-         padding: "20px 0 3% 0",
+          padding: "20px 0 3% 0",
           marginTop: 0,
         }}
       >
@@ -145,10 +133,11 @@ export const ProfileFav = () => {
                         books={bookFav}
                         initialDisplayCount={initialDisplayCount}
                         getBook={(book) => {
-                          navigate(`/books/` + book.slug, {
+                          navigate("/books/" + book.slug, {
                             state: {
                               bookId: book.id,
                               bookName: book.name,
+                              special: window.location.pathname,
                             },
                           });
                           window.location.reload();
@@ -187,6 +176,18 @@ export const ProfileFav = () => {
                         getBook={(kalpatru) => {
                           navigate(`/monthlymagazine/` + kalpatru.slug, {
                             state: { MonthId: kalpatru.id },
+                          });
+                        }}
+                      />
+
+                      <BookListButton
+                        type="vivek"
+                        title={t("vivek_vani_tr")}
+                        books={vivek}
+                        initialDisplayCount={initialDisplayCount}
+                        getBook={(vivek) => {
+                          navigate(`/vivekvani/` + vivek.slug, {
+                            state: { vivekId: vivek.id },
                           });
                         }}
                       />

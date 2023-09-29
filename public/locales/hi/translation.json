@@ -28,9 +28,9 @@
   "Remove_to_favorites_tr": "फेवरेट में हटाएँ",
   "add_to_favorite_tr": "फेवरेट से जोड़े",
   "Special_Pravachan_tr": "विशेष प्रवचन",
-  "All_Special_Pravachan_tr": "सभी प्रवचन",
+  "All_Special_Pravachan_tr": "सभी विशेष प्रवचन",
   "Special_Article_tr": "विशेष अनमोल लेख",
-  "All_Special_Article_tr": "सभी अनमोल लेख",
+  "All_Special_Article_tr": "सभी विशेष अनमोल लेख",
   "download_mobile_app_tr": "मोबाइल ऐप डाउनलोड करें",
   "Gita_Seva_Trust_tr": "गीता सेवा ट्रस्ट",
   "Contact_tr": "सम्पर्क करें",
@@ -135,6 +135,13 @@
   "close_tr": "बंद करें",
   "thank_you_tr": "धन्यवाद",
   "All_Special_Audios_tr": "सभी विशेष ऑडियो",
-  "vivek_vani_tr":"विवेक-वाणी",
-  "Special_vivek_vani_tr":"विशेष विवेक-वाणी"
+  "vivek_vani_tr": "विवेक-वाणी",
+  "Special_vivek_vani_tr": "विशेष विवेक-वाणी",
+  "language.english": "English",
+  "language.hindi": "हिंदी",
+  "MonthlyMagazine_list_tr": "गीत-गोविंद सूची",
+  "Read_the_monthlymagazine_tr": "पत्रिका पढ़ें",
+  "Related_monthlymagazine_tr": "संबंधित गीत-गोविंद",
+  "MonthlyMagazine_number_tr": "गीत-गोविंद अंक",
+  "Special_monthlymagazine_tr": "विशेष गीत-गोविंद"
 }

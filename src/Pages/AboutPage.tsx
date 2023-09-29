@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useTranslation } from "react-i18next";
 import React from "react";
 import AboutService from "../Services/About";
@@ -12,6 +13,10 @@ const AboutPage = () => {
     __html: "",
   });
 
+  function createMarkup() {
+    return { __html: about.__html };
+  }
+
   React.useEffect(() => {
     AboutService.getAboutData(_get_i18Lang()).then((result) => {
       if (result) {
@@ -20,23 +25,8 @@ const AboutPage = () => {
     });
   }, [i18n.language]);
 
-  function createMarkup() {
-    return { __html: about.__html };
-  }
-
   return (
     <>
-      {/* <BreadCrumbs
-        bdcrHeadPageName={t("Introduction_tr")}
-        bdcrPageName={""}
-        bdcrDetailPageName={""}
-        bdcrDetailPageNameWithauthor={""}
-        bdcrDetailPageNameWithisSpecial={""}
-        navigateto={() => {
-          navigate(`/kalyans/`);
-        }}
-        home={t("Home_tr")}
-      /> */}
       <div
         className="breadcrumbs-head newcontainer"
         style={{

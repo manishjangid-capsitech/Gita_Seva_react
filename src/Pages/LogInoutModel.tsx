@@ -24,7 +24,6 @@ import WithLyrics from "../Images/audiowithoutlyrics.svg";
 import articalIcon from "../assets/img/article-icon.png";
 import Loading from "../Components/Loading";
 import { t } from "i18next";
-
 interface LogOutModalProps {
   open: boolean;
   onClose: () => void;
@@ -172,7 +171,10 @@ export const LogInModel: React.FC<LogInModalProps> = ({
           <div
             className="loginbuttons"
             style={{ cursor: "pointer" }}
-            onClick={SignInWithFB}
+            onClick={() => {
+              debugger;
+              SignInWithFB();
+            }}
           >
             <img
               src={signinfacebook}
@@ -187,6 +189,7 @@ export const LogInModel: React.FC<LogInModalProps> = ({
             />
             <label style={{ marginBottom: "0px" }}>
               {t("login_With_Facebook_tr")}
+              {/* <SignInWithFB /> */}
             </label>
           </div>
           <div className="loginbuttons" onClick={() => setPhoneModel(true)}>
@@ -250,7 +253,7 @@ export const BookListButton = ({
   title,
   getBook,
 }: {
-  type: "kalyan" | "kalpatru" | "geetgovind" | "book";
+  type: "kalyan" | "kalpatru" | "geetgovind" | "book" | "vivek";
   books: any[];
   initialDisplayCount: number;
   title: string;
@@ -280,6 +283,9 @@ export const BookListButton = ({
         break;
       case "geetgovind":
         imgpath = book.monthlyMagazineThumbPath ?? DefaultBook;
+        break;
+      case "vivek":
+        imgpath = book.vivekVaniThumbPath ?? DefaultBook;
         break;
       default:
         imgpath = DefaultBook;

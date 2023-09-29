@@ -1,9 +1,10 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
 import Loading from "../Components/Loading";
-import ArticlesDetailService from "../Services/ArticlesDetail";
+import ArticlesService from "../Services/Articles";
 import { Link, useLocation } from "react-router-dom";
 import "../Styles/Articles.css";
 import artimg from "../Images/atul-assets-img.png";
@@ -27,36 +28,34 @@ const ArticlesDetailPage = (props: any) => {
   const [ArticlesDetail, setArticlesDetail] = useState<any>(undefined);
   const [refresh, setRefresh] = useState(false);
 
-  const [logIn, setLogIn] = useState<boolean>(false);
   const [toggleFav, setToggleFav] = useState<boolean>(false);
+  const [logIn, setLogIn] = useState<boolean>(false);
   const closeModal = () => {
     setLogIn(false);
   };
 
   const UserIdentity = localStorage.getItem("UserId") as any;
-
   const toggleLike = () => {
     !isLiked
-      ? ArticlesDetailService.addArticlesFavourite(state?.articleId).then(
-          (res: any) => {
-            setIsLiked(true);
-          }
-        )
-      : ArticlesDetailService.removeArticlesFaviourite(state?.articleId).then(
-          (res: any) => {
-            setIsLiked(false);
+      ? ArticlesService.addArticlesFavourite(state?.articleId).then((res) => {
+          res.status && setIsLiked(true);
+        })
+      : ArticlesService.removeArticlesFaviourite(state?.articleId).then(
+          (res) => {
+            res.status && setIsLiked(false);
           }
         );
     setToggleFav((x) => !x);
   };
 
+  function createMarkup() {
+    return { __html: Articletcontent.__html };
+  }
+
   useEffect(() => {
     if (state?.articleId) {
       setRefresh(false);
-      ArticlesDetailService.getArticlesDetail(
-        state?.articleId,
-        UserIdentity !== "" ? UserIdentity : ""
-      ).then((res) => {
+      ArticlesService.getArticlesDetail(state?.articleId, "").then((res) => {
         if (res.status) {
           setArticlesDetail(res?.result);
           setarticleContent({ __html: res?.result?.articleContent });
@@ -64,11 +63,7 @@ const ArticlesDetailPage = (props: any) => {
         }
       });
     }
-  }, [refresh, i18n.language, state?.articleId]);
-
-  function createMarkup() {
-    return { __html: Articletcontent.__html };
-  }
+  }, [refresh, i18n.language]);
 
   return (
     <div
@@ -130,12 +125,12 @@ const ArticlesDetailPage = (props: any) => {
           </div>
         </div>
       </div>
-      <div className="container" style={{ paddingTop: "10px"}}>
+      <div className="container" style={{ paddingTop: "10px" }}>
         <div>
           {ArticlesDetail ? (
             <div
               key={`articledetail-${ArticlesDetail.id}`}
-              style={{ backgroundColor: "#fff6e1", padding: "1px 0px 3% 0", }}
+              style={{ backgroundColor: "#fff6e1", padding: "1px 0px 3% 0" }}
             >
               <div
                 style={{
@@ -215,7 +210,10 @@ const ArticlesDetailPage = (props: any) => {
               </div>
             </div>
           ) : (
-            <Loading />
+            <div>
+              <Loading />
+              {t("result_not_found_tr")}
+            </div>
           )}
         </div>
       </div>
