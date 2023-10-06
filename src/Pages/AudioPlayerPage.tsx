@@ -44,6 +44,11 @@ const AudioPlayerPage = ({ match }: any) => {
   );
 
   useEffect(() => {
+    debugger
+    console.log("state", state);
+  }, [])
+
+  useEffect(() => {
     setType(localStorage.getItem("type"));
     AudioPlayer.getAudioPlayer(
       _get_i18Lang(),
@@ -66,11 +71,10 @@ const AudioPlayerPage = ({ match }: any) => {
         element?.scrollIntoView();
       }
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [auid, i18n.language, catId]);
 
   const sideNavRef = useRef(null);
-  
+
   useEffect(() => {
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
@@ -78,9 +82,9 @@ const AudioPlayerPage = ({ match }: any) => {
     };
   }, [!showList]);
 
-  function handleClickOutside(e:any) {
+  function handleClickOutside(e: any) {
     if (!showList === false) {
-     setShowList(true)
+      setShowList(true)
     }
   }
 
@@ -173,7 +177,7 @@ const AudioPlayerPage = ({ match }: any) => {
           </div>
         )}
         <div
-          className= "col-3 col-lg-3"
+          className="col-3 col-lg-3"
           style={{ display: "block" }}
         >
           <div className="songSidebar">

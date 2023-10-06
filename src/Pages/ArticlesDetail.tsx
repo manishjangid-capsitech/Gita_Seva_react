@@ -12,6 +12,7 @@ import i18n, { _get_i18Lang } from "../i18n";
 import Favfill from "../assets/img/favadd.png";
 import Favempty from "../assets/img/fav.png";
 import { LogInModel } from "./LogInoutModel";
+import $ from "jquery";
 
 const ArticlesDetailPage = (props: any) => {
   const [Articletcontent, setarticleContent] = useState({
@@ -22,14 +23,18 @@ const ArticlesDetailPage = (props: any) => {
   const [isLiked, setIsLiked] = useState<boolean>(false);
   const state = location.state as {
     articleId: string;
-    authorName: string;
     articleName: string;
+    authorId: string;
+    authorName: string;
+    special: string;
+    index: number
   };
   const [ArticlesDetail, setArticlesDetail] = useState<any>(undefined);
   const [refresh, setRefresh] = useState(false);
 
   const [toggleFav, setToggleFav] = useState<boolean>(false);
   const [logIn, setLogIn] = useState<boolean>(false);
+  const [articleId, setArticleId] = useState("");
   const closeModal = () => {
     setLogIn(false);
   };
@@ -37,14 +42,12 @@ const ArticlesDetailPage = (props: any) => {
   const UserIdentity = localStorage.getItem("UserId") as any;
   const toggleLike = () => {
     !isLiked
-      ? ArticlesService.addArticlesFavourite(state?.articleId).then((res) => {
-          res.status && setIsLiked(true);
-        })
-      : ArticlesService.removeArticlesFaviourite(state?.articleId).then(
-          (res) => {
-            res.status && setIsLiked(false);
-          }
-        );
+      ? ArticlesService.addArticlesFavourite(articleId).then((res) => {
+        res.status && setIsLiked(true);
+      })
+      : ArticlesService.removeArticlesFaviourite(articleId).then((res) => {
+        res.status && setIsLiked(false);
+      });
     setToggleFav((x) => !x);
   };
 
@@ -53,9 +56,23 @@ const ArticlesDetailPage = (props: any) => {
   }
 
   useEffect(() => {
-    if (state?.articleId) {
+    if (location.state) {
+      setArticleId(state?.articleId);
+    }
+  }, [articleId]);
+
+  // useEffect(() => {
+  //   debugger;
+  //   console.log("state", state);
+  // }, []);
+
+  useEffect(() => {
+    if (articleId) {
       setRefresh(false);
-      ArticlesService.getArticlesDetail(state?.articleId, "").then((res) => {
+      ArticlesService.getArticlesDetail(
+        articleId,
+        UserIdentity !== "" ? UserIdentity : ""
+      ).then((res) => {
         if (res.status) {
           setArticlesDetail(res?.result);
           setarticleContent({ __html: res?.result?.articleContent });
@@ -63,7 +80,7 @@ const ArticlesDetailPage = (props: any) => {
         }
       });
     }
-  }, [refresh, i18n.language]);
+  }, [refresh, i18n.language, articleId]);
 
   return (
     <div
@@ -93,7 +110,11 @@ const ArticlesDetailPage = (props: any) => {
               top: "155px",
             }}
           >
-            {t("Article_tr")}
+            {state?.index >= 0 ? t("Article_tr") : ""}
+            {state?.special === "/articles" && t("Article_tr")}
+            {state?.special === "/articles/special" && t("Special_Article_tr")}
+            {state?.authorId && <span>{ArticlesDetail?.author}</span>}
+
             <div
               style={{
                 fontSize: "19px",
@@ -105,21 +126,55 @@ const ArticlesDetailPage = (props: any) => {
               <Link style={{ marginRight: "4px", color: "#2d2a29" }} to="/">
                 {t("Home_tr")}
               </Link>
-              {state?.authorName ? (
-                <Link to={"/"} style={{ marginRight: "8px", color: "#2d2a29" }}>
-                  / {state?.authorName}
+              {state?.special === "/articles/special" ? <>
+                <Link
+                  to={"/articles/special"}
+                  style={{ marginRight: "8px", color: "#2d2a29" }}
+                >
+                  / {t("Special_Article_tr")}
                 </Link>
+              </> : ""}
+              {state?.authorName ? (
+                <>
+                  <Link
+                    to={"/author/ +"}
+                    state={{
+                      authorId: state?.authorId,
+                      authorName: state?.authorName,
+                    }}
+                    style={{ marginRight: "8px", color: "#2d2a29" }}
+                  >
+                    / {ArticlesDetail?.author}
+                  </Link>
+                  <Link
+                    to={"/articles/author/ +"}
+                    state={{
+                      authorId: state?.authorId,
+                      authorName: state?.authorName,
+                    }}
+                    style={{ color: "#2d2a29", marginRight: "6px" }}
+                  >
+                    / {t("Article_tr")}
+                  </Link>
+                </>
               ) : (
                 ""
               )}
-              <Link
-                to={"/articles/author/:id"}
+              {state?.index >= 0 ? <Link
+                to={"/articles"}
                 style={{ color: "#2d2a29", marginRight: "6px" }}
               >
                 / {t("Article_tr")}
-              </Link>
+              </Link> : ""}
+              {state?.special === "/articles" &&
+                <Link
+                  to={"/articles"}
+                  style={{ color: "#2d2a29", marginRight: "6px" }}
+                >
+                  / {t("Article_tr")}
+                </Link>}
               <span style={{ marginRight: "8px", color: "#2d2a29" }}>
-                / {state?.articleName}
+                / {ArticlesDetail?.name}
               </span>
             </div>
           </div>

@@ -51,8 +51,9 @@ const BookDetailPage = (props: any) => {
     special: string;
     langId: string;
     catId: string;
-    searched: string;
     index: number;
+    searched: string;
+    pathname: string
   };
   const settings = {
     infinite: true,
@@ -65,6 +66,7 @@ const BookDetailPage = (props: any) => {
   };
 
   const [logIn, setLogIn] = useState<boolean>(false);
+  const [bread, showBread] = useState("")
 
   const closeModal = () => {
     setLogIn(false);
@@ -77,25 +79,25 @@ const BookDetailPage = (props: any) => {
   const notify = () => {
     !isLiked
       ? toast(
-          localStorage.getItem("lang") === "hindi"
-            ? "पुस्तक को सफलतापूर्वक मेरी पसंद में जोड़ा गया है।"
-            : "Book has been successfully added to the favourites"
-        )
+        localStorage.getItem("lang") === "hindi"
+          ? "पुस्तक को सफलतापूर्वक मेरी पसंद में जोड़ा गया है।"
+          : "Book has been successfully added to the favourites"
+      )
       : toast(
-          localStorage.getItem("lang") === "hindi"
-            ? "पुस्तक मेरी पसंद से हटा दी गई है।"
-            : "Book has been removed from favourites"
-        );
+        localStorage.getItem("lang") === "hindi"
+          ? "पुस्तक मेरी पसंद से हटा दी गई है।"
+          : "Book has been removed from favourites"
+      );
   };
 
   const toggleLike = () => {
     !isLiked
       ? BooksService.addFavourite(state.bookId).then((res) => {
-          res.status && setIsLiked(true);
-        })
+        res.status && setIsLiked(true);
+      })
       : BooksService.removeFavourite(state.bookId).then((res) => {
-          res.status && setIsLiked(false);
-        });
+        res.status && setIsLiked(false);
+      });
     setToggleFav((x) => !x);
   };
 
@@ -105,8 +107,11 @@ const BookDetailPage = (props: any) => {
       state.bookId,
       UserIdentity !== "" ? UserIdentity : ""
     ).then((res: any) => {
+      debugger
+      console.log("result", res.result?.author);
       setBookDetail(res.result);
-      setIsLiked(res.result.isFavourite);
+      showBread(res?.result?.author)
+      setIsLiked(res?.result?.isFavourite);
     });
   }, [refresh, i18n.language]);
 
@@ -128,7 +133,11 @@ const BookDetailPage = (props: any) => {
   useEffect(() => {
     debugger;
     console.log("state", state);
+    console.log(window.location.pathname);
   }, []);
+
+
+
 
   return (
     <div
@@ -154,20 +163,14 @@ const BookDetailPage = (props: any) => {
               fontSize: "36px",
               fontWeight: 700,
               color: "rgb(209, 21, 1)",
-              // marginLeft: "15%",
               top: "155px",
             }}
           >
-            {state?.index >= 0 ? t("E_books_tr") : ""}
-            {/* {(state?.searched === "/searchdata/all" && state?.index) ||
-              ("/searchdata/books" && t("E_books_tr"))} */}
-            {state?.special === "/profile/fav" && t("E_books_tr")}
-            {state?.special === "/home" && t("E_books_tr")}
-            {state?.special === "/books" && t("E_books_tr")}
-            {state?.catId !== undefined && t("E_books_tr")}
-            {state?.special === "/books/special" && t("Special_E_books_tr")}
-            {state?.authorId && <span>{bookDetail?.author}</span>}
+            {window.location?.pathname === "/books/" + state.bookId && t("E_books_tr")}
+            {window.location?.pathname === "/books/special/" + state.bookId && t("Special_E_books_tr")}
+            {state?.authorId !== undefined && <span>{bread || state?.authorName}</span>}
             {state?.langId !== undefined && <span>{lang}</span>}
+            {state?.catId ? t("E_books_tr") : ""}
             <div
               style={{
                 fontSize: "19px",
@@ -179,49 +182,24 @@ const BookDetailPage = (props: any) => {
               <Link style={{ marginRight: "8px", color: "#2d2a29" }} to="/">
                 {t("Home_tr")}
               </Link>
-              {state?.special === "/profile/fav" && (
+              {window.location?.pathname === "/books/" + state.bookId ? (
                 <Link
                   to={"/books"}
                   style={{ marginRight: "6px", color: "#2d2a29" }}
                 >
                   / {t("E_books_tr")}
                 </Link>
-              )}
-              {state?.special === "/home" && (
-                <Link
-                  to={"/books"}
-                  style={{ marginRight: "6px", color: "#2d2a29" }}
-                >
-                  / {t("E_books_tr")}
-                </Link>
-              )}
-              {state?.index >= 0 ? (
-                <Link
-                  to={"/books"}
-                  style={{ marginRight: "6px", color: "#2d2a29" }}
-                >
-                  / {t("E_books_tr")}
-                </Link>
-              ) : (
-                ""
-              )}
-              {state?.special === "/books" && (
-                <Link
-                  to={"/books"}
-                  style={{ marginRight: "6px", color: "#2d2a29" }}
-                >
-                  / {t("E_books_tr")}
-                </Link>
-              )}
-              {state?.special === "/books/special" && (
+              ) : ""}
+              {window.location?.pathname === "/books/special/" + state.bookId ? (
                 <Link
                   to={"/books/special"}
-                  style={{ marginRight: "8px", color: "#2d2a29" }}
+                  style={{ marginRight: "6px", color: "#2d2a29" }}
                 >
                   / {t("Special_E_books_tr")}
                 </Link>
-              )}
-              {state?.authorId && (
+              ) : ""}
+
+              {state?.authorId !== undefined ? (
                 <>
                   <Link
                     to={"/author/ +"}
@@ -229,25 +207,29 @@ const BookDetailPage = (props: any) => {
                       authorId: state?.authorId,
                       authorName: state?.authorName,
                     }}
-                    style={{ marginRight: "8px", color: "#2d2a29" }}
+                    style={{ marginRight: "6px", color: "#2d2a29" }}
                   >
-                    / {bookDetail?.author}
+                    {/* author name in hindi and english */}
+                    / {bread || state?.authorName}
                   </Link>
-                  <Link
-                    to={"/books/author/ +"}
+                  <Link to={"/books/author/+"}
                     state={{
                       authorId: state?.authorId,
                       authorName: state?.authorName,
                     }}
-                    style={{ marginRight: "8px", color: "#2d2a29" }}
-                  >
+                    style={{ marginRight: "6px", color: "#2d2a29" }}>
                     / {t("E_books_tr")}
                   </Link>
                 </>
+              ) : (
+                ""
               )}
               {state?.catId !== undefined && (
                 <Link
-                  to={"/books"}
+                  to={"/books/category/+"}
+                  state={{
+                    catId: state?.catId,
+                  }}
                   style={{ marginRight: "8px", color: "#2d2a29" }}
                 >
                   / {t("E_books_tr")}
@@ -405,28 +387,93 @@ const BookDetailPage = (props: any) => {
                   </div>
 
                   <div className="clsslide">
-                    <div>
-                      <h1
-                        style={{ fontSize: "30px!important" }}
-                        className="heading-related"
-                      >
-                        {t("Related_e_books_tr")}
-                      </h1>
+                    {relateds && relateds.length > 5 ?
+                      <div>
+                        <h1
+                          style={{ fontSize: "30px!important" }}
+                          className="heading-related"
+                        >
+                          {t("Related_e_books_tr")}
+                        </h1>
 
-                      <div style={{ paddingBottom: "20px" }}>
-                        <Slider {...settings}>
-                          {relateds && relateds.length > 0
-                            ? relateds.map((related) => (
+                        <div style={{ paddingBottom: "20px" }}>
+
+                          <Slider {...settings}>
+                            {relateds && relateds.length > 0
+                              ? relateds.map((related) => (
                                 <div
+                                  style={{ display: "flex" }}
                                   className="slider-books sidebarmargin"
                                   key={`related-${related.id}`}
                                   onClick={() => {
-                                    navigate(`/books/` + related.slug, {
-                                      state: {
-                                        bookId: related.id,
-                                        bookName: related.name,
-                                      },
-                                    });
+                                    debugger
+                                    if (window.location.pathname === `/books/` + state?.bookId) {
+                                      navigate(`/books/` + related.id, {
+                                        state: {
+                                          bookId: related.id,
+                                          bookName: related.name,
+                                          special: window.location.pathname,
+                                          pathname: window?.location?.pathname
+                                        },
+                                      });
+                                    }
+                                    if (window.location.pathname === `/books/special/` + state?.bookId) {
+                                      navigate(`/books/special/` + related.id, {
+                                        state: {
+                                          bookId: related.id,
+                                          bookName: related.name,
+                                          special: window.location.pathname,
+                                          pathname: window?.location?.pathname
+                                        },
+                                      });
+                                    }
+                                    if (window.location.pathname === "/books/author/" + state?.authorId + "/" + state?.bookId) {
+                                      navigate("/books/author/" + state?.authorId + "/" + related.id,
+                                        {
+                                          state: {
+                                            bookId: related.id,
+                                            bookName: related.name,
+                                            authorId: state?.authorId,
+                                            authorName: state?.authorName,
+                                            pathname: window?.location?.pathname
+                                          },
+                                        })
+                                    }
+                                    if (window.location.pathname === `/books/category/` + state?.catId + "/" + state.bookId) {
+                                      navigate(`/books/category/` + state?.catId + "/" + related.id,
+                                        {
+                                          state: {
+                                            bookId: related.id,
+                                            bookName: related.name,
+                                            catId: state?.catId,
+                                            pathname: window?.location?.pathname
+                                          },
+                                        })
+                                    }
+                                    if (window.location.pathname === `/books/language/` + state?.langId + "/" + state.bookId) {
+                                      navigate(`/books/language/` + state?.langId + "/" + related.id,
+                                        {
+                                          state: {
+                                            bookId: related.id,
+                                            bookName: related.name,
+                                            langId: state?.langId,
+                                            pathname: window?.location?.pathname
+                                          },
+                                        })
+                                    }
+
+                                    // navigate(`/books/special/` + related.slug, {
+                                    //   state: {
+                                    //     bookId: related.id,
+                                    //     bookName: related.name,
+                                    //     authorId: state?.authorId,
+                                    //     authorName: state?.authorName,
+                                    //     special: window.location.pathname,
+                                    //     langId: state?.langId,
+                                    //     catId: state?.catId,
+                                    //     isspecial: true,
+                                    //   },
+                                    // });
                                     window.location.reload();
                                   }}
                                 >
@@ -453,10 +500,11 @@ const BookDetailPage = (props: any) => {
                                   </div>
                                 </div>
                               ))
-                            : ""}
-                        </Slider>
+                              : ""}
+                          </Slider>
+                        </div>
                       </div>
-                    </div>
+                      : ""}
                   </div>
                 </div>
               ) : (
@@ -465,9 +513,9 @@ const BookDetailPage = (props: any) => {
             </div>
           </div>
         </div>
-      </div>
+      </div >
       <LogInModel opens={logIn} onCloses={closeModal} />
-    </div>
+    </div >
   );
 };
 export default BookDetailPage;

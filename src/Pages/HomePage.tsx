@@ -778,6 +778,7 @@ const HomePage = () => {
                                   state: {
                                     authorId: author.id,
                                     authorName: author?.name,
+                                    type: "audios"
                                   },
                                 });
                               }}

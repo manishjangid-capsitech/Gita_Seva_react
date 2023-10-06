@@ -133,14 +133,13 @@ export const ProfileFav = () => {
                         books={bookFav}
                         initialDisplayCount={initialDisplayCount}
                         getBook={(book) => {
-                          navigate("/books/" + book.slug, {
+                          navigate("/books/" + book.id, {
                             state: {
                               bookId: book.id,
                               bookName: book.name,
                               special: window.location.pathname,
                             },
                           });
-                          window.location.reload();
                         }}
                       />
 

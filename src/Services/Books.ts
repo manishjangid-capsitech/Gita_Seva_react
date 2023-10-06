@@ -70,9 +70,7 @@ class BooksService {
     );
   };
 
-  GetAuthorDataById = (id: string, lang: string) => {
-    return ApiUtility.get(this.authorRoute + id + "?lang=");
-  };
+ 
 
   // book detail
 

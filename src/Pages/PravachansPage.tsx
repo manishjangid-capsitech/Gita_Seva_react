@@ -4,6 +4,7 @@
 import { useEffect, useState } from "react";
 import Reset from "../Images/reset.png";
 import AudiosService from "../Services/Audios";
+import AuthorsService from "../Services/Authors";
 import WithoutLyrics from "../Images/audiolyrics.svg";
 import WithLyrics from "../Images/audiowithoutlyrics.svg";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -89,25 +90,25 @@ const PravachansPage = () => {
   const toggleLike = (audioId: any) => {
     !isLiked
       ? AudiosService.addPravachanFavourite(audioId).then((res) => {
-          setAudios(
-            audios?.map((a: any) => {
-              if (a.id === res.result?.productId) {
-                res.status && setIsLiked(true);
-              }
-              return a;
-            })
-          );
-        })
+        setAudios(
+          audios?.map((a: any) => {
+            if (a.id === res.result?.productId) {
+              res.status && setIsLiked(true);
+            }
+            return a;
+          })
+        );
+      })
       : AudiosService.removePravachanFaviourite(audioId).then((res) => {
-          setAudios(
-            audios?.map((a: any) => {
-              if (a.id === audioId) {
-                res.status && setIsLiked(false);
-              }
-              return a;
-            })
-          );
-        });
+        setAudios(
+          audios?.map((a: any) => {
+            if (a.id === audioId) {
+              res.status && setIsLiked(false);
+            }
+            return a;
+          })
+        );
+      });
     setToggleFav((x) => !x);
   };
 
@@ -128,7 +129,6 @@ const PravachansPage = () => {
       LyricsId,
       SortMonthValue,
       SortYearValue,
-      1,
       ""
     ).then((res) => {
       if (res) {
@@ -177,13 +177,14 @@ const PravachansPage = () => {
   }, [isSelected, setItemColored]);
 
   useEffect(() => {
-    AudiosService.GetAuthorDataById(state?.authorId).then((res) => {
+    AuthorsService.GetAuthorDataById(state?.authorId, "").then((res) => {
       showBread(res?.result?.name);
     });
   }, [i18n.language, refresh]);
 
   useEffect(() => {
     setRefresh(false);
+    setType("pravachans");
     AudiosService.getAudios(
       pagination.pageNo === 0
         ? 0
@@ -196,11 +197,10 @@ const PravachansPage = () => {
       SortValue,
       "",
       window.location.pathname === "/pravachans/special" ? true : false,
-      "pravachans",
+      Type,
       LyricsId,
       SortMonthValue,
       SortYearValue,
-      1,
       UserIdentity
     ).then((res) => {
       if (res.status) setAudios(res.result?.items);
@@ -428,31 +428,31 @@ const PravachansPage = () => {
                         >
                           {Preacher && Preacher.length > 0
                             ? Preacher?.map((preacher: any) => (
-                                <div
-                                  key={`c-${preacher.id}`}
-                                  className="CategoryList"
-                                  onClick={() => {
-                                    setPreacherId(preacher.id);
-                                  }}
-                                >
-                                  <ul style={{ margin: 0 }}>
-                                    <li>
-                                      <div
-                                        style={{
-                                          fontSize: "21px",
-                                          cursor: "pointer",
-                                          fontWeight: 400,
-                                          color: "#545454",
-                                          fontFamily: "ChanakyaUni",
-                                        }}
-                                        id={`par-${preacher.id}`}
-                                      >
-                                        {preacher.name}
-                                      </div>
-                                    </li>
-                                  </ul>
-                                </div>
-                              ))
+                              <div
+                                key={`c-${preacher.id}`}
+                                className="CategoryList"
+                                onClick={() => {
+                                  setPreacherId(preacher.id);
+                                }}
+                              >
+                                <ul style={{ margin: 0 }}>
+                                  <li>
+                                    <div
+                                      style={{
+                                        fontSize: "21px",
+                                        cursor: "pointer",
+                                        fontWeight: 400,
+                                        color: "#545454",
+                                        fontFamily: "ChanakyaUni",
+                                      }}
+                                      id={`par-${preacher.id}`}
+                                    >
+                                      {preacher.name}
+                                    </div>
+                                  </li>
+                                </ul>
+                              </div>
+                            ))
                             : ""}
                         </AccordionDetails>
                       </Accordion>
@@ -476,31 +476,31 @@ const PravachansPage = () => {
                         >
                           {Category && Category.length > 0
                             ? Category?.map((categorie: any) => (
-                                <div
-                                  key={`c-${categorie.id}`}
-                                  className="Authorlist"
-                                  onClick={() => {
-                                    setCategoryId(categorie.id);
-                                  }}
-                                >
-                                  <ul style={{ margin: 0 }}>
-                                    <li>
-                                      <div
-                                        style={{
-                                          fontSize: "21px",
-                                          cursor: "pointer",
-                                          fontWeight: 400,
-                                          color: "#545454",
-                                          fontFamily: "ChanakyaUni",
-                                        }}
-                                        id={`aut-${categorie.id}`}
-                                      >
-                                        {categorie.name}
-                                      </div>
-                                    </li>
-                                  </ul>
-                                </div>
-                              ))
+                              <div
+                                key={`c-${categorie.id}`}
+                                className="Authorlist"
+                                onClick={() => {
+                                  setCategoryId(categorie.id);
+                                }}
+                              >
+                                <ul style={{ margin: 0 }}>
+                                  <li>
+                                    <div
+                                      style={{
+                                        fontSize: "21px",
+                                        cursor: "pointer",
+                                        fontWeight: 400,
+                                        color: "#545454",
+                                        fontFamily: "ChanakyaUni",
+                                      }}
+                                      id={`aut-${categorie.id}`}
+                                    >
+                                      {categorie.name}
+                                    </div>
+                                  </li>
+                                </ul>
+                              </div>
+                            ))
                             : ""}
                         </AccordionDetails>
                       </Accordion>
@@ -680,7 +680,7 @@ const PravachansPage = () => {
                                   >
                                     <p>
                                       {audio.name != null &&
-                                      audio.name.length > 100
+                                        audio.name.length > 100
                                         ? audio.name.slice(0, 80) + "..."
                                         : audio.name}
                                     </p>

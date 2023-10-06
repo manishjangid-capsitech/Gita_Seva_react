@@ -86,7 +86,7 @@ const AppRoutes = () => {
       ></Route>
       <Route
         element={<WithHeaderFooter element={<BooksPage />} />}
-        path="/books/category/:id"
+        path="/books/category/:catid"
       ></Route>
 
       {/* Book Detail */}
@@ -109,7 +109,7 @@ const AppRoutes = () => {
       ></Route>
       <Route
         element={<WithHeaderFooter element={<BookDetailPage />} />}
-        path="/books/category/:categoryId/:bookid"
+        path="/books/category/:catId/:bookid"
       ></Route>
 
       {/* epub */}
@@ -356,10 +356,22 @@ const AppRoutes = () => {
         path="/articles/author/:id"
       ></Route>
 
+      {/* article detail page */}
+
       <Route
         element={<WithHeaderFooter element={<ArticlesDetailPage />} />}
         path="/articles/:id"
       ></Route>
+      <Route
+        element={<WithHeaderFooter element={<ArticlesDetailPage />} />}
+        path="/articles/special/:id"
+      ></Route>
+      <Route
+        element={<WithHeaderFooter element={<ArticlesDetailPage />} />}
+        path="/articles/author/:authorId/:bookid"
+      ></Route>
+
+      {/* message Page */}
 
       <Route
         element={<WithHeaderFooter element={<MessagesPage />} />}
@@ -394,6 +406,11 @@ const AppRoutes = () => {
       <Route
         element={<WithHeaderFooter element={<SearchDataPage />} />}
         path="/searchdata/:searchCategory/:search"
+      ></Route>
+      
+       <Route
+        element={<WithHeaderFooter element={<SearchDataPage />} />}
+        path="/searchdata/:searchCategory/"
       ></Route>
 
       {/* profile Page's */}

@@ -56,9 +56,7 @@ class VivekService {
     );
   };
 
-  GetAuthorDataById = (id: string, lang: string) => {
-    return ApiUtility.get(this.authorRoute + id + "?lang=");
-  };
+ 
 
   // vivek vani details
 

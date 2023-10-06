@@ -8,18 +8,6 @@ class AudiosService {
   categoryRouteAudio = "/api/Audios/Categories?lang=";
   pravachanfav = "/api/pravachans/";
   audiofavroute = "/api/audios/";
-  articlelang =  "/api/authors/slug-";
-
-  GetAuthorDataById = (id: string) => {
-    return ApiUtility.get(
-      this.articlelang +
-        id +
-        "?lang=" +
-        localStorage.getItem("lan") +
-        "&userId=" +
-        userId
-    );
-  }
 
   getPravachanFilters = (productFor: string) => {
     return ApiUtility.get(
@@ -60,7 +48,6 @@ class AudiosService {
     lyrics: number = 0,
     month: string,
     year: string,
-    monthyear: number,
     userId: string
   ) => {
     if (type === "audios") {

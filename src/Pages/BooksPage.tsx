@@ -204,7 +204,7 @@ const BooksPage = () => {
                     / {writer}
                   </Link>
                   <label style={{ marginRight: "8px", color: "#2d2a29" }}>
-                    /{t("E_books_tr")}
+                    / {t("E_books_tr")}
                   </label>
                 </>
               ) : (
@@ -291,31 +291,31 @@ const BooksPage = () => {
                       >
                         {Category && Category.length > 0
                           ? Category?.map((category: any) => (
-                              <div
-                                key={`c-${category.id}`}
-                                className="CategoryList"
-                                onClick={() => {
-                                  setCategoryId(category.id);
-                                }}
-                              >
-                                <ul style={{ margin: 0 }}>
-                                  <li>
-                                    <div
-                                      style={{
-                                        fontSize: "21px",
-                                        cursor: "pointer",
-                                        fontWeight: 400,
-                                        color: "#545454",
-                                        fontFamily: "ChanakyaUni",
-                                      }}
-                                      id={`cat-${category.id}`}
-                                    >
-                                      {category.name}
-                                    </div>
-                                  </li>
-                                </ul>
-                              </div>
-                            ))
+                            <div
+                              key={`c-${category.id}`}
+                              className="CategoryList"
+                              onClick={() => {
+                                setCategoryId(category.id);
+                              }}
+                            >
+                              <ul style={{ margin: 0 }}>
+                                <li>
+                                  <div
+                                    style={{
+                                      fontSize: "21px",
+                                      cursor: "pointer",
+                                      fontWeight: 400,
+                                      color: "#545454",
+                                      fontFamily: "ChanakyaUni",
+                                    }}
+                                    id={`cat-${category.id}`}
+                                  >
+                                    {category.name}
+                                  </div>
+                                </li>
+                              </ul>
+                            </div>
+                          ))
                           : ""}
                       </AccordionDetails>
                     </Accordion>
@@ -343,31 +343,31 @@ const BooksPage = () => {
                       >
                         {Author && Author.length > 0
                           ? Author?.map((author: any) => (
-                              <div
-                                key={`c-${author.id}`}
-                                className="Authorlist"
-                                onClick={() => {
-                                  setAuthorId(author?.id);
-                                }}
-                              >
-                                <ul style={{ margin: 0 }}>
-                                  <li>
-                                    <div
-                                      style={{
-                                        fontSize: "21px",
-                                        cursor: "pointer",
-                                        fontWeight: 400,
-                                        color: "#545454",
-                                        fontFamily: "ChanakyaUni",
-                                      }}
-                                      id={`aut-${author.id}`}
-                                    >
-                                      {author.name}
-                                    </div>
-                                  </li>
-                                </ul>
-                              </div>
-                            ))
+                            <div
+                              key={`c-${author.id}`}
+                              className="Authorlist"
+                              onClick={() => {
+                                setAuthorId(author?.id);
+                              }}
+                            >
+                              <ul style={{ margin: 0 }}>
+                                <li>
+                                  <div
+                                    style={{
+                                      fontSize: "21px",
+                                      cursor: "pointer",
+                                      fontWeight: 400,
+                                      color: "#545454",
+                                      fontFamily: "ChanakyaUni",
+                                    }}
+                                    id={`aut-${author.id}`}
+                                  >
+                                    {author.name}
+                                  </div>
+                                </li>
+                              </ul>
+                            </div>
+                          ))
                           : ""}
                       </AccordionDetails>
                     </Accordion>
@@ -477,18 +477,65 @@ const BooksPage = () => {
                                 className="sidebarmargin"
                                 key={`book-${book.id}`}
                                 onClick={() => {
-                                  navigate(`/books/` + book.slug, {
-                                    state: {
-                                      bookId: book.id,
-                                      bookName: book.name,
-                                      authorId: state?.authorId,
-                                      authorName: state?.authorName,
-                                      special: window.location.pathname,
-                                      langId: state?.langId,
-                                      catId: state?.catId,
-                                    },
-                                  });
+                                  debugger
+                                  if (window.location.pathname === `/books`) {
+                                    navigate(`/books/` + book.id, {
+                                      state: {
+                                        bookId: book.id,
+                                        bookName: book.name,
+                                        pathname: location?.pathname
+                                      },
+                                    });
+                                  }
+                                  if (window?.location?.pathname === `/books/special`) {
+                                    navigate(`/books/special/` + book.id, {
+                                      state: {
+                                        bookId: book.id,
+                                        bookName: book.name,
+                                        pathname: location?.pathname,
+                                        special: true,
+                                      },
+                                    });
+                                  }
+                                  if (state?.authorId) {
+                                    navigate(`/books/author/` + state?.authorId + "/" + book?.id, {
+                                      state: {
+                                        bookId: book.id,
+                                        bookName: book.name,
+                                        authorId: state?.authorId,
+                                        authorName: state?.authorName,
+                                      },
+                                    });
+                                  } if (state?.langId) {
+                                    navigate(`/books/language/` + state?.langId + "/" + book.id, {
+                                      // "/books/language/:langId/:id"
+                                      state: {
+                                        bookId: book.id,
+                                        bookName: book.name,
+                                        langId: state?.langId,
+                                      },
+                                    });
+                                  } if (state?.catId) {
+                                    navigate(`/books/category/` + state?.catId + "/" + book.id, {
+                                      state: {
+                                        bookId: book.id,
+                                        bookName: book.name,
+                                        catId: state?.catId,
+                                      },
+                                    });
+                                  }
                                 }}
+                              // navigate(`/books/category/` + book.id, {
+                              //   state: {
+                              //     bookId: book.id,
+                              //     bookName: book.name,
+                              //     authorId: state?.authorId,
+                              //     authorName: state?.authorName,
+                              //     special: window.location.pathname,
+                              //     langId: state?.langId,
+                              //     catId: state?.catId,
+                              //   },
+                              // });
                               >
                                 <div className="bookBox">
                                   <a>

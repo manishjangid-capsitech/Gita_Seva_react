@@ -76,7 +76,7 @@ const AuthorsDataPage = () => {
 
   useEffect(() => {
     setRefresh(false);
-    AuthorService.GetAuthorDataById(state?.authorId, _get_i18Lang(), "").then(
+    AuthorService.GetAuthorDataById(state?.authorId, "").then(
       (res) => {
         if (res) {
           setName(res?.result?.name);

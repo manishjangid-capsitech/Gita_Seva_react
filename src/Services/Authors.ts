@@ -14,6 +14,7 @@ class AuthorsService {
       limit,
     });
 
+    
   getList = (
     start: number,
     length: number,
@@ -39,9 +40,9 @@ class AuthorsService {
     );
   };
 
-  GetAuthorDataById = (id: string, lang: string, userId: string) => {
+  GetAuthorDataById = (id: string, userId: string) => {
     return ApiUtility.get(
-      this.authorRoute + id + "?lang=" + lang + "&userId=" + userId
+      this.authorRoute + id + "?lang=" + localStorage.getItem("lan") + userId
     );
   };
 }

@@ -4,20 +4,9 @@ import { ApiUtility } from "./ApiUtility";
 class ArticlesService {
   route = "/posts";
   articleRoute = "/api/articles?lang=";
+  articledetsil = "/api/articles/";
   categoryRoute = "/api/settings/filters?lang=";
-  authorlang =  "/api/authors/slug-";
   faviroute = "/api/articles/";
-
-  GetAuthorDataById = (id: string) => {
-    return ApiUtility.get(
-      this.authorlang +
-        id +
-        "?lang=" +
-        localStorage.getItem("lan") +
-        "&userId=" +
-        userId
-    );
-  }
 
   getList = (
     start: number,
@@ -36,7 +25,10 @@ class ArticlesService {
 
   getFilters = (productFor: string) => {
     return ApiUtility.get(
-      this.categoryRoute + localStorage.getItem("lan") + "&productFor=" + productFor
+      this.categoryRoute +
+        localStorage.getItem("lan") +
+        "&productFor=" +
+        productFor
     );
   };
 
@@ -53,7 +45,7 @@ class ArticlesService {
   ) => {
     return ApiUtility.get(
       this.articleRoute +
-      localStorage.getItem("lan") +
+        localStorage.getItem("lan") +
         "&start=" +
         start +
         "&length=" +
@@ -81,7 +73,7 @@ class ArticlesService {
 
   getArticlesDetail = (id: string, userId: string) => {
     return ApiUtility.get(
-      this.articleRoute +
+      this.articledetsil +
         id +
         "?UserId=" +
         userId +
@@ -91,7 +83,12 @@ class ArticlesService {
   };
 
   addArticlesFavourite = (ArticleId: string) => {
-    return ApiUtility.post(this.faviroute + ArticleId + "/favourite", {});
+    return ApiUtility.post(this.faviroute + ArticleId + "/favourite", {
+      Headers: {
+        authorization: localStorage.getItem("UserId"),
+        Accept: "application/json",
+      },
+    });
   };
 
   removeArticlesFaviourite = (ArticleId: string) => {

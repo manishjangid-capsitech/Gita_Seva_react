@@ -12,6 +12,8 @@ import { useTranslation } from "react-i18next";
 import i18n from "../i18n";
 import Loading from "../Components/Loading";
 import articalIcon from "../assets/img/article-icon.png";
+import AuthorsService from "../Services/Authors";
+
 import {
   Accordion,
   AccordionDetails,
@@ -117,7 +119,7 @@ const ArticlesPage = () => {
   }, [refresh, SortValue, i18n.language]);
 
   useEffect(() => {
-    ArticlesService.GetAuthorDataById(state?.authorId).then((res) => {
+    AuthorsService.GetAuthorDataById(state?.authorId, "").then((res) => {
       showBread(res?.result?.name);
     });
   }, [i18n.language, refresh]);
@@ -182,7 +184,7 @@ const ArticlesPage = () => {
                 {window.location.pathname === "/articles/special" ? (
                   <span>/ {t("Special_Article_tr")}</span>
                 ) : (
-                  <span> / {t("Article_tr")}</span>
+                  <span>/ {t("Article_tr")}</span>
                 )}
               </span>
             </div>
@@ -406,7 +408,9 @@ const ArticlesPage = () => {
                                     state: {
                                       articleId: article.id,
                                       articleName: article.name,
+                                      authorId: state?.authorId,
                                       authorName: state?.authorName,
+                                      special: window.location.pathname,
                                     },
                                   });
                                 }}

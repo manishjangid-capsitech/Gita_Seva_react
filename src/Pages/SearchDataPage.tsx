@@ -47,8 +47,7 @@ const SearchDataPage = () => {
         authorId: params?.usr?.authorId,
       }).then((res) => {
         if (res.status) {
-          debugger;
-          // console.log("pagination",pagination);
+          debugger
           setLen(res?.result?.length);
           setSearchdata(res?.result);
           setPagination({
@@ -56,7 +55,6 @@ const SearchDataPage = () => {
             recordsPerPage: 12,
             totalRecords: res?.result?.length,
           });
-          // console.log("total records",pagination.totalRecords);
         }
       });
     }
@@ -155,35 +153,92 @@ const SearchDataPage = () => {
               style={{ padding: "35px", background: "#fffaf0" }}
             >
               {Searchdata &&
-              Searchdata !== undefined &&
-              Searchdata.length > 0 ? (
-                <div className="row" style={{}}>
+                Searchdata !== undefined &&
+                Searchdata.length > 0 ? (
+                <div className="row">
                   {Searchdata.map((search: any, i) => (
                     <div
                       className="col-lg-12"
                       key={`searchbook-${search.id}`}
                       onClick={() => {
-                        navigate(
-                          search.product === "book"
-                            ? `/books/` + search.slug
-                            : search.product === "article"
-                            ? `/articles/` + search.slug
-                            : search.product === "audio"
-                            ? `/audios/${search.id}`
-                            : search.product === "pravachan"
-                            ? `/audios/${search.id}`
-                            : "/books/" + search.slug,
-                          {
-                            state: {
-                              audioId: search.id,
-                              audioslug: search.slug,
-                              bookId: search.id,
-                              articleId: search.id,
-                              index: i,
-                              searched: window.location.pathname,
-                            },
-                          }
-                        );
+                        debugger
+                        console.log("index", i);
+                        if (search.product === "book") {
+                          navigate("/books/" + search.id,
+                            {
+                              state: {
+                                bookId: search.id,
+                                index: i,
+                                searched: window.location.pathname,
+                              },
+                            })
+                        }
+                        if (search.product === "kalyan") {
+                          navigate("/kalyans/" + search.slug,
+                            {
+                              state: {
+                                kalyanId: search.id,
+                                index: i,
+                              },
+                            })
+                        }
+                        if (search.product === "kalyankalpataru") {
+                          navigate("/kalyanskalpataru/" + search.slug,
+                            {
+                              state: {
+                                kalpatruId: search.id,
+                                index: i,
+                              },
+                            })
+                        }
+                        if (search.product === "geetgovind") {
+                          navigate("/monthlymagazine/" + search.slug,
+                            {
+                              state: {
+                                MonthId: search.id,
+                                index: i,
+                              },
+                            })
+                        }
+                        if (search.product === "vivekvani") {
+                          navigate("/vivekvani/" + search.slug,
+                            {
+                              state: {
+                                vivekId: search.id,
+                                index: i,
+                              },
+                            })
+                        }
+                        if (search.product === "audio") {
+                          navigate(`/audios/` + search.slug,
+                            // `/audios/${search.id}`,
+                            {
+                              state: {
+                                audioId: search.id,
+                                audioslug: search.slug,
+                                index: i,
+                              },
+                            })
+                        }
+                        if (search.product === "pravachan") {
+                          navigate(`/audios/` + search?.slug,
+                            {
+                              state: {
+                                audioId: search.id,
+                                audioslug: search.slug,
+                                index: i,
+                              },
+                            })
+                        }
+                        if (search.product === "article") {
+                          navigate(`/articles/` + search.slug,
+                            {
+                              state: {
+                                articleId: search.id,
+                                index: i,
+                              },
+                            })
+                        }
                       }}
                     >
                       <div
@@ -197,15 +252,15 @@ const SearchDataPage = () => {
                           <a style={{ cursor: "pointer" }}>
                             <img
                               src={
-                                search.product === "book"
+                                search.product === "book" || search.product === "kalyan" || search.product === "kalyankalpataru" || search.product === "geetgovind" || search.product === "vivekvani"
                                   ? `${search?.thumbPath}`
                                   : search.product === "audio" ||
                                     search.product === "pravachan"
-                                  ? search.lyricsHash != null &&
-                                    search.lyricsHash !== ""
-                                    ? WithLyrics
-                                    : WithoutLyrics
-                                  : `${DefaultArticle}`
+                                    ? search.lyricsHash != null &&
+                                      search.lyricsHash !== ""
+                                      ? WithLyrics
+                                      : WithoutLyrics
+                                    : `${DefaultArticle}`
                               }
                               alt={search.name}
                               style={{
@@ -257,7 +312,7 @@ const SearchDataPage = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div >
     </>
   );
 };

@@ -3,6 +3,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useEffect, useState } from "react";
 import AudiosService from "../Services/Audios";
+import AuthorsService from "../Services/Authors";
 import WithoutLyrics from "../Images/audiolyrics.svg";
 import WithLyrics from "../Images/audiowithoutlyrics.svg";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -69,7 +70,12 @@ const AudiosPage = () => {
   };
   const UserIdentity = localStorage.getItem("UserId") as any;
   const location = useLocation();
-  const state = location.state as { authorId: string; authorName: string };
+  const state = location.state as { authorId: string; authorName: string, type: string };
+
+  useEffect(() => {
+    debugger
+    console.log("state", state);
+  }, [])
 
   function ResetData() {
     setCategoryId("");
@@ -101,11 +107,10 @@ const AudiosPage = () => {
       SortValue,
       "",
       window.location.pathname === "/audios/special" ? true : false,
-      Type,
+      "audios",
       LyricsId,
       "",
       "",
-      0,
       ""
     ).then((res) => {
       if (res) {
@@ -159,6 +164,7 @@ const AudiosPage = () => {
 
   useEffect(() => {
     setRefresh(false);
+    setType("audios");
     AudiosService.getAudios(
       pagination.pageNo === 0
         ? 0
@@ -167,18 +173,21 @@ const AudiosPage = () => {
       false,
       CategoryId,
       SingerId || state?.authorId,
+      // SingerId ? SingerId : "" || state?.authorId ? state?.authorId : "",
       "",
       SortValue,
       "",
       window.location.pathname === "/audios/special" ? true : false,
-      "audios",
+      "audios" || state?.type,
       LyricsId,
       "",
       "",
-      0,
       UserIdentity
     ).then((res) => {
-      if (res) setAudios(res.result?.items);
+      debugger
+      console.log("singer", SingerId);
+      console.log("state?.authorId", state?.authorId);
+      if (res.status) setAudios(res.result?.items);
       setIsLiked(res?.result?.isFavourite);
       // setLegend(res.result?.items[0]?.author)
       setPagination({
@@ -191,32 +200,32 @@ const AudiosPage = () => {
   const toggleLike = (audioId: any) => {
     !isLiked
       ? AudiosService.addAudioFavourite(audioId).then((res) => {
-          setAudios(
-            audios?.map((a: any) => {
-              if (a.id === res.result?.productId) {
-                res.status && setIsLiked(true);
-              }
-              return a;
-            })
-          );
-        })
+        setAudios(
+          audios?.map((a: any) => {
+            if (a.id === res.result?.productId) {
+              res.status && setIsLiked(true);
+            }
+            return a;
+          })
+        );
+      })
       : AudiosService.removeAudioFavourite(audioId).then((res) => {
-          setAudios(
-            audios?.map((a: any) => {
-              if (a.id === audioId) {
-                res.status && setIsLiked(false);
-              }
-              return a;
-            })
-          );
-        });
+        setAudios(
+          audios?.map((a: any) => {
+            if (a.id === audioId) {
+              res.status && setIsLiked(false);
+            }
+            return a;
+          })
+        );
+      });
     setToggleFav((x) => !x);
   };
 
   const [bread, showBread] = useState("");
 
   useEffect(() => {
-    AudiosService.GetAuthorDataById(state?.authorId).then((res) => {
+    AuthorsService.GetAuthorDataById(state?.authorId, "").then((res) => {
       showBread(res?.result?.name);
     });
   }, [i18n.language, refresh]);
@@ -381,31 +390,31 @@ const AudiosPage = () => {
                         >
                           {Singer && Singer.length > 0
                             ? Singer?.map((Singer: any) => (
-                                <div
-                                  key={`c-${Singer.id}`}
-                                  className="Authorlist"
-                                  onClick={() => {
-                                    setSingerId(Singer.id);
-                                  }}
-                                >
-                                  <ul style={{ margin: 0 }}>
-                                    <li>
-                                      <div
-                                        style={{
-                                          fontSize: "21px",
-                                          cursor: "pointer",
-                                          fontWeight: 400,
-                                          color: "#545454",
-                                          fontFamily: "ChanakyaUni",
-                                        }}
-                                        id={`sin-${Singer.id}`}
-                                      >
-                                        {Singer.name}
-                                      </div>
-                                    </li>
-                                  </ul>
-                                </div>
-                              ))
+                              <div
+                                key={`c-${Singer.id}`}
+                                className="Authorlist"
+                                onClick={() => {
+                                  setSingerId(Singer.id);
+                                }}
+                              >
+                                <ul style={{ margin: 0 }}>
+                                  <li>
+                                    <div
+                                      style={{
+                                        fontSize: "21px",
+                                        cursor: "pointer",
+                                        fontWeight: 400,
+                                        color: "#545454",
+                                        fontFamily: "ChanakyaUni",
+                                      }}
+                                      id={`sin-${Singer.id}`}
+                                    >
+                                      {Singer.name}
+                                    </div>
+                                  </li>
+                                </ul>
+                              </div>
+                            ))
                             : ""}
                         </AccordionDetails>
                       </Accordion>
@@ -592,7 +601,7 @@ const AudiosPage = () => {
                                   >
                                     <p>
                                       {audio.name != null &&
-                                      audio.name.length > 100
+                                        audio.name.length > 100
                                         ? audio.name.slice(0, 80) + "..."
                                         : audio.name}
                                     </p>
