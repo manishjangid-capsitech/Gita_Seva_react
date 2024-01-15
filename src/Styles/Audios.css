@@ -6,6 +6,7 @@
   height: 100%;
   border: 1px solid #ffd186;
 }
+
 .audioBox p {
   color: #595551;
   font-size: 21px;
@@ -16,6 +17,14 @@
   overflow: hidden;
   margin-bottom: 0;
 }
+
+.cardbackground {
+  display: flex;
+  border-bottom: 1px solid #ffdd89;
+  margin: 0 0 15px 0;
+  padding: 0;
+}
+
 .listActive {
   color: #ff2e12 !important;
   cursor: pointer;
@@ -35,6 +44,7 @@
 .audioBox:hover p {
   color: #ff2e12;
 }
+
 .audioBoxlabel:hover label {
   color: #ff2e12;
 }
@@ -62,11 +72,13 @@
   flex: 1;
   padding: 20px 0 0 0;
 }
+
 .play-bar span {
   color: #ffffff;
   font-size: 1.2em;
   align-self: center;
 }
+
 .play-bar .bar-bg {
   background-color: #f7ad2b;
   width: 100%;
@@ -91,17 +103,20 @@
   align-self: center;
   margin: 0 5px;
 }
+
 .play-bar .bar-bgs .progresss {
   background-color: #ffffff;
   height: 4px;
   border-radius: 10px;
   width: 0%;
 }
+
 .lyrics-Data {
   width: 75%;
   float: left;
   text-align: center;
 }
+
 .rabbit-lyrics {
   position: relative;
   height: calc(100vh - 170px) !important;
@@ -114,6 +129,7 @@
   text-align: center;
   cursor: pointer;
 }
+
 .rabbit-lyrics .line {
   min-height: 1.5em;
   color: inherit;
@@ -124,6 +140,7 @@
   background-color: transparent !important;
   font-size: 25px !important;
 }
+
 .rabbit-lyrics__inline--active {
   color: #fd7e35 !important;
   font-size: 30px;
@@ -137,6 +154,7 @@
   font-size: 14px;
   display: block;
 }
+
 .songSidebar {
   float: left;
   background-color: #fff;
@@ -149,6 +167,7 @@
   height: 71px;
   padding-top: 5px;
 }
+
 .relatedaudiotitle {
   background: #ffbb30;
   color: #fff;
@@ -239,25 +258,30 @@
 .pravchanBox:hover p {
   color: #d11501;
 }
+
 .butttonres {
   padding-left: 85px;
   text-align: right;
 }
+
 .audioicon {
   height: 52px;
 }
+
 .audiolist {
   padding-left: 200px;
   text-align: right;
 }
+
 .downloadbtn {
   width: 40px;
 }
+
 .playbtn {
   width: 40px;
   margin-right: 10px;
 }
 
-.btns{
+.btns {
   display: flex;
 }

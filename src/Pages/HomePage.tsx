@@ -18,6 +18,11 @@ import artical from "../assets/img/article-icon.png";
 import { ContactPage } from "./ContactPage";
 import playimg from "../assets/img/vol.png";
 import RabbitLyrics from "rabbit-lyrics";
+import leftArrow from "../assets/img/leftArrow1.png";
+import rightArrow from "../assets/img/rightArrow1.png"
+import "../Styles/slick.css"
+import styles from "../Styles/slick.module.css";
+
 
 interface IArticleProps {
   [x: string]: any;
@@ -59,14 +64,22 @@ const HomePage = () => {
   const refAudio = React.useRef<HTMLAudioElement>(null);
   const refLrc = React.useRef<any>(null);
 
+  const infinite = banners ? React.Children.count(banners.length) > 0 : false;
   const settings = {
-    infinite: true,
+    infinite,
+    dots: true,
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 2000,
     arrows: false,
+    dotsClass: "button__bar"
+  };
+
+  const settingsWithModules = {
+    ...settings,
+    dotsClass: styles.button__bar,
   };
 
   const settingsbook = {
@@ -76,7 +89,8 @@ const HomePage = () => {
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 1500,
-    arrows: false,
+    prevArrow: <img src={leftArrow} alt="" height="40px" />,
+    nextArrow: <img src={rightArrow} alt="" height="40px" />
   };
 
   const settingsaudio = {
@@ -86,7 +100,8 @@ const HomePage = () => {
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 2000,
-    arrows: false,
+    prevArrow: <img src={leftArrow} alt="" height="40px" />,
+    nextArrow: <img src={rightArrow} alt="" height="40px" />
   };
 
   function createMarkuparticle(index: number) {
@@ -232,7 +247,24 @@ const HomePage = () => {
         navigate("/monthlymagazine");
         break;
       case 49:
-        navigate("/monthlymagazine/author/" + targetId);
+        navigate("/vivekvani" + targetId);
+        break;
+      case 50:
+        navigate("/vivekvani/special" + slug);
+        break;
+      case 51:
+        navigate("/vivekvani/author/:id" + targetId);
+        break;
+      case 52:
+        navigate("/vivekvani/:cat/:langid" + targetId);
+        break;
+      case 53:
+        navigate("/vivekvani/" + targetId, {
+          state: {
+            vivekId: targetId,
+            vivekName: name,
+          },
+        });
         break;
       default:
         break;
@@ -301,29 +333,27 @@ const HomePage = () => {
           borderBottom: "2px solid #fff",
         }}
       >
-        <div className="breadcrumbs">
+        <div
+          className="containers"
+          style={{
+            fontSize: "36px",
+            fontWeight: 700,
+            color: "rgb(209, 21, 1)",
+            // marginLeft: "15%",
+            top: "155px",
+          }}
+        >
           <div
-            className="containers"
             style={{
-              fontSize: "36px",
-              fontWeight: 700,
-              color: "rgb(209, 21, 1)",
-              // marginLeft: "15%",
-              top: "155px",
+              fontSize: "19px",
+              fontWeight: 600,
+              color: "#2d2a29",
+              marginTop: "-8px",
             }}
           >
-            <div
-              style={{
-                fontSize: "19px",
-                fontWeight: 600,
-                color: "#2d2a29",
-                marginTop: "-8px",
-              }}
-            >
-              <span style={{ marginRight: "8px", color: "#2d2a29" }}>
-                {t("Home_tr")}
-              </span>
-            </div>
+            <span style={{ marginRight: "8px", color: "#2d2a29" }}>
+              {t("Home_tr")}
+            </span>
           </div>
         </div>
       </div>
@@ -334,68 +364,55 @@ const HomePage = () => {
             <div className="containers">
               <div className="row" style={{ padding: "75px 0 0 0" }}>
                 <div id="homeslider" className="main-slider col-8">
-                  <div className="carouselSlideMain" style={{ width: "830px" }}>
+                  <div className="bannerwidth">
                     <Slider {...settings}>
                       {banners && banners.length > 0
                         ? banners.map((banner: any) => (
-                            <div
-                              style={{
-                                height: "332px",
-                                border: "1px solid #f3e2e2",
-                                padding: "15px",
-                                borderRadius: "6px",
-                              }}
-                              key={`banner-${banner.id}`}
-                              onClick={() => {
-                                showBannerTarget(
-                                  banner.bannerFor,
-                                  banner.targetId,
-                                  banner.slug,
-                                  banner.name
-                                );
-                              }}
-                            >
-                              <div>
-                                <a>
-                                  <img
-                                    style={{ cursor: "pointer" }}
-                                    className="imgcenter"
-                                    src={
-                                      banner == null
-                                        ? banner
-                                        : banner.bannerPath
-                                    }
-                                    onError={(e) => {
-                                      e.currentTarget.src = banner;
-                                    }}
-                                    alt={banner.name}
-                                    title={banner.name}
-                                    width="100%"
-                                    height="100%"
-                                  />
-                                </a>
-                              </div>
+                          <div
+                            key={`banner-${banner.id}`}
+                            style={{
+                              height: "332px",
+                              border: "1px solid #f3e2e2",
+                              padding: "15px",
+                              borderRadius: "6px",
+                            }}
+                            onClick={() => {
+                              showBannerTarget(
+                                banner.bannerFor,
+                                banner.targetId,
+                                banner.slug,
+                                banner.name
+                              );
+                            }}
+                          >
+                            <div>
+                              <a>
+                                <img
+                                  className="imgcenter bannerimg"
+                                  src={
+                                    banner == null
+                                      ? banner
+                                      : banner.bannerPath
+                                  }
+                                  onError={(e) => {
+                                    e.currentTarget.src = banner;
+                                  }}
+                                  alt={banner.name}
+                                  title={banner.name}
+                                />
+                              </a>
                             </div>
-                          ))
+                          </div>
+                        ))
                         : ""}
                     </Slider>
                     <div
-                      style={{
-                        height: "217px",
-                        display: "flex",
-                        justifyContent: "space-between",
-                      }}
+                      className="parentBox"
                     >
                       <div
-                        className="bgImg"
+                        className="bgImg audioBox1"
                         style={{
                           backgroundColor: "#ffc72f",
-                          width: "445px",
-                          height: "238px",
-                          borderTopLeftRadius: "5px",
-                          borderBottomLeftRadius: "5px",
-                          borderBottom: "5px solid #f4b919",
-                          display: "flex",
                         }}
                       >
                         <div
@@ -461,27 +478,12 @@ const HomePage = () => {
                             ?.replace(/\r/g, "")
                             ?.split("\n")
                             ?.map((l: any) => {
-                              return <span style={{ fontSize: 23 }}>{l}</span>;
+                              return <span key={l?.id} style={{ fontSize: 23 }}>{l}</span>;
                             })}
                         </div>
                       </div>
                       <div
-                        style={{
-                          textAlign: "center",
-                          color: "#3f220d",
-                          fontSize: "24px",
-                          backgroundColor: "#ff9509",
-                          padding: "40px 44px 20px 68px",
-                          borderTopRightRadius: "5px",
-                          borderBottomRightRadius: "5px",
-                          float: "right",
-                          lineHeight: "32px",
-                          width: "415px",
-                          zIndex: 0,
-                          position: "relative",
-                          borderBottom: "5px solid #ec8600",
-                          height: "238px",
-                        }}
+                        className="audioBox2"
                       >
                         <div
                           className="partTwoDiv"
@@ -608,30 +610,10 @@ const HomePage = () => {
                   style={{ float: "right", marginTop: "-6%" }}
                 >
                   <div className="homepagebg"></div>
-                  <h2
-                    style={{
-                      textAlign: "center",
-                      margin: "-60px -80px 0 -32px",
-                      color: "#d11501",
-                      fontSize: "30px",
-                      fontStyle: "normal",
-                      fontWeight: 700,
-                      paddingBottom: "24px",
-                      fontFamily: "ChanakyaUni",
-                    }}
-                  >
+                  <h2 className="messageheader">
                     {t("AmritVachan_tr")}
                   </h2>
-                  <div
-                    style={{
-                      backgroundColor: "#ffe9b9",
-                      height: "492px",
-                      padding: "0 35px 0 45px",
-                      borderBottomLeftRadius: "6px",
-                      borderBottomRightRadius: "6px",
-                      width: "340px",
-                      marginLeft: "40px",
-                    }}
+                  <div className="messagebox"
                   >
                     <div>
                       {messages?.map((message: any, index: number) => (
@@ -656,7 +638,7 @@ const HomePage = () => {
                                   }}
                                 >
                                   {message.name != null &&
-                                  message.name.length > 31
+                                    message.name.length > 31
                                     ? message.name.slice(0, 30) + ".."
                                     : message.name}
                                 </div>
@@ -699,11 +681,7 @@ const HomePage = () => {
                         </div>
                       ))}
                       <div
-                        style={{
-                          textAlign: "center",
-                          margin: "20px 40px 0",
-                        }}
-                      >
+                        className="p-subbutton">
                         <div
                           className="btnSubmit"
                           onClick={() => {
@@ -716,17 +694,13 @@ const HomePage = () => {
                     </div>
                   </div>
                   <div
-                    style={{
-                      borderBottom: "4px solid #D11501",
-                      margin: "-4px 20px 0px 67px",
-                    }}
-                  ></div>
+                    className="messagebottom"></div>
                 </div>
               </div>
 
               {/* महापुरुष परिचय */}
 
-              <div style={{ marginTop: "20px" }}>
+              <div style={{ margin: "3% 0" }}>
                 <div style={{ backgroundColor: "#fff0d0", paddingTop: "30px" }}>
                   <h2 className="specialtitle">
                     {t("Legends_Introduction_tr")}
@@ -737,91 +711,91 @@ const HomePage = () => {
                   >
                     {allauthordata && allauthordata.length > 0
                       ? allauthordata.map((author: any) => (
-                          <div className="col-4 introbox">
-                            <h2
-                              onClick={() => {
-                                navigate(`/author/` + author?.id, {
-                                  state: {
-                                    authorId: author.id,
-                                    authorName: author.name,
-                                  },
-                                });
-                              }}
-                            >
-                              {author?.name}
-                            </h2>
-                            <div
-                              className="pravachan-audio-list"
-                              style={{
-                                backgroundColor: "#fff",
-                                cursor: "pointer",
-                              }}
-                              onClick={() => {
-                                navigate(`/books/author/` + author?.id, {
-                                  state: {
-                                    authorId: author.id,
-                                    authorName: author?.name,
-                                  },
-                                });
-                              }}
-                            >
-                              <img alt="bookicon" src={bookicon} />
-                              <p className="">{t("E_books_tr")}</p>
-                            </div>
-                            <div
-                              className="pravachan-audio-list"
-                              style={{
-                                backgroundColor: "#ffcd44",
-                              }}
-                              onClick={() => {
-                                navigate(`/audios/author/` + author.id, {
-                                  state: {
-                                    authorId: author.id,
-                                    authorName: author?.name,
-                                    type: "audios"
-                                  },
-                                });
-                              }}
-                            >
-                              <img alt="audioicon" src={audioicon} />
-                              <p>{t("Audios_tr")}</p>
-                            </div>
-                            <div
-                              className="pravachan-audio-list"
-                              style={{
-                                backgroundColor: "#ffcd44",
-                              }}
-                              onClick={() => {
-                                navigate(`/pravachans/author/` + author.id, {
-                                  state: {
-                                    authorId: author.id,
-                                    authorName: author?.name,
-                                  },
-                                });
-                              }}
-                            >
-                              <img alt="pravachanicon" src={audioicon} />
-                              <p>{t("Pravachan_tr")}</p>
-                            </div>
-                            <div
-                              className="pravachan-audio-list"
-                              style={{
-                                backgroundColor: "#fff",
-                              }}
-                              onClick={() => {
-                                navigate(`/articles/author/` + author.id, {
-                                  state: {
-                                    authorId: author.id,
-                                    authorName: author?.name,
-                                  },
-                                });
-                              }}
-                            >
-                              <img alt="articleicon" src={articleicon} />
-                              <p>{t("Article_tr")}</p>
-                            </div>
+                        <div key={author?.name} className="col-4 introbox">
+                          <h2
+                            onClick={() => {
+                              navigate(`/author/` + author?.id, {
+                                state: {
+                                  authorId: author.id,
+                                  authorName: author.name,
+                                },
+                              });
+                            }}
+                          >
+                            {author?.name}
+                          </h2>
+                          <div
+                            className="pravachan-audio-list"
+                            style={{
+                              backgroundColor: "#fff",
+                              cursor: "pointer",
+                            }}
+                            onClick={() => {
+                              navigate(`/books/author/` + author?.id, {
+                                state: {
+                                  authorId: author.id,
+                                  authorName: author?.name,
+                                },
+                              });
+                            }}
+                          >
+                            <img alt="bookicon" src={bookicon} />
+                            <p className="">{t("E_books_tr")}</p>
                           </div>
-                        ))
+                          <div
+                            className="pravachan-audio-list"
+                            style={{
+                              backgroundColor: "#ffcd44",
+                            }}
+                            onClick={() => {
+                              navigate(`/audios/author/` + author.id, {
+                                state: {
+                                  authorId: author.id,
+                                  authorName: author?.name,
+                                  type: "audios"
+                                },
+                              });
+                            }}
+                          >
+                            <img alt="audioicon" src={audioicon} />
+                            <p>{t("Audios_tr")}</p>
+                          </div>
+                          <div
+                            className="pravachan-audio-list"
+                            style={{
+                              backgroundColor: "#ffcd44",
+                            }}
+                            onClick={() => {
+                              navigate(`/pravachans/author/` + author.id, {
+                                state: {
+                                  authorId: author.id,
+                                  authorName: author?.name,
+                                },
+                              });
+                            }}
+                          >
+                            <img alt="pravachanicon" src={audioicon} />
+                            <p>{t("Pravachan_tr")}</p>
+                          </div>
+                          <div
+                            className="pravachan-audio-list"
+                            style={{
+                              backgroundColor: "#fff",
+                            }}
+                            onClick={() => {
+                              navigate(`/articles/author/` + author.id, {
+                                state: {
+                                  authorId: author.id,
+                                  authorName: author?.name,
+                                },
+                              });
+                            }}
+                          >
+                            <img alt="articleicon" src={articleicon} />
+                            <p>{t("Article_tr")}</p>
+                          </div>
+                        </div>
+                      ))
                       : ""}
                   </div>
                   <div
@@ -842,55 +816,55 @@ const HomePage = () => {
 
         <div
           className="newcontainer"
-          style={{ marginTop: "4%", height: "550px" }}
+          style={{ margin: "2% 0 0", height: "550px" }}
         >
-          <div>
+          <div className="containers">
             <h2 className="specialtitle">{t("Special_E_books_tr")}</h2>
             <div
               className="row"
-              style={{ width: "75%", left: "14%", position: "relative" }}
             >
               <Slider {...settingsbook}>
                 {specialBooks && specialBooks.length > 0
                   ? specialBooks.map((specialBook) => (
+                    <div
+                      className="sliderbooks"
+                      key={`related-${specialBook.id}`}
+                      onClick={() => {
+                        navigate(`/books/special/` + specialBook.id, {
+                          state: {
+                            bookId: specialBook.id,
+                            bookName: specialBook.name,
+                            pathname: window.location?.pathname,
+                          },
+                        });
+                        window.location.reload();
+                      }}
+                    >
                       <div
-                        className="sliderbooks"
-                        key={`related-${specialBook.id}`}
-                        onClick={() => {
-                          navigate(`/books/special/` + specialBook.slug, {
-                            state: {
-                              bookId: specialBook.id,
-                              bookName: specialBook.name,
-                            },
-                          });
-                          window.location.reload();
-                        }}
+                        style={{ display: "flex", justifyContent: "center" }}
                       >
-                        <div
-                          style={{ display: "flex", justifyContent: "center" }}
-                        >
-                          <a>
-                            <img
-                              style={{ cursor: "pointer" }}
-                              className="imgcenter"
-                              src={
-                                specialBook.bookThumbPath == null
-                                  ? DefaultBook
-                                  : specialBook.bookThumbPath
-                              }
-                              onError={(e) => {
-                                e.currentTarget.src = DefaultBook;
-                              }}
-                              alt={specialBook.name}
-                              title={specialBook.name}
-                              width="150"
-                              height="212"
-                            />
-                            <p>{specialBook?.name}</p>
-                          </a>
-                        </div>
+                        <a>
+                          <img
+                            style={{ cursor: "pointer" }}
+                            className="imgcenter"
+                            src={
+                              specialBook.bookThumbPath == null
+                                ? DefaultBook
+                                : specialBook.bookThumbPath
+                            }
+                            onError={(e) => {
+                              e.currentTarget.src = DefaultBook;
+                            }}
+                            alt={specialBook.name}
+                            title={specialBook.name}
+                            width="150"
+                            height="212"
+                          />
+                          <p>{specialBook?.name}</p>
+                        </a>
                       </div>
-                    ))
+                    </div>
+                  ))
                   : ""}
               </Slider>
             </div>
@@ -927,80 +901,77 @@ const HomePage = () => {
             paddingBottom: "20px",
           }}
         >
-          <div>
+          <div className="containers">
             <h2 className="specialtitle">{t("Special_Audios_tr")}</h2>
-            <div
-              className="row"
-              style={{ width: "75%", left: "14%", position: "relative" }}
-            >
+            <div className="row">
               <Slider {...settingsaudio}>
                 {specialAudios && specialAudios.length > 0
                   ? specialAudios.map((specialAudio) => (
+                    <div
+                      key={`related-${specialAudio.id}`}
+                      onClick={() => {
+                        localStorage.setItem("type", "audios");
+                        navigate(`/audios/` + specialAudio.id, {
+                          state: {
+                            audioId: specialAudio.id,
+                            audioslug: specialAudio.name,
+                          },
+                        });
+                        window.location.reload();
+                      }}
+                    >
                       <div
-                        key={`related-${specialAudio.id}`}
-                        onClick={() => {
-                          localStorage.setItem("type", "audios");
-                          navigate(`/audios/` + specialAudio.slug, {
-                            state: {
-                              audioId: specialAudio.id,
-                              audioslug: specialAudio.name,
-                            },
-                          });
-                          window.location.reload();
+                        className="pravchanBox"
+                        style={{
+                          display: "flex",
+                          justifyContent: "center",
+                          margin: "0 10px",
                         }}
                       >
-                        <div
-                          className="pravchanBox"
+                        <a
                           style={{
-                            display: "flex",
-                            justifyContent: "center",
-                            margin: "0 10px",
+                            margin: "0px 10px",
+                            height: "115px",
+                            color: "rgb(63, 34, 13)",
+                            fontSize: "18px",
+                            lineHeight: "22px",
+                            fontStyle: "normal",
+                            fontWeight: 600,
+                            overflow: "hidden",
+                            textAlign: "center",
                           }}
                         >
-                          <a
-                            style={{
-                              margin: "0px 10px",
-                              height: "115px",
-                              color: "rgb(63, 34, 13)",
-                              fontSize: "18px",
-                              lineHeight: "22px",
-                              fontStyle: "normal",
-                              fontWeight: 600,
-                              overflow: "hidden",
-                              textAlign: "center",
-                            }}
-                          >
-                            {specialAudio.lyricsHash != null ? (
-                              <img
-                                style={{
-                                  cursor: "pointer",
-                                  width: "60px",
-                                  margin: "5px auto auto",
-                                }}
-                                className="imgcenter"
-                                src={withlyrics}
-                                alt={specialAudio.name}
-                                title={specialAudio.name}
-                              />
-                            ) : (
-                              <img
-                                style={{
-                                  cursor: "pointer",
-                                  width: "60px",
-                                  margin: "5px auto auto",
-                                }}
-                                className="imgcenter"
-                                src={nolyrics}
-                                alt={specialAudio.name}
-                                title={specialAudio.name}
-                              />
-                            )}
+                          {specialAudio.lyricsHash != null ? (
+                            <img
+                              style={{
+                                cursor: "pointer",
+                                width: "60px",
+                                margin: "5px auto auto",
+                              }}
+                              className="imgcenter"
+                              src={withlyrics}
+                              alt={specialAudio.name}
+                              title={specialAudio.name}
+                            />
+                          ) : (
+                            <img
+                              style={{
+                                cursor: "pointer",
+                                width: "60px",
+                                margin: "5px auto auto",
+                              }}
+                              className="imgcenter"
+                              src={nolyrics}
+                              alt={specialAudio.name}
+                              title={specialAudio.name}
+                            />
+                          )}
 
-                            <p>{specialAudio.name}</p>
-                          </a>
-                        </div>
+                          <p>{specialAudio.name}</p>
+                        </a>
                       </div>
-                    ))
+                    </div>
+                  ))
                   : ""}
               </Slider>
             </div>
@@ -1036,80 +1007,77 @@ const HomePage = () => {
             paddingBottom: "20px",
           }}
         >
-          <div>
+          <div className="containers">
             <h2 className="specialtitle">{t("Special_Pravachan_tr")}</h2>
-            <div
-              className="row"
-              style={{ width: "75%", left: "14%", position: "relative" }}
-            >
+            <div className="row">
               <Slider {...settingsaudio}>
                 {specialPravachans && specialPravachans.length > 0
                   ? specialPravachans.map((specialPravachan) => (
+                    <div
+                      key={`related-${specialPravachan.id}`}
+                      onClick={() => {
+                        localStorage.setItem("type", "pravachans");
+                        navigate(`/pravachans/` + specialPravachan.id, {
+                          state: {
+                            audioId: specialPravachan.id,
+                            audioslug: specialPravachan.name,
+                          },
+                        });
+                        window.location.reload();
+                      }}
+                    >
                       <div
-                        key={`related-${specialPravachan.id}`}
-                        onClick={() => {
-                          localStorage.setItem("type", "pravachans");
-                          navigate(`/pravachans/` + specialPravachan.slug, {
-                            state: {
-                              audioId: specialPravachan.id,
-                              audioslug: specialPravachan.name,
-                            },
-                          });
-                          window.location.reload();
+                        className="pravchanBox"
+                        style={{
+                          display: "flex",
+                          justifyContent: "center",
+                          margin: "0 10px",
                         }}
                       >
-                        <div
-                          className="pravchanBox"
+                        <a
                           style={{
-                            display: "flex",
-                            justifyContent: "center",
-                            margin: "0 10px",
+                            margin: "0px 10px",
+                            height: "115px",
+                            color: "rgb(63, 34, 13)",
+                            fontSize: "18px",
+                            lineHeight: "22px",
+                            fontStyle: "normal",
+                            fontWeight: 600,
+                            overflow: "hidden",
+                            textAlign: "center",
                           }}
                         >
-                          <a
-                            style={{
-                              margin: "0px 10px",
-                              height: "115px",
-                              color: "rgb(63, 34, 13)",
-                              fontSize: "18px",
-                              lineHeight: "22px",
-                              fontStyle: "normal",
-                              fontWeight: 600,
-                              overflow: "hidden",
-                              textAlign: "center",
-                            }}
-                          >
-                            {specialPravachan.lyricsHash != null ? (
-                              <img
-                                style={{
-                                  cursor: "pointer",
-                                  width: "60px",
-                                  margin: "5px auto auto",
-                                }}
-                                className="imgcenter"
-                                src={withlyrics}
-                                alt={specialPravachan.name}
-                                title={specialPravachan.name}
-                              />
-                            ) : (
-                              <img
-                                style={{
-                                  cursor: "pointer",
-                                  width: "60px",
-                                  margin: "5px auto auto",
-                                }}
-                                className="imgcenter"
-                                src={nolyrics}
-                                alt={specialPravachan.name}
-                                title={specialPravachan.name}
-                              />
-                            )}
+                          {specialPravachan.lyricsHash != null ? (
+                            <img
+                              style={{
+                                cursor: "pointer",
+                                width: "60px",
+                                margin: "5px auto auto",
+                              }}
+                              className="imgcenter"
+                              src={withlyrics}
+                              alt={specialPravachan.name}
+                              title={specialPravachan.name}
+                            />
+                          ) : (
+                            <img
+                              style={{
+                                cursor: "pointer",
+                                width: "60px",
+                                margin: "5px auto auto",
+                              }}
+                              className="imgcenter"
+                              src={nolyrics}
+                              alt={specialPravachan.name}
+                              title={specialPravachan.name}
+                            />
+                          )}
 
-                            <p>{specialPravachan?.name}</p>
-                          </a>
-                        </div>
+                          <p>{specialPravachan?.name}</p>
+                        </a>
                       </div>
-                    ))
+                    </div>
+                  ))
                   : ""}
               </Slider>
             </div>
@@ -1145,57 +1113,55 @@ const HomePage = () => {
             paddingBottom: "20px",
           }}
         >
-          <div>
+          <div className="containers">
             <h2 className="specialtitle">{t("Special_Article_tr")}</h2>
-            <div
-              className="row"
-              style={{ width: "75%", left: "14%", position: "relative" }}
-            >
+            <div className="row">
               <Slider {...settingsaudio}>
                 {specialArticles && specialArticles.length > 0
                   ? specialArticles.map((specialArticle) => (
+                    <div
+                      key={`related-${specialArticle.id}`}
+                      onClick={() => {
+                        navigate(`/articles/special/` + specialArticle.id, {
+                          state: {
+                            articleId: specialArticle.id,
+                            articleName: specialArticle.name,
+                            special: window.location.pathname
+                          },
+                        });
+                        window.location.reload();
+                      }}
+                    >
                       <div
-                        key={`related-${specialArticle.id}`}
-                        onClick={() => {
-                          navigate(`/articles/` + specialArticle.slug, {
-                            state: {
-                              articleId: specialArticle.id,
-                              articleName: specialArticle.name,
-                            },
-                          });
-                          window.location.reload();
+                        className="pravchanBox"
+                        style={{
+                          display: "flex",
+                          justifyContent: "center",
+                          backgroundColor: "#fff",
+                          height: "121px",
+                          margin: "0 10px",
                         }}
                       >
-                        <div
-                          className="pravchanBox"
-                          style={{
-                            display: "flex",
-                            justifyContent: "center",
-                            backgroundColor: "#fff",
-                            height: "121px",
-                            margin: "0 10px",
-                          }}
-                        >
-                          <a>
-                            <img
-                              style={{
-                                cursor: "pointer",
-                                width: "28px",
-                                height: "34px",
-                                margin: "5px auto auto",
-                              }}
-                              className="imgcenter"
-                              src={artical}
-                              alt={specialArticle.name}
-                              title={specialArticle.name}
-                            />
-                            <p style={{ marginTop: "10px" }}>
-                              {specialArticle?.name}
-                            </p>
-                          </a>
-                        </div>
+                        <a>
+                          <img
+                            style={{
+                              cursor: "pointer",
+                              width: "28px",
+                              height: "34px",
+                              margin: "5px auto auto",
+                            }}
+                            className="imgcenter"
+                            src={artical}
+                            alt={specialArticle.name}
+                            title={specialArticle.name}
+                          />
+                          <p style={{ marginTop: "10px" }}>
+                            {specialArticle?.name}
+                          </p>
+                        </a>
                       </div>
-                    ))
+                    </div>
+                  ))
                   : ""}
               </Slider>
             </div>

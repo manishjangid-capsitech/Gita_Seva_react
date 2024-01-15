@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import DefaultBook from "../Images/defaultBook.png";
 import KalpataruServices from "../Services/Kalpataru";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -14,6 +14,8 @@ import Favempty from "../assets/img/fav.png";
 import { BookContentType } from "./Epub";
 import { toast } from "react-toastify";
 import { LogInModel } from "./LogInoutModel";
+import leftArrow from "../assets/img/leftArrow1.png";
+import rightArrow from "../assets/img/rightArrow1.png"
 
 const KalpataruDetailPage = (props: any) => {
   const { t } = useTranslation();
@@ -35,7 +37,8 @@ const KalpataruDetailPage = (props: any) => {
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 2000,
-    arrows: false,
+    prevArrow: <img src={leftArrow} alt="" height="40px" />,
+    nextArrow: <img src={rightArrow} alt="" height="40px" />
   };
 
   const [logIn, setLogIn] = useState<boolean>(false);
@@ -48,28 +51,37 @@ const KalpataruDetailPage = (props: any) => {
 
   const UserIdentity = localStorage.getItem("UserId") as any;
 
+  const notificationRef = useRef<any>(null);
+
+  const showNotification = (message: any) => {
+    notificationRef.current.innerText = message;
+    notificationRef.current.style.display = 'block';
+
+    setTimeout(() => {
+      notificationRef.current.style.display = 'none';
+    }, 3000); // Hide the notification after 2 seconds
+  };
+
   const notify = () => {
-    isLiked
-      ? toast(
-          localStorage.getItem("lang") === "hindi"
-            ? "पत्रिका को सफलतापूर्वक मेरी पसंद में जोड़ा गया है।"
-            : "Magazine has been successfully added to the favourites"
-        )
-      : toast(
-          localStorage.getItem("lang") === "hindi"
-            ? "पत्रिका मेरी पसंद से हटा दी गई है।"
-            : "Magazine has been removed from favourites"
-        );
+    showNotification(!isLiked
+      ?
+      localStorage.getItem("lan") === "hindi"
+        ? "पत्रिका को सफलतापूर्वक मेरी पसंद में जोड़ा गया है।"
+        : "Magazine has been successfully added to the favourites"
+      : localStorage.getItem("lan") === "hindi"
+        ? "पत्रिका मेरी पसंद से हटा दी गई है।"
+        : "Magazine has been removed from favourites"
+    )
   };
 
   const toggleLike = () => {
     !isLiked
       ? KalpataruServices.addKalpatruFavourite(kalpatruId).then((res) => {
-          res.status && setIsLiked(true);
-        })
+        res.status && setIsLiked(true);
+      })
       : KalpataruServices.removeKalpatruFavourite(kalpatruId).then((res) => {
-          res.status && setIsLiked(false);
-        });
+        res.status && setIsLiked(false);
+      });
     setToggleFav((x) => !x);
   };
 
@@ -233,6 +245,7 @@ const KalpataruDetailPage = (props: any) => {
                               <label
                                 onClick={() => {
                                   toggleLike();
+                                  notify()
                                 }}
                               >
                                 <img
@@ -274,7 +287,7 @@ const KalpataruDetailPage = (props: any) => {
                               if (UserIdentity) {
                                 navigate(
                                   `/reader/kalyanskalpataru/` +
-                                    kalpatrauDetail.slug,
+                                  kalpatrauDetail.slug,
                                   {
                                     state: {
                                       kalpatrauDetailId: kalpatrauDetail.id,
@@ -290,6 +303,7 @@ const KalpataruDetailPage = (props: any) => {
                           >
                             {t("read_magazine_tr")}
                           </p>
+                          <div ref={notificationRef} style={{ color: "#ff3d28", fontSize: '20px', marginTop: "10px" }} className="notification-bar"></div>
                         </div>
                       </div>
                     </div>
@@ -301,53 +315,53 @@ const KalpataruDetailPage = (props: any) => {
                           {t("Related_Kalyan_Kalpataru_tr")}
                         </h1>
 
-                        <div style={{ paddingBottom: "20px" }}>
+                        <div style={{ paddingBottom: "20px", width: " 97%", left: "18px", position: "relative" }}>
                           <Slider {...settings}>
                             {relateds && relateds.length > 0
                               ? relateds.map((related) => (
-                                  <div
-                                    className="slider-books sidebarmargin"
-                                    key={`related-${related.id}`}
-                                    onClick={() => {
-                                      navigate(
-                                        `/kalyanskalpataru/` + related.slug,
-                                        {
-                                          state: {
-                                            bookId: related.id,
-                                            bookName: related.name,
-                                          },
-                                        }
-                                      );
-                                      window.location.reload();
-                                    }}
-                                  >
-                                    <div>
-                                      <a>
-                                        <img
-                                          style={{
-                                            cursor: "pointer",
-                                            borderRadius: 0,
-                                          }}
-                                          className="imgcenter"
-                                          src={
-                                            related.kalyanKalpataruThumbPath ==
+                                <div
+                                  className="slider-books sidebarmargin"
+                                  key={`related-${related.id}`}
+                                  onClick={() => {
+                                    navigate(
+                                      `/kalyanskalpataru/` + related.slug,
+                                      {
+                                        state: {
+                                          kalpatruId: related.id,
+                                          bookName: related.name,
+                                        },
+                                      }
+                                    );
+                                    window.location.reload();
+                                  }}
+                                >
+                                  <div>
+                                    <a>
+                                      <img
+                                        style={{
+                                          cursor: "pointer",
+                                          borderRadius: 0,
+                                        }}
+                                        className="imgcenter"
+                                        src={
+                                          related.kalyanKalpataruThumbPath ==
                                             null
-                                              ? DefaultBook
-                                              : related.kalyanKalpataruThumbPath
-                                          }
-                                          onError={(e) => {
-                                            e.currentTarget.src = DefaultBook;
-                                          }}
-                                          alt={related.name}
-                                          title={related.name}
-                                          width="150"
-                                          height="212"
-                                        />
-                                        <p>{related?.name}</p>
-                                      </a>
-                                    </div>
+                                            ? DefaultBook
+                                            : related.kalyanKalpataruThumbPath
+                                        }
+                                        onError={(e) => {
+                                          e.currentTarget.src = DefaultBook;
+                                        }}
+                                        alt={related.name}
+                                        title={related.name}
+                                        width="150"
+                                        height="212"
+                                      />
+                                      <p>{related?.name}</p>
+                                    </a>
                                   </div>
-                                ))
+                                </div>
+                              ))
                               : ""}
                           </Slider>
                         </div>

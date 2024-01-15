@@ -6,6 +6,7 @@
   font-style: normal;
   font-display: swap;
 }
+
 @font-face {
   font-family: "VerdanaRegular";
   src: url("../fonts/Verdana.woff2") format("woff2"),
@@ -14,6 +15,7 @@
   font-style: normal;
   font-display: swap;
 }
+
 @font-face {
   font-family: "KrutiDev-010";
   src: url("../fonts/KrutiDev010.woff2") format("woff2"),
@@ -22,6 +24,7 @@
   font-style: normal;
   font-display: swap;
 }
+
 @font-face {
   font-family: "ChanakyaUniBold";
   src: url("../fonts/ChanakyaUni-Bold.woff2") format("woff2"),
@@ -39,6 +42,7 @@
   font-style: normal;
   font-display: swap;
 }
+
 body {
   background-color: rgb(255, 250, 240);
   font-size: 16px !important;
@@ -46,12 +50,15 @@ body {
   /* font-family: "VerdanaRegular"; */
   font-family: ChanakyaUni !important;
 }
+
 .ff-VerdanaBold {
   font-family: "VerdanaBold";
 }
+
 .ff-VerdanaRegular {
   font-family: "VerdanaRegular";
 }
+
 h1,
 h2,
 h3,
@@ -66,11 +73,13 @@ a {
   color: #3d2b31;
   text-decoration: none;
 }
+
 a:hover,
 a:focus,
 a:active {
   outline: none;
 }
+
 a:hover {
   color: #ff2e12 !important;
   text-decoration: none !important;
@@ -79,14 +88,22 @@ a:hover {
 .fw-700 {
   font-weight: 700;
 }
+
 .fw-600 {
   font-weight: 600;
 }
+
 .fw-500 {
   font-weight: 500;
 }
 
+.slick-next,
+.slick-prev {
+  height: 50px !important;
+}
+
 @media (min-width: 1200px) {
+
   .container,
   .container-lg,
   .container-md,
@@ -115,9 +132,11 @@ body {
   margin: 0;
   padding: 0;
 }
+
 .link-btn ::ng-deep .mat-button-focus-overlay {
   background-color: transparent;
 }
+
 .username {
   color: white;
   font-size: 19px;
@@ -125,6 +144,7 @@ body {
   flex: auto;
   text-align: right;
 }
+
 .usericon {
   float: right;
   margin: 0px 0px 0px 0px;
@@ -133,6 +153,7 @@ body {
   width: 35px;
   height: 35px;
 }
+
 .nousericon {
   border-radius: 50%;
 }
@@ -144,22 +165,27 @@ body {
   text-align: center;
   padding-top: 5px;
 }
+
 .gst-logo {
   float: left;
   width: 17%;
 }
+
 .gst-menu {
   width: 83%;
 }
+
 .searchbar {
   float: right;
   position: relative;
   width: 38%;
 }
+
 .searchbar form {
   width: 100%;
   float: right;
 }
+
 .searchbar form input {
   /* width: 100%; */
   background-color: #ffa843;
@@ -174,10 +200,12 @@ body {
   padding: 8px 35px 8px 8px;
   height: 30px;
 }
+
 .searchbar form input:focus {
   outline: none;
   border: 1px solid #ffc47e;
 }
+
 .search-button {
   padding: 0;
   background-color: transparent;
@@ -189,42 +217,30 @@ body {
   width: 20px;
   cursor: pointer;
 }
+
 .search-button:focus {
   outline: none;
   border: none;
 }
+
 .gst-menubar {
   float: left;
   margin: 0 0 0 20px;
   display: flex;
 }
+
 .gst-menubar .hmenu {
   margin: 22px 30px 0 0;
   float: initial;
   padding-left: 0;
 }
+
 .gst-menubar .hmenu li {
   list-style-type: none;
   display: inline-block;
   margin-left: 10px;
 }
-.gst-menubar .hmenu li a {
-  color: #472d1e;
-  font-size: 22px;
-  text-decoration: none;
-  outline: none;
-  font-style: normal;
-  font-weight: bold;
-}
-.gst-menubar .hmenu li a.active,
-.gst-menubar .hmenu li a:focus,
-.gst-menubar .hmenu li a:hover {
-  color: #d11501;
-}
-.gst-menubar .hmenu li::after {
-  content: "::";
-  padding-left: 15px;
-}
+
 .gst-menubar .hmenu li:last-child::before {
   /* content: ""; */
   padding: 0;
@@ -255,10 +271,12 @@ body {
   border-top-left-radius: 4px;
   border-bottom-left-radius: 4px;
 }
+
 .allCat:focus {
   outline: none;
   border: 1px solid #ffc47e;
 }
+
 .allCatSearch {
   float: right;
   background-color: #ffb968;
@@ -272,9 +290,11 @@ body {
   border-top-left-radius: 4px;
   border-bottom-left-radius: 4px;
 }
+
 .dropdownstyle div:hover {
   background-color: blue;
 }
+
 .allCatSearchone {
   background-color: #ffb968;
   font-size: 19px;
@@ -291,6 +311,7 @@ body {
   outline: none;
   border: 1px solid #ffc47e;
 }
+
 .userDiv {
   padding-top: 20px;
   float: right;
@@ -302,27 +323,33 @@ body {
   display: flex;
   justify-content: right;
 }
+
 .loginmenuddimg {
   width: 32px;
   height: 32px;
 }
+
 li.link-active a,
 li.link-active a:hover,
 li.link-active a:focus {
   color: #cf2c24;
 }
+
 #compute_select {
   display: none;
 }
+
 .containers {
   width: 1200px;
   margin: 0 auto;
   /* height: 142px; */
   position: relative;
 }
+
 img {
   vertical-align: middle;
 }
+
 .selectLanguage {
   float: right;
   font-family: Arial;
@@ -334,9 +361,11 @@ img {
   border-radius: 4px;
   background: #ffe1b4;
 }
+
 .searchBar {
   margin-top: 70px;
 }
+
 .searchBar h2 {
   font-family: "NotoSans";
   font-weight: normal;
@@ -366,6 +395,7 @@ img {
 .link {
   padding: 0 10px 0 10px;
 }
+
 /* end copycss */
 .gst-menubar .hmenu {
   margin: 22px 30px 0 0;
@@ -373,11 +403,13 @@ img {
   float: initial;
   padding-left: 0;
 }
+
 .gst-menubar .hmenu li {
   list-style-type: none;
   display: inline-block;
   margin-left: 10px;
 }
+
 .gst-menubar .hmenu li a {
   color: #472d1e;
   font-size: 22px;
@@ -385,16 +417,21 @@ img {
   outline: none;
   font-style: normal;
   font-weight: 700;
+  margin-left: 7px;
+  margin-right: 7px;
 }
+
 .gst-menubar .hmenu li a.active,
 .gst-menubar .hmenu li a:focus,
 .gst-menubar .hmenu li a:hover {
   color: #d11501;
 }
+
 .gst-menubar .hmenu li::after {
   content: "::";
   padding-left: 15px;
 }
+
 .gst-menubar .hmenu li:last-child::after {
   content: "";
   padding: 0;
@@ -405,6 +442,7 @@ img {
   background-color: #ffeaba;
   padding: 2% 0 20px 0;
 }
+
 .gst-footer h2 {
   border-bottom: 3px solid #ffcf73;
   color: #472d1e;
@@ -415,21 +453,25 @@ img {
   margin-bottom: 12px;
   font-family: "ChanakyaUni";
 }
+
 .footer-intro {
   float: left;
   width: 17%;
   margin-right: 2%;
 }
+
 .footer-intro ul {
   padding: 10px 0 0;
   margin: 0;
 }
+
 .footer-intro ul li {
   list-style-type: none;
   margin-bottom: 10px;
   border-bottom: 1px solid #ffd78c;
   padding-bottom: 5px;
 }
+
 .footer-intro ul li Link,
 .footer-author ul li Link {
   color: #472d1e;
@@ -440,6 +482,7 @@ img {
   /* font-weight: bold;
   */
 }
+
 .footer-intro ul li Link.active,
 .footer-author ul li Link.active,
 .footer-intro ul li Link:focus,
@@ -454,21 +497,26 @@ img {
   border-bottom: 1px solid #ffd78c;
   padding-bottom: 5px;
 }
+
 .ftmenulink {
   color: #d11501;
   font-size: 21px;
   font-style: normal;
   margin-right: 13px;
+  cursor: pointer;
 }
+
 .app-icon {
   padding-top: 15px;
   float: none;
   width: 100%;
   text-align: center;
 }
+
 .app-icon img {
   margin-left: 4px;
 }
+
 .socialicons {
   text-align: center;
   margin-bottom: 12px;
@@ -481,6 +529,7 @@ img {
 .socialicons img:hover {
   filter: grayscale(100%) !important;
 }
+
 /* loader */
 
 #preloader {
@@ -562,4 +611,103 @@ img {
     -ms-transform: rotate(360deg);
     transform: rotate(360deg);
   }
+}
+
+.headerwidth {
+  width: 85%;
+}
+
+.loginmenudd {
+  position: absolute;
+  padding-top: 5px;
+  right: 0;
+}
+
+.bannerimg {
+  cursor: pointer;
+  width: 99%;
+  height: 100%;
+}
+
+.bannerwidth {
+  width: 830px;
+}
+
+.parentBox {
+  height: 217px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.audioBox1 {
+  width: 445px;
+  height: 238px;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+  border-bottom: 5px solid #f4b919;
+  display: flex;
+}
+
+.audioBox2 {
+  text-align: center;
+  color: #3f220d;
+  font-size: 24px;
+  background-color: #ff9509;
+  padding: 40px 44px 20px 68px;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  float: right;
+  line-height: 32px;
+  width: 415px;
+  z-index: 0;
+  position: relative;
+  border-bottom: 5px solid #ec8600;
+  height: 238px;
+}
+
+@media (min-width: 1024px) and (max-width: 1400px) {
+  .gst-menubar {
+    /* margin: 0; */
+  }
+
+  .headerwidth {
+    width: 70%;
+  }
+
+  .loginmenudd {
+    right: 15%;
+  }
+
+  .shrihari {
+    margin-left: -15%;
+  }
+
+  .gst-menubar .hmenu li a {
+    margin: 0;
+  }
+
+  .bannerimg {
+    width: 70%;
+  }
+
+  .bannerwidth {
+    margin-left: -58px;
+  }
+
+  .parentBox {
+    display: flex;
+    justify-content: center;
+  }
+
+  .audioBox1 {
+    width: 330px;
+    height: 200px;
+  }
+
+  .audioBox2 {
+    width: 330px;
+    height: 200px;
+  }
+
+  /* .homepagebg {} */
 }

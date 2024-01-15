@@ -47,7 +47,6 @@ const SearchDataPage = () => {
         authorId: params?.usr?.authorId,
       }).then((res) => {
         if (res.status) {
-          debugger
           setLen(res?.result?.length);
           setSearchdata(res?.result);
           setPagination({
@@ -161,8 +160,6 @@ const SearchDataPage = () => {
                       className="col-lg-12"
                       key={`searchbook-${search.id}`}
                       onClick={() => {
-                        debugger
-                        console.log("index", i);
                         if (search.product === "book") {
                           navigate("/books/" + search.id,
                             {

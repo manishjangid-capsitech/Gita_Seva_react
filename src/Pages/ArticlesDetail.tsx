@@ -61,11 +61,6 @@ const ArticlesDetailPage = (props: any) => {
     }
   }, [articleId]);
 
-  // useEffect(() => {
-  //   debugger;
-  //   console.log("state", state);
-  // }, []);
-
   useEffect(() => {
     if (articleId) {
       setRefresh(false);
@@ -111,10 +106,9 @@ const ArticlesDetailPage = (props: any) => {
             }}
           >
             {state?.index >= 0 ? t("Article_tr") : ""}
-            {state?.special === "/articles" && t("Article_tr")}
-            {state?.special === "/articles/special" && t("Special_Article_tr")}
-            {state?.authorId && <span>{ArticlesDetail?.author}</span>}
-
+            {window.location?.pathname === "/articles/" + state?.articleId && t("Article_tr")}
+            {window.location?.pathname === "/articles/special/" + state?.articleId && t("Special_Article_tr")}
+            {state?.authorId !== undefined && <span>{ArticlesDetail?.author || state?.articleName}</span>}
             <div
               style={{
                 fontSize: "19px",
@@ -126,55 +120,31 @@ const ArticlesDetailPage = (props: any) => {
               <Link style={{ marginRight: "4px", color: "#2d2a29" }} to="/">
                 {t("Home_tr")}
               </Link>
-              {state?.special === "/articles/special" ? <>
-                <Link
-                  to={"/articles/special"}
-                  style={{ marginRight: "8px", color: "#2d2a29" }}
-                >
-                  / {t("Special_Article_tr")}
+              {window.location?.pathname === "/articles/" + state?.articleId &&
+                <Link to={"/articles"} style={{ marginRight: "8px", color: "#2d2a29" }}>/ {t("Article_tr")}</Link>}
+              {window.location?.pathname === "/articles/special/" + state.articleId &&
+                <Link to={"/articles/special"} style={{ marginRight: "8px", color: "#2d2a29" }}>/ {t("Special_Article_tr")}</Link>}
+              {state?.authorId !== undefined ? <> <Link
+                to={"/author/ +"}
+                state={{
+                  authorId: state?.authorId,
+                  authorName: state?.authorName,
+                }}
+                style={{ marginRight: "6px", color: "#2d2a29" }}
+              >
+                / {ArticlesDetail?.author || state?.articleName}
+              </Link>
+                <Link to={"/articles/author/+"}
+                  state={{
+                    authorId: state?.authorId,
+                    authorName: state?.authorName,
+                  }}
+                  style={{ marginRight: "6px", color: "#2d2a29" }}>
+                  / {t("Article_tr")}
                 </Link>
               </> : ""}
-              {state?.authorName ? (
-                <>
-                  <Link
-                    to={"/author/ +"}
-                    state={{
-                      authorId: state?.authorId,
-                      authorName: state?.authorName,
-                    }}
-                    style={{ marginRight: "8px", color: "#2d2a29" }}
-                  >
-                    / {ArticlesDetail?.author}
-                  </Link>
-                  <Link
-                    to={"/articles/author/ +"}
-                    state={{
-                      authorId: state?.authorId,
-                      authorName: state?.authorName,
-                    }}
-                    style={{ color: "#2d2a29", marginRight: "6px" }}
-                  >
-                    / {t("Article_tr")}
-                  </Link>
-                </>
-              ) : (
-                ""
-              )}
-              {state?.index >= 0 ? <Link
-                to={"/articles"}
-                style={{ color: "#2d2a29", marginRight: "6px" }}
-              >
-                / {t("Article_tr")}
-              </Link> : ""}
-              {state?.special === "/articles" &&
-                <Link
-                  to={"/articles"}
-                  style={{ color: "#2d2a29", marginRight: "6px" }}
-                >
-                  / {t("Article_tr")}
-                </Link>}
               <span style={{ marginRight: "8px", color: "#2d2a29" }}>
-                / {ArticlesDetail?.name}
+                /  {ArticlesDetail?.name}
               </span>
             </div>
           </div>
@@ -273,7 +243,7 @@ const ArticlesDetailPage = (props: any) => {
         </div>
       </div>
       <LogInModel opens={logIn} onCloses={closeModal} />
-    </div>
+    </div >
   );
 };
 export default ArticlesDetailPage;

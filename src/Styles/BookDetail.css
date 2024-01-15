@@ -160,8 +160,8 @@ label {
 
 .slider-books {
   height: 320px;
-  width: 193px !important;
-  margin: 0 11px;
+  width: 182px !important;
+  /* margin: 0 11px; */
   background-color: #fff8e8;
   border: 1px solid #f3e2e2;
   padding: 15px;

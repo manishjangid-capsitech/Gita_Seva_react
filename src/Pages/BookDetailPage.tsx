@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import DefaultBook from "../Images/defaultBook.png";
 import BooksService from "../Services/Books";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -16,6 +16,9 @@ import { userId } from "../Contexts/LocaleContext";
 import "react-toastify/dist/ReactToastify.css";
 import { LogInModel } from "./LogInoutModel";
 import { toast } from "react-toastify";
+import leftArrow from "../assets/img/leftArrow1.png";
+import rightArrow from "../assets/img/rightArrow1.png"
+
 
 export interface ISingleBook {
   bookLanguageId: string;
@@ -41,6 +44,7 @@ const BookDetailPage = (props: any) => {
   const [relateds, setRelatedBooks] = useState<any[] | undefined>(undefined);
 
   const UserIdentity = localStorage.getItem("UserId") as any;
+  const UserToken = localStorage.getItem("Token") as any;
 
   const location = useLocation();
   const state = location.state as {
@@ -55,6 +59,7 @@ const BookDetailPage = (props: any) => {
     searched: string;
     pathname: string
   };
+
   const settings = {
     infinite: true,
     speed: 500,
@@ -62,11 +67,11 @@ const BookDetailPage = (props: any) => {
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 2000,
-    arrows: false,
+    prevArrow: <img src={leftArrow} alt="" height="40px" />,
+    nextArrow: <img src={rightArrow} alt="" height="40px" />
   };
 
   const [logIn, setLogIn] = useState<boolean>(false);
-  const [bread, showBread] = useState("")
 
   const closeModal = () => {
     setLogIn(false);
@@ -76,18 +81,26 @@ const BookDetailPage = (props: any) => {
   const [toggleFav, setToggleFav] = useState<boolean>(false);
   const [lang, showLang] = useState("");
 
+  const notificationRef = useRef<any>(null);
+
+  const showNotification = (message: any) => {
+    notificationRef.current.innerText = message;
+    notificationRef.current.style.display = 'block';
+
+    setTimeout(() => {
+      notificationRef.current.style.display = 'none';
+    }, 3000); // Hide the notification after 2 seconds
+  };
+
   const notify = () => {
-    !isLiked
-      ? toast(
-        localStorage.getItem("lang") === "hindi"
-          ? "पुस्तक को सफलतापूर्वक मेरी पसंद में जोड़ा गया है।"
-          : "Book has been successfully added to the favourites"
-      )
-      : toast(
-        localStorage.getItem("lang") === "hindi"
-          ? "पुस्तक मेरी पसंद से हटा दी गई है।"
-          : "Book has been removed from favourites"
-      );
+    showNotification(!isLiked
+      ?
+      localStorage.getItem("lan") === "hindi"
+        ? "पुस्तक को सफलतापूर्वक मेरी पसंद में जोड़ा गया है।"
+        : "Book has been successfully added to the favourites"
+      : localStorage.getItem("lan") === "hindi"
+        ? "पुस्तक मेरी पसंद से हटा दी गई है।"
+        : "Book has been removed from favourites");
   };
 
   const toggleLike = () => {
@@ -107,13 +120,10 @@ const BookDetailPage = (props: any) => {
       state.bookId,
       UserIdentity !== "" ? UserIdentity : ""
     ).then((res: any) => {
-      debugger
-      console.log("result", res.result?.author);
       setBookDetail(res.result);
-      showBread(res?.result?.author)
       setIsLiked(res?.result?.isFavourite);
     });
-  }, [refresh, i18n.language]);
+  }, [refresh, i18n.language, logIn]);
 
   useEffect(() => {
     setRefresh(false);
@@ -129,15 +139,6 @@ const BookDetailPage = (props: any) => {
       showLang(res?.result?.name);
     });
   }, [i18n.language]);
-
-  useEffect(() => {
-    debugger;
-    console.log("state", state);
-    console.log(window.location.pathname);
-  }, []);
-
-
-
 
   return (
     <div
@@ -168,7 +169,7 @@ const BookDetailPage = (props: any) => {
           >
             {window.location?.pathname === "/books/" + state.bookId && t("E_books_tr")}
             {window.location?.pathname === "/books/special/" + state.bookId && t("Special_E_books_tr")}
-            {state?.authorId !== undefined && <span>{bread || state?.authorName}</span>}
+            {state?.authorId !== undefined && <span>{state?.authorName}</span>}
             {state?.langId !== undefined && <span>{lang}</span>}
             {state?.catId ? t("E_books_tr") : ""}
             <div
@@ -210,7 +211,7 @@ const BookDetailPage = (props: any) => {
                     style={{ marginRight: "6px", color: "#2d2a29" }}
                   >
                     {/* author name in hindi and english */}
-                    / {bread || state?.authorName}
+                    / {state?.authorName}
                   </Link>
                   <Link to={"/books/author/+"}
                     state={{
@@ -313,7 +314,7 @@ const BookDetailPage = (props: any) => {
                           >
                             <label
                               style={{
-                                fontFamily: "ChanakyaUni",
+                                fontFamily: "ChanakyaUniB",
                                 fontSize: "30px",
                                 fontWeight: 700,
                                 color: "#472d1e",
@@ -330,7 +331,7 @@ const BookDetailPage = (props: any) => {
                               <label
                                 onClick={() => {
                                   toggleLike();
-                                  notify();
+                                  notify()
                                 }}
                               >
                                 <img
@@ -341,6 +342,7 @@ const BookDetailPage = (props: any) => {
                             </label>
                           </div>
                         </div>
+
                         {bookDetail.author ? (
                           <div>
                             <p>
@@ -365,8 +367,7 @@ const BookDetailPage = (props: any) => {
                           <p
                             style={{ cursor: "pointer", display: "inline" }}
                             onClick={() => {
-                              setLogIn(true);
-                              if (UserIdentity) {
+                              if (UserToken) {
                                 navigate(`/reader/books/` + bookDetail.slug, {
                                   state: {
                                     bookDetailId: bookDetail.id,
@@ -376,11 +377,43 @@ const BookDetailPage = (props: any) => {
                                     type: BookContentType.books,
                                   },
                                 });
+
                               }
+                              else {
+                                setLogIn(true)
+                                if (logIn === true) {
+                                  navigate(`/reader/books/` + bookDetail.slug, {
+                                    state: {
+                                      bookDetailId: bookDetail.id,
+                                      bookName: bookDetail.name,
+                                      slug: bookDetail.slug,
+                                      label: bookDetail.label,
+                                      type: BookContentType.books,
+                                    },
+                                  });
+                                }
+                                console.log("user not logged in");
+                              }
+                              // setLogIn(true);
+                              // console.log(logIn + UserIdentity);
+                              // if (UserIdentity) {
+                              //   navigate(`/reader/books/` + bookDetail.slug, {
+                              //     state: {
+                              //       bookDetailId: bookDetail.id,
+                              //       bookName: bookDetail.name,
+                              //       slug: bookDetail.slug,
+                              //       label: bookDetail.label,
+                              //       type: BookContentType.books,
+                              //     },
+                              //   });
+                              // }
                             }}
                           >
                             {t("Read_the_book_tr")}
                           </p>
+                          {logIn ?
+                            <div ref={notificationRef} style={{ color: "#ff3d28", fontSize: '20px', marginTop: "10px" }} className="notification-bar"></div>
+                            : ""}
                         </div>
                       </div>
                     </div>
@@ -396,8 +429,7 @@ const BookDetailPage = (props: any) => {
                           {t("Related_e_books_tr")}
                         </h1>
 
-                        <div style={{ paddingBottom: "20px" }}>
-
+                        <div style={{ paddingBottom: "20px", width: " 97%", left: "18px", position: "relative" }}>
                           <Slider {...settings}>
                             {relateds && relateds.length > 0
                               ? relateds.map((related) => (
@@ -406,7 +438,6 @@ const BookDetailPage = (props: any) => {
                                   className="slider-books sidebarmargin"
                                   key={`related-${related.id}`}
                                   onClick={() => {
-                                    debugger
                                     if (window.location.pathname === `/books/` + state?.bookId) {
                                       navigate(`/books/` + related.id, {
                                         state: {
@@ -461,7 +492,6 @@ const BookDetailPage = (props: any) => {
                                           },
                                         })
                                     }
-
                                     // navigate(`/books/special/` + related.slug, {
                                     //   state: {
                                     //     bookId: related.id,

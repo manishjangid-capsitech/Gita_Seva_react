@@ -100,7 +100,7 @@ const VivekvaniPage = () => {
 
   useEffect(() => {
     setRefresh(false);
-    BooksService.getFilters("book").then((res) => {
+    VivekService.getFilters("vivekvani").then((res) => {
       if (res) {
         setLanguage(res?.result?.languages);
         setAuthor(res?.result?.authors);
@@ -163,8 +163,8 @@ const VivekvaniPage = () => {
             {writer
               ? writer
               : window.location.pathname === "/vivekvani/special"
-              ? t("Special_vivek_vani_tr")
-              : t("vivek_vani_tr")}
+                ? t("Special_vivek_vani_tr")
+                : t("vivek_vani_tr")}
             <div
               style={{
                 fontSize: "19px",
@@ -227,7 +227,7 @@ const VivekvaniPage = () => {
                   </div>
                   <div>
                     {/* category */}
-                    <Accordion elevation={0} defaultExpanded>
+                    {/* <Accordion elevation={0} defaultExpanded>
                       <AccordionSummary
                         expandIcon={<ExpandMore />}
                         style={{
@@ -247,37 +247,37 @@ const VivekvaniPage = () => {
                       >
                         {Category && Category.length > 0
                           ? Category?.map((category: any) => (
-                              <div
-                                key={`cat-${category.id}`}
-                                className="CategoryList"
-                                onClick={() => {
-                                  setCategoryId(category.id);
-                                }}
-                              >
-                                <ul style={{ margin: 0 }}>
-                                  <li>
-                                    <div
-                                      style={{
-                                        fontSize: "21px",
-                                        cursor: "pointer",
-                                        fontWeight: 400,
-                                        color: "#545454",
-                                        fontFamily: "ChanakyaUni",
-                                      }}
-                                      id={`cat-${category.id}`}
-                                    >
-                                      {category.name}
-                                    </div>
-                                  </li>
-                                </ul>
-                              </div>
-                            ))
+                            <div
+                              key={`cat-${category.id}`}
+                              className="CategoryList"
+                              onClick={() => {
+                                setCategoryId(category.id);
+                              }}
+                            >
+                              <ul style={{ margin: 0 }}>
+                                <li>
+                                  <div
+                                    style={{
+                                      fontSize: "21px",
+                                      cursor: "pointer",
+                                      fontWeight: 400,
+                                      color: "#545454",
+                                      fontFamily: "ChanakyaUni",
+                                    }}
+                                    id={`cat-${category.id}`}
+                                  >
+                                    {category.name}
+                                  </div>
+                                </li>
+                              </ul>
+                            </div>
+                          ))
                           : ""}
                       </AccordionDetails>
-                    </Accordion>
+                    </Accordion> */}
                     {/* author  */}
 
-                    <Accordion
+                    {/* <Accordion
                       elevation={0}
                       style={{ display: state?.authorId ? "none" : "block" }}
                     >
@@ -299,41 +299,43 @@ const VivekvaniPage = () => {
                       >
                         {Author && Author.length > 0
                           ? Author?.map((author: any) => (
-                              <div
-                                key={`c-${author.id}`}
-                                className="Authorlist"
-                                onClick={() => {
-                                  setAuthorId(author?.id);
-                                }}
-                              >
-                                <ul style={{ margin: 0 }}>
-                                  <li>
-                                    <div
-                                      style={{
-                                        fontSize: "21px",
-                                        cursor: "pointer",
-                                        fontWeight: 400,
-                                        color: "#545454",
-                                        fontFamily: "ChanakyaUni",
-                                      }}
-                                      id={`aut-${author.id}`}
-                                    >
-                                      {author.name}
-                                    </div>
-                                  </li>
-                                </ul>
-                              </div>
-                            ))
+                            <div
+                              key={`c-${author.id}`}
+                              className="Authorlist"
+                              onClick={() => {
+                                setAuthorId(author?.id);
+                              }}
+                            >
+                              <ul style={{ margin: 0 }}>
+                                <li>
+                                  <div
+                                    style={{
+                                      fontSize: "21px",
+                                      cursor: "pointer",
+                                      fontWeight: 400,
+                                      color: "#545454",
+                                      fontFamily: "ChanakyaUni",
+                                    }}
+                                    id={`aut-${author.id}`}
+                                  >
+                                    {author.name}
+                                  </div>
+                                </li>
+                              </ul>
+                            </div>
+                          ))
                           : ""}
                       </AccordionDetails>
-                    </Accordion>
+                    </Accordion> */}
                     {/* language */}
-                    <Accordion elevation={0}>
+                    <Accordion elevation={0} defaultExpanded>
                       <AccordionSummary
                         expandIcon={<ExpandMore />}
                         style={{
-                          height: "10px",
+                          height: 0,
                           background: "#FFFAF0",
+                          minHeight: "20px",
+                          marginTop: "15px"
                         }}
                       >
                         <h2 className="filtertitle">{t("Languages_tr")}</h2>
@@ -433,7 +435,7 @@ const VivekvaniPage = () => {
                                 className="Authorlist"
                                 key={`aut-${viveks.id}`}
                                 onClick={() => {
-                                  navigate(`/vivekvani/` + viveks.slug, {
+                                  navigate(`/vivekvani/` + viveks.id, {
                                     state: {
                                       vivekId: viveks.id,
                                       vivekName: viveks.name,

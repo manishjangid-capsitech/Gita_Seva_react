@@ -11,6 +11,8 @@ import BackArrow from "../assets/img/leftArrow1.png";
 import { UploadProfileImage } from "./LogInoutModel";
 import "../Styles/Profile.css";
 import ProfileSidePanel from "./ProfileSidePanel";
+import { storage } from "./Firebase";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 export interface IUserModel {
   userId?: string;
@@ -36,14 +38,19 @@ const Profile = () => {
 
   const UserImage = localStorage.getItem("Image");
   const [hide, setHide] = useState(false);
-  const [states, setStates] = useState<any>([]);
+  const [states, setStates] = useState<any[]>([]);
   const [district, setDistrict] = useState<any[]>([]);
   const [countrys, setCountrys] = useState<any[]>([]);
   const [refresh, setRefresh] = useState<boolean>(false);
+  const [image, setImage] = useState<any>(null);
+  const [url, setUrl] = useState<any>(null);
+
+  const [baseFile, setBaseFile] = useState<any>('');
+
   const [data, setData] = useState<IUserModel>({
     name: "",
     email: "",
-    baseFile: 0,
+    baseFile: "",
     address1: "",
     address2: "",
     city: "",
@@ -59,6 +66,40 @@ const Profile = () => {
   });
 
   const colors = "#FF9800";
+
+  const handleSubmit = () => {
+    const imageRef = ref(storage, "image");
+    uploadBytes(imageRef, image)
+      .then(() => {
+        getDownloadURL(imageRef)
+          .then((url) => {
+            setUrl(url);
+          })
+          .catch((error) => {
+            console.log(error.message, "error getting the image url");
+          });
+        setImage(null);
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
+  };
+
+  const handleImageChange = (e: any) => {
+    const filesSelected = e.target.files;
+
+    if (filesSelected.length > 0) {
+      const fileToLoad = filesSelected[0];
+      const fileReader = new FileReader();
+
+      fileReader.onload = function (fileLoadedEvent) {
+        const srcData = fileLoadedEvent?.target?.result;
+        setBaseFile(srcData?.toString());
+      };
+
+      fileReader.readAsDataURL(fileToLoad);
+    }
+  };
 
   useEffect(() => {
     setRefresh(false);
@@ -88,8 +129,12 @@ const Profile = () => {
   useEffect(() => {
     setRefresh(false);
     ProfileService.getCountry(_get_i18Lang())
-      .then((res) => {
+      .then((res: any) => {
         setCountrys(res.result);
+        // if (data?.country === null) {
+        //   debugger
+        //   setData({ ...data, country: res.result[0] })
+        // }
       })
       .catch((error) => console.error("Error fetching data:", error));
   }, [refresh, i18n.language]);
@@ -199,7 +244,7 @@ const Profile = () => {
                   aria-labelledby="e-books-tab"
                 >
                   <div className="tab-row">
-                    <div className="tabscroll">
+                    <div className="tabscroll" style={{ width: "100%", display: "block" }}>
                       <div
                         style={{
                           padding: "10px 20px",
@@ -256,16 +301,13 @@ const Profile = () => {
                               height: hide ? "145px" : "619px",
                             }}
                           >
-                            {UserImage ? (
-                              <img
-                                id="userimg"
-                                src={UserImage}
-                                // src="https://gitaseva.org/assets/img/profile-image1.png"
-                                title="User Login"
-                                alt="user"
-                                width="140"
-                              />
-                            ) : (
+                            {/* {UserImage ? ( */}
+                            <img
+                              src={baseFile ? baseFile : UserImage}
+                              alt="Selected Profile"
+                              style={{ width: '140px' }}
+                            />
+                            {/* ) : (
                               <img
                                 id="userimg"
                                 src="https://gitaseva.org/assets/img/profile-image1.png"
@@ -274,15 +316,14 @@ const Profile = () => {
                                 alt="user"
                                 width="140"
                               />
-                            )}
+                            )} */}
                           </div>
                           <div
                             style={{
                               display: hide ? "block" : "none",
                               height: hide ? "474px" : "0",
                             }}
-                          >
-                            <UploadProfileImage />
+                          ><input type="file" onChange={handleImageChange} />
                           </div>
                         </div>
                         <div key={data.phoneNumber}>
@@ -462,8 +503,9 @@ const Profile = () => {
                                   </h6>
                                   <select
                                     className="inputBoxStyle"
-                                    defaultValue={data.country}
+                                    value={data.country}
                                     onChange={(e) => {
+                                      console.log("country", data.country);
                                       setData((d: IUserModel) => ({
                                         ...d,
                                         country: e.target.value,
@@ -472,7 +514,7 @@ const Profile = () => {
                                   >
                                     {countrys.map((country: any) => {
                                       return (
-                                        <option value={country.name}>
+                                        <option key={country?.id} value={country.name}>
                                           {country.name}
                                         </option>
                                       );
@@ -489,7 +531,7 @@ const Profile = () => {
                                   </h6>
                                   <select
                                     className="inputBoxStyle"
-                                    defaultValue={data.state}
+                                    value={data.state}
                                     onChange={(e) => {
                                       setData((d: IUserModel) => ({
                                         ...d,
@@ -499,7 +541,7 @@ const Profile = () => {
                                   >
                                     {states?.map((state: any) => {
                                       return (
-                                        <option value={state?.name}>
+                                        <option key={state?.id} value={state?.name}>
                                           {state.name}
                                         </option>
                                       );
@@ -516,7 +558,7 @@ const Profile = () => {
                                   </h6>
                                   <select
                                     className="inputBoxStyle"
-                                    defaultValue={data?.city}
+                                    value={data?.city}
                                     onChange={(e) => {
                                       setData((d: IUserModel) => ({
                                         ...d,
@@ -526,7 +568,7 @@ const Profile = () => {
                                   >
                                     {district?.map((district: any) => {
                                       return (
-                                        <option value={district.name}>
+                                        <option key={district?.id} value={district.name}>
                                           {district.name}
                                         </option>
                                       );
@@ -556,10 +598,11 @@ const Profile = () => {
                                 </div>
                                 <button
                                   onClick={async () => {
+                                    // debugger
                                     await ProfileService.updateUserProfile(
                                       data.name,
                                       data.email,
-                                      data.baseFile,
+                                      baseFile,
                                       data.address1,
                                       data.address2,
                                       data.city,
@@ -570,10 +613,14 @@ const Profile = () => {
                                       data.language,
                                       data.phoneNumber
                                     ).then((result: any) => {
+                                      // debugger
+                                      console.log("result", result);
                                       if (result.status) {
+                                        // debugger
                                         setRefresh(true);
                                       }
                                     });
+                                    handleSubmit()
                                   }}
                                   style={{
                                     fontFamily: "ChanakyaUni,NalandaTim,Tunga",

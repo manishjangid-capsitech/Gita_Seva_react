@@ -64,23 +64,23 @@ const SubMenu = ({
               +
             </label>
           ) : (
-            <label
+            <p
               style={{
                 fontSize: "35px",
                 fontWeight: "bolder",
                 color: "#FB9C34",
                 marginRight: '5px'
               }}
-            >
-              <img
+            >.
+              {/* <img
                 src={dot}
                 alt="dot"
                 style={{
                   width: "4px",
                   margin: "0px 6px 0 0",
                 }}
-              />
-            </label>
+              /> */}
+            </p>
           )}
         </label>
         <label
@@ -119,8 +119,8 @@ const SubMenu = ({
                   marginTop: "10px",
                   color:
                     childSelected === item.id &&
-                    parent?.isCurrent &&
-                    childColored
+                      parent?.isCurrent &&
+                      childColored
                       ? "red"
                       : "",
                 }}
@@ -164,6 +164,7 @@ export const SideBar = ({
         {itemsArr?.map((item: any, index: number) => {
           return (
             <SubMenu
+              key={index}
               value={item}
               onChange={(value: any) => {
                 setItemsArr(
@@ -174,7 +175,6 @@ export const SideBar = ({
                     return { ...i, isCurrent: false };
                   })
                 );
-
                 if (onClick) onClick(value);
               }}
               onMenuClick={(value) => {

@@ -1,10 +1,13 @@
 import { ApiUtility } from "./ApiUtility";
 
-class AboutService {
+class EpubService {
   route = "/posts";
   aboutRoute = "/api/settings/aboutus?lang=";
   refreshtoken = "/api/user/refreshtoken?userId=";
   lastpositionRoute = "/api/user/";
+  savebkmark = "/api/user/bookmarks?bookId=";
+  removebkmark = "/api/user/bookmarks?bookId=";
+  getbkmark = "/api/user/bookmarks?BookId=";
 
   get = (id: string) => ApiUtility.getResult(`${this.route}/${id}`);
 
@@ -39,13 +42,13 @@ class AboutService {
   ) => {
     return ApiUtility.post(
       this.lastpositionRoute +
-        lstposition +
-        "?bookId=" +
-        bookId +
-        "&cfi=" +
-        last_cfi +
-        "&bookfontsize=" +
-        bookfontsize,
+      lstposition +
+      "?bookId=" +
+      bookId +
+      "&cfi=" +
+      last_cfi +
+      "&bookfontsize=" +
+      bookfontsize,
       {
         Headers: {
           "Content-Type": "application/json",
@@ -54,6 +57,25 @@ class AboutService {
       }
     );
   };
+
+  savebookmark = (bookId: string, cfi: string, chaptername: string) =>
+    ApiUtility.post(this.savebkmark + bookId + '&cfi=' + cfi + '&chaptername=' + chaptername,
+      {
+        Headers: {
+          authorization: localStorage.getItem("UserId"),
+          Accept: "application/json",
+        },
+      })
+
+  removebookmark(bookId: string, cfi: string) {
+    return ApiUtility.delete(this.removebkmark + bookId + "&cfi=" + cfi)
+  }
+
+  getbookmark = (bookId: string) => {
+    return ApiUtility.get(this.getbkmark + bookId)
+  }
+
+  // https://apidev.gitaseva.org/v1/api/user/bookmarks?BookId=bookid
 
   getLastPosition(lstposition: string, bookId: string) {
     return ApiUtility.get(
@@ -67,4 +89,5 @@ class AboutService {
     );
   }
 }
-export default new AboutService();
+
+export default new EpubService();

@@ -125,7 +125,7 @@ export const ProfileContact = () => {
         });
       })
       .catch((error) => console.error("Error fetching data:", error));
-  }, [data]);
+  }, [data.feedbacktype]);
 
   return (
     <div>
@@ -172,7 +172,7 @@ export const ProfileContact = () => {
         className="newcontainer"
         style={{
           backgroundColor: "#FFF6E1",
-          padding: "1% 0 3% 0",
+          padding: "25px 0 3% 0",
           marginTop: 0,
         }}
       >
@@ -231,7 +231,7 @@ export const ProfileContact = () => {
                                       width: "500px",
                                       height: "35px",
                                       fontSize: "22px",
-                                      marginRight: "22px",
+                                      paddingLeft: "15px",
                                       marginBottom: "15px",
                                       border: "1px solid gray",
                                       borderRadius: "4px",
@@ -277,7 +277,7 @@ export const ProfileContact = () => {
                                       width: "500px",
                                       height: "35px",
                                       fontSize: "22px",
-                                      marginRight: "22px",
+                                      paddingLeft: "15px",
                                       background:
                                         data.phoneNumber.length > 0
                                           ? "#E9ECEF"
@@ -309,7 +309,7 @@ export const ProfileContact = () => {
                                       width: "500px",
                                       height: "35px",
                                       fontSize: "22px",
-                                      marginRight: "22px",
+                                      paddingLeft: "15px",
                                       marginBottom: "15px",
                                       background:
                                         data.email.length > 0
@@ -335,9 +335,10 @@ export const ProfileContact = () => {
                                       width: "500px",
                                       height: "35px",
                                       fontSize: "22px",
-                                      marginRight: "22px",
+                                      padding: "0 0 0 12px",
+                                      borderRadius: "4px",
                                     }}
-                                    name="contactType"
+                                    name="feedbacktype"
                                     defaultValue={"1"}
                                     value={data.feedbacktype}
                                     className="contactContent"
@@ -395,7 +396,7 @@ export const ProfileContact = () => {
                                     style={{
                                       width: "500px",
                                       fontSize: "22px",
-                                      marginRight: "22px",
+                                      paddingLeft: "15px",
                                       marginBottom: "15px",
                                       height: "100px",
                                     }}

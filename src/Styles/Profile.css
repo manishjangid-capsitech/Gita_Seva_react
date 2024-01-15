@@ -10,6 +10,7 @@
   margin: 10px 5px;
   cursor: pointer;
 }
+
 .audioBox p {
   color: #3f220d;
   font-size: 20px;
@@ -48,12 +49,14 @@
   flex: 1;
   padding: 20px 0 0 0;
 }
+
 /* line 71, ../scss/_audio-player.scss */
 .play-bar span {
   color: #ffffff;
   font-size: 1.2em;
   align-self: center;
 }
+
 /* line 77, ../scss/_audio-player.scss */
 .play-bar .bar-bg {
   background-color: #f7ad2b;
@@ -63,6 +66,7 @@
   align-self: center;
   margin: 0 5px;
 }
+
 /* line 85, ../scss/_audio-player.scss */
 .play-bar .bar-bg .progress {
   background-color: #ffffff;
@@ -70,6 +74,7 @@
   border-radius: 10px;
   width: 0%;
 }
+
 .play-bar .bar-bgs {
   background-color: #f7ad2b;
   width: 100%;
@@ -78,6 +83,7 @@
   align-self: center;
   margin: 0 5px;
 }
+
 /* line 85, ../scss/_audio-player.scss */
 .play-bar .bar-bgs .progresss {
   background-color: #ffffff;
@@ -85,11 +91,13 @@
   border-radius: 10px;
   width: 0%;
 }
+
 .lyrics-Data {
   width: 75%;
   float: left;
   text-align: center;
 }
+
 .rabbit-lyrics {
   position: relative;
   height: calc(100vh - 237px);
@@ -97,6 +105,7 @@
   max-height: 90%;
   overflow-y: scroll;
 }
+
 .rabbit-lyrics .line {
   min-height: 1.5em;
   color: inherit;
@@ -108,21 +117,25 @@
   font-size: 14px;
   display: block;
 }
+
 .songSidebar {
   float: left;
   background-color: #fff;
 }
+
 .ralated-logo {
   background: #ffc052;
   color: #fff;
   text-align: left;
 }
+
 .relatedaudiotitle {
   background: #f5ad43;
   color: #fff;
   font-size: 1.5em;
   text-align: center;
 }
+
 .songCategories {
   height: calc(100vh - 237px);
   padding: 30px;
@@ -130,12 +143,7 @@
   border-radius: 4px;
   overflow-y: scroll;
 }
-.closeTab {
-  text-align: right;
-  margin: 6px 6px 0 0;
-  float: right;
-  padding: 5px;
-}
+
 .profile-detailView input {
   font-size: 23px;
   font-style: normal;
@@ -153,6 +161,7 @@
   font-size: 22px;
   padding-left: 10px;
 }
+
 .profile-list {
   cursor: pointer;
   font-family: Verdana;
@@ -165,6 +174,7 @@
   margin-bottom: 16px;
   border-bottom: 1px solid #f5dca0;
 }
+
 .picprofile {
   padding: 15px 15px 15px 15px;
   margin-left: 37px;
@@ -174,13 +184,16 @@
 /* ProfileFav Page */
 
 .favebooks {
-  border-radius: 6px;
   background-color: #fff;
   border: 1px solid #f7ebce;
-  padding: 35px;
-  text-align: center;
-  margin: 0 0 30px;
+  border-radius: 6px;
+  cursor: pointer;
   height: 300px;
+  padding: 39px;
+  text-align: center;
+  width: 196px;
+  margin: 0 63px 0 0;
+  display: flex;
 }
 
 .favebooks p {
@@ -191,6 +204,7 @@
   color: #3f220d;
   margin: 13px 0 0;
   line-height: 18px;
+  cursor: pointer;
 }
 
 .favpagebooks {
@@ -202,6 +216,7 @@
   padding: 15px 0 0 0;
   border-radius: 6px;
   float: left;
+  cursor: pointer;
 }
 
 .favpagebooks p {
@@ -212,10 +227,12 @@
   margin: 25px 0 0;
   font-style: normal;
   font-weight: 600;
+  cursor: pointer;
 }
 
 .favpagebooks a:hover p {
   color: #d11501;
+  cursor: pointer;
 }
 
 .favitems {
@@ -262,10 +279,12 @@ input::-webkit-inner-spin-button {
   font-size: 22px;
   font-family: ChanakyaUni;
 }
+
 .inputBoxStyle {
   width: 500px;
   height: 30px;
   font-size: 21px;
   border: 1px solid gray;
   border-radius: 4px;
+  padding-left: 5px;
 }

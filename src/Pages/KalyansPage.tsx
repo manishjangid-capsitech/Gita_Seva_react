@@ -45,6 +45,7 @@ const KalyansPage = () => {
       ...pagination,
       pageNo: 0,
     });
+    setRefresh(true)
   }
 
   function ClickOnFilter(cat: string) {
@@ -95,7 +96,7 @@ const KalyansPage = () => {
   useEffect(() => {
     setRefresh(false);
     KalyansServices.getKalyans(
-      pagination.pageNo === 1
+      pagination.pageNo === 0
         ? 0
         : pagination.recordsPerPage * pagination.pageNo - 12,
       pagination.recordsPerPage,
@@ -111,7 +112,6 @@ const KalyansPage = () => {
         setKalyan(res.result?.items);
         setPagination({
           ...pagination,
-          recordsPerPage: 12,
           totalRecords: res.result?.totalRecords,
         });
       }
@@ -209,8 +209,9 @@ const KalyansPage = () => {
                       <AccordionSummary
                         expandIcon={<ExpandMore />}
                         style={{
-                          height: "10px",
+                          height: 0,
                           background: "#FFFAF0",
+                          minHeight: "20px"
                         }}
                       >
                         <h2 className="filtertitle">{t("Kalyan_Points_tr")}</h2>
@@ -225,31 +226,31 @@ const KalyansPage = () => {
                       >
                         {Category && Category.length > 0
                           ? Category?.map((category: any) => (
-                              <div
-                                key={`c-${category.id}`}
-                                className="CategoryList"
-                                onClick={() => {
-                                  setCategoryId(category.id);
-                                }}
-                              >
-                                <ul style={{ margin: 0 }}>
-                                  <li>
-                                    <div
-                                      style={{
-                                        fontSize: "21px",
-                                        cursor: "pointer",
-                                        fontWeight: 400,
-                                        color: "#545454",
-                                        fontFamily: "ChanakyaUni",
-                                      }}
-                                      id={`cat-${category.id}`}
-                                    >
-                                      {category.name}
-                                    </div>
-                                  </li>
-                                </ul>
-                              </div>
-                            ))
+                            <div
+                              key={`c-${category.id}`}
+                              className="CategoryList"
+                              onClick={() => {
+                                setCategoryId(category.id);
+                              }}
+                            >
+                              <ul style={{ margin: 0 }}>
+                                <li>
+                                  <div
+                                    style={{
+                                      fontSize: "21px",
+                                      cursor: "pointer",
+                                      fontWeight: 400,
+                                      color: "#545454",
+                                      fontFamily: "ChanakyaUni",
+                                    }}
+                                    id={`cat-${category.id}`}
+                                  >
+                                    {category.name}
+                                  </div>
+                                </li>
+                              </ul>
+                            </div>
+                          ))
                           : ""}
                       </AccordionDetails>
                     </Accordion>
@@ -333,7 +334,7 @@ const KalyansPage = () => {
                                     />
                                     <p style={{ cursor: "pointer" }}>
                                       {kalyan.name != null &&
-                                      kalyan.name.length > 50
+                                        kalyan.name.length > 50
                                         ? kalyan.name.slice(0, 50)
                                         : kalyan.name}
                                     </p>

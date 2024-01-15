@@ -34,7 +34,7 @@ const PravachansPage = () => {
   const navigate = useNavigate();
   const [audios, setAudios] = useState<any[] | undefined>(undefined);
   const [refresh, setRefresh] = useState(false);
-  const [SortValue, setSortValue] = useState("4");
+  const [SortValue, setSortValue] = useState("3");
   const [Type, setType] = useState<any | undefined>(undefined);
   const [SortMonthValue, setSortMonthValue] = useState<string>("0");
   const [SortYearValue, setSortYearValue] = useState<string>("0");
@@ -74,7 +74,7 @@ const PravachansPage = () => {
     setPreacherId("");
     setCategoryId("");
     setLyricsId("");
-    setSortValue("4");
+    setSortValue("3");
     setSortMonthValue("0");
     setSortYearValue("0");
     setActiveIndex(null);
@@ -85,31 +85,42 @@ const PravachansPage = () => {
     setRefresh(true);
   }
 
-  const [pravachanId, setPravachanId] = useState("");
+  const FavPravachanAdd = (audioId: any) => {
 
-  const toggleLike = (audioId: any) => {
-    !isLiked
-      ? AudiosService.addPravachanFavourite(audioId).then((res) => {
+  };
+
+  const toggleLike = (audioId: any, index: number) => {
+    !isLiked ?
+      AudiosService.addPravachanFavourite(audioId).then((res) => {
         setAudios(
           audios?.map((a: any) => {
+            // debugger
             if (a.id === res.result?.productId) {
-              res.status && setIsLiked(true);
+              // debugger
+              setIsLiked(true);
             }
             return a;
           })
         );
       })
+
       : AudiosService.removePravachanFaviourite(audioId).then((res) => {
         setAudios(
           audios?.map((a: any) => {
             if (a.id === audioId) {
-              res.status && setIsLiked(false);
+              // debugger
+              setIsLiked(false);
             }
             return a;
           })
         );
       });
     setToggleFav((x) => !x);
+    return;
+  };
+
+  const FavPravachanRemove = (audioId: any) => {
+
   };
 
   function ClickOnFilter(par: string, cat: string, lyric: string) {
@@ -133,7 +144,6 @@ const PravachansPage = () => {
     ).then((res) => {
       if (res) {
         setAudios(res?.result?.items);
-
         setPagination({
           ...pagination,
           pageNo: 1,
@@ -203,15 +213,16 @@ const PravachansPage = () => {
       SortYearValue,
       UserIdentity
     ).then((res) => {
+      // debugger
       if (res.status) setAudios(res.result?.items);
-      setIsLiked(res?.result?.items.isFavourite);
+      setIsLiked(res?.result?.items[0].isFavourite);
       setPagination({
         ...pagination,
         // recordsPerPage: 12,
-        totalRecords: res.result?.totalRecords,
+        totalRecords: res?.result?.totalRecords,
       });
     });
-  }, [SortValue, i18n.language, refresh]);
+  }, [SortValue, i18n.language, refresh, isLiked]);
 
   return (
     <>
@@ -285,7 +296,6 @@ const PravachansPage = () => {
         style={{
           userSelect: "none",
           backgroundColor: "rgb(255, 246, 225)",
-          height: "1440px",
           marginTop: -"3px",
           paddingTop: "1px",
         }}
@@ -293,7 +303,7 @@ const PravachansPage = () => {
         <div className="containers">
           <div
             className="gst-page-content pagecontentbackground"
-            style={{ backgroundColor: "#FFF6E1" }}
+            style={{ backgroundColor: "#FFF6E1", paddingBottom: "3%" }}
           >
             <div className="row">
               <div className="col-lg-3">
@@ -412,8 +422,10 @@ const PravachansPage = () => {
                         <AccordionSummary
                           expandIcon={<ExpandMore />}
                           style={{
+                            height: 0,
                             background: "#FFFAF0",
-                            height: "10px",
+                            minHeight: "20px",
+                            marginTop: "15px"
                           }}
                         >
                           <h2 className="filtertitle">{t("Preacher_tr")}</h2>
@@ -461,8 +473,10 @@ const PravachansPage = () => {
                         <AccordionSummary
                           expandIcon={<ExpandMore />}
                           style={{
-                            height: "10px",
+                            height: 0,
                             background: "#FFFAF0",
+                            minHeight: "39px",
+                            margin: "0 0 -7px 0",
                           }}
                         >
                           <h2 className="filtertitle">{t("Category_tr")}</h2>
@@ -483,7 +497,7 @@ const PravachansPage = () => {
                                   setCategoryId(categorie.id);
                                 }}
                               >
-                                <ul style={{ margin: 0 }}>
+                                <ul style={{ margin: "5px 0 0 0   " }}>
                                   <li>
                                     <div
                                       style={{
@@ -509,8 +523,10 @@ const PravachansPage = () => {
                         <AccordionSummary
                           expandIcon={<ExpandMore />}
                           style={{
-                            height: "10px",
+                            height: 0,
                             background: "#FFFAF0",
+                            minHeight: "39px",
+                            margin: "0 0 -2px 0",
                           }}
                         >
                           <h2 className="filtertitle">{t("Lyrics_tr")}</h2>
@@ -645,7 +661,7 @@ const PravachansPage = () => {
                                     alt={audio.name}
                                     title={audio.name}
                                     onClick={() => {
-                                      navigate(`/pravachans/` + audio.slug, {
+                                      navigate(`/pravachans/` + audio.id, {
                                         state: {
                                           audioId: audio.id,
                                           audioslug: audio.slug,
@@ -662,12 +678,17 @@ const PravachansPage = () => {
                                 <a style={{ cursor: "pointer" }}>
                                   <p
                                     style={{
-                                      fontSize: "25px",
                                       paddingTop: "3px",
                                       fontWeight: "600",
+                                      color: "#595551",
+                                      fontSize: "20px",
+                                      fontStyle: "normal",
+                                      lineHeight: "25px",
+                                      marginBottom: 0,
+                                      overflow: "hidden",
                                     }}
                                     onClick={() => {
-                                      navigate(`/pravachans/` + audio.slug, {
+                                      navigate(`/pravachans/` + audio.id, {
                                         state: {
                                           audioId: audio.id,
                                           audioslug: audio.slug,
@@ -685,9 +706,10 @@ const PravachansPage = () => {
                                         : audio.name}
                                     </p>
                                   </p>
+                                  <p>{t("Preacher_tr")}:  {audio.author}</p>
                                   <p
                                     onClick={() => {
-                                      navigate(`/pravachans/` + audio.slug, {
+                                      navigate(`/pravachans/` + audio.id, {
                                         state: {
                                           audioId: audio.id,
                                           audioslug: audio.slug,
@@ -709,10 +731,8 @@ const PravachansPage = () => {
                                 }}
                               >
                                 <label
-                                  id={`${audio.id}`}
                                   onClick={() => {
-                                    if (!UserIdentity && logIn)
-                                      toggleLike(audio?.id);
+                                    toggleLike(audio?.i, audio?.id);
                                   }}
                                 >
                                   <img
@@ -754,7 +774,7 @@ const PravachansPage = () => {
                                   <img
                                     alt=""
                                     onClick={() => {
-                                      navigate(`/pravachans/` + audio.slug, {
+                                      navigate(`/pravachans/` + audio.id, {
                                         state: {
                                           audioId: audio.id,
                                           audioslug: audio.slug,
@@ -767,7 +787,7 @@ const PravachansPage = () => {
                                     title="Play"
                                     src={imgpause}
                                     className="playbtn"
-                                  ></img>
+                                  />
                                 </div>
                               </div>
                             </div>

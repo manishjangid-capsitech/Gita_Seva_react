@@ -28,7 +28,7 @@ const BooksPage = () => {
   const [books, setBooks] = useState<any[] | undefined>(undefined);
 
   const [refresh, setRefresh] = useState(false);
-  const [SortValue, setSortValue] = useState("2");
+  const [SortValue, setSortValue] = useState("3");
   const [language, setLanguage] = useState<any>("");
   const [LanguageId, setLanguageId] = useState<any>("");
   const [Author, setAuthor] = useState<any>("");
@@ -52,7 +52,7 @@ const BooksPage = () => {
   };
 
   function ResetData() {
-    setSortValue("2");
+    setSortValue("3");
     setLanguageId("");
     setAuthorId("");
     setCategoryId("");
@@ -60,6 +60,7 @@ const BooksPage = () => {
       ...pagination,
       pageNo: 0,
     });
+    setRefresh(true);
   }
 
   function ClickOnFilter(lan: string, cat: string, aut: string) {
@@ -116,7 +117,7 @@ const BooksPage = () => {
   useEffect(() => {
     setRefresh(false);
     BooksService.getBooks(
-      pagination.pageNo === 1
+      pagination.pageNo === 0
         ? 0
         : pagination.recordsPerPage * pagination.pageNo - 12,
       pagination.recordsPerPage,
@@ -135,7 +136,6 @@ const BooksPage = () => {
         }
         setPagination({
           ...pagination,
-          recordsPerPage: 12,
           totalRecords: res.result?.totalRecords,
         });
       }
@@ -275,8 +275,9 @@ const BooksPage = () => {
                       <AccordionSummary
                         expandIcon={<ExpandMore />}
                         style={{
-                          height: "10px",
+                          height: 0,
                           background: "#FFFAF0",
+                          minHeight: "20px",
                         }}
                       >
                         <h2 className="filtertitle">{t("E_books_list_tr")}</h2>
@@ -292,7 +293,8 @@ const BooksPage = () => {
                         {Category && Category.length > 0
                           ? Category?.map((category: any) => (
                             <div
-                              key={`c-${category.id}`}
+                              key={category.id}
+                              // key={`c-${category.id}`}
                               className="CategoryList"
                               onClick={() => {
                                 setCategoryId(category.id);
@@ -328,8 +330,10 @@ const BooksPage = () => {
                       <AccordionSummary
                         expandIcon={<ExpandMore />}
                         style={{
-                          height: "10px",
+                          height: 0,
                           background: "#FFFAF0",
+                          minHeight: "39px",
+                          margin: "0 0 -7px 0",
                         }}
                       >
                         <h2 className="filtertitle">{t("Authors_tr")}</h2>
@@ -344,13 +348,14 @@ const BooksPage = () => {
                         {Author && Author.length > 0
                           ? Author?.map((author: any) => (
                             <div
-                              key={`c-${author.id}`}
+                              key={author?.id}
+                              // key={`c-${author.id}`}
                               className="Authorlist"
                               onClick={() => {
                                 setAuthorId(author?.id);
                               }}
                             >
-                              <ul style={{ margin: 0 }}>
+                              <ul style={{ margin: "-3px 0 0 0" }}>
                                 <li>
                                   <div
                                     style={{
@@ -472,12 +477,11 @@ const BooksPage = () => {
                       <div>
                         <div className="row">
                           {books.map((book) => (
-                            <div className="col-lg-3">
+                            <div key={book?.id} className="col-lg-3">
                               <div
                                 className="sidebarmargin"
-                                key={`book-${book.id}`}
+                                // key={`book-${book.id}`}
                                 onClick={() => {
-                                  debugger
                                   if (window.location.pathname === `/books`) {
                                     navigate(`/books/` + book.id, {
                                       state: {

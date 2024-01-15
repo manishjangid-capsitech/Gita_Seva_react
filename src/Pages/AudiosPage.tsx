@@ -37,7 +37,7 @@ const AudiosPage = () => {
 
   const [refresh, setRefresh] = useState(false);
 
-  const [SortValue, setSortValue] = useState("0");
+  const [SortValue, setSortValue] = useState("3");
   const [Type, setType] = useState<any | undefined>(undefined);
 
   const [categories, setCategories] = useState<any[]>([]);
@@ -63,7 +63,6 @@ const AudiosPage = () => {
   });
 
   const [logIn, setLogIn] = useState<boolean>(false);
-  const [toggleFav, setToggleFav] = useState<boolean>(false);
 
   const closeModal = () => {
     setLogIn(false);
@@ -72,16 +71,11 @@ const AudiosPage = () => {
   const location = useLocation();
   const state = location.state as { authorId: string; authorName: string, type: string };
 
-  useEffect(() => {
-    debugger
-    console.log("state", state);
-  }, [])
-
   function ResetData() {
     setCategoryId("");
     setSingerId("");
     setLyricsId("");
-    setSortValue("0");
+    setSortValue("3");
     setActiveIndex(null);
     setPagination({
       ...pagination,
@@ -173,7 +167,6 @@ const AudiosPage = () => {
       false,
       CategoryId,
       SingerId || state?.authorId,
-      // SingerId ? SingerId : "" || state?.authorId ? state?.authorId : "",
       "",
       SortValue,
       "",
@@ -184,12 +177,8 @@ const AudiosPage = () => {
       "",
       UserIdentity
     ).then((res) => {
-      debugger
-      console.log("singer", SingerId);
-      console.log("state?.authorId", state?.authorId);
       if (res.status) setAudios(res.result?.items);
       setIsLiked(res?.result?.isFavourite);
-      // setLegend(res.result?.items[0]?.author)
       setPagination({
         ...pagination,
         totalRecords: res.result?.totalRecords,
@@ -197,32 +186,41 @@ const AudiosPage = () => {
     });
   }, [refresh, SortValue, i18n.language]);
 
-  const toggleLike = (audioId: any) => {
-    !isLiked
-      ? AudiosService.addAudioFavourite(audioId).then((res) => {
-        setAudios(
-          audios?.map((a: any) => {
-            if (a.id === res.result?.productId) {
-              res.status && setIsLiked(true);
-            }
-            return a;
-          })
-        );
-      })
-      : AudiosService.removeAudioFavourite(audioId).then((res) => {
-        setAudios(
-          audios?.map((a: any) => {
-            if (a.id === audioId) {
-              res.status && setIsLiked(false);
-            }
-            return a;
-          })
-        );
-      });
-    setToggleFav((x) => !x);
+  const FavAudioAdd = (audioId: any) => {
+    AudiosService.addAudioFavourite(audioId).then((res) => {
+      setAudios(
+        audios?.map((a: any) => {
+          // debugger
+          if (a.id === res.result?.productId) {
+            console.log("before--isLiked", isLiked);
+            setIsLiked(true);
+            console.log("before--isLiked", isLiked);
+          }
+          return a;
+        })
+      );
+    });
+    return;
   };
 
-  const [bread, showBread] = useState("");
+  const FavAudioRemove = (audioId: any) => {
+    AudiosService.removeAudioFavourite(audioId).then((res) => {
+      setAudios(
+        audios?.map((a: any) => {
+          // debugger
+          if (a.id === audioId) {
+            console.log("before--isLiked--remove", isLiked);
+            setIsLiked(false);
+            console.log("before--isLiked--remove", isLiked);
+          }
+          return a;
+        })
+      );
+    });
+    return;
+  };
+
+  const [bread, showBread] = useState<string>("");
 
   useEffect(() => {
     AuthorsService.GetAuthorDataById(state?.authorId, "").then((res) => {
@@ -251,7 +249,6 @@ const AudiosPage = () => {
               fontSize: "36px",
               fontWeight: 700,
               color: "rgb(209, 21, 1)",
-              // marginLeft: "238px",
               top: "155px",
             }}
           >
@@ -345,8 +342,9 @@ const AudiosPage = () => {
                         <AccordionSummary
                           expandIcon={<ExpandMore />}
                           style={{
-                            height: "10px",
+                            height: 0,
                             background: "#FFFAF0",
+                            minHeight: "20px",
                           }}
                         >
                           <h2 className="filtertitle">{t("audioList_tr")}</h2>
@@ -355,16 +353,18 @@ const AudiosPage = () => {
                         <AccordionDetails
                           style={{ display: "block", background: "#FFFAF0" }}
                         >
-                          <SideBar
-                            items={categories!}
-                            onClick={(value: any) => {
-                              if (value) {
-                                if (value.items === null)
-                                  setCategoryId(value.id);
-                              }
-                            }}
-                            onRefresh={ResetData}
-                          />
+                          <div style={{ marginTop: "-10px" }}>
+                            <SideBar
+                              items={categories!}
+                              onClick={(value: any) => {
+                                if (value) {
+                                  if (value.items === null)
+                                    setCategoryId(value.id);
+                                }
+                              }}
+                              onRefresh={ResetData}
+                            />
+                          </div>
                         </AccordionDetails>
                       </Accordion>
                       {/* Preacher  */}
@@ -375,8 +375,10 @@ const AudiosPage = () => {
                         <AccordionSummary
                           expandIcon={<ExpandMore />}
                           style={{
-                            height: "10px",
+                            height: 0,
                             background: "#FFFAF0",
+                            minHeight: "39px",
+                            margin: "0 0 -7px 0",
                           }}
                         >
                           <h2 className="filtertitle">{t("Singer_tr")}</h2>
@@ -423,8 +425,10 @@ const AudiosPage = () => {
                         <AccordionSummary
                           expandIcon={<ExpandMore />}
                           style={{
-                            height: "10px",
+                            height: 0,
                             background: "#FFFAF0",
+                            minHeight: "39px",
+                            margin: "0 0 -7px 0",
                           }}
                         >
                           <h2 className="filtertitle">{t("Lyrics_tr")}</h2>
@@ -435,6 +439,7 @@ const AudiosPage = () => {
                             display: "block",
                             background: "#FFFAF0",
                             padding: 0,
+                            marginTop: "5px"
                           }}
                         >
                           <div className="">
@@ -565,7 +570,7 @@ const AudiosPage = () => {
                                     alt={audio.name}
                                     title={audio.name}
                                     onClick={() => {
-                                      navigate(`/audios/` + audio.slug, {
+                                      navigate(`/audios/` + audio.id, {
                                         state: {
                                           audioId: audio.id,
                                           audioslug: audio.slug,
@@ -588,7 +593,7 @@ const AudiosPage = () => {
                                       textAlign: "unset",
                                     }}
                                     onClick={() => {
-                                      navigate(`/audios/` + audio.slug, {
+                                      navigate(`/audios/` + audio.id, {
                                         state: {
                                           audioId: audio.id,
                                           audioslug: audio.slug,
@@ -608,7 +613,7 @@ const AudiosPage = () => {
                                   </p>
                                   <p
                                     onClick={() => {
-                                      navigate(`/audios/` + audio.slug, {
+                                      navigate(`/audios/` + audio.id, {
                                         state: {
                                           audioId: audio.id,
                                           audioslug: audio.slug,
@@ -629,23 +634,41 @@ const AudiosPage = () => {
                                   if (!UserIdentity) setLogIn(true);
                                 }}
                               >
-                                <label
-                                  id={`${audio.id}`}
-                                  onClick={() => {
-                                    if (!UserIdentity && logIn)
-                                      toggleLike(audio?.id);
-                                  }}
-                                >
-                                  <img
-                                    src={isLiked ? Favadd : Favicon}
-                                    alt="Favadd"
-                                    style={{
-                                      width: "36px",
-                                      marginRight: "8px",
-                                      marginTop: "2px",
+                                {isLiked ? (
+                                  <label
+                                    id={`${audio.id}`}
+                                    onClick={() => {
+                                      FavAudioRemove(audio?.id);
                                     }}
-                                  />
-                                </label>
+                                  >
+                                    <img
+                                      src={Favadd}
+                                      alt="Favadd"
+                                      style={{
+                                        width: "36px",
+                                        marginRight: "8px",
+                                        marginTop: "2px",
+                                      }}
+                                    />
+                                  </label>
+                                ) : (
+                                  <label
+                                    id={`${audio.id}`}
+                                    onClick={() => {
+                                      FavAudioAdd(audio?.id);
+                                    }}
+                                  >
+                                    <img
+                                      src={Favicon}
+                                      alt="Favicon"
+                                      style={{
+                                        width: "36px",
+                                        marginRight: "8px",
+                                        marginTop: "2px",
+                                      }}
+                                    />
+                                  </label>
+                                )}
                               </div>
                               <div className="btns">
                                 <div className="buttonres">
@@ -677,7 +700,7 @@ const AudiosPage = () => {
                                     alt=""
                                     onClick={() => {
                                       //navigate(`/audios/${audio.id}`);
-                                      navigate(`/audios/` + audio.slug, {
+                                      navigate(`/audios/` + audio.id, {
                                         state: {
                                           audioId: audio.id,
                                           audioslug: audio.slug,

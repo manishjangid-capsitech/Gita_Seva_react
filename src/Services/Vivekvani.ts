@@ -56,10 +56,8 @@ class VivekService {
     );
   };
 
- 
 
   // vivek vani details
-
 
   VikekDetailService = (id: string, userId: string) => {
     return ApiUtility.get(

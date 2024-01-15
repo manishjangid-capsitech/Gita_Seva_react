@@ -111,7 +111,6 @@ const AuthorsDataPage = () => {
               fontSize: "36px",
               fontWeight: 700,
               color: "rgb(209, 21, 1)",
-              marginLeft: "14%",
               top: "155px",
             }}
           >
@@ -137,7 +136,6 @@ const AuthorsDataPage = () => {
           className="containers"
           style={{
             padding: "30px 30px 50px 40px",
-            marginLeft: "14%",
             background: "#fffaf0",
             boxShadow: "0 0 7px 1px #ece8dd",
             borderRadius: "2px",
@@ -146,7 +144,7 @@ const AuthorsDataPage = () => {
         >
           <div className="row">
             <div className="col-lg-8" style={{ padding: 0 }}>
-              <h5
+              <h1
                 style={{
                   fontSize: "40px",
                   color: "#212529",
@@ -155,7 +153,7 @@ const AuthorsDataPage = () => {
                 }}
               >
                 {name}
-              </h5>
+              </h1>
               {authorIntro && authorIntro.__html.length > 0 ? (
                 <p
                   style={{
@@ -268,49 +266,50 @@ const AuthorsDataPage = () => {
                 <Slider {...settings}>
                   {books && books.length > 0
                     ? books.map((book) => (
-                        <div
-                          className="sliderbooks"
-                          key={`related-${book.id}`}
-                          onClick={() => {
-                            navigate(`/books/` + book.slug, {
-                              state: {
-                                bookId: book.id,
-                                bookName: book.name,
-                              },
-                            });
-                            window.location.reload();
-                          }}
-                        >
-                          <div>
-                            <a>
-                              <img
-                                style={{ cursor: "pointer" }}
-                                className="imgcenter"
-                                src={
-                                  book.bookThumbPath == null
-                                    ? DefaultBook
-                                    : book.bookThumbPath
-                                }
-                                onError={(e) => {
-                                  e.currentTarget.src = DefaultBook;
-                                }}
-                                alt={book.name}
-                                title={book.name}
-                                width="150"
-                                height="212"
-                              />
-                              <p>{book?.name}</p>
-                            </a>
-                          </div>
+                      <div
+                        className="sliderbooks"
+                        key={`related-${book.id}`}
+                        onClick={() => {
+                          navigate(`/books/` + book.slug, {
+                            state: {
+                              bookId: book.id,
+                              bookName: book.name,
+                              authorId: autId,
+                              authorName: name
+                            },
+                          });
+                          window.location.reload();
+                        }}
+                      >
+                        <div>
+                          <a>
+                            <img
+                              style={{ cursor: "pointer" }}
+                              className="imgcenter"
+                              src={
+                                book.bookThumbPath == null
+                                  ? DefaultBook
+                                  : book.bookThumbPath
+                              }
+                              onError={(e) => {
+                                e.currentTarget.src = DefaultBook;
+                              }}
+                              alt={book.name}
+                              title={book.name}
+                              width="150"
+                              height="212"
+                            />
+                            <p>{book?.name}</p>
+                          </a>
                         </div>
-                      ))
+                      </div>
+                    ))
                     : ""}
                 </Slider>
               </div>
               <div
                 style={{
                   margin: "30px 42% auto",
-                  width: "158px",
                   padding: "10px",
                   textAlign: "center",
                   marginTop: "30px",
@@ -321,7 +320,6 @@ const AuthorsDataPage = () => {
                   style={{
                     fontFamily: "ChanakyaUni",
                     fontSize: "22px",
-                    padding: "6px 0",
                   }}
                   onClick={() => {
                     navigate(`/books/author/` + autId, {
@@ -352,6 +350,7 @@ const AuthorsDataPage = () => {
                   textAlign: "center",
                   fontFamily: "ChanakyaUni",
                   fontSize: "30px",
+                  marginBottom: "35px"
                 }}
               >
                 {t("Audios_tr")}
@@ -359,14 +358,16 @@ const AuthorsDataPage = () => {
               {audios && audios.length > 5 ? (
                 <div className="row" style={{ width: "100%" }}>
                   <Slider {...settingsAudio}>
-                    {audios.map((audio) => (
+                    {audios.map((audio, i) => (
                       <div
                         key={`related-${audio.id}`}
                         onClick={() => {
-                          navigate(`/audios/` + audio.slug, {
+                          localStorage.setItem("type", "audios");
+                          navigate(`/audios/` + audio.id, {
                             state: {
-                              bookId: audio.id,
-                              bookName: audio.name,
+                              audioId: audio.id,
+                              audioslug: audio.name,
+                              index: i
                             },
                           });
                           window.location.reload();
@@ -433,14 +434,16 @@ const AuthorsDataPage = () => {
                   className="row"
                   style={{ width: "100%", left: "1%", position: "relative" }}
                 >
-                  {audios?.map((audio) => (
+                  {audios?.map((audio, i) => (
                     <div
                       key={`related-${audio.id}`}
                       onClick={() => {
-                        navigate(`/audios/` + audio.slug, {
+                        localStorage.setItem("type", "audios");
+                        navigate(`/audios/` + audio.id, {
                           state: {
-                            bookId: audio.id,
-                            bookName: audio.name,
+                            audioId: audio.id,
+                            audioslug: audio.name,
+                            index: i
                           },
                         });
                         window.location.reload();
@@ -475,8 +478,7 @@ const AuthorsDataPage = () => {
               )}
               <div
                 style={{
-                  margin: "auto",
-                  width: "197px",
+                  margin: "30px 42% auto",
                   padding: "10px",
                   textAlign: "center",
                   marginTop: "30px",
@@ -507,7 +509,7 @@ const AuthorsDataPage = () => {
           <div
             style={{
               marginTop: "0px",
-              padding: "50px 0",
+              paddingTop: "50px",
             }}
           >
             <div>
@@ -525,80 +527,81 @@ const AuthorsDataPage = () => {
               <div className="row" style={{ width: "100%" }}>
                 <Slider {...settingsAudio}>
                   {pravachans && pravachans.length > 0
-                    ? pravachans.map((pravachan) => (
+                    ? pravachans.map((pravachan, i) => (
+                      <div
+                        key={`related-${pravachan.id}`}
+                        onClick={() => {
+                          localStorage.setItem("type", "pravachans");
+                          navigate(`/pravachans/` + pravachan.id, {
+                            state: {
+                              audioId: pravachan.id,
+                              audioslug: pravachan.name,
+                              index: i
+                            },
+                          });
+                          window.location.reload();
+                        }}
+                      >
                         <div
-                          key={`related-${pravachan.id}`}
-                          onClick={() => {
-                            navigate(`/audios/` + pravachan.slug, {
-                              state: {
-                                bookId: pravachan.id,
-                                bookName: pravachan.name,
-                              },
-                            });
-                            window.location.reload();
+                          className="pravchanBox"
+                          style={{
+                            display: "flex",
+                            justifyContent: "center",
+                            margin: "0 10px",
                           }}
                         >
-                          <div
-                            className="pravchanBox"
-                            style={{
-                              display: "flex",
-                              justifyContent: "center",
-                              margin: "0 10px",
-                            }}
-                          >
-                            <a>
-                              {pravachan.lyricsHash != null ? (
-                                <img
-                                  style={{
-                                    cursor: "pointer",
-                                    width: "60px",
-                                    margin: "5px auto auto",
-                                  }}
-                                  className="imgcenter"
-                                  src={withlyrics}
-                                  alt={pravachan.name}
-                                  title={pravachan.name}
-                                />
-                              ) : (
-                                <img
-                                  style={{
-                                    cursor: "pointer",
-                                    width: "60px",
-                                    margin: "5px auto auto",
-                                  }}
-                                  className="imgcenter"
-                                  src={nolyrics}
-                                  alt={pravachan.name}
-                                  title={pravachan.name}
-                                />
-                              )}
-
-                              <p
+                          <a>
+                            {pravachan.lyricsHash != null ? (
+                              <img
                                 style={{
-                                  margin: "0 10px",
-                                  height: "65px",
-                                  color: "#3f220d",
-                                  fontSize: "18px",
-                                  lineHeight: "22px",
-                                  fontStyle: "normal",
-                                  fontWeight: 600,
-                                  overflow: "hidden",
-                                  textAlign: "center",
+                                  cursor: "pointer",
+                                  width: "60px",
+                                  margin: "5px auto auto",
                                 }}
-                              >
-                                {pravachan?.name}
-                              </p>
-                            </a>
-                          </div>
+                                className="imgcenter"
+                                src={withlyrics}
+                                alt={pravachan.name}
+                                title={pravachan.name}
+                              />
+                            ) : (
+                              <img
+                                style={{
+                                  cursor: "pointer",
+                                  width: "60px",
+                                  margin: "5px auto auto",
+                                }}
+                                className="imgcenter"
+                                src={nolyrics}
+                                alt={pravachan.name}
+                                title={pravachan.name}
+                              />
+                            )}
+
+                            <p
+                              style={{
+                                margin: "0 10px",
+                                height: "65px",
+                                color: "#3f220d",
+                                fontSize: "18px",
+                                lineHeight: "22px",
+                                fontStyle: "normal",
+                                fontWeight: 600,
+                                overflow: "hidden",
+                                textAlign: "center",
+                              }}
+                            >
+                              {pravachan?.name}
+                            </p>
+                          </a>
                         </div>
-                      ))
+                      </div>
+                    ))
                     : ""}
                 </Slider>
               </div>
               <div
                 style={{
-                  margin: "auto",
-                  width: "225px",
+                  margin: "30px 41% auto",
                   padding: "10px",
                   textAlign: "center",
                   marginTop: "30px",
@@ -615,7 +618,9 @@ const AuthorsDataPage = () => {
                     });
                   }}
                 >
-                  {t("All_Special_Pravachan_tr")}
+                  {/* {t("All_Special_Pravachan_tr")}
+                   */}
+                  {t("All_pravachan_tr")}
                 </div>
               </div>
             </div>
@@ -636,6 +641,7 @@ const AuthorsDataPage = () => {
                   fontFamily: "ChanakyaUni",
                   fontSize: "30px",
                   textAlign: "center",
+                  marginBottom: "35px"
                 }}
               >
                 {t("Article_tr")}
@@ -650,12 +656,14 @@ const AuthorsDataPage = () => {
                       <div
                         key={`related-${article.id}`}
                         onClick={() => {
-                          navigate(`/audios/` + article.slug, {
+                          navigate(`/articles/` + article.id, {
                             state: {
-                              bookId: article.id,
-                              bookName: article.name,
+                              articleId: article.id,
+                              articleName: article.name,
+                              authorId: autId,
+                              authorName: name
                             },
-                          });
+                          })
                           window.location.reload();
                         }}
                       >
@@ -711,10 +719,10 @@ const AuthorsDataPage = () => {
                       <div
                         key={`related-${article.id}`}
                         onClick={() => {
-                          navigate(`/audios/` + article.slug, {
+                          navigate(`/articles/` + article.slug, {
                             state: {
-                              bookId: article.id,
-                              bookName: article.name,
+                              articleId: article.id,
+                              articleName: article.name,
                             },
                           });
                           window.location.reload();
@@ -765,8 +773,7 @@ const AuthorsDataPage = () => {
               )}
               <div
                 style={{
-                  margin: "auto",
-                  width: "197px",
+                  margin: "30px 41% auto",
                   padding: "10px",
                   textAlign: "center",
                   marginTop: "30px",
@@ -783,7 +790,7 @@ const AuthorsDataPage = () => {
                     });
                   }}
                 >
-                  {t("All_Special_Article_tr")}
+                  {t("All_Article_tr")}
                 </div>
               </div>
             </div>

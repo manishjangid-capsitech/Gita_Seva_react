@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import "react-toastify/dist/ReactToastify.css";
 import HomeService from "../Services/Home";
@@ -16,6 +16,7 @@ interface contactProps {
   deviceDetails: string;
 }
 
+
 export const ContactPage = () => {
   const { t } = useTranslation();
   const [showModel, setShowModel] = useState(false);
@@ -32,26 +33,33 @@ export const ContactPage = () => {
     deviceDetails: "",
   });
 
+  const [captchaValue, setCaptchaValue] = useState<any>("")
+
   const [error, setError] = React.useState<{
     show: boolean;
     number: string | undefined;
     name: string | undefined;
     email: string | undefined;
     note: string | undefined;
+    captchaError: string | undefined;
   }>({
     show: false,
     number: undefined,
     name: undefined,
     email: undefined,
     note: undefined,
+    captchaError: undefined,
   });
 
   const isValidEmail = "[a-z0-9]+@[a-z]+.[a-z]{2,3}";
 
   const handleSubmit = (e: any) => {
+    // debugger
+    console.log(captchaValue, "===", compareCaptcha);
     e.preventDefault();
     handleValidation();
-    if (!error.email && !error.name && !error.note && !error.number) {
+
+    if (!error.email && !error.name && !error.note && !error.number && !error.captchaError) {
       let newEntry = {
         ...data,
         contactType: parseInt(data.contactType),
@@ -61,14 +69,20 @@ export const ContactPage = () => {
         data.name !== "" &&
         data.email !== "" &&
         data.phoneNumber !== "" &&
-        data.messageContent !== ""
+        data.messageContent !== "" &&
+        captchaValue !==
+        captchaValue.length > 7 &&
+        captchaValue.length > 5
       ) {
         if (data.messageContent.length > 0 && data.phoneNumber.length === 10) {
+
           newEntry.messageContent =
-            "message from swamiji: " + newEntry.messageContent;
+            "message from swamiji.gitaseva: " + newEntry.messageContent;
           HomeService.postcontact(newEntry).then((result: any) => {
-            if (result.status) {
+            // debugger
+            if (result.status === true) {
               setShowModel(true);
+              setCaptchaValue("")
               setData({
                 name: "",
                 phoneNumber: "",
@@ -99,13 +113,36 @@ export const ContactPage = () => {
         data.email?.trim() === ""
           ? "Please enter a valid email address"
           : error.email === undefined
-          ? undefined
-          : error.email,
+            ? undefined
+            : error.email,
       note:
         data.messageContent?.trim() === ""
           ? "Please enter a valid message"
           : undefined,
+      captchaError:
+        captchaValue !== compareCaptcha
+          ? "Please enter a valid captcha"
+          : undefined,
     }));
+  };
+
+  // captcha functions
+
+  const [compareCaptcha, setCompareCaptcha] = useState("");
+
+  useEffect(() => {
+    // Generate the CAPTCHA value when the component mounts
+    generateCaptcha(6);
+  }, [showModel]);
+
+  const characters = 'abc123';
+  const generateCaptcha = (length: any) => {
+    let result = '';
+    const charactersLength = characters.length;
+    for (let i = 0; i < length; i++) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+      setCompareCaptcha(result)
+    }
   };
 
   return (
@@ -292,16 +329,26 @@ export const ContactPage = () => {
                     }}
                     style={{
                       marginRight: "22px",
-                      width: "-webkit-fill-available",                    
+                      width: "-webkit-fill-available",
                     }}
                   >
-                    <option value="1">{t("generalQuery_tr")}</option>
-                    <option value="2"> {t("E_books_tr")}</option>
-                    <option value="3"> {t("Pravachan_tr")}</option>
-                    <option value="4"> {t("Audios_tr")}</option>
-                    <option value="5"> {t("Article_tr")}</option>
-                    <option value="6"> {t("Amrit_Vachan_tr")}</option>
-                    <option value="7">{t("other_tr")}</option>
+                    <option value="1">
+                      {t("generalQuery_tr")}
+                    </option>
+                    <option value="2">{t("E_books_tr")}</option>
+                    <option value="3"> {t("Audios_tr")}</option>
+                    <option value="4">
+                      {t("Pravachan_tr")}
+                    </option>
+                    <option value="5">{t("Article_tr")}</option>
+                    <option value="6">{t("Kalyan_tr")}</option>
+                    <option value="7">
+                      {t("Kalyan_Kalpataru_tr")}
+                    </option>
+                    <option value="8">
+                      {t("MonthlyMagazine_tr")}
+                    </option>
+                    <option value="9">{t("other_tr")}</option>
                   </select>
                 </div>
               </div>
@@ -323,6 +370,7 @@ export const ContactPage = () => {
                     style={{
                       height: "100px",
                       marginRight: "22px",
+                      marginBottom: "15px",
                       width: "-webkit-fill-available",
                     }}
                     onBlur={(e) => {
@@ -348,8 +396,40 @@ export const ContactPage = () => {
                     </small>
                   )}
                 </div>
+                <div className="col-lg-6 col-md-12 col-xs-12">
+                  <div style={{ display: "flex" }}>
+                    <h4 style={{ margin: "5px 25px 0 9px", fontSize: "25px", textDecoration: "line-through" }}>{compareCaptcha}</h4>
+                    <input type="text" id="" className="contactContent" placeholder="Enter Captcha"
+                      autoComplete="off" style={{ width: "23%" }}
+                      value={captchaValue}
+                      onChange={(e) => {
+                        setError((e) => ({ ...e, captchaError: undefined }));
+                        let v = e.currentTarget?.value ?? undefined;
+                        setCaptchaValue(v)
+                      }}
+                      onBlur={(e) => {
+                        let value = e.currentTarget?.value ?? undefined;
+                        if (value !== undefined) {
+                          setError((e) => ({
+                            ...e,
+                            captchaError: "Please enter a valid captcha",
+                          }));
+                        } else {
+                          setCaptchaValue("");
+                        }
+                      }}
+                    />
+                  </div>
+                  {error.captchaError && (
+                    <small
+                      style={{ color: "red", marginLeft: 5, fontSize: "18px" }}
+                    >
+                      {error.captchaError}
+                    </small>
+                  )}
+                </div>
               </div>
-              <div style={{ textAlign: "center" }}>
+              <div style={{ textAlign: "center", marginTop: "10px" }}>
                 <button
                   className="inputbutton"
                   onClick={handleSubmit}

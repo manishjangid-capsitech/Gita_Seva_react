@@ -54,6 +54,7 @@ iframe {
   opacity: 0;
   transition: opacity 0.3s;
 }
+
 .tooltip .tooltiptext::after {
   content: "";
   position: absolute;
@@ -85,13 +86,16 @@ iframe {
 #my-range::-ms-fill-lower {
   background: #b9b4b0;
 }
+
 #my-range::-ms-fill-upper {
   background: #b9b4b0;
 }
+
 #my-range::-moz-range-track {
   border: none;
   background: #b9b4b0;
 }
+
 #my-range::-webkit-slider-thumb {
   -webkit-appearance: none !important;
   background-color: #fff;
@@ -101,6 +105,7 @@ iframe {
   border-radius: 100%;
   cursor: pointer;
 }
+
 #my-range::-moz-range-thumb {
   border: #b9b4b0 solid 1px;
   height: 11px;
@@ -108,6 +113,7 @@ iframe {
   border-radius: 100%;
   cursor: pointer;
 }
+
 #my-range::-ms-thumb {
   -webkit-appearance: none !important;
   border: #b9b4b0 solid 1px;
@@ -169,6 +175,36 @@ iframe {
   margin-left: 37px;
 }
 
+.bookmarkicon {
+  margin-right: 5px;
+  background: url(../Images/icons.svg) -229px 3px no-repeat;
+  height: 27px;
+  width: 27px;
+}
+
+.bookmarkicon-fill {
+  margin-right: 5px;
+  background: url(../Images/icons.svg) -417px 3px no-repeat;
+  height: 27px;
+  width: 27px;
+}
+
+.bklistitem {
+  color: #000000;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.bklistul :hover {
+  color: #ff9237;
+}
+
+#bookmark-list {
+  background: url(../Images/assets_icons.svg) -636px 3px no-repeat;
+  height: 27px;
+  width: 27px;
+}
+
 .theme-btn-black {
   background-color: #000 !important;
 }
@@ -199,6 +235,7 @@ iframe {
   background-color: #fffcda !important;
   color: #000 !important;
 }
+
 .titlebar_color {
   background-color: #ff8b33 !important;
   color: #fff !important;
@@ -292,6 +329,7 @@ iframe {
   display: flex;
   flex-wrap: wrap;
 }
+
 body {
   background: url(../Images/header-bg-line-shade.svg) no-repeat top center;
   font-size: 16px !important;
@@ -309,8 +347,7 @@ body {
 }
 
 @media (min-width: 250px) and (max-width: 550px) {
-  .epub-view{
+  .epub-view {
     margin-top: 50px;
   }
 }
-

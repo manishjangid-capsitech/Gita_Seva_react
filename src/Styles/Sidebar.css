@@ -25,6 +25,7 @@
 
 .sidebarmargin {
   margin-bottom: 10px;
+  margin-left: 18px;
 }
 
 .resultnotfound {
@@ -153,12 +154,6 @@ select[disabled] {
   height: 24px;
 }
 
-.cardbackground {
-  display: flex;
-  border-bottom: 1px solid #ffdd89;
-  padding-bottom: 10px;
-}
-
 .col-lg-9 img {
   border-radius: 7px;
 }
@@ -166,7 +161,7 @@ select[disabled] {
 
 .parentdiv {
   display: flex;
-  align-items: center;
+  align-items: baseline;
   margin-bottom: -20px;
 }
 header listtext {

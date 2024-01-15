@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import DefaultBook from "../Images/defaultBook.png";
 import GeetGovindServices from "../Services/GeetGovind";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -33,28 +33,37 @@ const GeetGovindDetailPage = (props: any) => {
 
   const UserIdentity = localStorage.getItem("UserId") as any;
 
+  const notificationRef = useRef<any>(null);
+
+  const showNotification = (message: any) => {
+    notificationRef.current.innerText = message;
+    notificationRef.current.style.display = 'block';
+
+    setTimeout(() => {
+      notificationRef.current.style.display = 'none';
+    }, 3000); // Hide the notification after 2 seconds
+  };
+
   const notify = () => {
-    isLiked
-      ? toast(
-          localStorage.getItem("lang") === "hindi"
-            ? "पत्रिका को सफलतापूर्वक मेरी पसंद में जोड़ा गया है।"
-            : "Magazine has been successfully added to the favourites"
-        )
-      : toast(
-          localStorage.getItem("lang") === "hindi"
-            ? "पत्रिका मेरी पसंद से हटा दी गई है।"
-            : "Magazine has been removed from favourites"
-        );
+    showNotification(!isLiked
+      ?
+      localStorage.getItem("lan") === "hindi"
+        ? "पत्रिका को सफलतापूर्वक मेरी पसंद में जोड़ा गया है।"
+        : "Magazine has been successfully added to the favourites"
+      : localStorage.getItem("lan") === "hindi"
+        ? "पत्रिका मेरी पसंद से हटा दी गई है।"
+        : "Magazine has been removed from favourites"
+    )
   };
 
   const toggleLike = () => {
     !isLiked
       ? GeetGovindServices.addMagzineFavourite(MagzineId).then((res) => {
-          res.status && setIsLiked(true);
-        })
+        res.status && setIsLiked(true);
+      })
       : GeetGovindServices.removeMagzineFavourite(MagzineId).then((res) => {
-          res.status && setIsLiked(false);
-        });
+        res.status && setIsLiked(false);
+      });
     setToggleFav((x) => !x);
   };
 
@@ -249,7 +258,7 @@ const GeetGovindDetailPage = (props: any) => {
                               if (UserIdentity) {
                                 navigate(
                                   `/reader/monthlymagazine/` +
-                                    magzineDetail.slug,
+                                  magzineDetail.slug,
                                   {
                                     state: {
                                       magazineDetailId: magzineDetail.id,
@@ -265,6 +274,7 @@ const GeetGovindDetailPage = (props: any) => {
                           >
                             {t("read_magazine_tr")}
                           </p>
+                          <div ref={notificationRef} style={{ color: "#ff3d28", fontSize: '20px', marginTop: "10px" }} className="notification-bar"></div>
                         </div>
                       </div>
                     </div>

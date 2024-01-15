@@ -3847,74 +3847,78 @@ EPUBJS.reader.ControlsController = function (book) {
       $indexHeader = $('.titleClass')
 
   var BlackMode = function () {
-      $tocSbView.addClass('themefilter');
-      $bookmarkSbView.addClass('themefilter');
-      $highlightSbView.addClass('themefilter');
-      $main.removeClass();
-      $sidebar.removeClass();
-      $main.addClass('theme-black');
-      $sidebar.addClass('theme-black');
-      reader.rendition.themes.select("black");
-      localStorage.setItem('CurrentTheme', 'black');
-      $main.css("background", "#000000");
-      $bookmark_link.css("color", "#ffffff");
-      $header.removeClass('theme-black theme-grey');
-      $footer.removeClass('theme-black theme-grey');
-      $header.addClass('theme-grey');
-      $footer.addClass('theme-grey');
-      $indexHeader.css('background', '#808080');
+    $tocSbView.removeClass('themefilter');
+    $bookmarkSbView.removeClass('themefilter');
+    $highlightSbView.removeClass('themefilter');
+    $tocSbView.addClass('themefilter');
+    $bookmarkSbView.addClass('themefilter');
+    $highlightSbView.addClass('themefilter');
+    $main.removeClass();
+    $sidebar.removeClass();
+    $main.addClass('theme-black');
+    $sidebar.addClass('theme-black');
+    reader.rendition.themes.select("black");
+    localStorage.setItem('CurrentTheme', 'black');
+    $main.css("background", "#000000");
+    $bookmark_link.css("color", "#ffffff");
+    $header.removeClass('theme-black theme-grey');
+    $footer.removeClass('theme-black theme-grey');
+    $header.addClass('theme-grey');
+    $footer.addClass('theme-grey');
+    $indexHeader.css('background', '#808080');
   }
 
   var GreyMode = function () {
-    
-      $tocSbView.addClass('themefilter');
-      $bookmarkSbView.addClass('themefilter');
-      $highlightSbView.addClass('themefilter');
-      $main.removeClass();
-      $sidebar.removeClass();
-      $main.addClass('theme-grey');
-      $sidebar.addClass('theme-grey');
-      reader.rendition.themes.select("grey");
-      localStorage.setItem('CurrentTheme', 'grey');
-      $main.css("background", "#464646");
-      $bookmark_link.css("color", "#ffffff");
-      $header.removeClass('theme-black theme-grey');
-      $footer.removeClass('theme-black theme-grey');
-      $header.addClass('theme-black');
-      $footer.addClass('theme-black');
-      $indexHeader.css('background', '#808080');
+    $tocSbView.removeClass('themefilter');
+    $bookmarkSbView.removeClass('themefilter');
+    $highlightSbView.removeClass('themefilter');
+    $tocSbView.addClass('themefilter');
+    $bookmarkSbView.addClass('themefilter');
+    $highlightSbView.addClass('themefilter');
+    $main.removeClass();
+    $sidebar.removeClass();
+    $main.addClass('theme-grey');
+    $sidebar.addClass('theme-grey');
+    reader.rendition.themes.select("grey");
+    localStorage.setItem('CurrentTheme', 'grey');
+    $main.css("background", "#464646");
+    $bookmark_link.css("color", "#ffffff");
+    $header.removeClass('theme-black theme-grey');
+    $footer.removeClass('theme-black theme-grey');
+    $header.addClass('theme-black');
+    $footer.addClass('theme-black');
+    $indexHeader.css('background', '#808080');
   }
-
   var IvoryMode = function () {
-      $tocSbView.removeClass('themefilter');
-      $bookmarkSbView.removeClass('themefilter');
-      $highlightSbView.removeClass('themefilter');
-      $main.removeClass();
-      $sidebar.removeClass();
-      $main.addClass('theme-ivory');
-      $sidebar.addClass('theme-ivory');
-      reader.rendition.themes.select("ivory");
-      localStorage.setItem('CurrentTheme', 'ivory');
-      $main.css("background", "#fffcda");
-      $bookmark_link.css("color", "#000000");
-      $header.removeClass('theme-black theme-grey');
-      $footer.removeClass('theme-black theme-grey');
-      $indexHeader.css('background', '#ffc383');
+    $tocSbView.removeClass('themefilter');
+    $bookmarkSbView.removeClass('themefilter');
+    $highlightSbView.removeClass('themefilter');
+    $main.removeClass();
+    $sidebar.removeClass();
+    $main.addClass('theme-ivory');
+    $sidebar.addClass('theme-ivory');
+    reader.rendition.themes.select("ivory");
+    localStorage.setItem('CurrentTheme', 'ivory');
+    $main.css("background", "#fffcda");
+    $bookmark_link.css("color", "#000000");
+    $header.removeClass('theme-black theme-grey');
+    $footer.removeClass('theme-black theme-grey');
+    $indexHeader.css('background', '#ffc383');
   }
 
   var WhiteMode = function () {
-      $tocSbView.removeClass('themefilter');
-      $bookmarkSbView.removeClass('themefilter');
-      $highlightSbView.removeClass('themefilter');
-      $main.removeClass();
-      $sidebar.removeClass();
-      reader.rendition.themes.select("white");
-      localStorage.setItem('CurrentTheme', 'white');
-      $main.css("background", "#ffffff");
-      $bookmark_link.css("color", "#000000");
-      $header.removeClass('theme-black theme-grey');
-      $footer.removeClass('theme-black theme-grey');
-      $indexHeader.css('background', '#ffc383');
+    $tocSbView.removeClass('themefilter');
+    $bookmarkSbView.removeClass('themefilter');
+    $highlightSbView.removeClass('themefilter');
+    $main.removeClass();
+    $sidebar.removeClass();
+    reader.rendition.themes.select("white");
+    localStorage.setItem('CurrentTheme', 'white');
+    $main.css("background", "#ffffff");
+    $bookmark_link.css("color", "#000000");
+    $header.removeClass('theme-black theme-grey');
+    $footer.removeClass('theme-black theme-grey');
+    $indexHeader.css('background', '#ffc383');
   }
 
   $btnThemeWhite.on('click', function (e) {
@@ -4438,7 +4442,6 @@ EPUBJS.reader.ReaderController = function (book) {
 
   var arrowKeys = function (e) {
 
-    
     if (reader.sidebarOpen) {
       $sidebar.fadeOut();
       reader.SidebarController.hide();

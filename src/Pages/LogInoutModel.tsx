@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "react-bootstrap";
 import {
@@ -24,6 +24,9 @@ import WithLyrics from "../Images/audiowithoutlyrics.svg";
 import articalIcon from "../assets/img/article-icon.png";
 import Loading from "../Components/Loading";
 import { t } from "i18next";
+import { storage } from "./Firebase";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+
 interface LogOutModalProps {
   open: boolean;
   onClose: () => void;
@@ -32,6 +35,7 @@ interface LogInModalProps {
   opens: boolean;
   onCloses: () => void;
 }
+
 export const LogOutModel: React.FC<LogOutModalProps> = ({ open, onClose }) => {
   const currentLanguage = _get_i18Lang();
   const navigate = useNavigate();
@@ -114,21 +118,45 @@ export const LogInModel: React.FC<LogInModalProps> = ({
 }) => {
   const { t } = useTranslation();
   const [phoneModel, setPhoneModel] = useState<boolean>(false);
+  const [refresh, setRefresh] = useState(false);
   const provider = new GoogleAuthProvider();
+  const currlang = localStorage.getItem("lan")
   return (
     <>
-      <Modal show={opens} onClose={onClose} style={{ padding: "0 50px" }}>
+      <Modal show={opens} onClose={onClose} style={{ padding: "20px 0 50px 0" }}>
         <div style={{ textAlign: "center" }}>
           <div style={{ display: "inline-grid" }}>
-            <img src={loginLogo} alt="" />
+            <img src={loginLogo} alt="" style={{ marginLeft: "50px", paddingBottom: "15px" }} />
+            <div style={{ width: "320px", height: "70px", background: "#FCF0E2", borderRadius: "5px", boxShadow: "#000 0px 0px 5px -1px" }}>
+              {currlang === "hindi" ?
+                <p style={{
+                  fontFamily: 'ChanakyaUni',
+                  fontSize: "19px",
+                  color: "#000",
+                  lineHeight: "20px",
+                  padding: "8px",
+                  fontWeight: 500,
+                }}>
+                  इस सुविधा का उपयोग करने के लिए आपको लॉगिन करने की आवश्यकता है। यह पूर्णतः नि:शुल्क तथा सुरक्षित है।</p>
+                :
+                <p style={{
+                  fontFamily: 'ChanakyaUni',
+                  fontSize: "20px",
+                  color: "#000",
+                  lineHeight: "20px",
+                  padding: "12px",
+                  fontWeight: 500,
+                }}>
+                  You must login to use this feature. It is completely free and secure.
+                </p>}
+            </div>
             <label
               style={{
                 fontSize: "30px",
                 textAlign: "center",
-                padding: "0 0 10px",
+                padding: "10px 0 0 0",
                 fontFamily: "ChanakyaUni",
                 color: "#212121",
-                marginLeft: "25px",
               }}
             >
               {t("login_option_tr")}
@@ -146,6 +174,10 @@ export const LogInModel: React.FC<LogInModalProps> = ({
                   if (email) {
                     localStorage.setItem("EmailForLogin", email);
                     onClose();
+                  }
+                  if (result?.user?.emailVerified === true) {
+                    // window.location == window.location
+                    setRefresh(true);
                   }
                 })
                 .catch((error) => {
@@ -171,10 +203,7 @@ export const LogInModel: React.FC<LogInModalProps> = ({
           <div
             className="loginbuttons"
             style={{ cursor: "pointer" }}
-            onClick={() => {
-              debugger;
-              SignInWithFB();
-            }}
+            onClick={SignInWithFB}
           >
             <img
               src={signinfacebook}
@@ -189,7 +218,7 @@ export const LogInModel: React.FC<LogInModalProps> = ({
             />
             <label style={{ marginBottom: "0px" }}>
               {t("login_With_Facebook_tr")}
-              {/* <SignInWithFB /> */}
+              {/* <SignInFB /> */}
             </label>
           </div>
           <div className="loginbuttons" onClick={() => setPhoneModel(true)}>
@@ -295,7 +324,7 @@ export const BookListButton = ({
 
   return (
     <div>
-      {books.length > 0 ? (
+      {books?.length > 0 ? (
         <div>
           <div>
             <p
@@ -310,60 +339,58 @@ export const BookListButton = ({
             >
               {title}
             </p>
-            <div>
-              <div className="row" style={{ marginBottom: "21px" }}>
-                {books.slice(0, displayCount).map((book: any) => (
-                  <div className="col-3" style={{ marginTop: "15px" }}>
+            <div className="row" style={{ marginBottom: "21px" }}>
+              {books.slice(0, displayCount).map((book: any) => (
+                <div className="col-3" style={{ marginTop: "15px" }}>
+                  <div
+                    className="favebooks"
+                    key={`related-${book.id}`}
+                    onClick={() => {
+                      getBook(book);
+                    }}
+                  >
                     <div
-                      className="favebooks"
-                      key={`related-${book.id}`}
-                      onClick={() => {
-                        getBook(book);
+                      style={{
+                        display: "flex",
+                        justifyContent: "center",
                       }}
                     >
-                      <div
-                        style={{
-                          display: "flex",
-                          justifyContent: "center",
-                        }}
-                      >
-                        <div>
-                          <img
-                            style={{
-                              cursor: "pointer",
-                              borderRadius: "5px",
-                            }}
-                            className="imgcenter"
-                            src={getValueType(type, book)}
-                            onError={(e) => {
-                              e.currentTarget.src = DefaultBook;
-                            }}
-                            alt={book.name}
-                            title={book.name}
-                            width="117"
-                            height="165"
-                          />
-                          <p>
-                            {book?.name?.length > 40
-                              ? book?.name.slice(0, 40) + "..."
-                              : book?.name}
-                          </p>
-                        </div>
+                      <div>
+                        <img
+                          style={{
+                            cursor: "pointer",
+                            borderRadius: "5px",
+                          }}
+                          className="imgcenter"
+                          src={getValueType(type, book)}
+                          onError={(e) => {
+                            e.currentTarget.src = DefaultBook;
+                          }}
+                          alt={book.name}
+                          title={book.name}
+                          width="117"
+                          height="165"
+                        />
+                        <p>
+                          {book?.name?.length > 40
+                            ? book?.name.slice(0, 40) + "..."
+                            : book?.name}
+                        </p>
                       </div>
                     </div>
                   </div>
-                ))}
-              </div>
+                </div>
+              ))}
             </div>
           </div>
-          {books.length > 4 && (
+          {books?.length > 4 && (
             <div
               style={{
                 textAlign: "center",
                 margin: "20px 0 0 0",
               }}
             >
-              {displayCount < books.length ? (
+              {displayCount < books?.length ? (
                 <button className="favitems" onClick={showMoreBooks}>
                   Show More
                 </button>
@@ -375,11 +402,8 @@ export const BookListButton = ({
             </div>
           )}
         </div>
-      ) : (
-        <div className="ebooks-category resultnotfound">
-          <Loading />
-        </div>
-      )}
+      ) : ""
+      }
     </div>
   );
 };
@@ -407,7 +431,7 @@ export const AudioListButton = ({
 
   return (
     <div>
-      {audios.length > 0 ? (
+      {audios?.length > 0 ? (
         <div>
           <div>
             <div>
@@ -425,7 +449,7 @@ export const AudioListButton = ({
               </p>
               <div className="row" style={{ marginBottom: "21px" }}>
                 {audios.slice(0, displayCount).map((audio: any) => (
-                  <div className="col-3" style={{ marginTop: "15px" }}>
+                  <div className="col-3" style={{ marginTop: "15px", display: "flex", justifyContent: "center" }}>
                     <div
                       className="favpagebooks"
                       key={`related-${audio.id}`}
@@ -482,14 +506,14 @@ export const AudioListButton = ({
               </div>
             </div>
           </div>
-          {audios.length > 4 && (
+          {audios?.length > 4 && (
             <div
               style={{
                 textAlign: "center",
                 margin: "20px 0 0 0",
               }}
             >
-              {displayCount < audios.length ? (
+              {displayCount < audios?.length ? (
                 <button className="favitems" onClick={showMoreAudios}>
                   Show More
                 </button>
@@ -501,11 +525,8 @@ export const AudioListButton = ({
             </div>
           )}
         </div>
-      ) : (
-        <div className="ebooks-category resultnotfound">
-          <Loading />
-        </div>
-      )}
+      ) : ""
+      }
     </div>
   );
 };
@@ -533,7 +554,7 @@ export const FavouriteArticals = ({
 
   return (
     <div>
-      {article.length > 0 ? (
+      {article?.length > 0 ? (
         <div>
           <div>
             <p
@@ -550,7 +571,7 @@ export const FavouriteArticals = ({
             </p>
             <div className="row" style={{ marginBottom: "21px" }}>
               {article.slice(0, displayCount).map((artical: any) => (
-                <div className="col-3" style={{ marginTop: "15px" }}>
+                <div className="col-3" style={{ marginTop: "15px", display: "flex", justifyContent: "center" }}>
                   <div
                     className="favpagebooks"
                     onClick={() => {
@@ -594,14 +615,14 @@ export const FavouriteArticals = ({
               ))}
             </div>
           </div>
-          {article.length > 4 && (
+          {article?.length > 4 && (
             <div
               style={{
                 textAlign: "center",
                 margin: "20px 0 0 0",
               }}
             >
-              {displayCount < article.length ? (
+              {displayCount < article?.length ? (
                 <button className="favitems" onClick={showMoreButton}>
                   Show More
                 </button>
@@ -613,105 +634,45 @@ export const FavouriteArticals = ({
             </div>
           )}
         </div>
-      ) : (
-        <div className="ebooks-category resultnotfound">
-          <Loading />
-        </div>
-      )}
+      ) : ""
+      }
     </div>
   );
 };
 
 export const UploadProfileImage = () => {
-  const [image, setImage] = useState(null);
+  const [image, setImage] = useState<any>(null);
+  const [url, setUrl] = useState<any>(null);
 
-  const handleImageUpload = (event: any) => {
-    const uploadedImage = event.target.files[0];
-    const imageURL = URL?.createObjectURL(uploadedImage) as any;
-    setImage(uploadedImage);
+  const handleImageChange = (e: any) => {
+    if (e.target.files[0]) {
+      setImage(e.target.files[0]);
+    }
+  };
+
+  const handleSubmit = () => {
+    const imageRef = ref(storage, "image");
+    uploadBytes(imageRef, image)
+      .then(() => {
+        getDownloadURL(imageRef)
+          .then((url) => {
+            setUrl(url);
+          })
+          .catch((error) => {
+            console.log(error.message, "error getting the image url");
+          });
+        setImage(null);
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
   };
 
   return (
-    <>
-      <input type="file" accept="image/*" onChange={handleImageUpload} />
-      {/* {previewImage && <img src={previewImage} alt="Preview" style={{ maxWidth: '100px' }} />} */}
-      {/* {image && (
-        <button onClick={() => alert('Image Saved!')}>
-          Save Image
-        </button>
-      )} */}
-    </>
+    <div className="App">
+      <img src={url} style={{ width: "100px", height: "100px" }} />
+      <input type="file" onChange={handleImageChange} />
+      <button onClick={handleSubmit}>Submit</button>
+    </div>
   );
-};
-
-// export const BreadCrumbs = ({
-//   bdcrHeadPageName,
-//   home,
-//   bdcrPageName,
-//   bdcrDetailPageName,
-//   bdcrDetailPageNameWithauthor,
-//   bdcrDetailPageNameWithisSpecial,
-//   navigateto,
-// }: {
-//   bdcrHeadPageName: string;
-//   home: string;
-//   bdcrPageName: string;
-//   bdcrDetailPageName: string;
-//   bdcrDetailPageNameWithauthor: string;
-//   bdcrDetailPageNameWithisSpecial: string;
-//   navigateto: void;
-// }) => {
-//   return (
-//     <div
-//       className="breadcrumbs-head newcontainer"
-//       style={{
-//         width: "100%",
-//         marginTop: "-175px",
-//         background: "none",
-//         backgroundColor: "#ffedbc",
-//         height: "240px",
-//         borderBottom: "2px solid #fff",
-//       }}
-//     >
-//       <div className="breadcrumbs">
-//         <div
-//           className="containers"
-//           style={{
-//             fontSize: "36px",
-//             fontWeight: 700,
-//             color: "rgb(209, 21, 1)",
-//             marginLeft: "14%",
-//             top: "155px",
-//           }}
-//         >
-//           {bdcrHeadPageName}
-//         </div>
-//         <div
-//           style={{
-//             fontSize: "19px",
-//             fontWeight: 600,
-//             color: "#2d2a29",
-//             // marginTop: "-8px",
-//           }}
-//         >
-//           <ul>
-//             <li
-//               onClick={() => {
-//                 navigateto()
-//               }}
-//             >
-//               <p style={{ marginRight: "8px", color: "#2d2a29" }}>{home}</p>
-//             </li>
-//             <li
-//               onClick={() => {
-//                 navigateto()
-//               }}
-//             >
-//               {bdcrDetailPageName}
-//             </li>
-//           </ul>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
+}

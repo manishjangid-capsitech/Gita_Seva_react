@@ -28,6 +28,7 @@ import { ProfileFav } from "../Pages/ProfileFav";
 import { ProfileContact } from "../Pages/ProfileContact";
 import VivekvaniPage from "../Pages/VivekVani";
 import VivekvaniDetailPage from "../Pages/VivekVaniDetails";
+import DivineQuotes from "../Pages/DivineQuotePage";
 
 const HomePage = React.lazy(
   () => import("../Pages/HomePage" /* webpackChunkName: "home" */)
@@ -371,6 +372,19 @@ const AppRoutes = () => {
         path="/articles/author/:authorId/:bookid"
       ></Route>
 
+      {/* Divine Quotes Page */}
+
+      <Route
+        element={<WithHeaderFooter element={<DivineQuotes />} />}
+        path="/divinequote"
+      ></Route>
+
+      <Route
+        element={<WithHeaderFooter element={<MessageDetailPage />} />}
+        path="/messages/:id"
+      ></Route>
+
+
       {/* message Page */}
 
       <Route
@@ -407,8 +421,8 @@ const AppRoutes = () => {
         element={<WithHeaderFooter element={<SearchDataPage />} />}
         path="/searchdata/:searchCategory/:search"
       ></Route>
-      
-       <Route
+
+      <Route
         element={<WithHeaderFooter element={<SearchDataPage />} />}
         path="/searchdata/:searchCategory/"
       ></Route>

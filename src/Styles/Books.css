@@ -19,15 +19,15 @@
   column-count: 1;
 }
 
-.carousel-content.show-2 > * {
+.carousel-content.show-2>* {
   width: 50%;
 }
 
-.carousel-content.show-3 > * {
+.carousel-content.show-3>* {
   width: calc(100% / 3);
 }
 
-.carousel-content.show-4 > * {
+.carousel-content.show-4>* {
   width: calc(100% / 4);
 }
 
@@ -56,6 +56,7 @@
   margin-left: auto;
   margin-right: auto;
 }
+
 /* .headerbg {
   background: url(https://gitaseva.org/assets/img/headerBG.png) no-repeat top;
   padding-bottom: 10px;
@@ -134,6 +135,7 @@
   vertical-align: middle;
   transform: rotate(180deg);
 }
+
 .searchData {
   font-size: 25px;
   font-weight: 700;
@@ -145,7 +147,7 @@
   text-align: center;
   background-color: #fff;
   border-radius: 6px;
-  padding: 35px;
+  padding: 28px;
   height: 300px;
   border: 1px solid #f7ebce;
   margin: 0 0 30px;
@@ -182,11 +184,12 @@
     margin-top: 0px;
     outline: none;
   }
+
   .footer-menu ul li {
-    background: url(http://localhost:3000/static/media/list-icon.ddf60d4….svg)
-      no-repeat left;
+    background: url(http://localhost:3000/static/media/list-icon.ddf60d4….svg) no-repeat left;
     display: none;
   }
+
   .btntogl {
     text-align: center;
     z-index: 3;
@@ -195,12 +198,14 @@
     right: 0;
     border: none;
   }
+
   .navtogl {
     width: 100%;
     justify-content: end;
     display: flex;
   }
 }
+
 @media (min-width: 576px) and (max-width: 768px) {
   .btntogl {
     text-align: center;
@@ -210,6 +215,7 @@
     right: 14%;
     border: none;
   }
+
   .navtogl {
     width: 100%;
     justify-content: end;
@@ -225,7 +231,9 @@
   font-style: normal;
   font-weight: bold;
   font-family: "ChanakyaUni";
+  /* padding: 20px 0 0 0; */
 }
+
 .boxheadtitle {
   font-family: ChanakyaUni, NalandaTim, Tunga;
   font-size: 25px;
@@ -236,32 +244,39 @@
   flex: 1 1 auto;
   padding: 5px;
 }
+
 .cardbackground {
   display: flex;
   border-bottom: 1px solid #ffdd89;
   padding-bottom: 10px;
 }
+
 .resetimg {
   cursor: pointer;
   height: 24px;
   margin-top: 8px;
 }
+
 .panel-body {
   font: 400 14px/21px "ChanakyaUni" !important;
   line-height: 1.5 !important;
 }
+
 .panel-body ul {
   padding: 0 0 0 16px;
   margin: 0;
 }
+
 .panel-body ul li {
   color: #fb9c34;
 }
+
 .panel-body ul li div {
   font-size: 21px;
   font-weight: normal;
   color: #545454;
 }
+
 .panel-body ul li div:hover,
 .panel-body ul li div:focus {
   color: #d11501;

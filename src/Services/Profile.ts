@@ -6,7 +6,7 @@ class ProfileService {
   profileRoute = "/api/user/profile?medium=1&lang=";
   favRoute = "/api/user/favourites?lang=";
   profiledata = "/api/user/profile";
-  country = "/api/Settings/Country?lang=";
+  country = "/api/settings/country?lang=";
   state = "/api/settings/state?lang=";
   updateuser = "/api/user/profile"
   city = "/api/settings/state/"
@@ -30,7 +30,7 @@ class ProfileService {
 
   getCountry = (lan:any) => {
     return ApiUtility.get(
-      this.country + "&lang=" + lan,
+      this.country + lan,
     )
   }
 

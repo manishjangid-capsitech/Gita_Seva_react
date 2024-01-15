@@ -19,21 +19,6 @@ class HomeServices {
     localStorage.getItem("u+serId")
   )}  
 
-  getList = (
-    start: number,
-    length: number,
-    sortCol?: string,
-    sortDir?: string,
-    search?: string
-  ) =>
-    ApiUtility.get(this.route, {
-      start,
-      length,
-      sortCol,
-      sortDir,
-      search,
-    });
-
   getHomeData = (lang: string, userid: string) => {
     return ApiUtility.get(
       this.homeRoute +
@@ -63,8 +48,6 @@ class HomeServices {
     return ApiUtility.get(this.quotesRoute);
   };
 
-  //   return ApiUtility.get(this.allauthorRoute + lang + "&skipAll=true");
-  // };
   postcontact = (params: any) => {
     return ApiUtility.post(this.contactRoute, params);
   };

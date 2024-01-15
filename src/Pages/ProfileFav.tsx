@@ -47,7 +47,7 @@ export const ProfileFav = () => {
 
   useEffect(() => {
     setRefresh(false);
-    ProfileService.getfavData(_get_i18Lang(), 0, 1000).then((res: any) => {
+    ProfileService.getfavData("hindi", 0, 100).then((res: any) => {
       getBookFav(res?.result?.books);
       getKalyan(res?.result?.kalyans);
       getKalpatru(res.result?.kalyansKalpataru);
@@ -104,7 +104,7 @@ export const ProfileFav = () => {
         className="newcontainer"
         style={{
           backgroundColor: "#FFF6E1",
-          padding: "20px 0 3% 0",
+          padding: "25px 0 3% 0",
           marginTop: 0,
         }}
       >

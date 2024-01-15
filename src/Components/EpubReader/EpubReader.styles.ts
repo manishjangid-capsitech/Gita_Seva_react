@@ -77,10 +77,10 @@ export const EpubReaderStyles: IEpubReaderStyles = {
   },
   tocArea: {
     position: "absolute",
-    left: 15,
+    left: 0,
     // top: 183,
     bottom: 0,
-    top: 0,
+    // top: 0,
     zIndex: 1,
     width: 0,
     overflowY: "auto",
@@ -91,7 +91,7 @@ export const EpubReaderStyles: IEpubReaderStyles = {
   },
   tocAreaWidth: {
     width: "280px",
-    top: "70px",
+    top: "55px",
   },
   // for mobile screen
   tocAreaButton: {
@@ -104,9 +104,9 @@ export const EpubReaderStyles: IEpubReaderStyles = {
     width: "100%",
     //fontSize: ".9em",
     textAlign: "left",
-    padding: ".9em 1em 0em 0em",
+    padding: "5px 0 0 5px",
     borderBottom: "1px solid #ddd",
-    //color: "#aaa",
+    color: "#aaa",
     boxSizing: "border-box",
     outline: "none",
     cursor: "pointer",

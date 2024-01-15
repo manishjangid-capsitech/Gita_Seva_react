@@ -73,6 +73,21 @@ export class EpubReader extends PureComponent<
     });
   };
 
+  // constructor(props: IBookMarkState) {
+  //   super(props);
+  //   this.readerRef = React.createRef();
+  //   this.state = {
+  //     bookmark: false,
+  //     marked: [],
+  //   }
+  // }
+
+  bkmarkToggle = () => {
+    this.setState({
+      // bookmark: !this.state.bookmark,
+    });
+  };
+
   next = () => {
     this.readerRef.current?.nextPage();
   };
@@ -103,7 +118,20 @@ export class EpubReader extends PureComponent<
           expandedToc ? styles.tocAreaWidth : { width: "0px" }
         )}>
         <div className="container">
+
           <div style={styles.toc}>
+            {/* <h6 style={{
+              padding: "10px 0 10px 10px",
+              background: "#ffc383",
+              margin: 0,
+              left: "0",
+              top: "0",
+              color: "white",
+              fontWeight: "600",
+              fontSize: "19px",
+              position: "sticky",
+              zIndex: "5"
+            }}>Index</h6> */}
             {toc?.length > 0 &&
               toc[0].map((item: any, i: number) => {
                 return (
@@ -184,6 +212,7 @@ export class EpubReader extends PureComponent<
       ...props
     } = this.props;
     const { toc, expandedToc } = this.state;
+    
     return (
       <>
         <div style={styles.container}>

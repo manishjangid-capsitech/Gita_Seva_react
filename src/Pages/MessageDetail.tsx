@@ -54,6 +54,7 @@ const MessageDetailPage = (props: any) => {
         style={{
           width: "100%",
           marginTop: "-175px",
+          paddingTop: 0,
           background: "none",
           backgroundColor: "#ffedbc",
           height: "240px",
@@ -67,7 +68,6 @@ const MessageDetailPage = (props: any) => {
               fontSize: "36px",
               fontWeight: 700,
               color: "rgb(209, 21, 1)",
-              marginLeft: "238px",
               top: "155px",
             }}
           >

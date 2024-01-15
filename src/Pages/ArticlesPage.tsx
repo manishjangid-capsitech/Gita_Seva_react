@@ -13,7 +13,6 @@ import i18n from "../i18n";
 import Loading from "../Components/Loading";
 import articalIcon from "../assets/img/article-icon.png";
 import AuthorsService from "../Services/Authors";
-
 import {
   Accordion,
   AccordionDetails,
@@ -26,7 +25,7 @@ const ArticlesPage = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [refresh, setRefresh] = useState(false);
-  const [SortValue, setSortValue] = useState("2");
+  const [SortValue, setSortValue] = useState("3");
   const [Category, setCategory] = useState<any>("");
   const [CategoryId, setCategoryId] = useState<any>("");
   const [Authors, setAuthors] = useState<any>("");
@@ -46,7 +45,7 @@ const ArticlesPage = () => {
   function ResetData() {
     setCategoryId("");
     setAuthorsId("");
-    setSortValue("2");
+    setSortValue("3");
     setPagination({
       ...pagination,
       pageNo: 0,
@@ -234,8 +233,9 @@ const ArticlesPage = () => {
                       <AccordionSummary
                         expandIcon={<ExpandMore />}
                         style={{
-                          height: "10px",
+                          height: 0,
                           background: "#FFFAF0",
+                          minHeight: "20px"
                         }}
                       >
                         <h2 className="filtertitle">{t("Article_List_tr")}</h2>
@@ -250,31 +250,31 @@ const ArticlesPage = () => {
                       >
                         {Category && Category.length > 0
                           ? Category?.map((Category: any) => (
-                              <div
-                                key={`c-${Category.id}`}
-                                className="CategoryList"
-                                onClick={() => {
-                                  setCategoryId(Category.id);
-                                }}
-                              >
-                                <ul style={{ margin: 0 }}>
-                                  <li>
-                                    <div
-                                      style={{
-                                        fontSize: "21px",
-                                        cursor: "pointer",
-                                        fontWeight: 400,
-                                        color: "#545454",
-                                        fontFamily: "ChanakyaUni",
-                                      }}
-                                      id={`cat-${Category.id}`}
-                                    >
-                                      {Category.name}
-                                    </div>
-                                  </li>
-                                </ul>
-                              </div>
-                            ))
+                            <div
+                              key={`c-${Category.id}`}
+                              className="CategoryList"
+                              onClick={() => {
+                                setCategoryId(Category.id);
+                              }}
+                            >
+                              <ul style={{ margin: 0 }}>
+                                <li>
+                                  <div
+                                    style={{
+                                      fontSize: "21px",
+                                      cursor: "pointer",
+                                      fontWeight: 400,
+                                      color: "#545454",
+                                      fontFamily: "ChanakyaUni",
+                                    }}
+                                    id={`cat-${Category.id}`}
+                                  >
+                                    {Category.name}
+                                  </div>
+                                </li>
+                              </ul>
+                            </div>
+                          ))
                           : ""}
                       </AccordionDetails>
                     </Accordion>
@@ -286,8 +286,9 @@ const ArticlesPage = () => {
                       <AccordionSummary
                         expandIcon={<ExpandMore />}
                         style={{
-                          height: "10px",
+                          height: 0,
                           background: "#FFFAF0",
+                          minHeight: "40px"
                         }}
                       >
                         <h2 className="filtertitle">{t("Authors_tr")}</h2>
@@ -301,31 +302,31 @@ const ArticlesPage = () => {
                       >
                         {Authors && Authors.length > 0
                           ? Authors?.map((Author: any) => (
-                              <div
-                                key={`c-${Author.id}`}
-                                className="Authorlist"
-                                onClick={() => {
-                                  setAuthorsId(Author.id);
-                                }}
-                              >
-                                <ul style={{ margin: 0 }}>
-                                  <li>
-                                    <div
-                                      style={{
-                                        fontSize: "21px",
-                                        cursor: "pointer",
-                                        fontWeight: 400,
-                                        color: "#545454",
-                                        fontFamily: "ChanakyaUni",
-                                      }}
-                                      id={`aut-${Author.id}`}
-                                    >
-                                      {Author.name}
-                                    </div>
-                                  </li>
-                                </ul>
-                              </div>
-                            ))
+                            <div
+                              key={`c-${Author.id}`}
+                              className="Authorlist"
+                              onClick={() => {
+                                setAuthorsId(Author.id);
+                              }}
+                            >
+                              <ul style={{ margin: 0 }}>
+                                <li>
+                                  <div
+                                    style={{
+                                      fontSize: "21px",
+                                      cursor: "pointer",
+                                      fontWeight: 400,
+                                      color: "#545454",
+                                      fontFamily: "ChanakyaUni",
+                                    }}
+                                    id={`aut-${Author.id}`}
+                                  >
+                                    {Author.name}
+                                  </div>
+                                </li>
+                              </ul>
+                            </div>
+                          ))
                           : ""}
                       </AccordionDetails>
                     </Accordion>
@@ -404,15 +405,39 @@ const ArticlesPage = () => {
                                   margin: "6px 0 22px",
                                 }}
                                 onClick={() => {
-                                  navigate(`/articles/` + article.slug, {
-                                    state: {
-                                      articleId: article.id,
-                                      articleName: article.name,
-                                      authorId: state?.authorId,
-                                      authorName: state?.authorName,
-                                      special: window.location.pathname,
-                                    },
-                                  });
+                                  if (window.location.pathname === `/articles`) {
+                                    navigate(`/articles/` + article?.id, {
+                                      state: {
+                                        articleId: article?.id,
+                                        articleName: article?.name,
+                                        authorId: state?.authorId,
+                                        authorName: state?.authorName,
+                                        special: window?.location?.pathname,
+                                      },
+                                    });
+                                  }
+                                  if (window.location.pathname === `/articles/special`) {
+                                    navigate(`/articles/special/` + article?.id, {
+                                      state: {
+                                        articleId: article?.id,
+                                        articleName: article?.name,
+                                        authorId: state?.authorId,
+                                        authorName: state?.authorName,
+                                        special: window?.location?.pathname,
+                                      },
+                                    });
+                                  }
+                                  if (window.location.pathname === `/articles/author/` + state?.authorId) {
+                                    navigate(`/articles/author/` + state?.authorId + "/" + article?.id, {
+                                      state: {
+                                        articleId: article?.id,
+                                        articleName: article?.name,
+                                        authorId: state?.authorId,
+                                        authorName: state?.authorName,
+                                        special: window?.location?.pathname,
+                                      },
+                                    });
+                                  }
                                 }}
                               >
                                 <div>
@@ -431,7 +456,7 @@ const ArticlesPage = () => {
                                       alt={article.name}
                                       title={article.name}
                                       width="60"
-                                      onClick={() => {}}
+                                      onClick={() => { }}
                                     />
                                     <p
                                       style={{

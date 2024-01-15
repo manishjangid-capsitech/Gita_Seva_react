@@ -87,7 +87,6 @@ const HeaderPage = () => {
       LoginServices.getUserLogin("", "", LoginEmail, 2, "", "", "").then(
         (res) => {
           if (res.status) {
-            // debugger
             setImage(res?.result?.imageThumbPath);
             localStorage.setItem("UserId", res?.result?.userId);
             localStorage.setItem("userName", res?.result?.name);
@@ -105,7 +104,6 @@ const HeaderPage = () => {
     if (mobileNumber != null) {
       LoginServices.getUserLogin("", mobileNumber, "", 1, "", "", "").then(
         (res) => {
-          // debugger;
           setImage(res?.result?.imageThumbPath);
           localStorage.setItem("UserId", res?.result?.userId);
           localStorage.setItem("userName", res?.result?.name);
@@ -141,9 +139,9 @@ const HeaderPage = () => {
                 </Link>
               </div>
             </div>
-            <div style={{ width: "85%" }}>
+            <div className="headerwidth">
               <div
-                style={{ display: "flex", float: "right", paddingTop: "15px" }}
+                style={{ display: "flex", float: "right", paddingTop: "15px", marginRight: "3px" }}
               >
                 <div className="gst-menu">
                   <select
@@ -154,19 +152,19 @@ const HeaderPage = () => {
                         e.currentTarget?.value ?? undefined;
                     }}
                   >
-                    <option value="" selected>
+                    <option value="" style={{ color: "#000" }}>
                       {t("all_tr")}
                     </option>
-                    <option value="book">{t("E_books_tr")}</option>
-                    <option value="monthlymagzine">
+                    <option value="book" style={{ color: "#000" }}>{t("E_books_tr")}</option>
+                    <option value="monthlymagzine" style={{ color: "#000" }}>
                       {t("MonthlyMagazine_tr")}
                     </option>
-                    <option value="kalyan">{t("Kalyan_tr")}</option>
-                    <option value="kalpataru">{t("Kalpataru_tr")}</option>
-                    <option value="audios">{t("Audios_tr")}</option>
-                    <option value="pravachan">{t("Pravachan_tr")}</option>
-                    <option value="article">{t("Article_tr")}</option>
-                    <option value="vivekvani">{t("vivek_vani_tr")}</option>
+                    <option value="kalyan" style={{ color: "#000" }}>{t("Kalyan_tr")}</option>
+                    <option value="kalpataru" style={{ color: "#000" }}>{t("Kalpataru_tr")}</option>
+                    <option value="audios" style={{ color: "#000" }}>{t("Audios_tr")}</option>
+                    <option value="pravachan" style={{ color: "#000" }}>{t("Pravachan_tr")}</option>
+                    <option value="article" style={{ color: "#000" }}>{t("Article_tr")}</option>
+                    <option value="vivekvani" style={{ color: "#000" }}>{t("vivek_vani_tr")}</option>
 
                   </select>
                 </div>
@@ -225,16 +223,18 @@ const HeaderPage = () => {
                       padding: "2px 10px 0 6px",
                       borderRadius: "4px",
                       width: "75px",
-                      display: "flex",
                       border: "none",
                       cursor: "pointer",
                       marginLeft: "12px",
+                      display: "flex",
+                      // justifyContent: "space-between",
+                      justifyContent: "space-between"
                     }}
                     onClick={toggleLang}
                   >
                     {localStorage.getItem("locale") === "hi"
                       ? "हिंदी"
-                      : "English"}
+                      : "English "}
                     <img
                       src={arrowdown}
                       alt="arrowdown"
@@ -292,11 +292,11 @@ const HeaderPage = () => {
                             changeLocale("en");
                             setSearchValue({
                               ...searchValue,
-                              language: "english",
+                              language: "nglish",
                             });
                           }}
                         >
-                          <p>english</p>
+                          <p>English</p>
                         </div>
                       </div>
                     )}
@@ -335,7 +335,9 @@ const HeaderPage = () => {
                     <NavLink
                       id="hmenu_books"
                       to="/books"
-                      onClick={() => setMenu(false)}
+                      onClick={() => {
+                        setMenu(false)
+                      }}
                       style={({ isActive }) => {
                         return { color: isActive ? "#d11501" : "#472d1e" };
                       }}
@@ -375,12 +377,25 @@ const HeaderPage = () => {
                             style={{
                               display: "grid",
                               position: "absolute",
-                              padding: "5px 9px 0px",
+                              padding: "10px 9px 0px",
                               zIndex: 1,
                               background: "#FDA63B",
                               borderRadius: "5px",
                             }}
                           >
+                            <NavLink
+                              id="hmenu_Kalpataru"
+                              to="/monthlymagazine"
+                              onClick={() => setMenu(false)}
+                              style={({ isActive }) => {
+                                return {
+                                  color: isActive ? "#d11501" : "#472d1e",
+                                  marginTop: "-10px",
+                                };
+                              }}
+                            >
+                              {t("MonthlyMagazine_tr")}
+                            </NavLink>
                             <NavLink
                               id="menu_klayan"
                               to="/kalyans"
@@ -417,12 +432,27 @@ const HeaderPage = () => {
                             >
                               {t("vivek_vani_tr")}
                             </NavLink>
+
+                            <NavLink
+                              id="menu_vivek"
+                              to="/divinequote"
+                              style={({ isActive }) => {
+                                return {
+                                  color: isActive ? "#d11501" : "#472d1e",
+                                  marginTop: "-10px",
+                                };
+                              }}
+                            >
+                              {t("Amrit_Vachan_tr")}
+                            </NavLink>
+
                           </div>
                         )}
                       </div>
                     </div>
                   </li>
-                  <li>
+
+                  {/* <li>
                     <NavLink
                       id="hmenu_Kalpataru"
                       to="/monthlymagazine"
@@ -433,7 +463,7 @@ const HeaderPage = () => {
                     >
                       {t("MonthlyMagazine_tr")}
                     </NavLink>
-                  </li>
+                  </li> */}
 
                   <li>
                     <NavLink
@@ -480,13 +510,7 @@ const HeaderPage = () => {
                 </ul>
 
                 <div
-                  className="loginmenudd"
-                  style={{
-                    position: "absolute",
-                    padding: "10px 0",
-                    right: "0px",
-                  }}
-                >
+                  className="loginmenudd">
                   <a
                     className="link-btn"
                     style={{
@@ -506,7 +530,7 @@ const HeaderPage = () => {
                         className="nousericon"
                         alt="user"
                         onClick={toggle}
-                        style={{ width: "25px", height: "25px" }}
+                        style={{ width: "45px", height: "45px" }}
                       />
                     ) : (
                       <img
@@ -518,7 +542,7 @@ const HeaderPage = () => {
                         onClick={() => {
                           setLogIn(true);
                         }}
-                        style={{ width: "25px", height: "25px" }}
+                        style={{ width: "45px", height: "45px" }}
                       />
                     )}
                   </a>

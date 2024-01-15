@@ -44,11 +44,6 @@ const AudioPlayerPage = ({ match }: any) => {
   );
 
   useEffect(() => {
-    debugger
-    console.log("state", state);
-  }, [])
-
-  useEffect(() => {
     setType(localStorage.getItem("type"));
     AudioPlayer.getAudioPlayer(
       _get_i18Lang(),

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAudio } from "../Contexts/AudiosContext";
 import imgdownload from "../assets/audioPlayer/img/download.svg";
@@ -58,6 +58,10 @@ const AudioPlayer = () => {
     setALength(event.target.duration);
   }
  
+  useEffect(()=>{
+
+  },[currentAudio])
+
   return (
     <div>
       {currentAudio?.id ? (

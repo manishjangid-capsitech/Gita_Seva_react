@@ -1,3 +1,8 @@
+.slick-next,
+.slick-prev {
+  height: 50px !important;
+}
+
 .slide-left {
   /* width: 833px; */
   float: left;
@@ -7,6 +12,7 @@
 .bgImg {
   background: url(../assets/img/lyrix-bg.png) no-repeat 50%;
 }
+
 .gst-homebg-image {
   background: url(../assets/img/header-bg.jpg) no-repeat;
   background-position: top;
@@ -33,6 +39,7 @@
   height: 432px;
   padding: 12px 30px 30px;
 }
+
 .pravachans-box h5 {
   font-family: "ChanakyaUni";
   /* font-size: 25px; */
@@ -42,11 +49,13 @@
   margin: 0 0 38px;
   /* margin: 0 0 15px; */
 }
+
 .p-list {
   padding-bottom: 12px;
   margin-bottom: 12px;
   border-bottom: 1px solid #cfa528;
 }
+
 .p-head-line {
   font-family: "ChanakyaUni";
   line-height: 19px;
@@ -55,12 +64,14 @@
   font-size: 20px;
   font-weight: 600;
 }
+
 .p-list p {
   font-family: "ChanakyaUni";
   font-size: 18px;
   margin: 0;
   line-height: 23px;
 }
+
 .rm a {
   font-size: 14px;
   font-family: "VerdanaBold";
@@ -70,10 +81,12 @@
 .intro {
   margin: 60px 0;
 }
+
 .intro h1 {
   font-size: 20px;
   line-height: 24px;
 }
+
 .intro p {
   font-family: "ChanakyaUni";
   font-style: normal;
@@ -89,11 +102,13 @@
 .nav-tabs {
   border-bottom: none !important;
 }
+
 nav {
   border-top: 1px solid #ffc574;
   border-bottom: 1px solid #ffc574;
   padding: 0 45px;
 }
+
 .nav-tabs .nav-link {
   margin-bottom: 0 !important;
   background: 0 !important;
@@ -107,11 +122,13 @@ nav {
   padding: 16px 60px 10px;
   font-weight: 700;
 }
+
 .nav-tabs .nav-item.show .nav-link,
 .nav-tabs .nav-link.active {
   color: #ff2e12 !important;
   border-bottom: 4px solid #ff2e12 !important;
 }
+
 .nav-link:hover {
   color: #ff2e12 !important;
 }
@@ -119,13 +136,16 @@ nav {
 .tab-pane {
   background-color: #fffbf3;
 }
+
 .tab-row {
   display: flex;
 }
+
 .tab-col {
   flex: 0 0 auto;
   width: 20%;
 }
+
 .tab-data {
   background: #fff;
   border-radius: 12px;
@@ -133,9 +153,11 @@ nav {
   margin: 0 10px;
   height: 100%;
 }
+
 .tab-data img {
   border-radius: 5px;
 }
+
 .tab-data-audios p,
 .tab-data p {
   font-family: "ChanakyaUniBold";
@@ -143,6 +165,7 @@ nav {
   line-height: 22px;
   text-align: center;
 }
+
 .view-service-btn {
   background: linear-gradient(254.02deg, #ffdb5e 18.46%, #ffc52f 69.21%);
   border-radius: 11px;
@@ -160,7 +183,6 @@ nav {
   border: none;
   border-radius: 8px;
   background-color: #fffbf3;
-  padding: 8px 15px;
   height: 40px;
   color: #3f220d;
   margin-right: 22px;
@@ -178,18 +200,6 @@ nav {
   color: #3f220d;
   font-size: 20px;
   border: 1px solid;
-}
-
-.inputbutton {
-  text-align: center;
-  width: 100px;
-  background: orange;
-  color: white;
-  border: none;
-  margin-top: 15px;
-  border-radius: 5px;
-  padding: 6px 0;
-  cursor: pointer;
 }
 
 input::-webkit-outer-spin-button,
@@ -220,7 +230,9 @@ input::-webkit-inner-spin-button {
   text-align: justify;
   display: flex;
   overflow-y: hidden;
+  overflow-x: hidden;
 }
+
 .tabscroll::-webkit-scrollbar-track {
   background-color: #fff6dd;
 }
@@ -229,6 +241,7 @@ input::-webkit-inner-spin-button {
   width: 2px !important;
   height: 7px;
 }
+
 .tabscroll::-webkit-scrollbar-thumb:vertical {
   background-color: rgb(142, 142, 142);
   -webkit-border-radius: 0px;
@@ -245,12 +258,12 @@ input::-webkit-inner-spin-button {
 /* homepage */
 
 .homepagebg {
-  background-image: url(/src/assets/img/message-box-bg.png);
+  background-image: url("../assets/img/message-box-bg.png");
   background-repeat: no-repeat;
   height: 160px;
   margin-left: 40px;
-  width: 340px;
 }
+
 .btnSubmit {
   cursor: pointer;
   font-size: 22px;
@@ -260,6 +273,7 @@ input::-webkit-inner-spin-button {
   border-radius: 5px;
   color: #fff;
 }
+
 .btnSubmit:hover {
   background-color: #d11501;
 }
@@ -286,6 +300,7 @@ input::-webkit-inner-spin-button {
   font-weight: bold;
   line-height: 20px;
 }
+
 .introbox {
   padding: 0 45px;
   border-right: 1px solid;
@@ -307,6 +322,7 @@ input::-webkit-inner-spin-button {
   cursor: pointer;
   color: #d11501;
 }
+
 .pravachan-audio-list:hover p {
   color: #d11501;
 }
@@ -365,6 +381,80 @@ input::-webkit-inner-spin-button {
   /* margin: 20px 0 0 0; */
   font-weight: 600;
 }
+
 .pravchanBox:hover p {
   color: #d11501;
+}
+
+.messagebox {
+  background-color: #ffe9b9;
+  height: 492px;
+  padding: 0 35px 0 45px;
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
+  width: 340px;
+  margin-left: 40px;
+}
+
+.messageheader {
+  text-align: center;
+  margin: -60px -80px 0 -32px;
+  color: #d11501;
+  font-size: 30px;
+  font-style: normal;
+  font-weight: 700;
+  padding-bottom: 24px;
+  font-family: ChanakyaUni;
+}
+
+.messagebottom {
+  border-bottom: 4px solid #D11501;
+  margin: -4px 20px 0px 67px;
+}
+
+.p-subbutton {
+  text-align: center;
+  margin: 20px 40px 0;
+}
+
+@media (min-width: 1024px) and (max-width: 1400px) {
+  .homepagebg {
+    /* message box */
+    background-image: url("../assets/img/message-box-bg4.png");
+    background-repeat: no-repeat;
+    margin-left: -80px;
+  }
+
+  .messagebox {
+    height: 440px;
+    padding: 0 12px 0 14px;
+    width: 270px;
+    margin-left: -80px;
+  }
+
+  .messageheader {
+    text-align: start;
+    margin: -80px 0 0 -10px;
+    font-size: 25px;
+    padding-bottom: 10px;
+  }
+
+  .messagebottom {
+    margin: -3px 56% 0px -60px
+  }
+
+  .p-subbutton {
+    margin: -30px 60px 0;
+  }
+
+  .btnSubmit {
+    cursor: pointer;
+    font-size: 22px;
+    font-family: ChanakyaUni;
+    background-color: #ff4e2a;
+    padding: 4px 0;
+    border-radius: 5px;
+    color: #fff;
+  }
+
 }

@@ -10,6 +10,7 @@ import Loading from "../Components/Loading";
 import { LocaleProvider } from "../Contexts/LocaleContext";
 import AudioPlayer from "../Components/AudioPlayer";
 import { CookiesProvider } from "react-cookie";
+import 'react-toastify/dist/ReactToastify.css';
 // const EpubPage = React.lazy(() => import("../Pages/Epub"));
 
 function App(props: any) {

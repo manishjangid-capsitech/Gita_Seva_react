@@ -25,7 +25,7 @@ const GeetgovindPage = () => {
   const [Monthly, setMonthly] = useState<any[] | undefined>(undefined);
 
   const [refresh, setRefresh] = useState(false);
-  const [SortValue, setSortValue] = useState("3");
+  const [SortValue, setSortValue] = useState("0");
   const [Language, setLanguage] = useState<any>("");
   const [LanguageId, setLanguageId] = useState<any>("");
 
@@ -36,12 +36,13 @@ const GeetgovindPage = () => {
   });
 
   function ResetData() {
-    setSortValue("3");
+    setSortValue("0");
     setLanguageId("");
     setPagination({
       ...pagination,
       pageNo: 0,
     });
+    setRefresh(true);
   }
 
   function ClickOnFilter(cat: string) {
@@ -87,7 +88,7 @@ const GeetgovindPage = () => {
   useEffect(() => {
     setRefresh(false);
     GeetGovindServices.getMonthlyMagazine(
-      pagination.pageNo === 1
+      pagination.pageNo === 0
         ? 0
         : pagination.recordsPerPage * pagination.pageNo - 12,
       pagination.recordsPerPage,
@@ -99,11 +100,10 @@ const GeetgovindPage = () => {
       LanguageId,
       window.location.pathname === "/books/special" ? true : false
     ).then((res) => {
-      if (res) {
+      if (res?.status) {
         setMonthly(res.result?.items);
         setPagination({
           ...pagination,
-          recordsPerPage: 12,
           totalRecords: res.result?.totalRecords,
         });
       }
@@ -201,8 +201,9 @@ const GeetgovindPage = () => {
                       <AccordionSummary
                         expandIcon={<ExpandMore />}
                         style={{
-                          height: "10px",
+                          height: 0,
                           background: "#FFFAF0",
+                          minHeight: "20px"
                         }}
                       >
                         <h2 className="filtertitle">{t("Languages_tr")}</h2>
@@ -217,31 +218,31 @@ const GeetgovindPage = () => {
                       >
                         {Language && Language.length > 0
                           ? Language?.map((Language: any) => (
-                              <div
-                                key={`c-${Language.id}`}
-                                className="LanguageList"
-                                onClick={() => {
-                                  setLanguageId(Language.id);
-                                }}
-                              >
-                                <ul style={{ margin: 0 }}>
-                                  <li>
-                                    <div
-                                      style={{
-                                        fontSize: "21px",
-                                        cursor: "pointer",
-                                        fontWeight: 400,
-                                        color: "#545454",
-                                        fontFamily: "ChanakyaUni",
-                                      }}
-                                      id={`lan-${Language.id}`}
-                                    >
-                                      {Language.name}
-                                    </div>
-                                  </li>
-                                </ul>
-                              </div>
-                            ))
+                            <div
+                              key={`c-${Language.id}`}
+                              className="LanguageList"
+                              onClick={() => {
+                                setLanguageId(Language.id);
+                              }}
+                            >
+                              <ul style={{ margin: 0 }}>
+                                <li>
+                                  <div
+                                    style={{
+                                      fontSize: "21px",
+                                      cursor: "pointer",
+                                      fontWeight: 400,
+                                      color: "#545454",
+                                      fontFamily: "ChanakyaUni",
+                                    }}
+                                    id={`lan-${Language.id}`}
+                                  >
+                                    {Language.name}
+                                  </div>
+                                </li>
+                              </ul>
+                            </div>
+                          ))
                           : ""}
                       </AccordionDetails>
                     </Accordion>

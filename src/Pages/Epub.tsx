@@ -1,3 +1,4 @@
+/* eslint-disable array-callback-return */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-redeclare */
 /* eslint-disable @typescript-eslint/no-unused-vars */
@@ -5,11 +6,11 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import { useTranslation } from "react-i18next";
 import "../Styles/Epub.css";
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { EpubReader } from "../Components/EpubReader";
 import * as CryptoJS from "crypto-js";
 import { useLocation, useNavigate, Link } from "react-router-dom";
-import $ from "jquery";
+import $, { data } from "jquery";
 import EpubServices from "../Services/Epub";
 import plus from "../Images/plus.svg";
 import min from "../Images/min.svg";
@@ -23,6 +24,13 @@ export enum BookContentType {
   magazine,
   vivek,
 }
+
+interface bookmark {
+  id: number;
+  name: string;
+  // Add other properties as needed
+}
+
 const EpubPage = () => {
   var signKey = localStorage.getItem("SignKey");
 
@@ -31,6 +39,7 @@ const EpubPage = () => {
   var userid = localStorage.getItem("UserId");
 
   var currentdate = new Date();
+
   var todayDate = currentdate
     .toISOString()
     .replace("T", " ")
@@ -88,13 +97,11 @@ const EpubPage = () => {
 
   const [colortheme, setTheme] = useState<any | String>(undefined);
   const [fontcolor, setFontColor] = useState<any | String>(undefined);
-  const [themecolor, setThemeColor] = React.useState("white");
+  const [themecolor, setThemeColor] = useState("white");
 
   const { t } = useTranslation();
 
-  const [about, setEpub] = React.useState({
-    __html: "",
-  });
+  const [bkmarkSaved, setBkmarkSaved] = useState<boolean>(false);
 
   const locationDetail = useLocation();
   const state = locationDetail?.state as {
@@ -132,7 +139,8 @@ const EpubPage = () => {
     return value;
   };
 
-  const [url, setUrl] = React.useState(
+  const [url, setUrl] = useState(
+
     `${process.env.REACT_APP_API_URL}/api/${getUrlBytype(
       state.type
     )}/epubstrem/`
@@ -144,7 +152,6 @@ const EpubPage = () => {
   );
 
   const [location, setLocation] = useState<any>(undefined);
-  console.log("cfiresult", cfiresult);
   const locationChanged = (epubcifi: any) => {
     // epubcifi =
     // "epubcfi(/6/2[The-Secrets-of-Gita]!/4[The-Secrets-of-Gita]/2/2[toc_marker-1]/2/1:0)";
@@ -156,10 +163,14 @@ const EpubPage = () => {
       const { displayed, href } = renditionRef?.current?.location?.start;
       const chapter = tocRef?.current?.find((item: any) => item?.href === href);
       setPage(
-        `Page ${displayed?.page} of ${displayed?.total} in chapter ${
-          chapter ? chapter?.label : "n/a"
+        `Page ${displayed?.page} of ${displayed?.total} in chapter ${chapter ? chapter?.label : "n/a"
         }`
       );
+      setFinalName(chapter ? chapter.label : undefined);
+    }
+    if (tocRef.current) {
+      const chapterName = tocRef?.current.item;
+      setFinalName(chapterName)
     }
   };
 
@@ -181,19 +192,18 @@ const EpubPage = () => {
   function GetLstPosition(bookId: string) {
     EpubServices.getLastPosition(
       "lastposition" ||
-        "kalyanlastposition" ||
-        "kalyankalpatarulastposition" ||
-        "monthlymagazinelastposition" ||
-        "vivekvanilastposition",
+      "kalyanlastposition" ||
+      "kalyankalpatarulastposition" ||
+      "monthlymagazinelastposition" ||
+      "vivekvanilastposition",
       state?.bookDetailId ||
-        state?.kalyanDetailId ||
-        state?.kalpatrauDetailId ||
-        state?.magazineDetailId ||
-        state?.vivekvaniDetailId
+      state?.kalyanDetailId ||
+      state?.kalpatrauDetailId ||
+      state?.magazineDetailId ||
+      state?.vivekvaniDetailId
     ).then((res) => {
       if (res.status) {
         if (res.result != null && res.result !== "") {
-          console.log("cfiresult", cfiresult);
           setcfi(res.result.cfi);
         }
       }
@@ -203,18 +213,18 @@ const EpubPage = () => {
   function saveLstPositionAndClose() {
     EpubServices.SaveLastPositionAndClose(
       "lastposition" ||
-        "kalyanlastposition" ||
-        "kalyankalpatarulastposition" ||
-        "monthlymagazinelastposition" ||
-        "vivekvanilastposition",
+      "kalyanlastposition" ||
+      "kalyankalpatarulastposition" ||
+      "monthlymagazinelastposition" ||
+      "vivekvanilastposition",
       state?.bookDetailId ||
-        state?.kalyanDetailId ||
-        state?.kalpatrauDetailId ||
-        state?.magazineDetailId ||
-        state?.vivekvaniDetailId,
+      state?.kalyanDetailId ||
+      state?.kalpatrauDetailId ||
+      state?.magazineDetailId ||
+      state?.vivekvaniDetailId,
       location,
       "100"
-    ).then((res) => {});
+    ).then((res) => { });
   }
 
   useEffect(() => {
@@ -232,19 +242,20 @@ const EpubPage = () => {
 
   useEffect(() => {
     clickOnTheme(false);
-  });
+  }, []);
 
   useEffect(() => {
     if (renditionRef.current) {
       renditionRef.current.themes.register("custom", {
         body: {
           // background: colortheme,
-          background: colortheme,
+          // background: colortheme,
           color: fontcolor,
         },
       });
       renditionRef.current.themes.select("custom");
       if (themecolor === "black") {
+        localStorage.setItem("epub-theme", "black")
         $("#titlebar").removeClass("theme-grey");
         $("#titlebar").removeClass("theme-grey");
         $("#titlebar").removeClass("titlebar_color");
@@ -286,7 +297,7 @@ const EpubPage = () => {
             "user-select": "none",
           },
           body: {
-            background: "#000000",
+            // background: "#000000",
             "overflow-wrap": "break-word",
             hyphens: "auto",
           },
@@ -300,6 +311,7 @@ const EpubPage = () => {
           },
         });
       } else if (themecolor === "grey") {
+        localStorage.setItem("epub-theme", "grey")
         $("#titlebar").removeClass("theme-grey");
         $("#titlebar").removeClass("theme-black");
         $("#titlebar").removeClass("titlebar_color");
@@ -340,7 +352,7 @@ const EpubPage = () => {
             "user-select": "none",
           },
           body: {
-            background: "#464646",
+            // background: "#464646",
             "overflow-wrap": "break-word",
             hyphens: "auto",
           },
@@ -354,6 +366,7 @@ const EpubPage = () => {
           },
         });
       } else if (themecolor === "ivory") {
+        localStorage.setItem("epub-theme", "ivory")
         $("#titlebar").removeClass("theme-grey");
         $("#titlebar").removeClass("theme-black");
         $("#titlebar").removeClass("titlebar_color");
@@ -394,7 +407,7 @@ const EpubPage = () => {
             "user-select": "none",
           },
           body: {
-            background: "#fffcda",
+            // background: "#fffcda",
             "overflow-wrap": "break-word",
             hyphens: "auto",
           },
@@ -408,6 +421,7 @@ const EpubPage = () => {
           },
         });
       } else if (themecolor === "white") {
+        localStorage.setItem("epub-theme", "white")
         $("#titlebar").removeClass("theme-grey");
         $("#titlebar").removeClass("theme-black");
         $("#titlebar").removeClass("titlebar_color");
@@ -448,7 +462,7 @@ const EpubPage = () => {
             "user-select": "none",
           },
           body: {
-            background: "#ffffff",
+            // background: "#ffffff",
             "overflow-wrap": "break-word",
             hyphens: "auto",
           },
@@ -464,7 +478,7 @@ const EpubPage = () => {
       }
     }
     // return GetSignKey();
-  }, [colortheme, fontcolor, themecolor, state?.bookDetailId, cfiresult]);
+  }, [colortheme, fontcolor, state?.bookDetailId, cfiresult]);
 
   var iframe = document?.getElementsByTagName("iframe");
   const Name =
@@ -474,10 +488,13 @@ const EpubPage = () => {
     iframe[0]?.contentWindow?.document?.getElementsByClassName("Heading")[0]
       ?.innerHTML;
 
+  const [finalName, setFinalName] = useState<string>("");
   const newString = `${Name}`;
-  const finalName = newString?.split("<")[0];
+  // const setFinalName = newString?.split("<")[0]
+  useEffect(() => {
+    setFinalName(newString?.split("<")[0]);
+  }, [finalName]);
 
-  const viewerRef = useRef(null);
   const navigate = useNavigate();
 
   const BookId = state?.bookDetailId;
@@ -511,6 +528,88 @@ const EpubPage = () => {
     }
   };
 
+  const SaveBkMark = async () => {
+    let res = await EpubServices.savebookmark(state?.bookDetailId ||
+      state?.kalyanDetailId ||
+      state?.kalpatrauDetailId ||
+      state?.magazineDetailId ||
+      state?.vivekvaniDetailId, location, finalName);
+    if (res) {
+      res.status && setBkmarkSaved(true);
+    }
+
+  }
+
+  function RemoveBkMark() {
+    EpubServices.removebookmark(state?.bookDetailId ||
+      state?.kalyanDetailId ||
+      state?.kalpatrauDetailId ||
+      state?.magazineDetailId ||
+      state?.vivekvaniDetailId, location).then(
+        (res: any) => {
+          res.status && setBkmarkSaved(false);
+        }
+      );
+  }
+
+  const [showBKdata, setShowBKdata] = useState<bookmark[] | undefined>(
+    undefined
+  );
+
+  const [showdata, setShowdata] = useState<boolean>(false);
+  const [lengthofbkm, setLengthofbkm] = useState<boolean>(false)
+
+  useEffect(() => {
+    if (showdata) {
+      EpubServices.getbookmark(
+        state?.bookDetailId ||
+        state?.kalyanDetailId ||
+        state?.kalpatrauDetailId ||
+        state?.magazineDetailId ||
+        state?.vivekvaniDetailId,).then((res: any) => {
+          if (res.status) {
+            setShowBKdata(res?.result);
+            {
+              res.result.length > 0 ?
+                setLengthofbkm(true) :
+                setLengthofbkm(false)
+            }
+          }
+        });
+    }
+  }, [showdata]);
+
+  const handleDelete = (dataCfi: any) => {
+    EpubServices.removebookmark(state?.bookDetailId ||
+      state?.kalyanDetailId ||
+      state?.kalpatrauDetailId ||
+      state?.magazineDetailId ||
+      state?.vivekvaniDetailId, dataCfi).then(
+        (res: any) => {
+          res.status && setBkmarkSaved(false);
+        }
+      );
+  };
+
+  const [getcfi, setGetcfi] = useState<string>("")
+
+  useEffect(() => {
+    console.log("bkmarkSaved", bkmarkSaved);
+    console.log("getcfi", getcfi);
+    getcfi === location ? setBkmarkSaved(true) : setBkmarkSaved(false);
+  }, [location, getcfi])
+
+  useEffect(() => {
+    showBKdata?.map((data: any) => {
+      // debugger
+      setGetcfi(data.cfi)
+      if (data.name === "undefined") {
+        // setBookmarkName(Bookmark.index)
+      }
+    })
+  }, [location]);
+  const CurrentTheme = localStorage.getItem("epub-theme") as any;
+
   return (
     <div>
       <div
@@ -526,7 +625,7 @@ const EpubPage = () => {
             marginLeft: "25px",
           }}
         >
-          <label>
+          <label style={{ fontSize: "larger" }}>
             {state?.bookName} : {finalName === "undefined" ? "" : finalName}
           </label>
         </div>
@@ -534,13 +633,32 @@ const EpubPage = () => {
         <div className="p-2 bd-highlight col-example">
           <div style={{ flex: "100%", marginTop: "7px" }}>
             <div style={{ flex: "100%", display: "flex" }}>
+              <div
+                id="bookmark-list"
+                onClick={() => {
+                  setShowdata(showdata ? false : true)
+                }}
+              ></div>
+              <div
+                id="bkicon"
+                className={bkmarkSaved ? "bookmarkicon-fill" : "bookmarkicon"}
+                onClick={() => {
+                  (!bkmarkSaved ? SaveBkMark() : RemoveBkMark())
+                }}
+              ></div>
               <img
                 alt=""
                 style={{ width: "22px" }}
                 src={min}
                 onClick={() => changeSize(Math.max(50, size - 10))}
               />
-              <div style={{ paddingLeft: "5px", paddingRight: "5px" }}>
+              <div
+                style={{
+                  paddingLeft: "5px",
+                  paddingRight: "5px",
+                  fontSize: "18px",
+                }}
+              >
                 {size}%
               </div>
               <img
@@ -623,6 +741,8 @@ const EpubPage = () => {
               <img
                 alt="close"
                 src={close}
+                width="18px"
+                style={{ cursor: "pointer" }}
                 onClick={() => {
                   saveLstPositionAndClose();
                   closebutton();
@@ -631,6 +751,56 @@ const EpubPage = () => {
             </div>
           </div>
         </div>
+      </div>
+      <div>
+        {showdata === true && lengthofbkm === true ? (
+          <div
+            style={{
+              width: "18%",
+              height: "auto",
+              position: "absolute",
+              right: "5px",
+              zIndex: 1,
+              background: "antiquewhite",
+            }}
+          >
+            <ul className="bklistul" style={{ listStyle: "none" }}>
+              {showBKdata &&
+                showBKdata?.map((data: any, index: number) => (
+                  <div style={{ display: "flex", justifyContent: "space-between" }} key={index}>
+                    <li
+                      className="bklistitem"
+                      key={data.id}
+                      onClick={() => {
+                        setLocation(data.cfi);
+                        setFinalName(data.name);
+                        setShowdata(false)
+                      }}
+                    >
+                      {data?.name}
+                    </li>
+                    <label
+                      onClick={() => {
+                        handleDelete(data.cfi);
+                        setShowdata(false)
+                      }}
+                      className="bookmark_del fa fa-trash"
+                      style={{
+                        marginRight: "40px",
+                        color: "red",
+                        border: "none",
+                        background: "none",
+                        fontSize: "24px",
+                        cursor: "pointer",
+                      }}
+                    ></label>
+                  </div>
+                ))}
+            </ul>
+          </div>
+        ) : (
+          <div style={{ display: "none", position: "relative" }}></div>
+        )}
       </div>
       <div style={{ height: "93vh" }} className="myReader">
         <EpubReader
@@ -646,12 +816,12 @@ const EpubPage = () => {
           getRendition={(rendition) => {
             renditionRef.current = rendition;
             renditionRef.current.themes.fontSize(`${size}%`);
-
             rendition.themes.register("custom", {
               body: {
                 // background: colortheme,
-                background: colortheme,
-                color: "#000000",
+                // background: colortheme,
+                color: CurrentTheme === 'black' || CurrentTheme === "gray" ? "#ffffff" : "#000000",
+                // link.style.color = (localStorage.getItem('CurrentTheme') == 'black' || localStorage.getItem('CurrentTheme') == 'grey') ? '#ffffff' : '#000000';
                 fontfamily: "ChanakyaUni",
               },
             });

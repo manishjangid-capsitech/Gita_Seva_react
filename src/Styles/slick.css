@@ -1,0 +1,49 @@
+.button__bar {
+    display: inline-block;
+    position: absolute;
+    margin-top: -30px !important;
+    margin-left: -20px;
+    /* vertical-align: middle;
+    margin: auto;
+    padding: 0;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 40px;
+    width: 70px;
+    text-align: center; */
+}
+
+.button__bar li {
+    list-style: none;
+    cursor: pointer;
+    display: inline-block;
+    margin: 0 3px;
+    padding: 0;
+}
+
+.button__bar li button {
+    border: none;
+    color: transparent;
+    cursor: pointer;
+    display: block;
+    width: 10px;
+    margin: 0 0 0 5px;
+    font-size: 25px;
+    height: 11px;
+    border-radius: 30px;
+}
+
+.button__bar li.slick-active button {
+    background-color: #869791;
+}
+
+.button__bar li button:hover,
+.button__bar li button:focus {
+    background: #869791;
+    outline: 0;
+}
+
+@media (min-width: 1024px) and (max-width: 1400px) {
+    .button__bar {
+        margin-left: 85px;
+    }
+}

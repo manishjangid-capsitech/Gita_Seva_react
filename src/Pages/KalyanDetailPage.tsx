@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import DefaultBook from "../Images/defaultBook.png";
 import KalyansServices from "../Services/Kalyan";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -14,6 +14,8 @@ import { BookContentType } from "./Epub";
 import { userId } from "../Contexts/LocaleContext";
 import { toast } from "react-toastify";
 import { LogInModel } from "./LogInoutModel";
+import leftArrow from "../assets/img/leftArrow1.png";
+import rightArrow from "../assets/img/rightArrow1.png"
 
 const KalyanDetailPage = (props: any) => {
   const { t } = useTranslation();
@@ -33,6 +35,8 @@ const KalyanDetailPage = (props: any) => {
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 2000,
+    prevArrow: <img src={leftArrow} alt="" height="40px" />,
+    nextArrow: <img src={rightArrow} alt="" height="40px" />
   };
 
   const [logIn, setLogIn] = useState<boolean>(false);
@@ -45,28 +49,37 @@ const KalyanDetailPage = (props: any) => {
 
   const [toggleFav, setToggleFav] = useState<boolean>(false);
 
-  function notify() {
-    !isLiked
-      ? toast(
-          localStorage.getItem("lang") === "hindi"
-            ? "पत्रिका को सफलतापूर्वक मेरी पसंद में जोड़ा गया है।"
-            : "Magazine has been successfully added to the favourites"
-        )
-      : toast(
-          localStorage.getItem("lang") === "hindi"
-            ? "पत्रिका मेरी पसंद से हटा दी गई है।"
-            : "Magazine has been removed from favourites"
-        );
-  }
+  const notificationRef = useRef<any>(null);
+
+  const showNotification = (message: any) => {
+    notificationRef.current.innerText = message;
+    notificationRef.current.style.display = 'block';
+
+    setTimeout(() => {
+      notificationRef.current.style.display = 'none';
+    }, 3000); // Hide the notification after 2 seconds
+  };
+
+  const notify = () => {
+    showNotification(!isLiked
+      ?
+      localStorage.getItem("lan") === "hindi"
+        ? "पत्रिका को सफलतापूर्वक मेरी पसंद में जोड़ा गया है।"
+        : "Magazine has been successfully added to the favourites"
+      : localStorage.getItem("lan") === "hindi"
+        ? "पत्रिका मेरी पसंद से हटा दी गई है।"
+        : "Magazine has been removed from favourites"
+    )
+  };
 
   const toggleLike = () => {
     !isLiked
       ? KalyansServices.addKalyanFavourite(kalyanId).then((res) => {
-          res.status && setIsLiked(true);
-        })
+        res.status && setIsLiked(true);
+      })
       : KalyansServices.removeKalyanFavourite(kalyanId).then((res) => {
-          res.status && setIsLiked(false);
-        });
+        res.status && setIsLiked(false);
+      });
     setToggleFav((x) => !x);
   };
 
@@ -273,6 +286,7 @@ const KalyanDetailPage = (props: any) => {
                         >
                           {t("read_magazine_tr")}
                         </p>
+                        <div ref={notificationRef} style={{ color: "#ff3d28", fontSize: '20px', marginTop: "10px" }} className="notification-bar"></div>
                       </div>
                     </div>
                   </div>
@@ -291,48 +305,48 @@ const KalyanDetailPage = (props: any) => {
                         {t("Related_Kalyan_tr")}
                       </h1>
 
-                      <div style={{ paddingBottom: "20px" }}>
+                      <div style={{ paddingBottom: "20px", width: " 97%", left: "18px", position: "relative" }}>
                         <Slider {...settings}>
                           {relateds && relateds.length > 0
                             ? relateds.map((related) => (
-                                <div
-                                  className="slider-books sidebarmargin"
-                                  key={`related-${related.id}`}
-                                  onClick={() => {
-                                    navigate(`/kalyans/` + related.slug, {
-                                      state: {
-                                        kalyanId: related.id,
-                                      },
-                                    });
-                                    window.location.reload();
-                                  }}
-                                >
-                                  <div>
-                                    <a>
-                                      <img
-                                        style={{
-                                          cursor: "pointer",
-                                          borderRadius: 0,
-                                        }}
-                                        className="imgcenter"
-                                        src={
-                                          related.kalyanThumbPath == null
-                                            ? DefaultBook
-                                            : related.kalyanThumbPath
-                                        }
-                                        onError={(e) => {
-                                          e.currentTarget.src = DefaultBook;
-                                        }}
-                                        alt={related.name}
-                                        title={related.name}
-                                        width="150"
-                                        height="212"
-                                      />
-                                      <p>{related?.name}</p>
-                                    </a>
-                                  </div>
+                              <div
+                                className="slider-books sidebarmargin"
+                                key={`related-${related.id}`}
+                                onClick={() => {
+                                  navigate(`/kalyans/` + related.slug, {
+                                    state: {
+                                      kalyanId: related.id,
+                                    },
+                                  });
+                                  window.location.reload();
+                                }}
+                              >
+                                <div>
+                                  <a>
+                                    <img
+                                      style={{
+                                        cursor: "pointer",
+                                        borderRadius: 0,
+                                      }}
+                                      className="imgcenter"
+                                      src={
+                                        related.kalyanThumbPath == null
+                                          ? DefaultBook
+                                          : related.kalyanThumbPath
+                                      }
+                                      onError={(e) => {
+                                        e.currentTarget.src = DefaultBook;
+                                      }}
+                                      alt={related.name}
+                                      title={related.name}
+                                      width="150"
+                                      height="212"
+                                    />
+                                    <p>{related?.name}</p>
+                                  </a>
                                 </div>
-                              ))
+                              </div>
+                            ))
                             : ""}
                         </Slider>
                       </div>

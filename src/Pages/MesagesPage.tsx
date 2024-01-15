@@ -48,6 +48,7 @@ const MessagesPage = () => {
         style={{
           width: "100%",
           marginTop: "-175px",
+          paddingTop: 0,
           background: "none",
           backgroundColor: "#ffedbc",
           height: "240px",
@@ -61,7 +62,6 @@ const MessagesPage = () => {
               fontSize: "36px",
               fontWeight: 700,
               color: "rgb(209, 21, 1)",
-              marginLeft: "258px",
               top: "155px",
             }}
           >
@@ -152,7 +152,7 @@ const MessagesPage = () => {
                                       }}
                                       alt={message.name}
                                       title={message.name}
-                                      onClick={() => {}}
+                                      onClick={() => { }}
                                     />
                                     <p
                                       style={{
