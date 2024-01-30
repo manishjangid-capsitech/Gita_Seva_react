@@ -8,8 +8,8 @@ class HomeServices {
   messageIdRoute = "/api/articles/";
   allauthorRoute = "/api/Authors/5bbc60101fd2d735b0087d36?lang=";
   quotesRoute = "/api/Quotes?usefor=2&start=0&length=5";
-  // contactRoute = "/api/Settings/contactus";
-  contactRoute= "/api/Settings/contactuswithdevicedetails";
+  contactRoute = "/api/Settings/contactus";
+  // contactRoute= "/api/Settings/contactuswithdevicedetails";
   sendfeedback = "/api/settings/contactus"
 
   get = (id: string) => ApiUtility.getResult(`${this.route}/${id}`);
@@ -62,7 +62,7 @@ class HomeServices {
     if (!feedbacktype) {
       feedbacktype = "1";
     }
-    if (userId == "") {
+    if (userId === "") {
       // userId = null;
     }
     return ApiUtility.post(

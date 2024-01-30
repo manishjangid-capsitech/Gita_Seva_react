@@ -373,8 +373,15 @@ input::-webkit-inner-spin-button {
 }
 
 /* विशेष ऑडियो  */
+.pravchanslider {
+  background-color: #ffffff;
+  border-radius: 7px;
+  padding: 20px 0px 10px 10px;
+  height: 100%;
+  border: 1px solid #ffd186;
+}
 
-.pravchanBox p {
+.pravchanslider p {
   color: #3f220d;
   font-size: 18px;
   line-height: 23px;
@@ -382,7 +389,7 @@ input::-webkit-inner-spin-button {
   font-weight: 600;
 }
 
-.pravchanBox:hover p {
+.pravchanslider:hover p {
   color: #d11501;
 }
 

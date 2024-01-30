@@ -24,11 +24,20 @@ const ArticlesDetailPage = (props: any) => {
   const state = location.state as {
     articleId: string;
     articleName: string;
+    articleSlug: string;
     authorId: string;
     authorName: string;
+    authorSlug: string;
     special: string;
-    index: number
+    index: number;
+    searched: string;
   };
+
+  useEffect(() => {
+    debugger;
+    console.log(state);
+  }, []);
+
   const [ArticlesDetail, setArticlesDetail] = useState<any>(undefined);
   const [refresh, setRefresh] = useState(false);
 
@@ -43,11 +52,11 @@ const ArticlesDetailPage = (props: any) => {
   const toggleLike = () => {
     !isLiked
       ? ArticlesService.addArticlesFavourite(articleId).then((res) => {
-        res.status && setIsLiked(true);
-      })
+          res.status && setIsLiked(true);
+        })
       : ArticlesService.removeArticlesFaviourite(articleId).then((res) => {
-        res.status && setIsLiked(false);
-      });
+          res.status && setIsLiked(false);
+        });
     setToggleFav((x) => !x);
   };
 
@@ -101,14 +110,19 @@ const ArticlesDetailPage = (props: any) => {
               fontSize: "36px",
               fontWeight: 700,
               color: "rgb(209, 21, 1)",
-              marginLeft: "238px",
               top: "155px",
             }}
           >
-            {state?.index >= 0 ? t("Article_tr") : ""}
-            {window.location?.pathname === "/articles/" + state?.articleId && t("Article_tr")}
-            {window.location?.pathname === "/articles/special/" + state?.articleId && t("Special_Article_tr")}
-            {state?.authorId !== undefined && <span>{ArticlesDetail?.author || state?.articleName}</span>}
+            {window.location.pathname ===
+              "/searchdata/article/" + state?.articleSlug && t("Article_tr")}
+            {window.location?.pathname === "/articles/" + state?.articleSlug &&
+              t("Article_tr")}
+            {window.location?.pathname ===
+              "/articles/special/" + state?.articleSlug &&
+              t("Special_Article_tr")}
+            {state?.authorId !== undefined && (
+              <span>{ArticlesDetail?.author || state?.articleName}</span>
+            )}
             <div
               style={{
                 fontSize: "19px",
@@ -120,31 +134,56 @@ const ArticlesDetailPage = (props: any) => {
               <Link style={{ marginRight: "4px", color: "#2d2a29" }} to="/">
                 {t("Home_tr")}
               </Link>
-              {window.location?.pathname === "/articles/" + state?.articleId &&
-                <Link to={"/articles"} style={{ marginRight: "8px", color: "#2d2a29" }}>/ {t("Article_tr")}</Link>}
-              {window.location?.pathname === "/articles/special/" + state.articleId &&
-                <Link to={"/articles/special"} style={{ marginRight: "8px", color: "#2d2a29" }}>/ {t("Special_Article_tr")}</Link>}
-              {state?.authorId !== undefined ? <> <Link
-                to={"/author/ +"}
-                state={{
-                  authorId: state?.authorId,
-                  authorName: state?.authorName,
-                }}
-                style={{ marginRight: "6px", color: "#2d2a29" }}
-              >
-                / {ArticlesDetail?.author || state?.articleName}
-              </Link>
-                <Link to={"/articles/author/+"}
-                  state={{
-                    authorId: state?.authorId,
-                    authorName: state?.authorName,
-                  }}
-                  style={{ marginRight: "6px", color: "#2d2a29" }}>
+              {window.location?.pathname ===
+                "/articles/" + state?.articleId && (
+                <Link
+                  to={"/articles"}
+                  style={{ marginRight: "8px", color: "#2d2a29" }}
+                >
                   / {t("Article_tr")}
                 </Link>
-              </> : ""}
+              )}
+              {window.location?.pathname ===
+                "/articles/special/" + state.articleSlug && (
+                <Link
+                  to={"/articles/special"}
+                  style={{ marginRight: "8px", color: "#2d2a29" }}
+                >
+                  / {t("Special_Article_tr")}
+                </Link>
+              )}
+              {state?.authorId !== undefined ? (
+                <>
+                  {" "}
+                  <Link
+                    to={"/author/" + state?.authorSlug}
+                    state={{
+                      authorId: state?.authorId,
+                      authorName: state?.authorName,
+                      authorSlug: state?.authorSlug,
+                    }}
+                    style={{ marginRight: "6px", color: "#2d2a29" }}
+                  >
+                    / {ArticlesDetail?.author || state?.articleName}
+                  </Link>
+                  {/* /articles/author/honorable-shri-jayadayal-ji-goyandka */}
+                  <Link
+                    to={"/articles/author/" + state?.authorSlug}
+                    state={{
+                      authorId: state?.authorId,
+                      authorName: state?.authorName,
+                      authorSlug: state?.authorSlug,
+                    }}
+                    style={{ marginRight: "6px", color: "#2d2a29" }}
+                  >
+                    / {t("Article_tr")}
+                  </Link>
+                </>
+              ) : (
+                ""
+              )}
               <span style={{ marginRight: "8px", color: "#2d2a29" }}>
-                /  {ArticlesDetail?.name}
+                / {ArticlesDetail?.name}
               </span>
             </div>
           </div>
@@ -243,7 +282,7 @@ const ArticlesDetailPage = (props: any) => {
         </div>
       </div>
       <LogInModel opens={logIn} onCloses={closeModal} />
-    </div >
+    </div>
   );
 };
 export default ArticlesDetailPage;

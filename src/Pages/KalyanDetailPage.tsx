@@ -61,15 +61,17 @@ const KalyanDetailPage = (props: any) => {
   };
 
   const notify = () => {
-    showNotification(!isLiked
-      ?
-      localStorage.getItem("lan") === "hindi"
-        ? "पत्रिका को सफलतापूर्वक मेरी पसंद में जोड़ा गया है।"
-        : "Magazine has been successfully added to the favourites"
-      : localStorage.getItem("lan") === "hindi"
-        ? "पत्रिका मेरी पसंद से हटा दी गई है।"
-        : "Magazine has been removed from favourites"
-    )
+    if (UserIdentity) {
+      showNotification(!isLiked
+        ?
+        localStorage.getItem("lan") === "hindi"
+          ? "पत्रिका को सफलतापूर्वक मेरी पसंद में जोड़ा गया है।"
+          : "Magazine has been successfully added to the favourites"
+        : localStorage.getItem("lan") === "hindi"
+          ? "पत्रिका मेरी पसंद से हटा दी गई है।"
+          : "Magazine has been removed from favourites"
+      )
+    }
   };
 
   const toggleLike = () => {
@@ -316,6 +318,7 @@ const KalyanDetailPage = (props: any) => {
                                   navigate(`/kalyans/` + related.slug, {
                                     state: {
                                       kalyanId: related.id,
+                                      kalyanSlug: related?.slug
                                     },
                                   });
                                   window.location.reload();

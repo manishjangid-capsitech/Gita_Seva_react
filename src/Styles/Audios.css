@@ -255,6 +255,20 @@
   /* padding-left: 10px; */
 }
 
+.pravchanBox label {
+  color: #595551;
+  font-size: 20px;
+  font-style: normal;
+  line-height: 25px;
+  margin-bottom: 0;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.pravchanBox:hover label {
+  color: #d11501;
+}
+
 .pravchanBox:hover p {
   color: #d11501;
 }

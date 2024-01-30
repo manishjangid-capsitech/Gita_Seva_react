@@ -141,7 +141,12 @@ const HeaderPage = () => {
             </div>
             <div className="headerwidth">
               <div
-                style={{ display: "flex", float: "right", paddingTop: "15px", marginRight: "3px" }}
+                style={{
+                  display: "flex",
+                  float: "right",
+                  paddingTop: "15px",
+                  marginRight: "3px",
+                }}
               >
                 <div className="gst-menu">
                   <select
@@ -152,20 +157,33 @@ const HeaderPage = () => {
                         e.currentTarget?.value ?? undefined;
                     }}
                   >
-                    <option value="" style={{ color: "#000" }}>
+                    <option value="all" style={{ color: "#000" }}>
                       {t("all_tr")}
                     </option>
-                    <option value="book" style={{ color: "#000" }}>{t("E_books_tr")}</option>
+                    <option value="book" style={{ color: "#000" }}>
+                      {t("E_books_tr")}
+                    </option>
                     <option value="monthlymagzine" style={{ color: "#000" }}>
                       {t("MonthlyMagazine_tr")}
                     </option>
-                    <option value="kalyan" style={{ color: "#000" }}>{t("Kalyan_tr")}</option>
-                    <option value="kalpataru" style={{ color: "#000" }}>{t("Kalpataru_tr")}</option>
-                    <option value="audios" style={{ color: "#000" }}>{t("Audios_tr")}</option>
-                    <option value="pravachan" style={{ color: "#000" }}>{t("Pravachan_tr")}</option>
-                    <option value="article" style={{ color: "#000" }}>{t("Article_tr")}</option>
-                    <option value="vivekvani" style={{ color: "#000" }}>{t("vivek_vani_tr")}</option>
-
+                    <option value="kalyan" style={{ color: "#000" }}>
+                      {t("Kalyan_tr")}
+                    </option>
+                    <option value="kalpataru" style={{ color: "#000" }}>
+                      {t("Kalpataru_tr")}
+                    </option>
+                    <option value="audios" style={{ color: "#000" }}>
+                      {t("Audios_tr")}
+                    </option>
+                    <option value="pravachan" style={{ color: "#000" }}>
+                      {t("Pravachan_tr")}
+                    </option>
+                    <option value="article" style={{ color: "#000" }}>
+                      {t("Article_tr")}
+                    </option>
+                    <option value="vivekvani" style={{ color: "#000" }}>
+                      {t("vivek_vani_tr")}
+                    </option>
                   </select>
                 </div>
                 <div className="searchbar" style={{ marginRight: "5px" }}>
@@ -184,6 +202,7 @@ const HeaderPage = () => {
                       }}
                       onKeyDown={(e: any) => {
                         if (e.key === "Enter") {
+                          debugger;
                           e.preventDefault();
                           navigate(
                             `/searchdata/${searchValue.productType}/${searchValue.searchValue}`,
@@ -228,7 +247,7 @@ const HeaderPage = () => {
                       marginLeft: "12px",
                       display: "flex",
                       // justifyContent: "space-between",
-                      justifyContent: "space-between"
+                      justifyContent: "space-between",
                     }}
                     onClick={toggleLang}
                   >
@@ -336,7 +355,7 @@ const HeaderPage = () => {
                       id="hmenu_books"
                       to="/books"
                       onClick={() => {
-                        setMenu(false)
+                        setMenu(false);
                       }}
                       style={({ isActive }) => {
                         return { color: isActive ? "#d11501" : "#472d1e" };
@@ -432,38 +451,11 @@ const HeaderPage = () => {
                             >
                               {t("vivek_vani_tr")}
                             </NavLink>
-
-                            <NavLink
-                              id="menu_vivek"
-                              to="/divinequote"
-                              style={({ isActive }) => {
-                                return {
-                                  color: isActive ? "#d11501" : "#472d1e",
-                                  marginTop: "-10px",
-                                };
-                              }}
-                            >
-                              {t("Amrit_Vachan_tr")}
-                            </NavLink>
-
                           </div>
                         )}
                       </div>
                     </div>
                   </li>
-
-                  {/* <li>
-                    <NavLink
-                      id="hmenu_Kalpataru"
-                      to="/monthlymagazine"
-                      onClick={() => setMenu(false)}
-                      style={({ isActive }) => {
-                        return { color: isActive ? "#d11501" : "#472d1e" };
-                      }}
-                    >
-                      {t("MonthlyMagazine_tr")}
-                    </NavLink>
-                  </li> */}
 
                   <li>
                     <NavLink
@@ -499,6 +491,21 @@ const HeaderPage = () => {
 
                   <li>
                     <NavLink
+                      id="menu_vivek"
+                      to="/divinequote"
+                      style={({ isActive }) => {
+                        return {
+                          color: isActive ? "#d11501" : "#472d1e",
+                          marginTop: "-10px",
+                        };
+                      }}
+                    >
+                      {t("Amrit_Vachan_tr")}
+                    </NavLink>
+                  </li>
+
+                  <li>
+                    <NavLink
                       id="hmenu_articles"
                       to="/articles"
                       onClick={() => setMenu(false)}
@@ -509,8 +516,7 @@ const HeaderPage = () => {
                   </li>
                 </ul>
 
-                <div
-                  className="loginmenudd">
+                <div className="loginmenudd">
                   <a
                     className="link-btn"
                     style={{

@@ -87,8 +87,8 @@ const FooterPage = () => {
                   <div key={author?.id}>
                     <NavLink
                       className="ftmenulink"
-                      to={"/author/ +"}
-                      state={{ authorId: author.id, authorName: author.name }}
+                      to={"/author/"+author?.slug}
+                      state={{ authorId: author.id, authorName: author.name, authorSlug: author?.slug }}
                       style={({ isActive }) => {
                         return { color: isActive ? "#d11501" : "#472d1e"};
                       }}

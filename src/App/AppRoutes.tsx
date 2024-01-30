@@ -369,7 +369,7 @@ const AppRoutes = () => {
       ></Route>
       <Route
         element={<WithHeaderFooter element={<ArticlesDetailPage />} />}
-        path="/articles/author/:authorId/:bookid"
+        path="/articles/author/:id/:articleid"
       ></Route>
 
       {/* Divine Quotes Page */}

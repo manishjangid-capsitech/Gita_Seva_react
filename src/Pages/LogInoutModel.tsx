@@ -34,6 +34,7 @@ interface LogOutModalProps {
 interface LogInModalProps {
   opens: boolean;
   onCloses: () => void;
+  // onLoginStateChange: (newState: string) => void;
 }
 
 export const LogOutModel: React.FC<LogOutModalProps> = ({ open, onClose }) => {
@@ -115,40 +116,65 @@ export const LogOutModel: React.FC<LogOutModalProps> = ({ open, onClose }) => {
 export const LogInModel: React.FC<LogInModalProps> = ({
   opens,
   onCloses: onClose,
+  // onLoginStateChange,
 }) => {
   const { t } = useTranslation();
   const [phoneModel, setPhoneModel] = useState<boolean>(false);
   const [refresh, setRefresh] = useState(false);
   const provider = new GoogleAuthProvider();
-  const currlang = localStorage.getItem("lan")
+  const currlang = localStorage.getItem("lan");
   return (
     <>
-      <Modal show={opens} onClose={onClose} style={{ padding: "20px 0 50px 0" }}>
+      <Modal
+        show={opens}
+        onClose={onClose}
+        style={{ padding: "20px 0 50px 0" }}
+      >
         <div style={{ textAlign: "center" }}>
           <div style={{ display: "inline-grid" }}>
-            <img src={loginLogo} alt="" style={{ marginLeft: "50px", paddingBottom: "15px" }} />
-            <div style={{ width: "320px", height: "70px", background: "#FCF0E2", borderRadius: "5px", boxShadow: "#000 0px 0px 5px -1px" }}>
-              {currlang === "hindi" ?
-                <p style={{
-                  fontFamily: 'ChanakyaUni',
-                  fontSize: "19px",
-                  color: "#000",
-                  lineHeight: "20px",
-                  padding: "8px",
-                  fontWeight: 500,
-                }}>
-                  इस सुविधा का उपयोग करने के लिए आपको लॉगिन करने की आवश्यकता है। यह पूर्णतः नि:शुल्क तथा सुरक्षित है।</p>
-                :
-                <p style={{
-                  fontFamily: 'ChanakyaUni',
-                  fontSize: "20px",
-                  color: "#000",
-                  lineHeight: "20px",
-                  padding: "12px",
-                  fontWeight: 500,
-                }}>
-                  You must login to use this feature. It is completely free and secure.
-                </p>}
+            <img
+              src={loginLogo}
+              alt=""
+              style={{ marginLeft: "50px", paddingBottom: "15px" }}
+            />
+            <div
+              style={{
+                width: "320px",
+                height: "70px",
+                background: "#FCF0E2",
+                borderRadius: "5px",
+                boxShadow: "#000 0px 0px 5px -1px",
+              }}
+            >
+              {currlang === "hindi" ? (
+                <p
+                  style={{
+                    fontFamily: "ChanakyaUni",
+                    fontSize: "19px",
+                    color: "#000",
+                    lineHeight: "20px",
+                    padding: "8px",
+                    fontWeight: 500,
+                  }}
+                >
+                  इस सुविधा का उपयोग करने के लिए आपको लॉगिन करने की आवश्यकता है।
+                  यह पूर्णतः नि:शुल्क तथा सुरक्षित है।
+                </p>
+              ) : (
+                <p
+                  style={{
+                    fontFamily: "ChanakyaUni",
+                    fontSize: "20px",
+                    color: "#000",
+                    lineHeight: "20px",
+                    padding: "12px",
+                    fontWeight: 500,
+                  }}
+                >
+                  You must login to use this feature. It is completely free and
+                  secure.
+                </p>
+              )}
             </div>
             <label
               style={{
@@ -171,13 +197,11 @@ export const LogInModel: React.FC<LogInModalProps> = ({
               await signInWithPopup(auth, provider)
                 .then((result) => {
                   const email = result?.user?.email;
+                  debugger;
                   if (email) {
-                    localStorage.setItem("EmailForLogin", email);
+                    localStorage?.setItem("EmailForLogin", email);
+                    // onLoginStateChange('loggedIn');
                     onClose();
-                  }
-                  if (result?.user?.emailVerified === true) {
-                    // window.location == window.location
-                    setRefresh(true);
                   }
                 })
                 .catch((error) => {
@@ -282,9 +306,9 @@ export const BookListButton = ({
   title,
   getBook,
 }: {
-  type: "kalyan" | "kalpatru" | "geetgovind" | "book" | "vivek";
   books: any[];
   initialDisplayCount: number;
+  type: "kalyan" | "kalpatru" | "geetgovind" | "book" | "vivek";
   title: string;
   getBook: (value: any) => void;
 }) => {
@@ -402,8 +426,148 @@ export const BookListButton = ({
             </div>
           )}
         </div>
-      ) : ""
-      }
+      ) : (
+        ""
+      )}
+    </div>
+  );
+};
+
+export const MarkList = ({
+  initialDisplayCount,
+  bookMarks,
+  typeMarks,
+  marktitle,
+  getMarks,
+}: {
+  initialDisplayCount: number;
+  bookMarks: any[];
+  typeMarks:
+    | "bookmark"
+    | "kalyanmark"
+    | "kalpatrumark"
+    | "geetgovindmark"
+    | "vivekmark";
+  marktitle: string;
+  getMarks: (value: any) => void;
+}) => {
+  const [displayCount, setDisplayCount] = useState(initialDisplayCount);
+
+  const showMoreBooks = () => {
+    setDisplayCount(displayCount + 5); // Increase by a certain number
+  };
+
+  const showLessBooks = () => {
+    setDisplayCount(initialDisplayCount); // Reset to initial display count
+  };
+
+  const getMarksType = (typeMarks: any, bookMarks: any) => {
+    let imgpath = "";
+    switch (typeMarks) {
+      case "bookmark":
+        imgpath = bookMarks?.path ?? DefaultBook;
+        break;
+      case "kalyanmark":
+        imgpath = bookMarks?.path ?? DefaultBook;
+        break;
+      case "kalpatrumark":
+        imgpath = bookMarks?.[0].path ?? DefaultBook;
+        break;
+      case "geetgovindmark":
+        imgpath = bookMarks?.[0].path ?? DefaultBook;
+        break;
+      case "vivekmark":
+        imgpath = bookMarks?.[0].path ?? DefaultBook;
+        break;
+      default:
+        imgpath = DefaultBook;
+    }
+    return imgpath;
+  };
+
+  return (
+    <div>
+      {bookMarks?.length > 0 ? (
+        <div>
+          <div>
+            <p
+              style={{
+                fontFamily: "ChanakyaUni",
+                fontWeight: 700,
+                fontStyle: "normal",
+                color: "#b42a38",
+                fontSize: "26px",
+                margin: "0 0 10px",
+              }}
+            >
+              {marktitle}
+            </p>
+            <div className="row" style={{ marginBottom: "21px" }}>
+              {bookMarks.slice(0, displayCount).map((mark: any) => (
+                <div className="col-3" style={{ marginTop: "15px" }}>
+                  <div
+                    className="favebooks"
+                    key={`related-${mark.id}`}
+                    onClick={() => {
+                      getMarks(mark);
+                    }}
+                  >
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <div>
+                        <img
+                          style={{
+                            cursor: "pointer",
+                            borderRadius: "5px",
+                          }}
+                          className="imgcenter"
+                          src={getMarksType(typeMarks, bookMarks)}
+                          onError={(e) => {
+                            e.currentTarget.src = DefaultBook;
+                          }}
+                          alt={mark.name}
+                          title={mark.name}
+                          width="117"
+                          height="165"
+                        />
+                        <p>
+                          {mark?.name?.length > 40
+                            ? mark?.name.slice(0, 40) + "..."
+                            : mark?.name}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+          {bookMarks?.length > 4 && (
+            <div
+              style={{
+                textAlign: "center",
+                margin: "20px 0 0 0",
+              }}
+            >
+              {displayCount < bookMarks?.length ? (
+                <button className="favitems" onClick={showMoreBooks}>
+                  Show More
+                </button>
+              ) : (
+                <button className="favitems" onClick={showLessBooks}>
+                  Show Less
+                </button>
+              )}
+            </div>
+          )}
+        </div>
+      ) : (
+        ""
+      )}
     </div>
   );
 };
@@ -449,7 +613,14 @@ export const AudioListButton = ({
               </p>
               <div className="row" style={{ marginBottom: "21px" }}>
                 {audios.slice(0, displayCount).map((audio: any) => (
-                  <div className="col-3" style={{ marginTop: "15px", display: "flex", justifyContent: "center" }}>
+                  <div
+                    className="col-3"
+                    style={{
+                      marginTop: "15px",
+                      display: "flex",
+                      justifyContent: "center",
+                    }}
+                  >
                     <div
                       className="favpagebooks"
                       key={`related-${audio.id}`}
@@ -525,8 +696,9 @@ export const AudioListButton = ({
             </div>
           )}
         </div>
-      ) : ""
-      }
+      ) : (
+        ""
+      )}
     </div>
   );
 };
@@ -571,7 +743,14 @@ export const FavouriteArticals = ({
             </p>
             <div className="row" style={{ marginBottom: "21px" }}>
               {article.slice(0, displayCount).map((artical: any) => (
-                <div className="col-3" style={{ marginTop: "15px", display: "flex", justifyContent: "center" }}>
+                <div
+                  className="col-3"
+                  style={{
+                    marginTop: "15px",
+                    display: "flex",
+                    justifyContent: "center",
+                  }}
+                >
                   <div
                     className="favpagebooks"
                     onClick={() => {
@@ -634,45 +813,9 @@ export const FavouriteArticals = ({
             </div>
           )}
         </div>
-      ) : ""
-      }
+      ) : (
+        ""
+      )}
     </div>
   );
 };
-
-export const UploadProfileImage = () => {
-  const [image, setImage] = useState<any>(null);
-  const [url, setUrl] = useState<any>(null);
-
-  const handleImageChange = (e: any) => {
-    if (e.target.files[0]) {
-      setImage(e.target.files[0]);
-    }
-  };
-
-  const handleSubmit = () => {
-    const imageRef = ref(storage, "image");
-    uploadBytes(imageRef, image)
-      .then(() => {
-        getDownloadURL(imageRef)
-          .then((url) => {
-            setUrl(url);
-          })
-          .catch((error) => {
-            console.log(error.message, "error getting the image url");
-          });
-        setImage(null);
-      })
-      .catch((error) => {
-        console.log(error.message);
-      });
-  };
-
-  return (
-    <div className="App">
-      <img src={url} style={{ width: "100px", height: "100px" }} />
-      <input type="file" onChange={handleImageChange} />
-      <button onClick={handleSubmit}>Submit</button>
-    </div>
-  );
-}

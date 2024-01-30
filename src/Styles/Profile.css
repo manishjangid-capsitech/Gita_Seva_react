@@ -184,16 +184,26 @@
 /* ProfileFav Page */
 
 .favebooks {
-  background-color: #fff;
+
+  border-radius: 6px;
+    background-color: #fff;
+    border: 1px solid #f7ebce;
+    padding: 35px;
+    text-align: center;
+    margin: 0 0 30px;
+    height: 300px;
+    width: fit-content;
+
+  /* background-color: #fff;
   border: 1px solid #f7ebce;
   border-radius: 6px;
   cursor: pointer;
   height: 300px;
   padding: 39px;
   text-align: center;
-  width: 196px;
-  margin: 0 63px 0 0;
-  display: flex;
+  width: fit-content; */
+  /* margin: 0 63px 0 0;
+  display: flex; */
 }
 
 .favebooks p {
@@ -208,15 +218,12 @@
 }
 
 .favpagebooks {
-  height: 275px;
-  width: 175px !important;
-  margin: 0 2px;
   background-color: #fff;
   border: 1px solid #f3e2e2;
-  padding: 15px 0 0 0;
   border-radius: 6px;
   float: left;
   cursor: pointer;
+  width: inherit;
 }
 
 .favpagebooks p {

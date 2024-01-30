@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAudio } from "../Contexts/AudiosContext";
 import imgdownload from "../assets/audioPlayer/img/download.svg";
@@ -27,9 +27,9 @@ const AudioPlayer = () => {
   } = useAudio();
   const refAudio = React.useRef<HTMLAudioElement>(null);
 
-  const [cTime, setCTime] = React.useState(0);
-  const [aLength, setALength] = React.useState(0);
-  const [playing, setPlaying] = React.useState(false);
+  const [cTime, setCTime] = useState(0);
+  const [aLength, setALength] = useState(0);
+  const [playing, setPlaying] = useState(false);
 
   function formatCurrentTime(seconds: any) {
     var minutes: any = Math.floor(seconds / 60);
@@ -57,10 +57,10 @@ const AudioPlayer = () => {
   function onLoadedMetadata(event: any) {
     setALength(event.target.duration);
   }
- 
+
   useEffect(()=>{
 
-  },[currentAudio])
+    },[currentAudio])
 
   return (
     <div>
@@ -85,6 +85,7 @@ const AudioPlayer = () => {
                       : currentAudio.pravachanUrl
                   }
                   onPlay={() => {
+                    debugger
                     setPlaying(true);
                   }}
                   onPause={() => {
@@ -103,7 +104,7 @@ const AudioPlayer = () => {
                     }
                   }}
                   onLoad={(e: any) => (e.target.currentTime = 0)}
-                  
+
                 />
                 <div>
                   {currentAudio?.name}
@@ -245,8 +246,8 @@ const AudioPlayer = () => {
                 let distanceX = mouseX - barX;
                 let total = e.currentTarget.offsetWidth;
                 let timePerPixel = aLength / total;
-                let currentTime =  distanceX * timePerPixel;
-                if(refAudio.current) refAudio.current.currentTime = currentTime;
+                let currentTime = distanceX * timePerPixel;
+                if (refAudio.current) refAudio.current.currentTime = currentTime;
               }}
             />
           </div>

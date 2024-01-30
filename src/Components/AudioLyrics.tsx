@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useAudio } from "../Contexts/AudiosContext";
 import RabbitLyrics from "rabbit-lyrics";
 import "../Styles/AudioPlayer.css";

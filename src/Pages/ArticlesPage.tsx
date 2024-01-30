@@ -40,7 +40,7 @@ const ArticlesPage = () => {
   });
 
   const location = useLocation();
-  const state = location.state as { authorId: string; authorName: string };
+  const state = location.state as { authorId: string; authorName: string, authorSlug: string };
 
   function ResetData() {
     setCategoryId("");
@@ -167,10 +167,11 @@ const ArticlesPage = () => {
               </Link>
               {state?.authorName ? (
                 <Link
-                  to={"/author/ + "}
+                  to={"/author/" + state?.authorSlug}
                   state={{
                     authorId: state?.authorId,
                     authorName: state?.authorName,
+                    authorSlug: state?.authorSlug
                   }}
                   style={{ marginRight: "8px", color: "#2d2a29" }}
                 >
@@ -406,10 +407,11 @@ const ArticlesPage = () => {
                                 }}
                                 onClick={() => {
                                   if (window.location.pathname === `/articles`) {
-                                    navigate(`/articles/` + article?.id, {
+                                    navigate(`/articles/` + article?.slug, {
                                       state: {
                                         articleId: article?.id,
                                         articleName: article?.name,
+                                        articleSlug: article?.slug,
                                         authorId: state?.authorId,
                                         authorName: state?.authorName,
                                         special: window?.location?.pathname,
@@ -417,23 +419,26 @@ const ArticlesPage = () => {
                                     });
                                   }
                                   if (window.location.pathname === `/articles/special`) {
-                                    navigate(`/articles/special/` + article?.id, {
+                                    navigate(`/articles/special/` + article?.slug, {
                                       state: {
                                         articleId: article?.id,
                                         articleName: article?.name,
+                                        articleSlug: article?.slug,
                                         authorId: state?.authorId,
                                         authorName: state?.authorName,
                                         special: window?.location?.pathname,
                                       },
                                     });
                                   }
-                                  if (window.location.pathname === `/articles/author/` + state?.authorId) {
-                                    navigate(`/articles/author/` + state?.authorId + "/" + article?.id, {
+                                  if (window.location.pathname === `/articles/author/` + state?.authorSlug) {
+                                    navigate(`/articles/author/` + state?.authorSlug + "/" + article?.slug, {
                                       state: {
                                         articleId: article?.id,
                                         articleName: article?.name,
+                                        articleSlug: article?.slug,
                                         authorId: state?.authorId,
                                         authorName: state?.authorName,
+                                        authorSlug: state?.authorSlug,
                                         special: window?.location?.pathname,
                                       },
                                     });

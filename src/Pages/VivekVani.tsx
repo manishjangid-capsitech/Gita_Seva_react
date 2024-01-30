@@ -27,7 +27,7 @@ const VivekvaniPage = () => {
   const navigate = useNavigate();
   const [vivek, setVivek] = useState<any[] | undefined>(undefined);
   const [refresh, setRefresh] = useState(false);
-  const [SortValue, setSortValue] = useState("3");
+  const [SortValue, setSortValue] = useState("2");
   const [language, setLanguage] = useState<any>("");
   const [LanguageId, setLanguageId] = useState<any>("");
   const [Author, setAuthor] = useState<any>("");
@@ -43,7 +43,7 @@ const VivekvaniPage = () => {
   });
 
   function ResetData() {
-    setSortValue("3");
+    setSortValue("2");
     setLanguageId("");
     setAuthorId("");
     setCategoryId("");
@@ -435,10 +435,11 @@ const VivekvaniPage = () => {
                                 className="Authorlist"
                                 key={`aut-${viveks.id}`}
                                 onClick={() => {
-                                  navigate(`/vivekvani/` + viveks.id, {
+                                  navigate(`/vivekvani/` + viveks?.slug, {
                                     state: {
                                       vivekId: viveks.id,
                                       vivekName: viveks.name,
+                                      vivekSlug: viveks?.slug
                                     },
                                   });
                                 }}

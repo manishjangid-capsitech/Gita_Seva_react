@@ -1,0 +1,107 @@
+* {
+  box-sizing: border-box;
+}
+
+.App {
+  font-family: sans-serif;
+  text-align: center;
+}
+
+/* DEMO ONLY STYLES */
+.card-container {
+  margin: 0 auto;
+  width: 100%;
+  max-width: 300px;
+}
+
+.card {
+  height: 300px;
+  width: 100%;
+  max-width: 300px;
+  margin: 0;
+  background: white;
+  border: 1px solid #ccc;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* END DEMO ONLY STYLES */
+
+.effect-container {
+  position: relative;
+  overflow: hidden;
+
+  --effect-name: ripple;
+  --effect-duration: 500ms;
+  --effect-top: 0;
+  --effect-left: 0;
+  --effect-height: 100px;
+  --effect-width: 100px;
+  --effect-color: "fff";
+}
+
+.effect-container::before {
+  content: "";
+  position: absolute;
+  opacity: 0.3;
+  top: var(--effect-top);
+  left: var(--effect-left);
+  height: var(--effect-height);
+  width: var(--effect-width);
+  background: var(--effect-color);
+}
+
+.effect-container.ripple.active::before {
+  border-radius: 50%;
+  animation: ripple var(--effect-duration) linear forwards;
+}
+
+@keyframes ripple {
+  from {
+    transform: scale(0);
+  }
+
+  to {
+    transform: scale(6);
+    opacity: 0;
+  }
+}
+
+.effect-container.square-rotate.active::before {
+  animation: square-rotate var(--effect-duration) linear forwards;
+}
+
+@keyframes square-rotate {
+  from {
+    transform: scale(0) rotate(0);
+  }
+
+  to {
+    transform: scale(6) rotate(180deg);
+    opacity: 0;
+  }
+}
+.image {
+    display: block;
+    margin: 0 auto;
+  }
+  .image[wobble='1'] {
+    animation: wobble 1s 1;
+  }
+  
+  @keyframes wobble {
+    25% {
+      transform: rotate(15deg);
+    }
+    50% {
+      transform: rotate(-30deg);
+    }
+    75% {
+      transform: rotate(5deg);
+    }
+    100% {
+      transform: rotate(0deg);
+    }
+  }

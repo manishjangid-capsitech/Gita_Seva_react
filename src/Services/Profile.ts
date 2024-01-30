@@ -11,42 +11,48 @@ class ProfileService {
   updateuser = "/api/user/profile"
   city = "/api/settings/state/"
 
- 
-  getfavData (lang: string, start: number, length: number) {
+
+  getfavData(start: number, length: number) {
     return ApiUtility.get(
-      this.favRoute + lang + "&start=" + start + "&length=" + length 
+      this.favRoute + localStorage.getItem("lan") + "&start=" + start + "&length=" + length
     );
   };
+
+  getbookmarks(start: number, length: number) {
+    return ApiUtility.get(
+      this.favRoute + localStorage.getItem("lan") + "&start=" + start + "&length=" + length
+    )
+  }
 
   getProfile = (lang: string) => {
     return ApiUtility.get(this.profileRoute + lang);
   };
 
-  UserProfile = (lan:any) => {
+  UserProfile = (lan: any) => {
     return ApiUtility.get(
-      this.profiledata + "&medium=1" , "&lang=" + lan,
+      this.profiledata + "&medium=1", "&lang=" + lan,
     );
   }
 
-  getCountry = (lan:any) => {
+  getCountry = (lan: any) => {
     return ApiUtility.get(
       this.country + lan,
     )
   }
 
-  getState = ( lang: string) => {
+  getState = (lang: string) => {
     return ApiUtility.get(
       this.state + lang
     );
   }
 
-  getDistrict = ( stateId: string, lang: string) =>{
+  getDistrict = (stateId: string, lang: string) => {
     return ApiUtility.get(
-      this.city + stateId +"?lang="+ lang
+      this.city + stateId + "?lang=" + lang
     )
   }
 
-  updateUserProfile = async(
+  updateUserProfile = async (
     name: string,
     email: string,
     baseFile: any,

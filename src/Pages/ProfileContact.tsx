@@ -367,7 +367,8 @@ export const ProfileContact = () => {
                                     <option value="8">
                                       {t("MonthlyMagazine_tr")}
                                     </option>
-                                    <option value="9">{t("other_tr")}</option>
+                                    <option value="9">{t("vivek_vani_tr")}</option>
+                                    <option value="10">{t("other_tr")}</option>
                                   </select>
                                 </div>
                               </div>

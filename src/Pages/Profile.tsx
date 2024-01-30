@@ -8,7 +8,6 @@ import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import EditIcon from "../assets/img/mark-grey.png";
 import BackArrow from "../assets/img/leftArrow1.png";
-import { UploadProfileImage } from "./LogInoutModel";
 import "../Styles/Profile.css";
 import ProfileSidePanel from "./ProfileSidePanel";
 import { storage } from "./Firebase";
@@ -131,10 +130,6 @@ const Profile = () => {
     ProfileService.getCountry(_get_i18Lang())
       .then((res: any) => {
         setCountrys(res.result);
-        // if (data?.country === null) {
-        //   debugger
-        //   setData({ ...data, country: res.result[0] })
-        // }
       })
       .catch((error) => console.error("Error fetching data:", error));
   }, [refresh, i18n.language]);
@@ -505,7 +500,6 @@ const Profile = () => {
                                     className="inputBoxStyle"
                                     value={data.country}
                                     onChange={(e) => {
-                                      console.log("country", data.country);
                                       setData((d: IUserModel) => ({
                                         ...d,
                                         country: e.target.value,
@@ -598,7 +592,7 @@ const Profile = () => {
                                 </div>
                                 <button
                                   onClick={async () => {
-                                    // debugger
+                                    debugger
                                     await ProfileService.updateUserProfile(
                                       data.name,
                                       data.email,
@@ -613,10 +607,10 @@ const Profile = () => {
                                       data.language,
                                       data.phoneNumber
                                     ).then((result: any) => {
-                                      // debugger
+                                      debugger
                                       console.log("result", result);
                                       if (result.status) {
-                                        // debugger
+                                        debugger
                                         setRefresh(true);
                                       }
                                     });

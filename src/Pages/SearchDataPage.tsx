@@ -39,6 +39,7 @@ const SearchDataPage = () => {
   };
 
   useEffect(() => {
+    debugger
     if (params?.usr !== undefined) {
       SearchDataService.searchData({
         language: params?.usr.language,
@@ -47,6 +48,7 @@ const SearchDataPage = () => {
         authorId: params?.usr?.authorId,
       }).then((res) => {
         if (res.status) {
+          debugger
           setLen(res?.result?.length);
           setSearchdata(res?.result);
           setPagination({
@@ -161,10 +163,11 @@ const SearchDataPage = () => {
                       key={`searchbook-${search.id}`}
                       onClick={() => {
                         if (search.product === "book") {
-                          navigate("/books/" + search.id,
+                          navigate("/books/" + search.slug,
                             {
                               state: {
                                 bookId: search.id,
+                                bookSlug: search.slug,
                                 index: i,
                                 searched: window.location.pathname,
                               },
@@ -175,7 +178,9 @@ const SearchDataPage = () => {
                             {
                               state: {
                                 kalyanId: search.id,
+                                kalyanSlug: search?.slug,
                                 index: i,
+                                searched: window.location.pathname,
                               },
                             })
                         }
@@ -184,16 +189,21 @@ const SearchDataPage = () => {
                             {
                               state: {
                                 kalpatruId: search.id,
+                                kalpatruSlug: search.slug,
                                 index: i,
+                                searched: window.location.pathname,
                               },
                             })
                         }
                         if (search.product === "geetgovind") {
+                          debugger
                           navigate("/monthlymagazine/" + search.slug,
                             {
                               state: {
                                 MonthId: search.id,
+                                monthSlug: search.slug,
                                 index: i,
+                                searched: window.location.pathname,
                               },
                             })
                         }
@@ -202,37 +212,55 @@ const SearchDataPage = () => {
                             {
                               state: {
                                 vivekId: search.id,
+                                vivekSlug: search.slug,
                                 index: i,
+                                searched: window.location.pathname,
                               },
                             })
                         }
                         if (search.product === "audio") {
-                          navigate(`/audios/` + search.slug,
+                          navigate(`/audios/` + search.id,
                             // `/audios/${search.id}`,
                             {
                               state: {
                                 audioId: search.id,
                                 audioslug: search.slug,
                                 index: i,
+                                searched: window.location.pathname,
                               },
-                            })
+                            })                          
                         }
                         if (search.product === "pravachan") {
-                          navigate(`/audios/` + search?.slug,
+                          navigate(`/pravachans/` + search?.id,
                             {
                               state: {
                                 audioId: search.id,
                                 audioslug: search.slug,
                                 index: i,
+                                searched: window.location.pathname,
                               },
                             })
                         }
+
+                        // onClick={() => {
+                        //   localStorage.setItem("type", "pravachans");
+                        //   navigate(`/pravachans/` + specialPravachan.id, {
+                        //     state: {
+                        //       audioId: specialPravachan.id,
+                        //       audioslug: specialPravachan.name,
+                        //     },
+                        //   });
+                        //   window.location.reload();
+                        // }}
+
                         if (search.product === "article") {
                           navigate(`/articles/` + search.slug,
                             {
                               state: {
                                 articleId: search.id,
+                                articleSlug: search.slug,
                                 index: i,
+                                searched: window.location.pathname,
                               },
                             })
                         }
@@ -249,7 +277,7 @@ const SearchDataPage = () => {
                           <a style={{ cursor: "pointer" }}>
                             <img
                               src={
-                                search.product === "book" || search.product === "kalyan" || search.product === "kalyankalpataru" || search.product === "geetgovind" || search.product === "vivekvani"
+                                search.product === "book" || search.product === "kalyan" || search.product === "kalyankalpataru" || search.product === "monthlymagzine" || search.product === "vivekvani"
                                   ? `${search?.thumbPath}`
                                   : search.product === "audio" ||
                                     search.product === "pravachan"
@@ -284,7 +312,7 @@ const SearchDataPage = () => {
                     </div>
                   ))}
 
-                  {/* <ListPagination
+                  <ListPagination
                     totalRecords={pagination.totalRecords}
                     recordsPerPage={pagination.recordsPerPage}
                     currentPage={pagination.pageNo}
@@ -295,7 +323,7 @@ const SearchDataPage = () => {
                       });
                       setRefresh(true);
                     }}
-                  /> */}
+                  />
                 </div>
               ) : (
                 <div className="ebooks-category resultnotfound">

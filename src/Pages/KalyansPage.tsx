@@ -312,7 +312,7 @@ const KalyansPage = () => {
                                 key={`kalyan-${kalyan.id}`}
                                 onClick={() => {
                                   navigate(`/kalyans/` + kalyan.slug, {
-                                    state: { kalyanId: kalyan.id },
+                                    state: { kalyanId: kalyan.id, kalyanSlug: kalyan.slug },
                                   });
                                 }}
                               >

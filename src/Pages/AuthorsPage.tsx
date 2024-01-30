@@ -63,7 +63,7 @@ const AuthorsDataPage = () => {
   const [articles, setArticles] = useState<Array<any> | undefined>(undefined);
 
   const location = useLocation();
-  const state = location.state as { authorId: string };
+  const state = location.state as { authorId: string, authorName: string, authorSlug: string };
 
   function createMarkup() {
     return { __html: authorIntro.__html };
@@ -179,10 +179,11 @@ const AuthorsDataPage = () => {
                 className="cat"
                 style={{ cursor: "pointer" }}
                 onClick={() => {
-                  navigate(`/books/author/` + autId, {
+                  navigate(`/books/author/` + state?.authorSlug, {
                     state: {
                       authorId: autId,
-                      authorName: name
+                      authorName: name,
+                      authorSlug: state?.authorSlug
                     },
                   });
                 }}
@@ -196,7 +197,8 @@ const AuthorsDataPage = () => {
                   navigate(`/audios/author/` + autId, {
                     state: {
                       authorId: autId,
-                      authorName: name
+                      authorName: name,
+                      authorSlug: state?.authorSlug
                     },
                   });
                 }}
@@ -216,8 +218,8 @@ const AuthorsDataPage = () => {
                   navigate(`/pravachans/author/` + autId, {
                     state: {
                       authorId: autId,
-                      authorName: name
-
+                      authorName: name,
+                      authorSlug: state?.authorSlug
                     },
                   });
                 }}
@@ -228,10 +230,11 @@ const AuthorsDataPage = () => {
               <div
                 className="cat"
                 onClick={() => {
-                  navigate(`/articles/author/` + autId, {
+                  navigate(`/articles/author/` + state?.authorSlug, {
                     state: {
                       authorId: autId,
-                      authorName: name
+                      authorName: name,
+                      authorSlug: state?.authorSlug
                     },
                   });
                 }}
@@ -270,15 +273,16 @@ const AuthorsDataPage = () => {
                         className="sliderbooks"
                         key={`related-${book.id}`}
                         onClick={() => {
-                          navigate(`/books/` + book.slug, {
+                          navigate(`/books/author/` + state?.authorSlug + "/" + book?.slug, {
                             state: {
                               bookId: book.id,
                               bookName: book.name,
+                              bookSlug: book?.slug,
                               authorId: autId,
-                              authorName: name
+                              authorName: name,
+                              authorSlug: state?.authorSlug
                             },
                           });
-                          window.location.reload();
                         }}
                       >
                         <div>
@@ -322,9 +326,9 @@ const AuthorsDataPage = () => {
                     fontSize: "22px",
                   }}
                   onClick={() => {
-                    navigate(`/books/author/` + autId, {
+                    navigate(`/books/author/` + state?.authorSlug, {
                       state: {
-                        authorId: autId, authorName: name
+                        authorId: autId, authorName: name, authorSlug: state?.authorSlug
                       },
                     });
                   }}
@@ -656,12 +660,14 @@ const AuthorsDataPage = () => {
                       <div
                         key={`related-${article.id}`}
                         onClick={() => {
-                          navigate(`/articles/` + article.id, {
+                          navigate(`/articles/author/` + state?.authorSlug + "/" + article.slug, {
                             state: {
                               articleId: article.id,
+                              articleSlug: article?.slug,
                               articleName: article.name,
                               authorId: autId,
-                              authorName: name
+                              authorName: name,
+                              authorSlug: state?.authorSlug
                             },
                           })
                           window.location.reload();
@@ -719,10 +725,14 @@ const AuthorsDataPage = () => {
                       <div
                         key={`related-${article.id}`}
                         onClick={() => {
-                          navigate(`/articles/` + article.slug, {
+                          navigate(`/articles/author/` + state?.authorSlug + "/" + article.slug, {
                             state: {
                               articleId: article.id,
+                              articleSlug: article?.slug,
                               articleName: article.name,
+                              authorId: autId,
+                              authorName: name,
+                              authorSlug: state?.authorSlug
                             },
                           });
                           window.location.reload();
@@ -783,9 +793,9 @@ const AuthorsDataPage = () => {
                   className="btnSubmit"
                   style={{ fontFamily: "ChanakyaUni", fontSize: "22px" }}
                   onClick={() => {
-                    navigate(`/articles/author/` + autId, {
+                    navigate(`/articles/author/` + state?.authorSlug, {
                       state: {
-                        authorId: autId, authorName: name
+                        authorId: autId, authorName: name, authorSlug: state?.authorSlug
                       },
                     });
                   }}

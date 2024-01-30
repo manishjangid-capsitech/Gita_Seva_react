@@ -19,6 +19,7 @@ import {
   AccordionSummary,
 } from "@material-ui/core";
 import ExpandMore from "@mui/icons-material/ExpandMore";
+import AuthorsService from "../Services/Authors";
 
 const BooksPage = () => {
   const { isSelected, setItemColored } = useUser();
@@ -47,8 +48,11 @@ const BooksPage = () => {
   const state = location.state as {
     authorId: string;
     authorName: string;
+    authorSlug: string;
     langId: string;
     catId: string;
+    catSlug: string;
+    catName: string;
   };
 
   function ResetData() {
@@ -144,7 +148,9 @@ const BooksPage = () => {
 
   useEffect(() => {
     if (state?.authorId) {
-      showBread(state?.authorName);
+      AuthorsService.GetAuthorDataById(state?.authorId, "").then((res: any) => {
+        showBread(res?.result?.name);
+      });
     } else if (state?.langId) {
       BooksService.GetLanguageDataById(state?.langId).then((res) => {
         showBread(res?.result?.name);
@@ -194,10 +200,11 @@ const BooksPage = () => {
               {state?.authorId ? (
                 <>
                   <Link
-                    to={"/author/ + "}
+                    to={"/author/" + state?.authorSlug}
                     state={{
                       authorId: state?.authorId,
                       authorName: state?.authorName,
+                      authorSlug: state?.authorSlug
                     }}
                     style={{ marginRight: "8px", color: "#2d2a29" }}
                   >
@@ -483,48 +490,56 @@ const BooksPage = () => {
                                 // key={`book-${book.id}`}
                                 onClick={() => {
                                   if (window.location.pathname === `/books`) {
-                                    navigate(`/books/` + book.id, {
+                                    navigate(`/books/` + book.slug, {
                                       state: {
                                         bookId: book.id,
                                         bookName: book.name,
+                                        bookSlug: book?.slug,
                                         pathname: location?.pathname
                                       },
                                     });
                                   }
                                   if (window?.location?.pathname === `/books/special`) {
-                                    navigate(`/books/special/` + book.id, {
+                                    navigate(`/books/special/` + book.slug, {
                                       state: {
                                         bookId: book.id,
                                         bookName: book.name,
+                                        bookSlug: book?.slug,
                                         pathname: location?.pathname,
                                         special: true,
                                       },
                                     });
                                   }
                                   if (state?.authorId) {
-                                    navigate(`/books/author/` + state?.authorId + "/" + book?.id, {
+                                    navigate(`/books/author/` + state?.authorSlug + "/" + book?.slug, {
                                       state: {
                                         bookId: book.id,
                                         bookName: book.name,
+                                        bookSlug: book?.slug,
                                         authorId: state?.authorId,
-                                        authorName: state?.authorName,
+                                        authorName: state?.authorName || bread,
+                                        authorSlug: state?.authorSlug,
                                       },
                                     });
                                   } if (state?.langId) {
-                                    navigate(`/books/language/` + state?.langId + "/" + book.id, {
+                                    navigate(`/books/language/` + state?.langId + "/" + book?.slug, {
                                       // "/books/language/:langId/:id"
                                       state: {
                                         bookId: book.id,
                                         bookName: book.name,
+                                        bookSlug: book?.slug,
                                         langId: state?.langId,
                                       },
                                     });
                                   } if (state?.catId) {
-                                    navigate(`/books/category/` + state?.catId + "/" + book.id, {
+                                    navigate(`/books/category/` + state?.catSlug + "/" + book?.slug, {
                                       state: {
                                         bookId: book.id,
                                         bookName: book.name,
+                                        bookSlug: book?.slug,
                                         catId: state?.catId,
+                                        catName: state.catName,
+                                        catSlug: state?.catSlug
                                       },
                                     });
                                   }

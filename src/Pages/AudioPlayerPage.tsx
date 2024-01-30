@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Button } from "react-bootstrap";
 import { useAudio } from "../Contexts/AudiosContext";
 import AudioPlayer from "../Services/AudioPlayer";
@@ -37,9 +37,9 @@ const AudioPlayerPage = ({ match }: any) => {
 
   const catId = useRef<string | any>(state?.audiocat! || "");
   const auid = useRef<string | undefined>(state?.audioId! || "");
-  const [hide, setHide] = React.useState(false);
+  const [hide, setHide] = useState(false);
 
-  const [Type, setType] = React.useState<any | undefined>(
+  const [Type, setType] = useState<any | undefined>(
     localStorage.getItem("type")
   );
 
@@ -59,6 +59,7 @@ const AudioPlayerPage = ({ match }: any) => {
       Type
     ).then((res) => {
       if (res) {
+        debugger
         setIsMinismise(false);
         setAudiosList(res.result.items);
         playAudio(state?.audioId!, state?.index);

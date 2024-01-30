@@ -7,7 +7,6 @@ import { ImageGroup, Image } from "react-fullscreen-image";
 import imgdownload from "../assets/audioPlayer/img/gradient.svg";
 import { Link } from "react-router-dom";
 
-
 const DivineQuotesPage = () => {
     const { t } = useTranslation();
     const [divinequotes, setDivineQuotes] = useState<any[] | undefined>(
@@ -16,7 +15,6 @@ const DivineQuotesPage = () => {
 
     const [refresh, setRefresh] = useState(false);
     const [hoverId, setHoverId] = useState<number | string>();
-    const images = divinequotes?.map((e: any) => e?.quotesPath.split(","));
 
     const [pagination, setPagination] = useState({
         pageNo: 0,
@@ -60,10 +58,6 @@ const DivineQuotesPage = () => {
             }
         });
     }, [refresh, SortValue]);
-
-    // useEffect(() => {
-    //   console.log(JSON.stringify(images));
-    // });
 
     return (
         <>

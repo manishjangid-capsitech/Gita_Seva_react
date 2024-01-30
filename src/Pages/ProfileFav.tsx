@@ -10,8 +10,10 @@ import {
   AudioListButton,
   BookListButton,
   FavouriteArticals,
+  MarkList,
 } from "./LogInoutModel";
 import ProfileSidePanel from "./ProfileSidePanel";
+import { BookContentType } from "./Epub";
 
 export interface userinfoEnum {
   name: string;
@@ -41,13 +43,28 @@ export const ProfileFav = () => {
   const [vivek, getVivek] = useState<any>([]);
   const [refresh, setRefresh] = useState<boolean>(false);
 
+  const [bookMark, getBookMark] = useState<any>([]);
+  const [kalyanMark, getKalyanMark] = useState<any>([]);
+  const [kalpatruMark, getKalpatruMark] = useState<any>([]);
+  const [geetgovindMark, getGeetGovindMark] = useState<any>([]);
+  const [vivekMark, getVivekMark] = useState<any>([]);
+
   const colors = "#FF9800";
 
   const initialDisplayCount = 4;
 
   useEffect(() => {
     setRefresh(false);
-    ProfileService.getfavData("hindi", 0, 100).then((res: any) => {
+    ProfileService.getfavData(0, 100).then((res: any) => {
+      debugger
+      console.log("res?.result?.bookMarks",res?.result);
+      
+      getBookMark(res?.result?.bookMarks);
+      getKalyanMark(res?.result?.kalyanMarks);
+      getKalpatruMark(res?.result?.kalyanKalpatarusMarks);
+      getGeetGovindMark(res?.result?.monthlyMagazinesMarks);
+      getVivekMark(res.result.vivekVaniMarks);
+
       getBookFav(res?.result?.books);
       getKalyan(res?.result?.kalyans);
       getKalpatru(res.result?.kalyansKalpataru);
@@ -58,6 +75,7 @@ export const ProfileFav = () => {
       getVivek(res?.result?.vivekVanis);
     });
   }, [refresh, i18n.language]);
+  // https://gitaseva.blob.core.windows.net/gst-images-uat/books/small/5c3db63989888f24bcc78ddb?t=tHMQEUIjOIK63pI8hOElGg==?t=tHMQEUIjOIK63pI8hOElGg=="?
 
   return (
     <div>
@@ -110,7 +128,7 @@ export const ProfileFav = () => {
       >
         <div className="containers" style={{ height: "" }}>
           <div className="row">
-            <ProfileSidePanel color={colors} />
+              <ProfileSidePanel color={colors} />
             <div className="col-9">
               <div
                 className="tab-pane fade show active"
@@ -125,19 +143,41 @@ export const ProfileFav = () => {
                 <div className="tab-row">
                   <div className="tabscroll">
                     <div
+                    className="row"
                       style={{ background: "#FFFAF0", padding: "15px 10px" }}
                     >
+                      {/* <div className="col-3"></div> */}
                       <BookListButton
                         type="book"
                         title={t("E_books_tr")}
                         books={bookFav}
                         initialDisplayCount={initialDisplayCount}
                         getBook={(book) => {
-                          navigate("/books/" + book.id, {
+                          navigate("/books/" + book.slug, {
                             state: {
                               bookId: book.id,
                               bookName: book.name,
+                              bookSlug: book.slug,
                               special: window.location.pathname,
+                            },
+                          });
+                        }}
+                      />
+
+                      <MarkList
+                        typeMarks="bookmark"
+                        initialDisplayCount={initialDisplayCount}
+                        bookMarks={bookMark}
+                        marktitle={t("book_mark_tr")}
+                        getMarks={(bookMark) => {
+                          navigate(`/reader/books/` + bookMark.id, {
+                            state: {
+                              bookDetailId: bookMark.id,
+                              titleName: bookMark.name,
+                              location: bookMark.cfi,
+                              slug: bookMark.slug,
+                              label: bookMark.label,
+                              type: BookContentType.books,
                             },
                           });
                         }}
@@ -155,15 +195,56 @@ export const ProfileFav = () => {
                         }}
                       />
 
+                      <MarkList
+                        typeMarks="kalyanmark"
+                        initialDisplayCount={initialDisplayCount}
+                        bookMarks={kalyanMark}
+                        marktitle={t("Kalyan_mark_tr")}
+                        getMarks={(kalyanMark) => {
+                          navigate(`/reader/kalyans/` + kalyanMark.slug, {
+                            state: {
+                              kalyanDetailId: kalyanMark.id,
+                              titleName: kalyanMark.name,
+                              location: kalyanMark.cfi,
+                              slug: kalyanMark.slug,
+                              label: kalyanMark.label,
+                              type: BookContentType.kalyans,
+                            },
+                          });
+                        }}
+                      />
+
                       <BookListButton
                         type="kalpatru"
-                        title={t("Kalpataru_tr")}
+                        title={t("Kalyan_Kalpataru_tr")}
                         books={kalpatru}
                         initialDisplayCount={initialDisplayCount}
                         getBook={(kalpatru) => {
                           navigate(`/kalyanskalpataru/` + kalpatru.slug, {
                             state: { kalpatruId: kalpatru.id },
                           });
+                        }}
+                      />
+
+                      <MarkList
+                        typeMarks="kalpatrumark"
+                        initialDisplayCount={initialDisplayCount}
+                        bookMarks={kalpatruMark}
+                        marktitle={t("Kalyan_Kalpataru_mark_tr")}
+                        getMarks={(kalpatruMark) => {
+                          navigate(
+                            `/reader/kalyanskalpataru/` + kalpatruMark.slug,
+                            {
+                              state: {
+                                kalpatrauDetailId: kalpatruMark.id,
+                                titleName: kalpatruMark.name,
+                                location: kalpatruMark.cfi,
+                                slug: kalpatruMark.slug,
+                                label: kalpatruMark.label,
+                                type: BookContentType.kalpatru,
+                              },
+                            }
+                          );
                         }}
                       />
 
@@ -179,6 +260,28 @@ export const ProfileFav = () => {
                         }}
                       />
 
+                      <MarkList
+                        typeMarks="geetgovindmark"
+                        initialDisplayCount={initialDisplayCount}
+                        bookMarks={geetgovindMark}
+                        marktitle={t("MonthlyMagazine_mark_tr")}
+                        getMarks={(geetgovindMark) => {
+                          navigate(
+                            `/reader/monthlymagazine/` + geetgovindMark.slug,
+                            {
+                              state: {
+                                magazineDetailId: geetgovindMark.id,
+                                titleName: geetgovindMark.name,
+                                location: geetgovindMark.cfi,
+                                slug: geetgovindMark.slug,
+                                label: geetgovindMark.label,
+                                type: BookContentType.magazine,
+                              },
+                            }
+                          );
+                        }}
+                      />
+
                       <BookListButton
                         type="vivek"
                         title={t("vivek_vani_tr")}
@@ -187,6 +290,25 @@ export const ProfileFav = () => {
                         getBook={(vivek) => {
                           navigate(`/vivekvani/` + vivek.slug, {
                             state: { vivekId: vivek.id },
+                          });
+                        }}
+                      />
+
+                      <MarkList
+                        typeMarks="vivekmark"
+                        initialDisplayCount={initialDisplayCount}
+                        bookMarks={vivekMark}
+                        marktitle={t("vivek_vani_mark_tr")}
+                        getMarks={(vivekMark) => {
+                          navigate(`/reader/vivekvanis/` + vivekMark.slug, {
+                            state: {
+                              vivekvaniDetailId: vivekMark.id,
+                              titleName: vivekMark.name,
+                              location: vivekMark.cfi,
+                              slug: vivekMark.slug,
+                              label: vivekMark.label,
+                              type: BookContentType.vivek,
+                            },
                           });
                         }}
                       />

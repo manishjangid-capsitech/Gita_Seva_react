@@ -4,6 +4,8 @@ import "react-toastify/dist/ReactToastify.css";
 import HomeService from "../Services/Home";
 import { _get_i18Lang } from "../i18n";
 import "../Styles/Home.css";
+import Reset from "../Images/resetblack.png";
+import { Button, Modal } from "react-bootstrap";
 
 interface contactProps {
   name: string;
@@ -19,7 +21,6 @@ interface contactProps {
 
 export const ContactPage = () => {
   const { t } = useTranslation();
-  const [showModel, setShowModel] = useState(false);
   const currentLanguage = _get_i18Lang();
 
   const [data, setData] = useState<contactProps>({
@@ -34,6 +35,7 @@ export const ContactPage = () => {
   });
 
   const [captchaValue, setCaptchaValue] = useState<any>("")
+  const [showSuccess, setShowSuccess] = useState(false);
 
   const [error, setError] = React.useState<{
     show: boolean;
@@ -54,8 +56,6 @@ export const ContactPage = () => {
   const isValidEmail = "[a-z0-9]+@[a-z]+.[a-z]{2,3}";
 
   const handleSubmit = (e: any) => {
-    // debugger
-    console.log(captchaValue, "===", compareCaptcha);
     e.preventDefault();
     handleValidation();
 
@@ -65,40 +65,46 @@ export const ContactPage = () => {
         contactType: parseInt(data.contactType),
       };
 
-      if (
-        data.name !== "" &&
-        data.email !== "" &&
-        data.phoneNumber !== "" &&
-        data.messageContent !== "" &&
-        captchaValue !==
-        captchaValue.length > 7 &&
-        captchaValue.length > 5
-      ) {
-        if (data.messageContent.length > 0 && data.phoneNumber.length === 10) {
-
-          newEntry.messageContent =
-            "message from swamiji.gitaseva: " + newEntry.messageContent;
-          HomeService.postcontact(newEntry).then((result: any) => {
-            // debugger
-            if (result.status === true) {
-              setShowModel(true);
-              setCaptchaValue("")
-              setData({
-                name: "",
-                phoneNumber: "",
-                email: "",
-                messageContent: "",
-                contactType: "1",
-                userId: "",
-                medium: 1,
-                deviceDetails: "",
-              });
-            }
-          });
-        }
+      // if (
+      //   data.name !== "" &&
+      //   data.email !== "" &&
+      //   data.phoneNumber !== "" &&
+      //   data.messageContent !== "" &&
+      //   captchaValue !== "" &&
+      //   captchaValue.length > 6 &&
+      //   captchaValue.length < 6
+      // ) {
+      if (data.messageContent.length > 0 && data.phoneNumber.length === 10) {
+        newEntry.messageContent =
+          "message from swamiji.gitaseva: " + newEntry.messageContent;
+        HomeService.postcontact(newEntry).then((result: any) => {
+          if (result.status) {
+            setShowSuccess(true)
+            setCaptchaValue("")
+            setData({
+              name: "",
+              phoneNumber: "",
+              email: "",
+              messageContent: "",
+              contactType: "1",
+              userId: "",
+              medium: 1,
+              deviceDetails: "",
+            });
+            setError({
+              show: false,
+              number: undefined,
+              name: undefined,
+              email: undefined,
+              note: undefined,
+              captchaError: undefined,
+            })
+          }
+        });
       }
-    } else {
     }
+    // } else {
+    // }
   };
 
   const handleValidation = () => {
@@ -133,7 +139,7 @@ export const ContactPage = () => {
   useEffect(() => {
     // Generate the CAPTCHA value when the component mounts
     generateCaptcha(6);
-  }, [showModel]);
+  }, [showSuccess]);
 
   const characters = 'abc123';
   const generateCaptcha = (length: any) => {
@@ -348,7 +354,8 @@ export const ContactPage = () => {
                     <option value="8">
                       {t("MonthlyMagazine_tr")}
                     </option>
-                    <option value="9">{t("other_tr")}</option>
+                    <option value="9">{t("vivek_vani_tr")}</option>
+                    <option value="10">{t("other_tr")}</option>
                   </select>
                 </div>
               </div>
@@ -398,9 +405,9 @@ export const ContactPage = () => {
                 </div>
                 <div className="col-lg-6 col-md-12 col-xs-12">
                   <div style={{ display: "flex" }}>
-                    <h4 style={{ margin: "5px 25px 0 9px", fontSize: "25px", textDecoration: "line-through" }}>{compareCaptcha}</h4>
+                    <h4 style={{ margin: "5px 0 0 5px", width: "12%", fontSize: "25px", textDecoration: "line-through" }}>{compareCaptcha}</h4>
                     <input type="text" id="" className="contactContent" placeholder="Enter Captcha"
-                      autoComplete="off" style={{ width: "23%" }}
+                      autoComplete="off" style={{ width: "24%" }}
                       value={captchaValue}
                       onChange={(e) => {
                         setError((e) => ({ ...e, captchaError: undefined }));
@@ -409,14 +416,24 @@ export const ContactPage = () => {
                       }}
                       onBlur={(e) => {
                         let value = e.currentTarget?.value ?? undefined;
-                        if (value !== undefined) {
+                        if (value === undefined || value.length > 6 || value.length < 6) {
                           setError((e) => ({
                             ...e,
                             captchaError: "Please enter a valid captcha",
                           }));
-                        } else {
-                          setCaptchaValue("");
                         }
+                        //  else {
+                        //   setCaptchaValue("");
+                        // }
+                      }}
+                    />
+                    <img
+                      alt="reset"
+                      src={Reset}
+                      className="resetimg"
+                      style={{ margin: "7px 0 0 10px" }}
+                      onClick={() => {
+                        generateCaptcha(6)
                       }}
                     />
                   </div>
@@ -442,6 +459,46 @@ export const ContactPage = () => {
             </form>
           </div>
         </div>
+        <Modal show={showSuccess} style={{ borderRadius: "15px" }}>
+          <Modal.Header
+            aria-labelledby="mySmallModalLabel"
+            aria-hidden="true"
+            style={{ border: "none" }}
+          >
+            <Modal.Title style={{ color: "orange" }}>
+              {t("thank_you_tr")}
+            </Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <div>
+              <label style={{ fontSize: "18px" }}>
+                {currentLanguage === "hindi" ? (
+                  <label>
+                    हमें आपका संदेश प्राप्त हो गया है। हम आपको जल्द ही दिये गए
+                    ई-मेल या मोबाइल नंबर पर संपर्क करेंगे। धैर्य रखने के लिये
+                    धन्यवाद।
+                  </label>
+                ) : (
+                  <label>
+                    We have received your message. We will contact you soon on
+                    the given email or mobile number. Thank you for being
+                    patient.
+                  </label>
+                )}
+              </label>
+            </div>
+          </Modal.Body>
+          <Modal.Footer style={{ border: "none" }}>
+            <Button
+              onClick={() => {
+                setShowSuccess(false);
+              }}
+              variant="secondary"
+            >
+              Close
+            </Button>
+          </Modal.Footer>
+        </Modal>
       </div>
     </div>
   );

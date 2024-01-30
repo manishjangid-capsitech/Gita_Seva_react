@@ -94,9 +94,7 @@ const PravachansPage = () => {
       AudiosService.addPravachanFavourite(audioId).then((res) => {
         setAudios(
           audios?.map((a: any) => {
-            // debugger
             if (a.id === res.result?.productId) {
-              // debugger
               setIsLiked(true);
             }
             return a;
@@ -108,7 +106,6 @@ const PravachansPage = () => {
         setAudios(
           audios?.map((a: any) => {
             if (a.id === audioId) {
-              // debugger
               setIsLiked(false);
             }
             return a;
@@ -213,7 +210,6 @@ const PravachansPage = () => {
       SortYearValue,
       UserIdentity
     ).then((res) => {
-      // debugger
       if (res.status) setAudios(res.result?.items);
       setIsLiked(res?.result?.items[0].isFavourite);
       setPagination({
@@ -661,7 +657,7 @@ const PravachansPage = () => {
                                     alt={audio.name}
                                     title={audio.name}
                                     onClick={() => {
-                                      navigate(`/pravachans/` + audio.id, {
+                                      navigate(`/pravachans/` + audio.slug, {
                                         state: {
                                           audioId: audio.id,
                                           audioslug: audio.slug,
@@ -675,7 +671,18 @@ const PravachansPage = () => {
                                 </a>
                               </div>
                               <div style={{ width: "100%" }}>
-                                <a style={{ cursor: "pointer" }}>
+                                <a style={{ cursor: "pointer", display: "grid" }}
+                                  onClick={() => {
+                                    navigate(`/pravachans/` + audio.slug, {
+                                      state: {
+                                        audioId: audio.id,
+                                        audioslug: audio.slug,
+                                        sorting: SortValue,
+                                        index: i,
+                                        audiocat: CategoryId,
+                                      },
+                                    });
+                                  }}>
                                   <p
                                     style={{
                                       paddingTop: "3px",
@@ -687,17 +694,6 @@ const PravachansPage = () => {
                                       marginBottom: 0,
                                       overflow: "hidden",
                                     }}
-                                    onClick={() => {
-                                      navigate(`/pravachans/` + audio.id, {
-                                        state: {
-                                          audioId: audio.id,
-                                          audioslug: audio.slug,
-                                          sorting: SortValue,
-                                          index: i,
-                                          audiocat: CategoryId,
-                                        },
-                                      });
-                                    }}
                                   >
                                     <p>
                                       {audio.name != null &&
@@ -706,23 +702,11 @@ const PravachansPage = () => {
                                         : audio.name}
                                     </p>
                                   </p>
-                                  <p>{t("Preacher_tr")}:  {audio.author}</p>
-                                  <p
-                                    onClick={() => {
-                                      navigate(`/pravachans/` + audio.id, {
-                                        state: {
-                                          audioId: audio.id,
-                                          audioslug: audio.slug,
-                                          sorting: SortValue,
-                                          index: i,
-                                          audiocat: CategoryId,
-                                        },
-                                      });
-                                    }}
-                                  >
+                                  <label>{t("Preacher_tr")}:  {audio.author}</label>
+                                  <label>
                                     {audio.description}
-                                  </p>
-                                  <p>{audio.pravachanLength}</p>
+                                  </label>
+                                  <label>{audio.pravachanLength}</label>
                                 </a>
                               </div>
                               <div
@@ -774,7 +758,7 @@ const PravachansPage = () => {
                                   <img
                                     alt=""
                                     onClick={() => {
-                                      navigate(`/pravachans/` + audio.id, {
+                                      navigate(`/pravachans/` + audio.slug, {
                                         state: {
                                           audioId: audio.id,
                                           audioslug: audio.slug,

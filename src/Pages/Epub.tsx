@@ -1,3 +1,5 @@
+/* eslint-disable no-lone-blocks */
+/* eslint-disable @typescript-eslint/no-unused-expressions */
 /* eslint-disable array-callback-return */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-redeclare */
@@ -16,6 +18,8 @@ import plus from "../Images/plus.svg";
 import min from "../Images/min.svg";
 import reload from "../Images/refresh.svg";
 import close from "../Images/close.svg";
+import { useClickAnimation } from "./ClickEffectEpub";
+import "../Styles/ClickEffectEpub.css"
 
 export enum BookContentType {
   books,
@@ -113,6 +117,8 @@ const EpubPage = () => {
     bookName: string;
     slug: string;
     type: BookContentType;
+    titleName: string;
+    location: string;
   };
 
   const getUrlBytype = (type: BookContentType) => {
@@ -140,7 +146,6 @@ const EpubPage = () => {
   };
 
   const [url, setUrl] = useState(
-
     `${process.env.REACT_APP_API_URL}/api/${getUrlBytype(
       state.type
     )}/epubstrem/`
@@ -163,14 +168,15 @@ const EpubPage = () => {
       const { displayed, href } = renditionRef?.current?.location?.start;
       const chapter = tocRef?.current?.find((item: any) => item?.href === href);
       setPage(
-        `Page ${displayed?.page} of ${displayed?.total} in chapter ${chapter ? chapter?.label : "n/a"
+        `Page ${displayed?.page} of ${displayed?.total} in chapter ${
+          chapter ? chapter?.label : "n/a"
         }`
       );
       setFinalName(chapter ? chapter.label : undefined);
     }
     if (tocRef.current) {
       const chapterName = tocRef?.current.item;
-      setFinalName(chapterName)
+      setFinalName(chapterName);
     }
   };
 
@@ -192,15 +198,15 @@ const EpubPage = () => {
   function GetLstPosition(bookId: string) {
     EpubServices.getLastPosition(
       "lastposition" ||
-      "kalyanlastposition" ||
-      "kalyankalpatarulastposition" ||
-      "monthlymagazinelastposition" ||
-      "vivekvanilastposition",
+        "kalyanlastposition" ||
+        "kalyankalpatarulastposition" ||
+        "monthlymagazinelastposition" ||
+        "vivekvanilastposition",
       state?.bookDetailId ||
-      state?.kalyanDetailId ||
-      state?.kalpatrauDetailId ||
-      state?.magazineDetailId ||
-      state?.vivekvaniDetailId
+        state?.kalyanDetailId ||
+        state?.kalpatrauDetailId ||
+        state?.magazineDetailId ||
+        state?.vivekvaniDetailId
     ).then((res) => {
       if (res.status) {
         if (res.result != null && res.result !== "") {
@@ -213,18 +219,18 @@ const EpubPage = () => {
   function saveLstPositionAndClose() {
     EpubServices.SaveLastPositionAndClose(
       "lastposition" ||
-      "kalyanlastposition" ||
-      "kalyankalpatarulastposition" ||
-      "monthlymagazinelastposition" ||
-      "vivekvanilastposition",
+        "kalyanlastposition" ||
+        "kalyankalpatarulastposition" ||
+        "monthlymagazinelastposition" ||
+        "vivekvanilastposition",
       state?.bookDetailId ||
-      state?.kalyanDetailId ||
-      state?.kalpatrauDetailId ||
-      state?.magazineDetailId ||
-      state?.vivekvaniDetailId,
+        state?.kalyanDetailId ||
+        state?.kalpatrauDetailId ||
+        state?.magazineDetailId ||
+        state?.vivekvaniDetailId,
       location,
       "100"
-    ).then((res) => { });
+    ).then((res) => {});
   }
 
   useEffect(() => {
@@ -236,7 +242,7 @@ const EpubPage = () => {
   useEffect(() => {
     setTimeout(() => {
       GetLstPosition(state?.bookDetailId);
-      setLocation(cfiresult);
+      location ? setLocation(state?.location) : setLocation(cfiresult);
     }, 400);
   }, [state?.bookDetailId, cfiresult]);
 
@@ -255,7 +261,7 @@ const EpubPage = () => {
       });
       renditionRef.current.themes.select("custom");
       if (themecolor === "black") {
-        localStorage.setItem("epub-theme", "black")
+        localStorage.setItem("epub-theme", "black");
         $("#titlebar").removeClass("theme-grey");
         $("#titlebar").removeClass("theme-grey");
         $("#titlebar").removeClass("titlebar_color");
@@ -311,7 +317,7 @@ const EpubPage = () => {
           },
         });
       } else if (themecolor === "grey") {
-        localStorage.setItem("epub-theme", "grey")
+        localStorage.setItem("epub-theme", "grey");
         $("#titlebar").removeClass("theme-grey");
         $("#titlebar").removeClass("theme-black");
         $("#titlebar").removeClass("titlebar_color");
@@ -366,7 +372,7 @@ const EpubPage = () => {
           },
         });
       } else if (themecolor === "ivory") {
-        localStorage.setItem("epub-theme", "ivory")
+        localStorage.setItem("epub-theme", "ivory");
         $("#titlebar").removeClass("theme-grey");
         $("#titlebar").removeClass("theme-black");
         $("#titlebar").removeClass("titlebar_color");
@@ -421,7 +427,7 @@ const EpubPage = () => {
           },
         });
       } else if (themecolor === "white") {
-        localStorage.setItem("epub-theme", "white")
+        localStorage.setItem("epub-theme", "white");
         $("#titlebar").removeClass("theme-grey");
         $("#titlebar").removeClass("theme-black");
         $("#titlebar").removeClass("titlebar_color");
@@ -502,6 +508,7 @@ const EpubPage = () => {
   const KalpataruId = state?.kalpatrauDetailId;
   const MagazineId = state?.magazineDetailId;
   const VivekId = state?.vivekvaniDetailId;
+
   const closebutton = () => {
     if (BookId) {
       navigate(-1);
@@ -529,27 +536,31 @@ const EpubPage = () => {
   };
 
   const SaveBkMark = async () => {
-    let res = await EpubServices.savebookmark(state?.bookDetailId ||
-      state?.kalyanDetailId ||
-      state?.kalpatrauDetailId ||
-      state?.magazineDetailId ||
-      state?.vivekvaniDetailId, location, finalName);
+    let res = await EpubServices.savebookmark(
+      state?.bookDetailId ||
+        state?.kalyanDetailId ||
+        state?.kalpatrauDetailId ||
+        state?.magazineDetailId ||
+        state?.vivekvaniDetailId,
+      location,
+      finalName
+    );
     if (res) {
       res.status && setBkmarkSaved(true);
     }
-
-  }
+  };
 
   function RemoveBkMark() {
-    EpubServices.removebookmark(state?.bookDetailId ||
-      state?.kalyanDetailId ||
-      state?.kalpatrauDetailId ||
-      state?.magazineDetailId ||
-      state?.vivekvaniDetailId, location).then(
-        (res: any) => {
-          res.status && setBkmarkSaved(false);
-        }
-      );
+    EpubServices.removebookmark(
+      state?.bookDetailId ||
+        state?.kalyanDetailId ||
+        state?.kalpatrauDetailId ||
+        state?.magazineDetailId ||
+        state?.vivekvaniDetailId,
+      location
+    ).then((res: any) => {
+      res.status && setBkmarkSaved(false);
+    });
   }
 
   const [showBKdata, setShowBKdata] = useState<bookmark[] | undefined>(
@@ -557,58 +568,79 @@ const EpubPage = () => {
   );
 
   const [showdata, setShowdata] = useState<boolean>(false);
-  const [lengthofbkm, setLengthofbkm] = useState<boolean>(false)
+  const [lengthofbkm, setLengthofbkm] = useState<boolean>(false);
 
   useEffect(() => {
     if (showdata) {
       EpubServices.getbookmark(
         state?.bookDetailId ||
-        state?.kalyanDetailId ||
-        state?.kalpatrauDetailId ||
-        state?.magazineDetailId ||
-        state?.vivekvaniDetailId,).then((res: any) => {
-          if (res.status) {
-            setShowBKdata(res?.result);
-            {
-              res.result.length > 0 ?
-                setLengthofbkm(true) :
-                setLengthofbkm(false)
-            }
+          state?.kalyanDetailId ||
+          state?.kalpatrauDetailId ||
+          state?.magazineDetailId ||
+          state?.vivekvaniDetailId
+      ).then((res: any) => {
+        if (res.status) {
+          setShowBKdata(res?.result);
+          {
+            res.result.length > 0
+              ? setLengthofbkm(true)
+              : setLengthofbkm(false);
           }
-        });
+        }
+      });
     }
   }, [showdata]);
 
   const handleDelete = (dataCfi: any) => {
-    EpubServices.removebookmark(state?.bookDetailId ||
-      state?.kalyanDetailId ||
-      state?.kalpatrauDetailId ||
-      state?.magazineDetailId ||
-      state?.vivekvaniDetailId, dataCfi).then(
-        (res: any) => {
-          res.status && setBkmarkSaved(false);
-        }
-      );
+    EpubServices.removebookmark(
+      state?.bookDetailId ||
+        state?.kalyanDetailId ||
+        state?.kalpatrauDetailId ||
+        state?.magazineDetailId ||
+        state?.vivekvaniDetailId,
+      dataCfi
+    ).then((res: any) => {
+      res.status && setBkmarkSaved(false);
+    });
   };
 
-  const [getcfi, setGetcfi] = useState<string>("")
+  const [getcfi, setGetcfi] = useState<string>("");
+
+  const [isClicked, setIsClicked] = useState(false);
 
   useEffect(() => {
     console.log("bkmarkSaved", bkmarkSaved);
     console.log("getcfi", getcfi);
     getcfi === location ? setBkmarkSaved(true) : setBkmarkSaved(false);
-  }, [location, getcfi])
+  }, [location, getcfi]);
 
   useEffect(() => {
     showBKdata?.map((data: any) => {
       // debugger
-      setGetcfi(data.cfi)
+      setGetcfi(data.cfi);
       if (data.name === "undefined") {
         // setBookmarkName(Bookmark.index)
       }
-    })
+    });
   }, [location]);
   const CurrentTheme = localStorage.getItem("epub-theme") as any;
+  const [clickedButton, setClickedButton] = useState(null);
+
+  const handleButtonClick = (buttonIndex: any) => {
+    setClickedButton(buttonIndex);
+    setTimeout(() => {
+      setClickedButton(null);
+    }, 300);
+  };
+
+  const cardRef = useRef() as any;
+
+
+  useClickAnimation(cardRef, {
+    color: "blue",
+  });
+
+  const [wobble, setWobble] = useState<any>(0)
 
   return (
     <div>
@@ -626,129 +658,141 @@ const EpubPage = () => {
           }}
         >
           <label style={{ fontSize: "larger" }}>
-            {state?.bookName} : {finalName === "undefined" ? "" : finalName}
+            {state?.bookName} :{" "}
+            {finalName === state?.titleName ? state?.titleName : finalName}
           </label>
         </div>
 
         <div className="p-2 bd-highlight col-example">
           <div style={{ flex: "100%", marginTop: "7px" }}>
-            <div style={{ flex: "100%", display: "flex" }}>
-              <div
-                id="bookmark-list"
-                onClick={() => {
-                  setShowdata(showdata ? false : true)
-                }}
-              ></div>
-              <div
-                id="bkicon"
-                className={bkmarkSaved ? "bookmarkicon-fill" : "bookmarkicon"}
-                onClick={() => {
-                  (!bkmarkSaved ? SaveBkMark() : RemoveBkMark())
-                }}
-              ></div>
-              <img
-                alt=""
-                style={{ width: "22px" }}
-                src={min}
-                onClick={() => changeSize(Math.max(50, size - 10))}
-              />
-              <div
-                style={{
-                  paddingLeft: "5px",
-                  paddingRight: "5px",
-                  fontSize: "18px",
-                }}
-              >
-                {size}%
-              </div>
-              <img
-                alt="plus"
-                style={{ width: "22px", marginRight: "13px" }}
-                src={plus}
-                onClick={() => changeSize(Math.min(130, size + 10))}
-              />
-              <img
-                alt="reload"
-                style={{ width: "19px" }}
-                src={reload}
-                onClick={() => {
-                  setTheme("#ffffff");
-                  setFontColor("#000000");
-                  clickOnTheme(false);
-                  setThemeColor("white");
-                  setSize(100);
-                }}
-              />
-              <div
-                className="icon-theme"
-                onClickCapture={() => {
-                  clickOnTheme(true);
-                }}
-              >
-                <div id="theme">
-                  <div id="divTheme" className="col">
-                    <div className="row" style={{ margin: 0 }}>
-                      <a
-                        id="btnThemeWhite"
-                        className="theme-btn-white"
-                        onClick={() => {
-                          setThemeColor("white");
-                          setTheme("#ffffff");
-                          setFontColor("#000000");
-                          clickOnTheme(false);
-                        }}
-                      ></a>
-                    </div>
-                    <div className="row" style={{ margin: 0 }}>
-                      <a
-                        id="btnThemeIvory"
-                        className="theme-btn-ivory"
-                        onClick={() => {
-                          setThemeColor("ivory");
-                          setTheme("#fffcda");
-                          setFontColor("#000000");
-                          clickOnTheme(false);
-                        }}
-                      />
-                    </div>
-                    <div className="row" style={{ margin: 0 }}>
-                      <a
-                        id="btnThemeGrey"
-                        className="theme-btn-grey"
-                        onClick={() => {
-                          setThemeColor("grey");
-                          setTheme("#464646");
-                          setFontColor("#ffffff");
-                          clickOnTheme(false);
-                        }}
-                      />
-                    </div>
-                    <div className="row" style={{ margin: 0 }}>
-                      <a
-                        id="btnThemeBlack"
-                        className="theme-btn-black"
-                        onClick={() => {
-                          setThemeColor("black");
-                          clickOnTheme(false);
-                          setTheme("#000000");
-                          setFontColor("#ffffff");
-                        }}
-                      />
+              <div style={{ flex: "100%", display: "flex" }}>
+                <div
+                  id="bookmark-list"
+                  style={{ border: "none" }}
+                  className="cardeffect"
+                  ref={cardRef}
+                  onClick={() => {
+                    setShowdata(showdata ? false : true);
+                  }}
+                ></div>
+                <div
+                  id="bkicon"
+                  // ref={cardRef}
+                  // className={`cardeffect ${bkmarkSaved ? "bookmarkicon-fill" : "bookmarkicon"}`}
+                  className={bkmarkSaved ? "bookmarkicon-fill" : "bookmarkicon"}
+                  onClick={() => {
+                    !bkmarkSaved ? SaveBkMark() : RemoveBkMark();
+                  }}
+                ></div>
+                <img
+                  alt=""
+                  onAnimationEnd={() => setWobble(0)}
+                  // wobble={wobble}
+                  style={{ width: "22px" }}
+                  src={min}
+                  onClick={() => {
+                    changeSize(Math.max(50, size - 10));
+                    setWobble(1)
+                  }}
+                />
+                <div
+                  style={{
+                    paddingLeft: "5px",
+                    paddingRight: "5px",
+                    fontSize: "18px",
+                  }}
+                >
+                  {size}%
+                </div>
+                <img
+                  alt="plus"                
+                  style={{ width: "22px", marginRight: "13px" }}
+                  src={plus}
+                  onClick={() => changeSize(Math.min(130, size + 10))}
+                />
+                <img
+                  alt="reload"
+                  style={{ width: "19px" }}
+                  src={reload}
+               
+                  onClick={() => {
+                    setTheme("#ffffff");
+                    setFontColor("#000000");
+                    clickOnTheme(false);
+                    setThemeColor("white");
+                    setSize(100);
+                  }}
+                />
+                <div
+                  className="icon-theme"
+                  onClickCapture={() => {
+                    clickOnTheme(true);
+                  }}
+                >
+                  <div id="theme">
+                    <div id="divTheme" className="col">
+                      <div className="row" style={{ margin: 0 }}>
+                        <a
+                          id="btnThemeWhite"
+                          className="theme-btn-white"
+                          onClick={() => {
+                            setThemeColor("white");
+                            setTheme("#ffffff");
+                            setFontColor("#000000");
+                            clickOnTheme(false);
+                          }}
+                        ></a>
+                      </div>
+                      <div className="row" style={{ margin: 0 }}>
+                        <a
+                          id="btnThemeIvory"
+                          className="theme-btn-ivory"
+                          onClick={() => {
+                            setThemeColor("ivory");
+                            setTheme("#fffcda");
+                            setFontColor("#000000");
+                            clickOnTheme(false);
+                          }}
+                        />
+                      </div>
+                      <div className="row" style={{ margin: 0 }}>
+                        <a
+                          id="btnThemeGrey"
+                          className="theme-btn-grey"
+                          onClick={() => {
+                            setThemeColor("grey");
+                            setTheme("#464646");
+                            setFontColor("#ffffff");
+                            clickOnTheme(false);
+                          }}
+                        />
+                      </div>
+                      <div className="row" style={{ margin: 0 }}>
+                        <a
+                          id="btnThemeBlack"
+                          className="theme-btn-black"
+                          onClick={() => {
+                            setThemeColor("black");
+                            clickOnTheme(false);
+                            setTheme("#000000");
+                            setFontColor("#ffffff");
+                          }}
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>
+                <img
+                  alt="close"
+                  src={close}
+                  width="18px"
+                  style={{ cursor: "pointer" }}
+                  onClick={() => {
+                    saveLstPositionAndClose();
+                    closebutton();
+                  }}
+                />
               </div>
-              <img
-                alt="close"
-                src={close}
-                width="18px"
-                style={{ cursor: "pointer" }}
-                onClick={() => {
-                  saveLstPositionAndClose();
-                  closebutton();
-                }}
-              />
-            </div>
           </div>
         </div>
       </div>
@@ -767,14 +811,17 @@ const EpubPage = () => {
             <ul className="bklistul" style={{ listStyle: "none" }}>
               {showBKdata &&
                 showBKdata?.map((data: any, index: number) => (
-                  <div style={{ display: "flex", justifyContent: "space-between" }} key={index}>
+                  <div
+                    style={{ display: "flex", justifyContent: "space-between" }}
+                    key={index}
+                  >
                     <li
                       className="bklistitem"
                       key={data.id}
                       onClick={() => {
                         setLocation(data.cfi);
                         setFinalName(data.name);
-                        setShowdata(false)
+                        setShowdata(false);
                       }}
                     >
                       {data?.name}
@@ -782,7 +829,7 @@ const EpubPage = () => {
                     <label
                       onClick={() => {
                         handleDelete(data.cfi);
-                        setShowdata(false)
+                        setShowdata(false);
                       }}
                       className="bookmark_del fa fa-trash"
                       style={{
@@ -820,7 +867,10 @@ const EpubPage = () => {
               body: {
                 // background: colortheme,
                 // background: colortheme,
-                color: CurrentTheme === 'black' || CurrentTheme === "gray" ? "#ffffff" : "#000000",
+                color:
+                  CurrentTheme === "black" || CurrentTheme === "gray"
+                    ? "#ffffff"
+                    : "#000000",
                 // link.style.color = (localStorage.getItem('CurrentTheme') == 'black' || localStorage.getItem('CurrentTheme') == 'grey') ? '#ffffff' : '#000000';
                 fontfamily: "ChanakyaUni",
               },

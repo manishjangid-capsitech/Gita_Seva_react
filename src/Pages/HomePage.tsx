@@ -131,14 +131,17 @@ const HomePage = () => {
         navigate("/books/" + slug, {
           state: {
             bookId: targetId,
-            special: window.location.pathname,
+            bookSlug: slug,
+            bookName: name
           },
         });
         break;
       case 3:
-        navigate("/books/category/" + targetId, {
+        navigate("/books/category/" + slug, {
           state: {
             catId: targetId,
+            catSlug: slug,
+            catName: name
           },
         });
         break;
@@ -167,16 +170,18 @@ const HomePage = () => {
         navigate("/messageDetail/" + targetId);
         break;
       case 12:
-        navigate("/author/ +", {
+        navigate("/author/" + slug, {
           state: {
             authorId: targetId,
+            authorSlug: slug,
           },
         });
         break;
       case 13:
-        navigate("/books/author/" + targetId, {
+        navigate("/books/author/" + slug, {
           state: {
             authorId: targetId,
+            authorSlug: slug,
           },
         });
         break;
@@ -247,24 +252,34 @@ const HomePage = () => {
         navigate("/monthlymagazine");
         break;
       case 49:
-        navigate("/vivekvani" + targetId);
+        navigate("/vivekvani/:cat/:langid" + slug, {
+          state: {
+            bookId: targetId,
+            bookSlug: slug,
+            bookName: name
+          }
+        });
         break;
       case 50:
-        navigate("/vivekvani/special" + slug);
+        navigate("/vivekvani/special" + slug, {
+          state: {
+            bookId: targetId,
+            bookSlug: slug,
+            bookName: name
+          }
+        });
         break;
       case 51:
-        navigate("/vivekvani/author/:id" + targetId);
+        navigate("/vivekvani/author/:id" + slug, {
+          state: {
+            bookId: targetId,
+            bookSlug: slug,
+            bookName: name
+          }
+        });
         break;
       case 52:
-        navigate("/vivekvani/:cat/:langid" + targetId);
-        break;
-      case 53:
-        navigate("/vivekvani/" + targetId, {
-          state: {
-            vivekId: targetId,
-            vivekName: name,
-          },
-        });
+        navigate("/vivekvani");
         break;
       default:
         break;
@@ -308,7 +323,6 @@ const HomePage = () => {
       .then((response) => response?.text())
       .then((textContent) => {
         var lyrics = textContent.replace(/\[[^\]]+\]/g, "").trim();
-        // console.log(lyrics);
         setDefaultAudLyrics(lyrics);
       });
   }, [defaultlyrics]);
@@ -714,10 +728,11 @@ const HomePage = () => {
                         <div key={author?.name} className="col-4 introbox">
                           <h2
                             onClick={() => {
-                              navigate(`/author/` + author?.id, {
+                              navigate(`/author/` + author?.slug, {
                                 state: {
                                   authorId: author.id,
                                   authorName: author.name,
+                                  authorSlug: author.slug
                                 },
                               });
                             }}
@@ -731,10 +746,11 @@ const HomePage = () => {
                               cursor: "pointer",
                             }}
                             onClick={() => {
-                              navigate(`/books/author/` + author?.id, {
+                              navigate(`/books/author/` + author?.slug, {
                                 state: {
                                   authorId: author.id,
                                   authorName: author?.name,
+                                  authorSlug: author?.slug
                                 },
                               });
                             }}
@@ -783,10 +799,11 @@ const HomePage = () => {
                               backgroundColor: "#fff",
                             }}
                             onClick={() => {
-                              navigate(`/articles/author/` + author.id, {
+                              navigate(`/articles/author/` + author.slug, {
                                 state: {
                                   authorId: author.id,
                                   authorName: author?.name,
+                                  authorSlug: author?.slug
                                 },
                               });
                             }}
@@ -830,14 +847,14 @@ const HomePage = () => {
                       className="sliderbooks"
                       key={`related-${specialBook.id}`}
                       onClick={() => {
-                        navigate(`/books/special/` + specialBook.id, {
+                        navigate(`/books/special/` + specialBook.slug, {
                           state: {
                             bookId: specialBook.id,
                             bookName: specialBook.name,
+                            bookSlug: specialBook?.slug,
                             pathname: window.location?.pathname,
                           },
                         });
-                        window.location.reload();
                       }}
                     >
                       <div
@@ -910,18 +927,20 @@ const HomePage = () => {
                     <div
                       key={`related-${specialAudio.id}`}
                       onClick={() => {
+                        debugger
                         localStorage.setItem("type", "audios");
-                        navigate(`/audios/` + specialAudio.id, {
+                        navigate(`/audios/` + specialAudio.slug, {
                           state: {
                             audioId: specialAudio.id,
-                            audioslug: specialAudio.name,
+                            audioName: specialAudio?.name,
+                            audioslug: specialAudio.slug,
                           },
                         });
                         window.location.reload();
                       }}
                     >
                       <div
-                        className="pravchanBox"
+                        className="pravchanslider"
                         style={{
                           display: "flex",
                           justifyContent: "center",
@@ -1027,7 +1046,7 @@ const HomePage = () => {
                       }}
                     >
                       <div
-                        className="pravchanBox"
+                        className="pravchanslider"
                         style={{
                           display: "flex",
                           justifyContent: "center",
@@ -1122,10 +1141,11 @@ const HomePage = () => {
                     <div
                       key={`related-${specialArticle.id}`}
                       onClick={() => {
-                        navigate(`/articles/special/` + specialArticle.id, {
+                        navigate(`/articles/special/` + specialArticle.slug, {
                           state: {
                             articleId: specialArticle.id,
                             articleName: specialArticle.name,
+                            articleSlug: specialArticle?.slug,
                             special: window.location.pathname
                           },
                         });
@@ -1133,7 +1153,7 @@ const HomePage = () => {
                       }}
                     >
                       <div
-                        className="pravchanBox"
+                        className="pravchanslider"
                         style={{
                           display: "flex",
                           justifyContent: "center",
@@ -1187,7 +1207,7 @@ const HomePage = () => {
         </div>
         <div
           className="newcontainer"
-          style={{ backgroundColor: "#fff0ce", marginTop: 0, height: "510px" }}
+          style={{ backgroundColor: "#fff0ce", marginTop: 0, paddingBottom: "40px" }}
         >
           <div className="containers">
             <ContactPage />

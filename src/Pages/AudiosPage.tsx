@@ -190,11 +190,9 @@ const AudiosPage = () => {
     AudiosService.addAudioFavourite(audioId).then((res) => {
       setAudios(
         audios?.map((a: any) => {
-          // debugger
+          debugger
           if (a.id === res.result?.productId) {
-            console.log("before--isLiked", isLiked);
             setIsLiked(true);
-            console.log("before--isLiked", isLiked);
           }
           return a;
         })
@@ -207,11 +205,9 @@ const AudiosPage = () => {
     AudiosService.removeAudioFavourite(audioId).then((res) => {
       setAudios(
         audios?.map((a: any) => {
-          // debugger
+          debugger
           if (a.id === audioId) {
-            console.log("before--isLiked--remove", isLiked);
             setIsLiked(false);
-            console.log("before--isLiked--remove", isLiked);
           }
           return a;
         })
@@ -399,7 +395,7 @@ const AudiosPage = () => {
                                   setSingerId(Singer.id);
                                 }}
                               >
-                                <ul style={{ margin: 0 }}>
+                                <ul style={{ margin: "5px 0 0 0" }}>
                                   <li>
                                     <div
                                       style={{
@@ -570,7 +566,8 @@ const AudiosPage = () => {
                                     alt={audio.name}
                                     title={audio.name}
                                     onClick={() => {
-                                      navigate(`/audios/` + audio.id, {
+                                      debugger
+                                      navigate(`/audios/` + audio.slug, {
                                         state: {
                                           audioId: audio.id,
                                           audioslug: audio.slug,
@@ -584,24 +581,24 @@ const AudiosPage = () => {
                                 </a>
                               </div>
                               <div style={{ width: "100%" }}>
-                                <a style={{ cursor: "pointer" }}>
+                                <a style={{ cursor: "pointer" }}
+                                  onClick={() => {
+                                    navigate(`/audios/` + audio.slug, {
+                                      state: {
+                                        audioId: audio.id,
+                                        audioslug: audio.slug,
+                                        sorting: SortValue,
+                                        index: i,
+                                        audiocat: CategoryId,
+                                      },
+                                    });
+                                  }}>
                                   <p
                                     style={{
                                       fontSize: "25px",
                                       paddingTop: "3px",
                                       fontWeight: "600",
                                       textAlign: "unset",
-                                    }}
-                                    onClick={() => {
-                                      navigate(`/audios/` + audio.id, {
-                                        state: {
-                                          audioId: audio.id,
-                                          audioslug: audio.slug,
-                                          sorting: SortValue,
-                                          index: i,
-                                          audiocat: CategoryId,
-                                        },
-                                      });
                                     }}
                                   >
                                     <p>
@@ -611,22 +608,10 @@ const AudiosPage = () => {
                                         : audio.name}
                                     </p>
                                   </p>
-                                  <p
-                                    onClick={() => {
-                                      navigate(`/audios/` + audio.id, {
-                                        state: {
-                                          audioId: audio.id,
-                                          audioslug: audio.slug,
-                                          sorting: SortValue,
-                                          index: i,
-                                          audiocat: CategoryId,
-                                        },
-                                      });
-                                    }}
-                                  >
+                                  <label>
                                     {audio.description}
-                                  </p>
-                                  <p>{audio.audioLength}</p>
+                                  </label>
+                                  <label>{audio.audioLength}</label>
                                 </a>
                               </div>
                               <div
@@ -634,7 +619,7 @@ const AudiosPage = () => {
                                   if (!UserIdentity) setLogIn(true);
                                 }}
                               >
-                                {isLiked ? (
+                                {audio?.isFavourite ? (
                                   <label
                                     id={`${audio.id}`}
                                     onClick={() => {
@@ -700,7 +685,7 @@ const AudiosPage = () => {
                                     alt=""
                                     onClick={() => {
                                       //navigate(`/audios/${audio.id}`);
-                                      navigate(`/audios/` + audio.id, {
+                                      navigate(`/audios/` + audio.slug, {
                                         state: {
                                           audioId: audio.id,
                                           audioslug: audio.slug,
