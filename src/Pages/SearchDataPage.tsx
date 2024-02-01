@@ -39,7 +39,6 @@ const SearchDataPage = () => {
   };
 
   useEffect(() => {
-    debugger
     if (params?.usr !== undefined) {
       SearchDataService.searchData({
         language: params?.usr.language,
@@ -48,7 +47,6 @@ const SearchDataPage = () => {
         authorId: params?.usr?.authorId,
       }).then((res) => {
         if (res.status) {
-          debugger
           setLen(res?.result?.length);
           setSearchdata(res?.result);
           setPagination({
@@ -196,7 +194,6 @@ const SearchDataPage = () => {
                             })
                         }
                         if (search.product === "geetgovind") {
-                          debugger
                           navigate("/monthlymagazine/" + search.slug,
                             {
                               state: {

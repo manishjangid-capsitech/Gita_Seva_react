@@ -1,11 +1,8 @@
-/* eslint-disable @typescript-eslint/no-unused-expressions */
-/* eslint-disable react-hooks/rules-of-hooks */
-import React, { PureComponent, useState } from "react";
+import React, { PureComponent } from "react";
 import { useSwipeable } from "react-swipeable";
 import { EpubView } from "./EpubView";
 import { EpubReaderStyles } from "./EpubReader.styles";
 import { IEpubReaderStyles, IEpubViewProps, IEpubViewStyles } from "./Types";
-import "../../Styles/About.css";
 
 import {
   ConfigurationOptions,
@@ -65,9 +62,6 @@ export class EpubReader extends PureComponent<
   constructor(props: IEpubReaderProps) {
     super(props);
     this.readerRef = React.createRef();
-
-    // const cardRef = useRef();
-
     this.state = {
       expandedToc: false,
       toc: [],
@@ -81,7 +75,6 @@ export class EpubReader extends PureComponent<
 
   next = () => {
     this.readerRef.current?.nextPage();
-    // this.cardRef.current.nextPage();
   };
 
   prev = () => {
@@ -108,9 +101,9 @@ export class EpubReader extends PureComponent<
           {},
           styles.tocArea,
           expandedToc ? styles.tocAreaWidth : { width: "0px" }
-        )}
-      >
+        )}>
         <div className="container">
+
           <div style={styles.toc}>
             {toc?.length > 0 &&
               toc[0].map((item: any, i: number) => {
@@ -152,8 +145,7 @@ export class EpubReader extends PureComponent<
           styles.tocButton,
           expandedToc ? styles.tocButtonExpanded : {}
         )}
-        onClick={this.toggleToc}
-      >
+        onClick={this.toggleToc}>
         <span
           style={Object.assign(
             {},
@@ -193,13 +185,7 @@ export class EpubReader extends PureComponent<
       ...props
     } = this.props;
     const { toc, expandedToc } = this.state;
-    // const [isClicked, setIsClicked] = useState(false);
-    // const handleButtonClick = () => {
-    //   setIsClicked(true);
-    //   setTimeout(() => {
-    //     setIsClicked(false);
-    //   }, 300);
-    // };
+    
     return (
       <>
         <div style={styles.container}>
@@ -210,15 +196,13 @@ export class EpubReader extends PureComponent<
               {},
               styles.readerArea,
               expandedToc ? styles.containerExpanded : {}
-            )}
-          >
+            )}>
             {showToc && this.renderTocToggle()}
 
             <Swipeable
               onSwipedRight={this.prev}
               onSwipedLeft={this.next}
-              trackMouse
-            >
+              trackMouse>
               <div style={styles.reader}>
                 <EpubView
                   ref={this.readerRef}
@@ -233,18 +217,12 @@ export class EpubReader extends PureComponent<
             </Swipeable>
             <button
               style={Object.assign({}, styles.arrow, styles.prev)}
-              // className={`button0 ${isClicked ? "btn-1" : ""}`}
-              onClick={() => {
-                this.prev;
-                // handleButtonClick;
-              }}
-            >
+              onClick={this.prev}>
               ‹
             </button>
             <button
               style={Object.assign({}, styles.arrow, styles.next)}
-              onClick={this.next}
-            >
+              onClick={this.next}>
               ›
             </button>
           </div>

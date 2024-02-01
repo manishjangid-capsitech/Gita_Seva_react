@@ -202,7 +202,6 @@ const HeaderPage = () => {
                       }}
                       onKeyDown={(e: any) => {
                         if (e.key === "Enter") {
-                          debugger;
                           e.preventDefault();
                           navigate(
                             `/searchdata/${searchValue.productType}/${searchValue.searchValue}`,

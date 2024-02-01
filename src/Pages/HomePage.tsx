@@ -927,7 +927,6 @@ const HomePage = () => {
                     <div
                       key={`related-${specialAudio.id}`}
                       onClick={() => {
-                        debugger
                         localStorage.setItem("type", "audios");
                         navigate(`/audios/` + specialAudio.slug, {
                           state: {

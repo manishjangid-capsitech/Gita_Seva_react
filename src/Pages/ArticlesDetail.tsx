@@ -33,11 +33,6 @@ const ArticlesDetailPage = (props: any) => {
     searched: string;
   };
 
-  useEffect(() => {
-    debugger;
-    console.log(state);
-  }, []);
-
   const [ArticlesDetail, setArticlesDetail] = useState<any>(undefined);
   const [refresh, setRefresh] = useState(false);
 

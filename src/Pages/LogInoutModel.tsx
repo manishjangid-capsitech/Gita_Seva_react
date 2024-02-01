@@ -197,7 +197,6 @@ export const LogInModel: React.FC<LogInModalProps> = ({
               await signInWithPopup(auth, provider)
                 .then((result) => {
                   const email = result?.user?.email;
-                  debugger;
                   if (email) {
                     localStorage?.setItem("EmailForLogin", email);
                     // onLoginStateChange('loggedIn');
@@ -436,18 +435,11 @@ export const BookListButton = ({
 export const MarkList = ({
   initialDisplayCount,
   bookMarks,
-  typeMarks,
   marktitle,
   getMarks,
 }: {
   initialDisplayCount: number;
   bookMarks: any[];
-  typeMarks:
-    | "bookmark"
-    | "kalyanmark"
-    | "kalpatrumark"
-    | "geetgovindmark"
-    | "vivekmark";
   marktitle: string;
   getMarks: (value: any) => void;
 }) => {
@@ -459,30 +451,6 @@ export const MarkList = ({
 
   const showLessBooks = () => {
     setDisplayCount(initialDisplayCount); // Reset to initial display count
-  };
-
-  const getMarksType = (typeMarks: any, bookMarks: any) => {
-    let imgpath = "";
-    switch (typeMarks) {
-      case "bookmark":
-        imgpath = bookMarks?.path ?? DefaultBook;
-        break;
-      case "kalyanmark":
-        imgpath = bookMarks?.path ?? DefaultBook;
-        break;
-      case "kalpatrumark":
-        imgpath = bookMarks?.[0].path ?? DefaultBook;
-        break;
-      case "geetgovindmark":
-        imgpath = bookMarks?.[0].path ?? DefaultBook;
-        break;
-      case "vivekmark":
-        imgpath = bookMarks?.[0].path ?? DefaultBook;
-        break;
-      default:
-        imgpath = DefaultBook;
-    }
-    return imgpath;
   };
 
   return (
@@ -525,7 +493,7 @@ export const MarkList = ({
                             borderRadius: "5px",
                           }}
                           className="imgcenter"
-                          src={getMarksType(typeMarks, bookMarks)}
+                          src={mark.path}
                           onError={(e) => {
                             e.currentTarget.src = DefaultBook;
                           }}

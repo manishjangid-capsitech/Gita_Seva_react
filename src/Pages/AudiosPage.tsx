@@ -190,7 +190,6 @@ const AudiosPage = () => {
     AudiosService.addAudioFavourite(audioId).then((res) => {
       setAudios(
         audios?.map((a: any) => {
-          debugger
           if (a.id === res.result?.productId) {
             setIsLiked(true);
           }
@@ -205,7 +204,6 @@ const AudiosPage = () => {
     AudiosService.removeAudioFavourite(audioId).then((res) => {
       setAudios(
         audios?.map((a: any) => {
-          debugger
           if (a.id === audioId) {
             setIsLiked(false);
           }
@@ -566,7 +564,6 @@ const AudiosPage = () => {
                                     alt={audio.name}
                                     title={audio.name}
                                     onClick={() => {
-                                      debugger
                                       navigate(`/audios/` + audio.slug, {
                                         state: {
                                           audioId: audio.id,

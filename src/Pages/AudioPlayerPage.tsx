@@ -59,7 +59,6 @@ const AudioPlayerPage = ({ match }: any) => {
       Type
     ).then((res) => {
       if (res) {
-        debugger
         setIsMinismise(false);
         setAudiosList(res.result.items);
         playAudio(state?.audioId!, state?.index);

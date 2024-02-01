@@ -56,9 +56,7 @@ export const ProfileFav = () => {
   useEffect(() => {
     setRefresh(false);
     ProfileService.getfavData(0, 100).then((res: any) => {
-      debugger
-      console.log("res?.result?.bookMarks",res?.result);
-      
+      debugger;
       getBookMark(res?.result?.bookMarks);
       getKalyanMark(res?.result?.kalyanMarks);
       getKalpatruMark(res?.result?.kalyanKalpatarusMarks);
@@ -128,7 +126,7 @@ export const ProfileFav = () => {
       >
         <div className="containers" style={{ height: "" }}>
           <div className="row">
-              <ProfileSidePanel color={colors} />
+            <ProfileSidePanel color={colors} />
             <div className="col-9">
               <div
                 className="tab-pane fade show active"
@@ -143,7 +141,7 @@ export const ProfileFav = () => {
                 <div className="tab-row">
                   <div className="tabscroll">
                     <div
-                    className="row"
+                      className="row"
                       style={{ background: "#FFFAF0", padding: "15px 10px" }}
                     >
                       {/* <div className="col-3"></div> */}
@@ -165,7 +163,6 @@ export const ProfileFav = () => {
                       />
 
                       <MarkList
-                        typeMarks="bookmark"
                         initialDisplayCount={initialDisplayCount}
                         bookMarks={bookMark}
                         marktitle={t("book_mark_tr")}
@@ -196,7 +193,6 @@ export const ProfileFav = () => {
                       />
 
                       <MarkList
-                        typeMarks="kalyanmark"
                         initialDisplayCount={initialDisplayCount}
                         bookMarks={kalyanMark}
                         marktitle={t("Kalyan_mark_tr")}
@@ -227,7 +223,6 @@ export const ProfileFav = () => {
                       />
 
                       <MarkList
-                        typeMarks="kalpatrumark"
                         initialDisplayCount={initialDisplayCount}
                         bookMarks={kalpatruMark}
                         marktitle={t("Kalyan_Kalpataru_mark_tr")}
@@ -261,7 +256,6 @@ export const ProfileFav = () => {
                       />
 
                       <MarkList
-                        typeMarks="geetgovindmark"
                         initialDisplayCount={initialDisplayCount}
                         bookMarks={geetgovindMark}
                         marktitle={t("MonthlyMagazine_mark_tr")}
@@ -295,7 +289,6 @@ export const ProfileFav = () => {
                       />
 
                       <MarkList
-                        typeMarks="vivekmark"
                         initialDisplayCount={initialDisplayCount}
                         bookMarks={vivekMark}
                         marktitle={t("vivek_vani_mark_tr")}

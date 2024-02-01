@@ -85,7 +85,6 @@ const AudioPlayer = () => {
                       : currentAudio.pravachanUrl
                   }
                   onPlay={() => {
-                    debugger
                     setPlaying(true);
                   }}
                   onPause={() => {

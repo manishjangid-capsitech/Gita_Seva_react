@@ -616,7 +616,6 @@ const EpubPage = () => {
 
   useEffect(() => {
     showBKdata?.map((data: any) => {
-      // debugger
       setGetcfi(data.cfi);
       if (data.name === "undefined") {
         // setBookmarkName(Bookmark.index)
