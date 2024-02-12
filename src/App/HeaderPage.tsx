@@ -75,6 +75,9 @@ const HeaderPage = () => {
     i18n.changeLanguage(l);
     localStorage.setItem("lan", _get_i18Lang());
     localStorage.setItem("locale", l);
+
+      // changeLocale(localStorage.getItem("locale") === "en" ? "en" : "hi");
+  
     if (localStorage.getItem("locale") === "en") {
       $(".select-lang").removeClass("langwidth");
     } else {
@@ -310,7 +313,7 @@ const HeaderPage = () => {
                             changeLocale("en");
                             setSearchValue({
                               ...searchValue,
-                              language: "nglish",
+                              language: "English",
                             });
                           }}
                         >

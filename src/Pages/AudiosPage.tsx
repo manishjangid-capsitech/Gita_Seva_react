@@ -69,7 +69,11 @@ const AudiosPage = () => {
   };
   const UserIdentity = localStorage.getItem("UserId") as any;
   const location = useLocation();
-  const state = location.state as { authorId: string; authorName: string, type: string };
+  const state = location.state as {
+    authorId: string;
+    authorName: string;
+    type: string;
+  };
 
   function ResetData() {
     setCategoryId("");
@@ -157,6 +161,41 @@ const AudiosPage = () => {
   }, [isSelected]);
 
   useEffect(() => {
+    AudiosService.getAudios(
+      pagination.pageNo === 0
+        ? 0
+        : pagination.recordsPerPage * pagination.pageNo - 12,
+      pagination.recordsPerPage,
+      false,
+      "",
+      "",
+      "",
+      SortValue,
+      "",
+      false,
+      "audios",
+      undefined,
+      "",
+      "",
+      UserIdentity
+    ).then((res) => {
+      if (res?.status) {
+        setAudios(res.result?.items);
+        res?.result?.items?.map((item: any, i: number) => {
+          debugger;
+          AudiosService.removeAudioFavourite("5cff74ac2faf8a09082b5549").then(
+            (res) => {
+              debugger
+            setIsLiked(res?.result)
+              console.log(res?.result);
+            }
+          );
+        });
+      }
+    });
+  }, []);
+
+  useEffect(() => {
     setRefresh(false);
     setType("audios");
     AudiosService.getAudios(
@@ -187,7 +226,9 @@ const AudiosPage = () => {
   }, [refresh, SortValue, i18n.language]);
 
   const FavAudioAdd = (audioId: any) => {
+    debugger;
     AudiosService.addAudioFavourite(audioId).then((res) => {
+      debugger;
       setAudios(
         audios?.map((a: any) => {
           if (a.id === res.result?.productId) {
@@ -201,7 +242,9 @@ const AudiosPage = () => {
   };
 
   const FavAudioRemove = (audioId: any) => {
+    debugger
     AudiosService.removeAudioFavourite(audioId).then((res) => {
+      debugger
       setAudios(
         audios?.map((a: any) => {
           if (a.id === audioId) {
@@ -386,31 +429,31 @@ const AudiosPage = () => {
                         >
                           {Singer && Singer.length > 0
                             ? Singer?.map((Singer: any) => (
-                              <div
-                                key={`c-${Singer.id}`}
-                                className="Authorlist"
-                                onClick={() => {
-                                  setSingerId(Singer.id);
-                                }}
-                              >
-                                <ul style={{ margin: "5px 0 0 0" }}>
-                                  <li>
-                                    <div
-                                      style={{
-                                        fontSize: "21px",
-                                        cursor: "pointer",
-                                        fontWeight: 400,
-                                        color: "#545454",
-                                        fontFamily: "ChanakyaUni",
-                                      }}
-                                      id={`sin-${Singer.id}`}
-                                    >
-                                      {Singer.name}
-                                    </div>
-                                  </li>
-                                </ul>
-                              </div>
-                            ))
+                                <div
+                                  key={`c-${Singer.id}`}
+                                  className="Authorlist"
+                                  onClick={() => {
+                                    setSingerId(Singer.id);
+                                  }}
+                                >
+                                  <ul style={{ margin: "5px 0 0 0" }}>
+                                    <li>
+                                      <div
+                                        style={{
+                                          fontSize: "21px",
+                                          cursor: "pointer",
+                                          fontWeight: 400,
+                                          color: "#545454",
+                                          fontFamily: "ChanakyaUni",
+                                        }}
+                                        id={`sin-${Singer.id}`}
+                                      >
+                                        {Singer.name}
+                                      </div>
+                                    </li>
+                                  </ul>
+                                </div>
+                              ))
                             : ""}
                         </AccordionDetails>
                       </Accordion>
@@ -433,7 +476,7 @@ const AudiosPage = () => {
                             display: "block",
                             background: "#FFFAF0",
                             padding: 0,
-                            marginTop: "5px"
+                            marginTop: "5px",
                           }}
                         >
                           <div className="">
@@ -578,7 +621,8 @@ const AudiosPage = () => {
                                 </a>
                               </div>
                               <div style={{ width: "100%" }}>
-                                <a style={{ cursor: "pointer" }}
+                                <a
+                                  style={{ cursor: "pointer" }}
                                   onClick={() => {
                                     navigate(`/audios/` + audio.slug, {
                                       state: {
@@ -589,7 +633,8 @@ const AudiosPage = () => {
                                         audiocat: CategoryId,
                                       },
                                     });
-                                  }}>
+                                  }}
+                                >
                                   <p
                                     style={{
                                       fontSize: "25px",
@@ -600,14 +645,12 @@ const AudiosPage = () => {
                                   >
                                     <p>
                                       {audio.name != null &&
-                                        audio.name.length > 100
+                                      audio.name.length > 100
                                         ? audio.name.slice(0, 80) + "..."
                                         : audio.name}
                                     </p>
                                   </p>
-                                  <label>
-                                    {audio.description}
-                                  </label>
+                                  <label>{audio.description}</label>
                                   <label>{audio.audioLength}</label>
                                 </a>
                               </div>

@@ -5,7 +5,7 @@ class EpubService {
   aboutRoute = "/api/settings/aboutus?lang=";
   refreshtoken = "/api/user/refreshtoken?userId=";
   lastpositionRoute = "/api/user/";
-  savebkmark = "/api/user/bookmarks?bookId=";
+  savebkmark = "/api/user";
   removebkmark = "/api/user/bookmarks?bookId=";
   getbkmark = "/api/user/bookmarks?BookId=";
 
@@ -42,13 +42,13 @@ class EpubService {
   ) => {
     return ApiUtility.post(
       this.lastpositionRoute +
-      lstposition +
-      "?bookId=" +
-      bookId +
-      "&cfi=" +
-      last_cfi +
-      "&bookfontsize=" +
-      bookfontsize,
+        lstposition +
+        "?bookId=" +
+        bookId +
+        "&cfi=" +
+        last_cfi +
+        "&bookfontsize=" +
+        bookfontsize,
       {
         Headers: {
           "Content-Type": "application/json",
@@ -58,24 +58,46 @@ class EpubService {
     );
   };
 
-  savebookmark = (bookId: string, cfi: string, chaptername: string) =>
-    ApiUtility.post(this.savebkmark + bookId + '&cfi=' + cfi + '&chaptername=' + chaptername,
+  savebookmarkss = (bookId: string, cfi: string, chaptername: string) =>
+    ApiUtility.post(
+      this.savebkmark + bookId + "&cfi=" + cfi + "&chaptername=" + chaptername,
       {
         Headers: {
           authorization: localStorage.getItem("UserId"),
           Accept: "application/json",
         },
-      })
+      }
+    );
 
+  savebookmark = (
+    bookmarkposition: string,
+    bookId: string,
+    cfi: string,
+    chaptername: string
+  ) =>
+    ApiUtility.post(
+      this.lastpositionRoute +
+        bookmarkposition +
+        "?bookId=" +
+        bookId +
+        "&cfi=" +
+        cfi +
+        "&chaptername=" +
+        chaptername,
+      {
+        Headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+      }
+    );
   removebookmark(bookId: string, cfi: string) {
-    return ApiUtility.delete(this.removebkmark + bookId + "&cfi=" + cfi)
+    return ApiUtility.delete(this.removebkmark + bookId + "&cfi=" + cfi);
   }
 
   getbookmark = (bookId: string) => {
-    return ApiUtility.get(this.getbkmark + bookId)
-  }
-
-  // https://apidev.gitaseva.org/v1/api/user/bookmarks?BookId=bookid
+    return ApiUtility.get(this.getbkmark + bookId);
+  };
 
   getLastPosition(lstposition: string, bookId: string) {
     return ApiUtility.get(

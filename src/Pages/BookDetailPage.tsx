@@ -19,22 +19,6 @@ import { toast } from "react-toastify";
 import leftArrow from "../assets/img/leftArrow1.png";
 import rightArrow from "../assets/img/rightArrow1.png";
 
-export interface ISingleBook {
-  bookLanguageId: string;
-  bookLastPosition: string;
-  slug: string;
-  bookHash: string;
-  name: string;
-  id: string;
-  bookThumbPath: string;
-  author: string;
-  bookLanguage: string;
-  bookPath: string;
-  filePath: string;
-  isFavourite: boolean;
-  description: string;
-}
-
 const BookDetailPage = (props: any) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -43,7 +27,6 @@ const BookDetailPage = (props: any) => {
   const [relateds, setRelatedBooks] = useState<any[] | undefined>(undefined);
 
   const UserIdentity = localStorage.getItem("UserId") as any;
-  const UserToken = localStorage.getItem("Token") as any;
 
   const location = useLocation();
   const state = location.state as {
@@ -148,8 +131,8 @@ const BookDetailPage = (props: any) => {
   const bookdetails = JSON.parse(localStorage.getItem("bookdata") as any);
 
   const navigatestate = () => {
-    setLogIn(true); 
-    debugger;
+    debugger
+    setLogIn(true);
     loginState === "loggedIn" &&
       navigate(`/reader/books/` + bookdetails?.slug, {
         state: {
@@ -161,6 +144,44 @@ const BookDetailPage = (props: any) => {
         },
       });
   };
+
+
+  // useEffect(() => {
+  //   const openLoginDialog = async () => {
+  //     if (!userId) {
+  //       const dialogConfig = new MatDialogConfig();
+  //       dialogConfig.autoFocus = true;
+
+  //       const dialogRef = dialog.open(LogindialogComponent, dialogConfig);
+
+  //       const result = await dialogRef.afterClosed();
+
+  //       if (isPlatformBrowser()) {
+  //         setUserId(localStorage.getItem("userId"));
+
+  //         if (userId) {
+  //           if (task === "openbook") {
+  //             history.push(`/reader/books/${bookId}`);
+  //           } else if (task === "setfav") {
+  //             getBookDetail();
+
+  //             if (!isFavourite) {
+  //               bookFavAdd();
+  //             }
+  //           }
+  //         }
+  //       }
+  //     }
+  //   };
+
+  //   openLoginDialog();
+  // }, [userId, isFavourite, task, history]);
+
+
+  useEffect(() => {
+    debugger;
+    console.log("loginState", loginState);
+  }, [loginState]);
 
   useEffect(() => {
     BooksService.GetLanguageDataById(state?.langId).then((res) => {
@@ -409,7 +430,7 @@ const BookDetailPage = (props: any) => {
                           <p
                             style={{ cursor: "pointer", display: "inline" }}
                             onClick={() => {
-                              if (UserToken) {
+                              if (UserIdentity) {
                                 navigate(`/reader/books/` + bookDetail.slug, {
                                   state: {
                                     bookDetailId: bookDetail.id,
@@ -420,19 +441,6 @@ const BookDetailPage = (props: any) => {
                                   },
                                 });
                               } else {
-                                debugger;
-                                // setLogIn(true)
-
-                                // loginState === "loggedIn" &&
-                                //   navigate(`/reader/books/` + bookdetails?.slug, {
-                                //     state: {
-                                //       bookDetailId: bookdetails?.bookDetailId,
-                                //       bookName: bookdetails?.bookName,
-                                //       slug: bookdetails?.slug,
-                                //       label: bookdetails?.label,
-                                //       type: bookdetails?.type,
-                                //     },
-                                //   })
                                 var myObject = {
                                   bookDetailId: bookDetail?.id,
                                   bookName: bookDetail?.name,
@@ -451,13 +459,13 @@ const BookDetailPage = (props: any) => {
                             {t("Read_the_book_tr")}
                           </p>
                           <div
+                            className="notification-bar"
                             ref={notificationRef}
                             style={{
                               color: "#ff3d28",
                               fontSize: "20px",
                               marginTop: "10px",
                             }}
-                            className="notification-bar"
                           ></div>
                         </div>
                       </div>
@@ -652,9 +660,14 @@ const BookDetailPage = (props: any) => {
           </div>
         </div>
       </div>
+
       <LogInModel opens={logIn} onCloses={closeModal} />
-      {/* <LogInModel opens={logIn} onCloses={closeModal} onLoginStateChange={handleLoginStateChange} /> */}
+      {/* <LogInModel
+        opens={logIn}
+        onCloses={closeModal}
+        onLoginStateChange={handleLoginStateChange}
+      /> */}
     </div>
   );
 };
-export default BookDetailPage;
+export default BookDetailPage; 

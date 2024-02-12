@@ -86,38 +86,35 @@ const PravachansPage = () => {
   }
 
   const FavPravachanAdd = (audioId: any) => {
-
-  };
-
-  const toggleLike = (audioId: any, index: number) => {
-    !isLiked ?
-      AudiosService.addPravachanFavourite(audioId).then((res) => {
-        setAudios(
-          audios?.map((a: any) => {
-            if (a.id === res.result?.productId) {
-              setIsLiked(true);
-            }
-            return a;
-          })
-        );
-      })
-
-      : AudiosService.removePravachanFaviourite(audioId).then((res) => {
-        setAudios(
-          audios?.map((a: any) => {
-            if (a.id === audioId) {
-              setIsLiked(false);
-            }
-            return a;
-          })
-        );
-      });
-    setToggleFav((x) => !x);
+    debugger;
+    AudiosService.addPravachanFavourite(audioId).then((res) => {
+      debugger;
+      setAudios(
+        audios?.map((a: any) => {
+          if (a.id === res.result?.productId) {
+            setIsLiked(true);
+          }
+          return a;
+        })
+      );
+    });
     return;
   };
 
   const FavPravachanRemove = (audioId: any) => {
-
+    debugger;
+    AudiosService.removePravachanFaviourite(audioId).then((res) => {
+      debugger;
+      setAudios(
+        audios?.map((a: any) => {
+          if (a.id === res.result?.productId) {
+            setIsLiked(false);
+          }
+          return a;
+        })
+      );
+    });
+    return;
   };
 
   function ClickOnFilter(par: string, cat: string, lyric: string) {
@@ -211,14 +208,14 @@ const PravachansPage = () => {
       UserIdentity
     ).then((res) => {
       if (res.status) setAudios(res.result?.items);
-      setIsLiked(res?.result?.items[0].isFavourite);
+      setIsLiked(res?.result?.items);
       setPagination({
         ...pagination,
         // recordsPerPage: 12,
         totalRecords: res?.result?.totalRecords,
       });
     });
-  }, [SortValue, i18n.language, refresh, isLiked]);
+  }, [SortValue, i18n.language, refresh]);
 
   return (
     <>
@@ -421,7 +418,7 @@ const PravachansPage = () => {
                             height: 0,
                             background: "#FFFAF0",
                             minHeight: "20px",
-                            marginTop: "15px"
+                            marginTop: "15px",
                           }}
                         >
                           <h2 className="filtertitle">{t("Preacher_tr")}</h2>
@@ -436,31 +433,31 @@ const PravachansPage = () => {
                         >
                           {Preacher && Preacher.length > 0
                             ? Preacher?.map((preacher: any) => (
-                              <div
-                                key={`c-${preacher.id}`}
-                                className="CategoryList"
-                                onClick={() => {
-                                  setPreacherId(preacher.id);
-                                }}
-                              >
-                                <ul style={{ margin: 0 }}>
-                                  <li>
-                                    <div
-                                      style={{
-                                        fontSize: "21px",
-                                        cursor: "pointer",
-                                        fontWeight: 400,
-                                        color: "#545454",
-                                        fontFamily: "ChanakyaUni",
-                                      }}
-                                      id={`par-${preacher.id}`}
-                                    >
-                                      {preacher.name}
-                                    </div>
-                                  </li>
-                                </ul>
-                              </div>
-                            ))
+                                <div
+                                  key={`c-${preacher.id}`}
+                                  className="CategoryList"
+                                  onClick={() => {
+                                    setPreacherId(preacher.id);
+                                  }}
+                                >
+                                  <ul style={{ margin: 0 }}>
+                                    <li>
+                                      <div
+                                        style={{
+                                          fontSize: "21px",
+                                          cursor: "pointer",
+                                          fontWeight: 400,
+                                          color: "#545454",
+                                          fontFamily: "ChanakyaUni",
+                                        }}
+                                        id={`par-${preacher.id}`}
+                                      >
+                                        {preacher.name}
+                                      </div>
+                                    </li>
+                                  </ul>
+                                </div>
+                              ))
                             : ""}
                         </AccordionDetails>
                       </Accordion>
@@ -486,31 +483,31 @@ const PravachansPage = () => {
                         >
                           {Category && Category.length > 0
                             ? Category?.map((categorie: any) => (
-                              <div
-                                key={`c-${categorie.id}`}
-                                className="Authorlist"
-                                onClick={() => {
-                                  setCategoryId(categorie.id);
-                                }}
-                              >
-                                <ul style={{ margin: "5px 0 0 0   " }}>
-                                  <li>
-                                    <div
-                                      style={{
-                                        fontSize: "21px",
-                                        cursor: "pointer",
-                                        fontWeight: 400,
-                                        color: "#545454",
-                                        fontFamily: "ChanakyaUni",
-                                      }}
-                                      id={`aut-${categorie.id}`}
-                                    >
-                                      {categorie.name}
-                                    </div>
-                                  </li>
-                                </ul>
-                              </div>
-                            ))
+                                <div
+                                  key={`c-${categorie.id}`}
+                                  className="Authorlist"
+                                  onClick={() => {
+                                    setCategoryId(categorie.id);
+                                  }}
+                                >
+                                  <ul style={{ margin: "5px 0 0 0   " }}>
+                                    <li>
+                                      <div
+                                        style={{
+                                          fontSize: "21px",
+                                          cursor: "pointer",
+                                          fontWeight: 400,
+                                          color: "#545454",
+                                          fontFamily: "ChanakyaUni",
+                                        }}
+                                        id={`aut-${categorie.id}`}
+                                      >
+                                        {categorie.name}
+                                      </div>
+                                    </li>
+                                  </ul>
+                                </div>
+                              ))
                             : ""}
                         </AccordionDetails>
                       </Accordion>
@@ -671,7 +668,8 @@ const PravachansPage = () => {
                                 </a>
                               </div>
                               <div style={{ width: "100%" }}>
-                                <a style={{ cursor: "pointer", display: "grid" }}
+                                <a
+                                  style={{ cursor: "pointer", display: "grid" }}
                                   onClick={() => {
                                     navigate(`/pravachans/` + audio.slug, {
                                       state: {
@@ -682,7 +680,8 @@ const PravachansPage = () => {
                                         audiocat: CategoryId,
                                       },
                                     });
-                                  }}>
+                                  }}
+                                >
                                   <p
                                     style={{
                                       paddingTop: "3px",
@@ -697,15 +696,15 @@ const PravachansPage = () => {
                                   >
                                     <p>
                                       {audio.name != null &&
-                                        audio.name.length > 100
+                                      audio.name.length > 100
                                         ? audio.name.slice(0, 80) + "..."
                                         : audio.name}
                                     </p>
                                   </p>
-                                  <label>{t("Preacher_tr")}:  {audio.author}</label>
                                   <label>
-                                    {audio.description}
+                                    {t("Preacher_tr")}: {audio.author}
                                   </label>
+                                  <label>{audio.description}</label>
                                   <label>{audio.pravachanLength}</label>
                                 </a>
                               </div>
@@ -714,21 +713,41 @@ const PravachansPage = () => {
                                   if (!UserIdentity) setLogIn(true);
                                 }}
                               >
-                                <label
-                                  onClick={() => {
-                                    toggleLike(audio?.i, audio?.id);
-                                  }}
-                                >
-                                  <img
-                                    src={isLiked ? Favadd : Favicon}
-                                    alt="Favadd"
-                                    style={{
-                                      width: "36px",
-                                      marginRight: "8px",
-                                      marginTop: "2px",
+                                {audio?.isFavourite ? (
+                                  <label
+                                    id={`${audio.id}`}
+                                    onClick={() => {
+                                      FavPravachanRemove(audio?.id);
                                     }}
-                                  />
-                                </label>
+                                  >
+                                    <img
+                                      src={Favadd}
+                                      alt="Favadd"
+                                      style={{
+                                        width: "36px",
+                                        marginRight: "8px",
+                                        marginTop: "2px",
+                                      }}
+                                    />
+                                  </label>
+                                ) : (
+                                  <label
+                                    id={`${audio.id}`}
+                                    onClick={() => {
+                                      FavPravachanAdd(audio?.id);
+                                    }}
+                                  >
+                                    <img
+                                      src={Favicon}
+                                      alt="Favicon"
+                                      style={{
+                                        width: "36px",
+                                        marginRight: "8px",
+                                        marginTop: "2px",
+                                      }}
+                                    />
+                                  </label>
+                                )}
                               </div>
                               <div className="btns">
                                 <div className="buttonres">

@@ -19,7 +19,7 @@ import min from "../Images/min.svg";
 import reload from "../Images/refresh.svg";
 import close from "../Images/close.svg";
 import { useClickAnimation } from "./ClickEffectEpub";
-import "../Styles/ClickEffectEpub.css"
+import "../Styles/ClickEffectEpub.css";
 
 export enum BookContentType {
   books,
@@ -536,18 +536,75 @@ const EpubPage = () => {
   };
 
   const SaveBkMark = async () => {
-    let res = await EpubServices.savebookmark(
-      state?.bookDetailId ||
-        state?.kalyanDetailId ||
-        state?.kalpatrauDetailId ||
-        state?.magazineDetailId ||
+    if (state?.bookDetailId) {
+      let res = await EpubServices.savebookmark(
+        "bookmarks",
+        state?.bookDetailId,
+        location,
+        finalName
+      );
+      if (res) {
+        res.status && setBkmarkSaved(true);
+      }
+    } else if (state?.kalyanDetailId) {
+      let res = await EpubServices.savebookmark(
+        "kalyanbookmarks",
+        state?.kalyanDetailId,
+        location,
+        finalName
+      );
+      if (res) {
+        res.status && setBkmarkSaved(true);
+      }
+    } else if (state?.kalpatrauDetailId) {
+      let res = await EpubServices.savebookmark(
+        "kalyankalpatarubookmarks",
+        state?.kalpatrauDetailId,
+        location,
+        finalName
+      );
+      if (res) {
+        res.status && setBkmarkSaved(true);
+      }
+    } else if (state?.magazineDetailId) {
+      let res = await EpubServices.savebookmark(
+        "monthlymagazinebookmarks",
+        state?.magazineDetailId,
+        location,
+        finalName
+      );
+      if (res) {
+        res.status && setBkmarkSaved(true);
+      }
+    } else if(state?.vivekvaniDetailId) {
+      let res = await EpubServices.savebookmark(
+        "vivekvanimarks",
         state?.vivekvaniDetailId,
-      location,
-      finalName
-    );
-    if (res) {
-      res.status && setBkmarkSaved(true);
+        location,
+        finalName
+      );
+      if (res) {
+        res.status && setBkmarkSaved(true);
+      }
     }
+    // let res = await EpubServices.savebookmark(
+    //   "bookmarks" ||
+    //     "kalyanbookmarks" ||
+    //     "kalyankalpatarubookmarks" ||
+    //     "monthlymagazinebookmarks" ||
+    //     "vivekvanimarks",
+    //   state?.bookDetailId ||
+    //     state?.kalyanDetailId ||
+    //     state?.kalpatrauDetailId ||
+    //     state?.magazineDetailId ||
+    //     state?.vivekvaniDetailId,
+    //   location,
+    //   finalName
+    // );
+    // if (res) {
+    //   debugger;
+    //   res.status && setBkmarkSaved(true);
+    // }
   };
 
   function RemoveBkMark() {
@@ -622,6 +679,7 @@ const EpubPage = () => {
       }
     });
   }, [location]);
+
   const CurrentTheme = localStorage.getItem("epub-theme") as any;
   const [clickedButton, setClickedButton] = useState(null);
 
@@ -634,12 +692,11 @@ const EpubPage = () => {
 
   const cardRef = useRef() as any;
 
-
   useClickAnimation(cardRef, {
     color: "blue",
   });
 
-  const [wobble, setWobble] = useState<any>(0)
+  const [wobble, setWobble] = useState<any>(0);
 
   return (
     <div>
@@ -657,141 +714,140 @@ const EpubPage = () => {
           }}
         >
           <label style={{ fontSize: "larger" }}>
-            {state?.bookName} :{" "}
+            {state?.bookName} :
             {finalName === state?.titleName ? state?.titleName : finalName}
           </label>
         </div>
 
         <div className="p-2 bd-highlight col-example">
           <div style={{ flex: "100%", marginTop: "7px" }}>
-              <div style={{ flex: "100%", display: "flex" }}>
-                <div
-                  id="bookmark-list"
-                  style={{ border: "none" }}
-                  className="cardeffect"
-                  ref={cardRef}
-                  onClick={() => {
-                    setShowdata(showdata ? false : true);
-                  }}
-                ></div>
-                <div
-                  id="bkicon"
-                  // ref={cardRef}
-                  // className={`cardeffect ${bkmarkSaved ? "bookmarkicon-fill" : "bookmarkicon"}`}
-                  className={bkmarkSaved ? "bookmarkicon-fill" : "bookmarkicon"}
-                  onClick={() => {
-                    !bkmarkSaved ? SaveBkMark() : RemoveBkMark();
-                  }}
-                ></div>
-                <img
-                  alt=""
-                  onAnimationEnd={() => setWobble(0)}
-                  // wobble={wobble}
-                  style={{ width: "22px" }}
-                  src={min}
-                  onClick={() => {
-                    changeSize(Math.max(50, size - 10));
-                    setWobble(1)
-                  }}
-                />
-                <div
-                  style={{
-                    paddingLeft: "5px",
-                    paddingRight: "5px",
-                    fontSize: "18px",
-                  }}
-                >
-                  {size}%
-                </div>
-                <img
-                  alt="plus"                
-                  style={{ width: "22px", marginRight: "13px" }}
-                  src={plus}
-                  onClick={() => changeSize(Math.min(130, size + 10))}
-                />
-                <img
-                  alt="reload"
-                  style={{ width: "19px" }}
-                  src={reload}
-               
-                  onClick={() => {
-                    setTheme("#ffffff");
-                    setFontColor("#000000");
-                    clickOnTheme(false);
-                    setThemeColor("white");
-                    setSize(100);
-                  }}
-                />
-                <div
-                  className="icon-theme"
-                  onClickCapture={() => {
-                    clickOnTheme(true);
-                  }}
-                >
-                  <div id="theme">
-                    <div id="divTheme" className="col">
-                      <div className="row" style={{ margin: 0 }}>
-                        <a
-                          id="btnThemeWhite"
-                          className="theme-btn-white"
-                          onClick={() => {
-                            setThemeColor("white");
-                            setTheme("#ffffff");
-                            setFontColor("#000000");
-                            clickOnTheme(false);
-                          }}
-                        ></a>
-                      </div>
-                      <div className="row" style={{ margin: 0 }}>
-                        <a
-                          id="btnThemeIvory"
-                          className="theme-btn-ivory"
-                          onClick={() => {
-                            setThemeColor("ivory");
-                            setTheme("#fffcda");
-                            setFontColor("#000000");
-                            clickOnTheme(false);
-                          }}
-                        />
-                      </div>
-                      <div className="row" style={{ margin: 0 }}>
-                        <a
-                          id="btnThemeGrey"
-                          className="theme-btn-grey"
-                          onClick={() => {
-                            setThemeColor("grey");
-                            setTheme("#464646");
-                            setFontColor("#ffffff");
-                            clickOnTheme(false);
-                          }}
-                        />
-                      </div>
-                      <div className="row" style={{ margin: 0 }}>
-                        <a
-                          id="btnThemeBlack"
-                          className="theme-btn-black"
-                          onClick={() => {
-                            setThemeColor("black");
-                            clickOnTheme(false);
-                            setTheme("#000000");
-                            setFontColor("#ffffff");
-                          }}
-                        />
-                      </div>
+            <div style={{ flex: "100%", display: "flex" }}>
+              <div
+                id="bookmark-list"
+                style={{ border: "none" }}
+                className="cardeffect"
+                ref={cardRef}
+                onClick={() => {
+                  setShowdata(showdata ? false : true);
+                }}
+              ></div>
+              <div
+                id="bkicon"
+                // ref={cardRef}
+                // className={`cardeffect ${bkmarkSaved ? "bookmarkicon-fill" : "bookmarkicon"}`}
+                className={bkmarkSaved ? "bookmarkicon-fill" : "bookmarkicon"}
+                onClick={() => {
+                  !bkmarkSaved ? SaveBkMark() : RemoveBkMark();
+                }}
+              ></div>
+              <img
+                alt=""
+                onAnimationEnd={() => setWobble(0)}
+                // wobble={wobble}
+                style={{ width: "22px" }}
+                src={min}
+                onClick={() => {
+                  changeSize(Math.max(50, size - 10));
+                  setWobble(1);
+                }}
+              />
+              <div
+                style={{
+                  paddingLeft: "5px",
+                  paddingRight: "5px",
+                  fontSize: "18px",
+                }}
+              >
+                {size}%
+              </div>
+              <img
+                alt="plus"
+                style={{ width: "22px", marginRight: "13px" }}
+                src={plus}
+                onClick={() => changeSize(Math.min(130, size + 10))}
+              />
+              <img
+                alt="reload"
+                style={{ width: "19px" }}
+                src={reload}
+                onClick={() => {
+                  setTheme("#ffffff");
+                  setFontColor("#000000");
+                  clickOnTheme(false);
+                  setThemeColor("white");
+                  setSize(100);
+                }}
+              />
+              <div
+                className="icon-theme"
+                onClickCapture={() => {
+                  clickOnTheme(true);
+                }}
+              >
+                <div id="theme">
+                  <div id="divTheme" className="col">
+                    <div className="row" style={{ margin: 0 }}>
+                      <a
+                        id="btnThemeWhite"
+                        className="theme-btn-white"
+                        onClick={() => {
+                          setThemeColor("white");
+                          setTheme("#ffffff");
+                          setFontColor("#000000");
+                          clickOnTheme(false);
+                        }}
+                      ></a>
+                    </div>
+                    <div className="row" style={{ margin: 0 }}>
+                      <a
+                        id="btnThemeIvory"
+                        className="theme-btn-ivory"
+                        onClick={() => {
+                          setThemeColor("ivory");
+                          setTheme("#fffcda");
+                          setFontColor("#000000");
+                          clickOnTheme(false);
+                        }}
+                      />
+                    </div>
+                    <div className="row" style={{ margin: 0 }}>
+                      <a
+                        id="btnThemeGrey"
+                        className="theme-btn-grey"
+                        onClick={() => {
+                          setThemeColor("grey");
+                          setTheme("#464646");
+                          setFontColor("#ffffff");
+                          clickOnTheme(false);
+                        }}
+                      />
+                    </div>
+                    <div className="row" style={{ margin: 0 }}>
+                      <a
+                        id="btnThemeBlack"
+                        className="theme-btn-black"
+                        onClick={() => {
+                          setThemeColor("black");
+                          clickOnTheme(false);
+                          setTheme("#000000");
+                          setFontColor("#ffffff");
+                        }}
+                      />
                     </div>
                   </div>
                 </div>
-                <img
-                  alt="close"
-                  src={close}
-                  width="18px"
-                  style={{ cursor: "pointer" }}
-                  onClick={() => {
-                    saveLstPositionAndClose();
-                    closebutton();
-                  }}
-                />
               </div>
+              <img
+                alt="close"
+                src={close}
+                width="18px"
+                style={{ cursor: "pointer" }}
+                onClick={() => {
+                  saveLstPositionAndClose();
+                  closebutton();
+                }}
+              />
+            </div>
           </div>
         </div>
       </div>

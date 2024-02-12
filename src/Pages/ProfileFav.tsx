@@ -57,11 +57,13 @@ export const ProfileFav = () => {
     setRefresh(false);
     ProfileService.getfavData(0, 100).then((res: any) => {
       debugger;
+      console.log("res", res.result);
+
       getBookMark(res?.result?.bookMarks);
       getKalyanMark(res?.result?.kalyanMarks);
       getKalpatruMark(res?.result?.kalyanKalpatarusMarks);
       getGeetGovindMark(res?.result?.monthlyMagazinesMarks);
-      getVivekMark(res.result.vivekVaniMarks);
+      getVivekMark(res?.result?.vivekVaniMarks);
 
       getBookFav(res?.result?.books);
       getKalyan(res?.result?.kalyans);

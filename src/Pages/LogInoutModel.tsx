@@ -199,7 +199,7 @@ export const LogInModel: React.FC<LogInModalProps> = ({
                   const email = result?.user?.email;
                   if (email) {
                     localStorage?.setItem("EmailForLogin", email);
-                    // onLoginStateChange('loggedIn');
+                    // onLoginStateChange("loggedIn");
                     onClose();
                   }
                 })
@@ -292,6 +292,7 @@ export const LogInModel: React.FC<LogInModalProps> = ({
               <SignWithOtp />
             </div>
           </Modal>
+          
         </>
       )}
     </>
