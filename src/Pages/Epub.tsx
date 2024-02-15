@@ -18,7 +18,7 @@ import plus from "../Images/plus.svg";
 import min from "../Images/min.svg";
 import reload from "../Images/refresh.svg";
 import close from "../Images/close.svg";
-import { useClickAnimation } from "./ClickEffectEpub";
+// import { useClickAnimation } from "./ClickEffectEpub";
 import "../Styles/ClickEffectEpub.css";
 
 export enum BookContentType {
@@ -168,8 +168,7 @@ const EpubPage = () => {
       const { displayed, href } = renditionRef?.current?.location?.start;
       const chapter = tocRef?.current?.find((item: any) => item?.href === href);
       setPage(
-        `Page ${displayed?.page} of ${displayed?.total} in chapter ${
-          chapter ? chapter?.label : "n/a"
+        `Page ${displayed?.page} of ${displayed?.total} in chapter ${chapter ? chapter?.label : "n/a"
         }`
       );
       setFinalName(chapter ? chapter.label : undefined);
@@ -198,15 +197,15 @@ const EpubPage = () => {
   function GetLstPosition(bookId: string) {
     EpubServices.getLastPosition(
       "lastposition" ||
-        "kalyanlastposition" ||
-        "kalyankalpatarulastposition" ||
-        "monthlymagazinelastposition" ||
-        "vivekvanilastposition",
+      "kalyanlastposition" ||
+      "kalyankalpatarulastposition" ||
+      "monthlymagazinelastposition" ||
+      "vivekvanilastposition",
       state?.bookDetailId ||
-        state?.kalyanDetailId ||
-        state?.kalpatrauDetailId ||
-        state?.magazineDetailId ||
-        state?.vivekvaniDetailId
+      state?.kalyanDetailId ||
+      state?.kalpatrauDetailId ||
+      state?.magazineDetailId ||
+      state?.vivekvaniDetailId
     ).then((res) => {
       if (res.status) {
         if (res.result != null && res.result !== "") {
@@ -219,18 +218,18 @@ const EpubPage = () => {
   function saveLstPositionAndClose() {
     EpubServices.SaveLastPositionAndClose(
       "lastposition" ||
-        "kalyanlastposition" ||
-        "kalyankalpatarulastposition" ||
-        "monthlymagazinelastposition" ||
-        "vivekvanilastposition",
+      "kalyanlastposition" ||
+      "kalyankalpatarulastposition" ||
+      "monthlymagazinelastposition" ||
+      "vivekvanilastposition",
       state?.bookDetailId ||
-        state?.kalyanDetailId ||
-        state?.kalpatrauDetailId ||
-        state?.magazineDetailId ||
-        state?.vivekvaniDetailId,
+      state?.kalyanDetailId ||
+      state?.kalpatrauDetailId ||
+      state?.magazineDetailId ||
+      state?.vivekvaniDetailId,
       location,
       "100"
-    ).then((res) => {});
+    ).then((res) => { });
   }
 
   useEffect(() => {
@@ -547,6 +546,7 @@ const EpubPage = () => {
         res.status && setBkmarkSaved(true);
       }
     } else if (state?.kalyanDetailId) {
+      debugger
       let res = await EpubServices.savebookmark(
         "kalyanbookmarks",
         state?.kalyanDetailId,
@@ -576,7 +576,7 @@ const EpubPage = () => {
       if (res) {
         res.status && setBkmarkSaved(true);
       }
-    } else if(state?.vivekvaniDetailId) {
+    } else if (state?.vivekvaniDetailId) {
       let res = await EpubServices.savebookmark(
         "vivekvanimarks",
         state?.vivekvaniDetailId,
@@ -610,10 +610,10 @@ const EpubPage = () => {
   function RemoveBkMark() {
     EpubServices.removebookmark(
       state?.bookDetailId ||
-        state?.kalyanDetailId ||
-        state?.kalpatrauDetailId ||
-        state?.magazineDetailId ||
-        state?.vivekvaniDetailId,
+      state?.kalyanDetailId ||
+      state?.kalpatrauDetailId ||
+      state?.magazineDetailId ||
+      state?.vivekvaniDetailId,
       location
     ).then((res: any) => {
       res.status && setBkmarkSaved(false);
@@ -629,32 +629,93 @@ const EpubPage = () => {
 
   useEffect(() => {
     if (showdata) {
-      EpubServices.getbookmark(
-        state?.bookDetailId ||
-          state?.kalyanDetailId ||
-          state?.kalpatrauDetailId ||
-          state?.magazineDetailId ||
-          state?.vivekvaniDetailId
-      ).then((res: any) => {
-        if (res.status) {
-          setShowBKdata(res?.result);
-          {
-            res.result.length > 0
-              ? setLengthofbkm(true)
-              : setLengthofbkm(false);
+      if (state.bookDetailId) {
+        EpubServices.getbookmark(
+          "bookmarks",
+          state?.bookDetailId
+        ).then((res: any) => {
+          if (res.status) {
+            debugger
+            setShowBKdata(res?.result);
+            {
+              res.result.length > 0
+                ? setLengthofbkm(true)
+                : setLengthofbkm(false);
+            }
           }
-        }
-      });
+        });
+      }
+      if (state?.kalyanDetailId) {
+        EpubServices.getbookmark(
+          "kalyanbookmarks",
+          state?.kalyanDetailId
+        ).then((res: any) => {
+          if (res.status) {
+            debugger
+            setShowBKdata(res?.result);
+            {
+              res.result.length > 0
+                ? setLengthofbkm(true)
+                : setLengthofbkm(false);
+            }
+          }
+        });
+      }
+      if (state?.kalpatrauDetailId) {
+        EpubServices.getbookmark(
+          "kalyankalpatarubookmarks",
+          state?.kalpatrauDetailId
+        ).then((res: any) => {
+          if (res.status) {
+            setShowBKdata(res?.result);
+            {
+              res.result.length > 0
+                ? setLengthofbkm(true)
+                : setLengthofbkm(false);
+            }
+          }
+        });
+      }
+      if (state?.magazineDetailId) {
+        EpubServices.getbookmark(
+          "monthlymagazinebookmarks",
+          state?.magazineDetailId,
+        ).then((res: any) => {
+          if (res.status) {
+            setShowBKdata(res?.result);
+            {
+              res.result.length > 0
+                ? setLengthofbkm(true)
+                : setLengthofbkm(false);
+            }
+          }
+        });
+      }
+      if (state?.vivekvaniDetailId) {
+        EpubServices.getbookmark(
+          "vivekvanimarks",
+          state?.vivekvaniDetailId,
+        ).then((res: any) => {
+          if (res.status) {
+            setShowBKdata(res?.result);
+            {
+              res.result.length > 0
+                ? setLengthofbkm(true)
+                : setLengthofbkm(false);
+            }
+          }
+        });
+      }
     }
   }, [showdata]);
 
   const handleDelete = (dataCfi: any) => {
     EpubServices.removebookmark(
       state?.bookDetailId ||
-        state?.kalyanDetailId ||
-        state?.kalpatrauDetailId ||
-        state?.magazineDetailId ||
-        state?.vivekvaniDetailId,
+      state?.kalyanDetailId ||
+      state?.kalpatrauDetailId ||
+      state?.magazineDetailId ||
+      state?.vivekvaniDetailId,
       dataCfi
     ).then((res: any) => {
       res.status && setBkmarkSaved(false);
@@ -692,9 +753,9 @@ const EpubPage = () => {
 
   const cardRef = useRef() as any;
 
-  useClickAnimation(cardRef, {
-    color: "blue",
-  });
+  // useClickAnimation(cardRef, {
+  //   color: "blue",
+  // });
 
   const [wobble, setWobble] = useState<any>(0);
 
@@ -725,8 +786,8 @@ const EpubPage = () => {
               <div
                 id="bookmark-list"
                 style={{ border: "none" }}
-                className="cardeffect"
-                ref={cardRef}
+                // className="cardeffect"
+                // ref={cardRef}
                 onClick={() => {
                   setShowdata(showdata ? false : true);
                 }}

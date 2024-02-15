@@ -195,6 +195,7 @@ export const ContactPage = () => {
                     className="contactContent"
                     style={{
                       marginRight: "22px",
+                      marginBottom: "15px",
                       width: "-webkit-fill-available",
                     }}
                     onBlur={(e) => {
@@ -273,7 +274,7 @@ export const ContactPage = () => {
                 </div>
               </div>
               <div className="row" style={{ marginTop: "15px" }}>
-                <div className="col-lg-6 col-md-12 col-xs-12">
+                <div className="col-lg-6 col-md-12 col-xs-12" style={{ marginBottom: "15px" }}>
                   <input
                     name="email"
                     type="email"

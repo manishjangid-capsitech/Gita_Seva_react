@@ -53,12 +53,9 @@ export const ProfileFav = () => {
 
   const initialDisplayCount = 4;
 
-  useEffect(() => {
+  useEffect(() => { 
     setRefresh(false);
     ProfileService.getfavData(0, 100).then((res: any) => {
-      debugger;
-      console.log("res", res.result);
-
       getBookMark(res?.result?.bookMarks);
       getKalyanMark(res?.result?.kalyanMarks);
       getKalpatruMark(res?.result?.kalyanKalpatarusMarks);

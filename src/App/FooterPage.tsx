@@ -87,10 +87,10 @@ const FooterPage = () => {
                   <div key={author?.id}>
                     <NavLink
                       className="ftmenulink"
-                      to={"/author/"+author?.slug}
+                      to={"/author/" + author?.slug}
                       state={{ authorId: author.id, authorName: author.name, authorSlug: author?.slug }}
                       style={({ isActive }) => {
-                        return { color: isActive ? "#d11501" : "#472d1e"};
+                        return { color: isActive ? "#d11501" : "#472d1e" };
                       }}
                     >
                       <label
@@ -122,6 +122,7 @@ const FooterPage = () => {
                 >
                   {t("E_books_tr")}
                 </NavLink>
+                <p className="footermenucoma">,</p>
                 <NavLink
                   to="/articles"
                   className="ftmenulink"
@@ -145,6 +146,7 @@ const FooterPage = () => {
                 >
                   {t("Pravachan_tr")}
                 </NavLink>
+                <p className="footermenucoma">,</p>
                 <NavLink
                   to="/audios"
                   className="ftmenulink"
@@ -168,6 +170,7 @@ const FooterPage = () => {
                 >
                   {t("Kalyan_tr")}
                 </NavLink>
+                <p className="footermenucoma">,</p>
                 <NavLink
                   to="/kalyanskalpataru"
                   className="ftmenulink"

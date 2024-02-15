@@ -22,6 +22,12 @@ import leftArrow from "../assets/img/leftArrow1.png";
 import rightArrow from "../assets/img/rightArrow1.png"
 import "../Styles/slick.css"
 import styles from "../Styles/slick.module.css";
+import facebook from "../assets/img/facebook.png";
+import instagram from "../assets/img/instagram.png";
+import twitter from "../assets/img/twitter.png";
+import youtube from "../assets/img/youtube.png";
+import IosStore from "../assets/img/ios-app.png";
+import androidplaystore from "../assets/img/android-app.png";
 
 
 interface IArticleProps {
@@ -1213,6 +1219,107 @@ const HomePage = () => {
           </div>
         </div>
       </div>
+
+      {/* मोबाइल ऐप डाउनलोड */}
+      {/* <div className="section8 showOnMobile">
+        <a href="https://gitaseva.org/app">
+
+        </a>
+      </div>
+      <div className="section7" style={{ backgroundColor: "#fff0ce", padding: "5% 0" }}>
+        <div className="container">
+          <div className="row">
+            <div style={{
+              backgroundColor: "#fff",
+              width: "276px",
+              padding: "15px 10px",
+              borderRadius: "9px",
+              boxShadow: "0 0 10px 0 #d6d1d1",
+              margin: "0 auto",
+              textAlign: "center",
+              color: " #585858",
+              fontSize: "20px",
+              fontWeight: 700,
+            }}>
+              <i className="fa fa-download" style={{ color: "#ff9237", fontSize: "35px" }}> </i>
+              <p style={{ margin: 0 }}>{t("download_mobile_app_tr")}</p>
+            </div>
+            <div><ContactPage /></div>
+          </div>
+          <div className="row">
+            <div className="app-icon">
+              <div className="socialicons col-12" style={{ border: "none" }}>
+                <a
+                  href="https://www.facebook.com/gitasevaapp"
+                  target="_blank"
+                >
+                  <img alt="facebook" src={facebook} width="50px" />
+                </a>
+                <a
+                  href="https://www.instagram.com/gitasevaapp"
+                  target="_blank"
+                >
+                  <img alt="instagram" src={instagram} width="50px" />
+                </a>
+                <a href="https://twitter.com/gitasevaapp" target="_blank">
+                  <img alt="twitter" src={twitter} width="50px" />
+                </a>
+                <a
+                  href="https://www.youtube.com/gitasevaapp"
+                  target="_blank"
+                >
+                  <img alt="youtube" src={youtube} width="50px" />
+                </a>
+              </div>
+              <div className="col-12s">
+                <a
+                  href="https://itunes.apple.com/us/app/gita-seva-app/id1418594830"
+                  target="_blank"
+                >
+                  <img
+                    alt="ios-app"
+                    src={IosStore}
+                    style={{ marginBottom: "12px", paddingBottom: "12px" }}
+                  />
+                </a>
+                <br />
+                <a
+                  href="https://play.google.com/store/apps/details?id=ct.android.gitasevakotlin"
+                  target="_blank"
+                >
+                  <img alt="android-app" src={androidplaystore} />
+                </a>
+              </div>
+              <div
+                style={{
+                  textAlign: "center",
+                  color: "#3f220d",
+                  fontSize: "13px",
+                  fontFamily: "Arial",
+                  padding: "25px 0 5px 0",
+                  backgroundColor: "#fee3a3",
+                  borderTop: "1px solid #fff2d3",
+                }}
+              >
+                <p className="gst-copyright">
+                  © Copyright |
+                  <span style={{ color: "#fe7921" }}>Gita Seva Trust</span> | All
+                  Rights Reserved 2017 - currYear
+                  <span style={{ paddingLeft: "30%" }}>
+                    Web Developed & Managed By:
+                    <a
+                      href="http://www.capsitech.com/"
+                      style={{ textDecoration: "none", color: "inherit" }}
+                    >
+                      Capsitech
+                    </a>
+                  </span>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div > */}
     </>
   );
 };

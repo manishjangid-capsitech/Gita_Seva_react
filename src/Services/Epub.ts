@@ -91,12 +91,13 @@ class EpubService {
         },
       }
     );
+
   removebookmark(bookId: string, cfi: string) {
     return ApiUtility.delete(this.removebkmark + bookId + "&cfi=" + cfi);
   }
 
-  getbookmark = (bookId: string) => {
-    return ApiUtility.get(this.getbkmark + bookId);
+  getbookmark = (bookmarkposition: string, bookId: string) => {
+    return ApiUtility.get(this.lastpositionRoute + bookmarkposition + "?bookId=" + bookId);
   };
 
   getLastPosition(lstposition: string, bookId: string) {

@@ -494,6 +494,14 @@ img {
   margin-bottom: 10px;
   border-bottom: 1px solid #ffd78c;
   padding-bottom: 5px;
+  display: flex;
+}
+
+.footermenucoma {
+  margin-right: 10px;
+  margin-left: -10px;
+  margin-bottom: 0;
+  font-size: 20px;
 }
 
 .ftmenulink {
@@ -707,5 +715,176 @@ img {
     height: 200px;
   }
 
-  /* .homepagebg {} */
+   
+ /* homepage style for mobile and tablet screen */
+  /* @media (min-width: 1024px) and (max-width: 1279px) {
+    .hideOnMobile {
+      display: block !important;
+    }
+  
+    .app-icon {
+      padding-top: 15px;
+      float: right;
+      width: 16%;
+      text-align: center;
+    }
+  
+    .section5-right {
+      padding-left: 30px;
+    }
+  
+    .quick-submit .form-group {
+      width: 99%;
+      float: left;
+      margin-right: 0;
+    }
+  
+    .gst-header {
+      background: url("/assets/img/headerBG.png") no-repeat top;
+      height: 207px;
+    }
+  
+    .section1-left {
+      float: none !important;
+      width: 835px !important;
+      margin: 0 auto !important;
+      margin-top: -30px;
+    }
+  
+    .section1-right {
+      display: none;
+    }
+  
+    .containers {
+      max-width: 100%;
+      width: 100%;
+      margin: 0 auto;
+      padding-right: 15px !important;
+      padding-left: 15px !important;
+    }
+  
+    .gst-menubar ul li {
+      margin-left: 8px;
+    }
+  
+    .gst-menubar ul li::after {
+      padding-left: 10px;
+    }
+  
+    .section1 {
+      margin-top: -9%;
+    }
+  
+    .main-slider img {
+      width: 100%;
+    }
+  
+    .pravchan1 {
+      padding: 30px 18px;
+      width: 34%;
+    }
+  
+    .pravchan1 img {
+      margin-right: 15px;
+    }
+  
+    .pravchan1 p {
+      font-size: 22px;
+    }
+  
+    .pravchan2 {
+      font-size: 22px;
+      padding: 30px 44px 30px 68px;
+      width: 50%;
+    }
+  
+    .audio-box {
+      padding: 0 45px;
+    }
+  
+    .ebooks {
+      margin: 0 42px 45px;
+    }
+  
+    .gita-seva-trust img {
+      width: 100%;
+    }
+  
+    .page-content {
+      padding: 3% 0 0;
+    }
+  
+    .breadcrumbs {
+      top: 179px;
+    }
+  
+    .breadcrumbs h1 {
+      margin-left: 0;
+      margin-top: 4%;
+    }
+  
+    .intro-page-sidebar {
+      margin: 0;
+    }
+  
+    .intro-section2 {
+      margin-top: 0%;
+      padding-bottom: 100px;
+    }
+  
+    .discourse-page {
+      padding-bottom: 7%;
+    }
+  
+    .page-sidebar {
+      margin: 0;
+    }
+  
+    .audio-list li:last-child {
+      list-style-type: none;
+      margin-bottom: 0;
+      padding-bottom: 30px;
+      border-bottom: 1px solid #f3e5c5;
+    }
+  
+    .eb-seach form input {
+      width: 100%;
+    }
+  
+    .eb-filter select {
+      width: 100%;
+    }
+  
+    .eb-seach {
+      width: 25%;
+    }
+  
+    .eb-filter {
+      width: 22%;
+      padding-right: 0;
+    }
+  
+    .ebooksSidebar {
+      width: 31.33%;
+    }
+  
+    .ebboksContents {
+      width: 67%;
+    }
+  
+    .ebooks-category {
+      padding: 35px 16px;
+      width: 28%;
+      margin: 0 16px 60px;
+      height: 360px;
+    }
+  
+    .full-description {
+      padding: 0 0 25px;
+    }
+    .showOnMobile {
+      display: none;
+    }
+  } */
+
 }
