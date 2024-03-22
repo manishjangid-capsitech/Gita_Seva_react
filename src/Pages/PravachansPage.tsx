@@ -38,7 +38,6 @@ const PravachansPage = () => {
   const [Type, setType] = useState<any | undefined>(undefined);
   const [SortMonthValue, setSortMonthValue] = useState<string>("0");
   const [SortYearValue, setSortYearValue] = useState<string>("0");
-  const [isLiked, setIsLiked] = useState<boolean>(false);
 
   const [Lyrics, setLyrics] = useState<any>("");
   const [LyricsId, setLyricsId] = useState<any>("");
@@ -85,38 +84,6 @@ const PravachansPage = () => {
     setRefresh(true);
   }
 
-  const FavPravachanAdd = (audioId: any) => {
-    debugger;
-    AudiosService.addPravachanFavourite(audioId).then((res) => {
-      debugger;
-      setAudios(
-        audios?.map((a: any) => {
-          if (a.id === res.result?.productId) {
-            setIsLiked(true);
-          }
-          return a;
-        })
-      );
-    });
-    return;
-  };
-
-  const FavPravachanRemove = (audioId: any) => {
-    debugger;
-    AudiosService.removePravachanFaviourite(audioId).then((res) => {
-      debugger;
-      setAudios(
-        audios?.map((a: any) => {
-          if (a.id === res.result?.productId) {
-            setIsLiked(false);
-          }
-          return a;
-        })
-      );
-    });
-    return;
-  };
-
   function ClickOnFilter(par: string, cat: string, lyric: string) {
     setRefresh(false);
     setType("pravachans");
@@ -146,6 +113,11 @@ const PravachansPage = () => {
       }
     });
   }
+
+  // useEffect(() => {
+  //   debugger
+  //   console.log("location?.state", location?.state);
+  // }, [])
 
   useEffect(() => {
     if (SortYearValue === "0") {
@@ -207,8 +179,7 @@ const PravachansPage = () => {
       SortYearValue,
       UserIdentity
     ).then((res) => {
-      if (res.status) setAudios(res.result?.items);
-      setIsLiked(res?.result?.items);
+      if (res.status) setAudios(res.result?.items)
       setPagination({
         ...pagination,
         // recordsPerPage: 12,
@@ -433,37 +404,41 @@ const PravachansPage = () => {
                         >
                           {Preacher && Preacher.length > 0
                             ? Preacher?.map((preacher: any) => (
-                                <div
-                                  key={`c-${preacher.id}`}
-                                  className="CategoryList"
-                                  onClick={() => {
-                                    setPreacherId(preacher.id);
-                                  }}
-                                >
-                                  <ul style={{ margin: 0 }}>
-                                    <li>
-                                      <div
-                                        style={{
-                                          fontSize: "21px",
-                                          cursor: "pointer",
-                                          fontWeight: 400,
-                                          color: "#545454",
-                                          fontFamily: "ChanakyaUni",
-                                        }}
-                                        id={`par-${preacher.id}`}
-                                      >
-                                        {preacher.name}
-                                      </div>
-                                    </li>
-                                  </ul>
-                                </div>
-                              ))
+                              <div
+                                key={`c-${preacher.id}`}
+                                className="CategoryList"
+                                onClick={() => {
+                                  setPreacherId(preacher.id);
+                                }}
+                              >
+                                <ul style={{ margin: 0 }}>
+                                  <li>
+                                    <div
+                                      style={{
+                                        fontSize: "21px",
+                                        cursor: "pointer",
+                                        fontWeight: 400,
+                                        color: "#545454",
+                                        fontFamily: "ChanakyaUni",
+                                      }}
+                                      id={`par-${preacher.id}`}
+                                    >
+                                      {preacher.name}
+                                    </div>
+                                  </li>
+                                </ul>
+                              </div>
+                            ))
                             : ""}
                         </AccordionDetails>
                       </Accordion>
                       {/* Pravachanlist  */}
                       <Accordion elevation={0}>
                         <AccordionSummary
+                        // if (window?.location?.path === "/pravachans/author/honorable-shri-jayadayal-ji-goyandka") {
+                        //   defaultExpanded ? pravachans/author/honorable-shri-jayadayal-ji-goyandka
+                        //   defaultExpanded ? pravachans/author/honorable-shri-jayadayal-ji-goyandka
+                        // }
                           expandIcon={<ExpandMore />}
                           style={{
                             height: 0,
@@ -483,31 +458,31 @@ const PravachansPage = () => {
                         >
                           {Category && Category.length > 0
                             ? Category?.map((categorie: any) => (
-                                <div
-                                  key={`c-${categorie.id}`}
-                                  className="Authorlist"
-                                  onClick={() => {
-                                    setCategoryId(categorie.id);
-                                  }}
-                                >
-                                  <ul style={{ margin: "5px 0 0 0   " }}>
-                                    <li>
-                                      <div
-                                        style={{
-                                          fontSize: "21px",
-                                          cursor: "pointer",
-                                          fontWeight: 400,
-                                          color: "#545454",
-                                          fontFamily: "ChanakyaUni",
-                                        }}
-                                        id={`aut-${categorie.id}`}
-                                      >
-                                        {categorie.name}
-                                      </div>
-                                    </li>
-                                  </ul>
-                                </div>
-                              ))
+                              <div
+                                key={`c-${categorie.id}`}
+                                className="Authorlist"
+                                onClick={() => {
+                                  setCategoryId(categorie.id);
+                                }}
+                              >
+                                <ul style={{ margin: "5px 0 0 0   " }}>
+                                  <li>
+                                    <div
+                                      style={{
+                                        fontSize: "21px",
+                                        cursor: "pointer",
+                                        fontWeight: 400,
+                                        color: "#545454",
+                                        fontFamily: "ChanakyaUni",
+                                      }}
+                                      id={`aut-${categorie.id}`}
+                                    >
+                                      {categorie.name}
+                                    </div>
+                                  </li>
+                                </ul>
+                              </div>
+                            ))
                             : ""}
                         </AccordionDetails>
                       </Accordion>
@@ -696,7 +671,7 @@ const PravachansPage = () => {
                                   >
                                     <p>
                                       {audio.name != null &&
-                                      audio.name.length > 100
+                                        audio.name.length > 100
                                         ? audio.name.slice(0, 80) + "..."
                                         : audio.name}
                                     </p>
@@ -708,47 +683,7 @@ const PravachansPage = () => {
                                   <label>{audio.pravachanLength}</label>
                                 </a>
                               </div>
-                              <div
-                                onClick={() => {
-                                  if (!UserIdentity) setLogIn(true);
-                                }}
-                              >
-                                {audio?.isFavourite ? (
-                                  <label
-                                    id={`${audio.id}`}
-                                    onClick={() => {
-                                      FavPravachanRemove(audio?.id);
-                                    }}
-                                  >
-                                    <img
-                                      src={Favadd}
-                                      alt="Favadd"
-                                      style={{
-                                        width: "36px",
-                                        marginRight: "8px",
-                                        marginTop: "2px",
-                                      }}
-                                    />
-                                  </label>
-                                ) : (
-                                  <label
-                                    id={`${audio.id}`}
-                                    onClick={() => {
-                                      FavPravachanAdd(audio?.id);
-                                    }}
-                                  >
-                                    <img
-                                      src={Favicon}
-                                      alt="Favicon"
-                                      style={{
-                                        width: "36px",
-                                        marginRight: "8px",
-                                        marginTop: "2px",
-                                      }}
-                                    />
-                                  </label>
-                                )}
-                              </div>
+
                               <div className="btns">
                                 <div className="buttonres">
                                   <a

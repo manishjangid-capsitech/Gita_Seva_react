@@ -5,26 +5,13 @@ class EpubService {
   aboutRoute = "/api/settings/aboutus?lang=";
   refreshtoken = "/api/user/refreshtoken?userId=";
   lastpositionRoute = "/api/user/";
-  savebkmark = "/api/user";
+  savevivekvanibookmarks = "/api/user/vivekvanimarks?vivekvaniId=";
+  getvivekvanibookmarks = "/api/user/vivekvanimarks?vivekvaniId=";
+  removevanimark = "/api/user/vivekvanimarks?vivekvaniId=";
   removebkmark = "/api/user/bookmarks?bookId=";
   getbkmark = "/api/user/bookmarks?BookId=";
 
   get = (id: string) => ApiUtility.getResult(`${this.route}/${id}`);
-
-  getList = (
-    start: number,
-    length: number,
-    sortCol?: string,
-    sortDir?: string,
-    search?: string
-  ) =>
-    ApiUtility.get(this.route, {
-      start,
-      length,
-      sortCol,
-      sortDir,
-      search,
-    });
 
   getAboutData = (lang: string) => {
     return ApiUtility.get(this.aboutRoute + lang);
@@ -42,13 +29,13 @@ class EpubService {
   ) => {
     return ApiUtility.post(
       this.lastpositionRoute +
-        lstposition +
-        "?bookId=" +
-        bookId +
-        "&cfi=" +
-        last_cfi +
-        "&bookfontsize=" +
-        bookfontsize,
+      lstposition +
+      "?bookId=" +
+      bookId +
+      "&cfi=" +
+      last_cfi +
+      "&bookfontsize=" +
+      bookfontsize,
       {
         Headers: {
           "Content-Type": "application/json",
@@ -58,9 +45,21 @@ class EpubService {
     );
   };
 
-  savebookmarkss = (bookId: string, cfi: string, chaptername: string) =>
-    ApiUtility.post(
-      this.savebkmark + bookId + "&cfi=" + cfi + "&chaptername=" + chaptername,
+  savebookmark = (
+    bookmarkposition: string,
+    bookId: string,
+    cfi: string,
+    chaptername: string
+  ) => {
+    return ApiUtility.post(
+      this.lastpositionRoute +
+      bookmarkposition +
+      "?bookId=" +
+      bookId +
+      "&cfi=" +
+      cfi +
+      "&chaptername=" +
+      chaptername,
       {
         Headers: {
           authorization: localStorage.getItem("UserId"),
@@ -68,32 +67,40 @@ class EpubService {
         },
       }
     );
+  };
 
-  savebookmark = (
-    bookmarkposition: string,
+  savevivekvanimark = (
     bookId: string,
     cfi: string,
     chaptername: string
-  ) =>
-    ApiUtility.post(
-      this.lastpositionRoute +
-        bookmarkposition +
-        "?bookId=" +
-        bookId +
-        "&cfi=" +
-        cfi +
-        "&chaptername=" +
-        chaptername,
+  ) => {
+    return ApiUtility.post(
+      this.savevivekvanibookmarks +
+      bookId +
+      "&cfi=" +
+      cfi +
+      "&chaptername=" +
+      chaptername,
       {
         Headers: {
-          "Content-Type": "application/json",
+          authorization: localStorage.getItem("UserId"),
           Accept: "application/json",
         },
       }
     );
+  };
 
-  removebookmark(bookId: string, cfi: string) {
-    return ApiUtility.delete(this.removebkmark + bookId + "&cfi=" + cfi);
+  getvivekvanimark = (bookId: string) => {
+    return ApiUtility.get(this.getvivekvanibookmarks + bookId);
+  };
+
+  deletevivekmark(bookId: string, cfi: string) {
+    return ApiUtility.delete(this.removevanimark + bookId + "&cfi=" + cfi);
+  }
+
+
+  removebookmark(bookmarkposition: string, bookId: string, cfi: string) {
+    return ApiUtility.delete(this.lastpositionRoute + bookmarkposition + "?bookId=" + bookId + "&cfi=" + cfi);
   }
 
   getbookmark = (bookmarkposition: string, bookId: string) => {
@@ -101,8 +108,7 @@ class EpubService {
   };
 
   getLastPosition(lstposition: string, bookId: string) {
-    return ApiUtility.get(
-      this.lastpositionRoute + lstposition + "?bookId=" + bookId,
+    return ApiUtility.get(this.lastpositionRoute + lstposition + "?bookId=" + bookId,
       {
         Headers: {
           "Content-Type": "application/json",

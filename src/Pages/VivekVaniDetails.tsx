@@ -15,6 +15,8 @@ import { userId } from "../Contexts/LocaleContext";
 import "react-toastify/dist/ReactToastify.css";
 import { LogInModel } from "./LogInoutModel";
 import { toast } from "react-toastify";
+import EpubServices from "../Services/Epub";
+import closeicon from "../Images/close-round-border.svg"
 
 export interface ISingleBook {
   bookLanguageId: string;
@@ -40,6 +42,9 @@ const VivekvaniDetailPage = () => {
   const [relateds, setRelatedBooks] = useState<any[] | undefined>(undefined);
 
   const UserIdentity = localStorage.getItem("UserId") as any;
+
+  const [bookMark, setBookMark] = useState<boolean>(false)
+  const [bookMarkData, setBookMarkData] = useState<any[] | undefined | any>(undefined);
 
   const location = useLocation();
   const state = location.state as { vivekId: string; vivekName: string };
@@ -119,6 +124,18 @@ const VivekvaniDetailPage = () => {
       }
     );
   }, [refresh]);
+
+  useEffect(() => {
+    if (state?.vivekId) {
+      EpubServices.getvivekvanimark(
+        state?.vivekId,
+      ).then((res: any) => {
+        if (res.status) {
+          setBookMarkData(res?.result)
+        }
+      });
+    }
+  }, [refresh, userId])
 
   return (
     <div
@@ -247,7 +264,65 @@ const VivekvaniDetailPage = () => {
                               onClick={() => {
                                 if (!userId) setLogIn(true);
                               }}
+                              style={{ display: "flex", margin: 0 }}
                             >
+                              <label style={{ display: bookMarkData?.length > 0 ? "block" : "none", marginRight: "10px" }}>
+                                <div className="bkmarkicon"
+                                  onClick={() => {
+                                    setBookMark(bookMark === true ? false : true)
+                                  }}>
+                                  <div>
+                                    {bookMark && userId && (
+                                      <div style={{
+                                        position: "absolute",
+                                        backgroundColor: "#fff6e1",
+                                        padding: "10px 5px",
+                                        top: "56px",
+                                        width: "162px",
+                                        borderRadius: "5px",
+                                        display: "grid",
+                                        zIndex: 1,
+                                      }}>
+                                        <div style={{
+                                          display: "flex",
+                                          backgroundColor: "#ff6427"
+                                        }}>
+                                          <p
+                                            style={{
+                                              color: "#fff",
+                                              fontStyle: "normal",
+                                              lineHeight: "normal",
+                                              borderBottom: "none",
+                                              padding: "0 0 0 10%",
+                                              margin: 0,
+                                            }}>{t("bk_mark_tr")}</p>
+                                          <img src={closeicon} style={{ width: "20px", height: "20px", margin: "4px 0 0 10px", cursor: "pointer" }} onClick={() => setBookMark(false)} alt="" />
+                                        </div>
+                                        <ol style={{ paddingLeft: "20px" }}>
+                                          {bookMarkData && bookMarkData?.map((item: any, index: number) => (
+                                            <li onClick={() => {
+                                              navigate(
+                                                `/reader/vivekvanis/` + vaniDetail.slug,
+                                                {
+                                                  state: {
+                                                    vivekvaniDetailId: vaniDetail.id,
+                                                    bookName: vaniDetail.name,
+                                                    slug: vaniDetail.slug,
+                                                    location: item?.cfi,
+                                                    type: BookContentType.vivek,
+                                                  },
+                                                }
+                                              );
+                                            }}>
+                                              <p style={{ borderBottom: "none", padding: 0, margin: "0 0 0 5px", color: "#000", cursor: "pointer" }}>{item?.name}</p></li>
+                                          ))}
+                                        </ol>
+                                      </div>
+                                    )}
+                                  </div>
+                                </div>
+                              </label>
+
                               <label
                                 onClick={() => {
                                   toggleLike();

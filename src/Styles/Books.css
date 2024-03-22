@@ -156,13 +156,14 @@
 .bookBox p {
   overflow: hidden;
   margin-bottom: 0;
-  font-family: ChanakyaUni, NalandaTim, Tunga;
+  /* font-family: ChanakyaUni, NalandaTim, Tunga; */
   font-size: 17px;
   font-style: normal;
   font-weight: 600;
   color: #3f220d;
   margin: 13px 0 0;
   line-height: 18px;
+  font-family: ChanakyaUniBold, NalandaTim, Tunga;
 }
 
 .bookBox:hover p {

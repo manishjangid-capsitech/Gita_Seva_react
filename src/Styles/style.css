@@ -417,6 +417,7 @@ img {
   outline: none;
   font-style: normal;
   font-weight: 700;
+  font-family: 'ChanakyaUniBold';
 }
 
 .gst-menubar .hmenu li a.active,
@@ -715,8 +716,8 @@ img {
     height: 200px;
   }
 
-   
- /* homepage style for mobile and tablet screen */
+
+  /* homepage style for mobile and tablet screen */
   /* @media (min-width: 1024px) and (max-width: 1279px) {
     .hideOnMobile {
       display: block !important;

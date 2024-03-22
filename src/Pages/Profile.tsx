@@ -593,6 +593,18 @@ const Profile = () => {
                                 <button
                                   onClick={async () => {
                                     debugger
+                                    console.log("all user data--->", data.name, + "data",
+                                      data.email, + "data",
+                                      baseFile, + "data",
+                                      data.address1, + "data",
+                                      data.address2, + "data",
+                                      data.city, + "data",
+                                      data.state, + "data",
+                                      data.country, + "data",
+                                      data.countrytype, + "data",
+                                      data.pinCode, + "data",
+                                      data.language, + "data",
+                                      data.phoneNumber);
                                     await ProfileService.updateUserProfile(
                                       data.name,
                                       data.email,

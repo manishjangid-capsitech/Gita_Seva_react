@@ -12,6 +12,7 @@
 } */
 
 @media (min-width: 1200px) {
+
   .container,
   .container-lg,
   .container-md,
@@ -20,6 +21,7 @@
     max-width: 1226px !important;
   }
 }
+
 .card-gst {
   padding: 20px;
   background: #ffffff;
@@ -54,6 +56,12 @@
 
 label {
   display: inline-block;
+}
+
+.bkmarkicon {
+  background: url(../Images/Bookmark.svg) no-repeat;
+  height: 52px;
+  width: 52px;
 }
 
 .single-product-author p {
@@ -97,6 +105,7 @@ label {
   font-weight: 400;
   width: 27%;
 }
+
 .carouselSlideMain {
   width: 100%;
 }
@@ -198,11 +207,13 @@ label {
   .single-product-author {
     width: 300px;
   }
+
   .single-book-heading {
     border-bottom: 2px solid #ffe3a1;
     padding-bottom: 0px;
     margin-bottom: 5px;
   }
+
   .single-product-author p {
     font-size: 23px;
     font-style: normal;
@@ -213,6 +224,7 @@ label {
     margin: 0 0 5px;
   }
 }
+
 @media (min-width: 320px) and (max-width: 1000px) {
   .card-gst {
     padding: 20px;
@@ -221,6 +233,7 @@ label {
     height: 100%;
     font-family: ChanakyaUni !important;
   }
+
   .btntogl {
     text-align: center;
     z-index: 3;
@@ -230,12 +243,14 @@ label {
     right: 0;
     border: none;
   }
+
   .navtogl {
     width: 100%;
     justify-content: end;
     display: flex;
   }
 }
+
 @media (min-width: 576px) and (max-width: 768px) {
   .btntogl {
     text-align: center;
@@ -245,16 +260,19 @@ label {
     right: 12%;
     border: none;
   }
+
   .navtogl {
     width: 100%;
     justify-content: end;
     display: flex;
   }
 }
+
 @media (min-width: 1000px) {
   .single-product-author {
     float: right;
   }
+
   .single-product {
     float: left;
     margin-right: 0;

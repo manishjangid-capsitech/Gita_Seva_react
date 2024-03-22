@@ -18,8 +18,12 @@ import plus from "../Images/plus.svg";
 import min from "../Images/min.svg";
 import reload from "../Images/refresh.svg";
 import close from "../Images/close.svg";
-// import { useClickAnimation } from "./ClickEffectEpub";
 import "../Styles/ClickEffectEpub.css";
+import BooksService from "../Services/Books";
+import VivekService from "../Services/Vivekvani";
+import KalyansServices from "../Services/Kalyan";
+import KalpataruServices from "../Services/Kalpataru";
+import GeetGovindServices from "../Services/GeetGovind";
 
 export enum BookContentType {
   books,
@@ -105,7 +109,8 @@ const EpubPage = () => {
 
   const { t } = useTranslation();
 
-  const [bkmarkSaved, setBkmarkSaved] = useState<boolean>(false);
+  // const [bkmarkSaved, setBkmarkSaved] = useState<boolean>(false);
+  const [savedBookMark, setSavedBookMark] = useState<boolean>(false)
 
   const locationDetail = useLocation();
   const state = locationDetail?.state as {
@@ -155,16 +160,28 @@ const EpubPage = () => {
     // `${process.env.REACT_APP_API_URL}/api/VivekVanis/64de212fd06c418558f180f2/epubstrem/`
     //`http://localhost:55049/v1/api/VivekVanis/64de212fd06c418558f180f2/epubstrem/`
   );
-
+  // const sublocation = localStorage.getItem("location")
   const [location, setLocation] = useState<any>(undefined);
   const locationChanged = (epubcifi: any) => {
+    // debugger
+    // console.log("epubcifi", epubcifi);
+    // console.log("location", location);
+
+
     // epubcifi =
     // "epubcfi(/6/2[The-Secrets-of-Gita]!/4[The-Secrets-of-Gita]/2/2[toc_marker-1]/2/1:0)";
     // epubcifi is a internal string used by epubjs to point to a location in an epub.
     //  It looks like this: epubcfi(/6/6[titlepage]!/4/2/12[pgepubid00003]/3:0)
-    setLocation(epubcifi);
+    // setLocation
+    // if (epubcifi === "undefined") {
+    // setLocation(sublocation ? sublocation : epubcifi)
+    // }
+    // else {
+    setLocation(epubcifi)
+    // }
 
     if (renditionRef?.current && tocRef?.current) {
+      // debugger
       const { displayed, href } = renditionRef?.current?.location?.start;
       const chapter = tocRef?.current?.find((item: any) => item?.href === href);
       setPage(
@@ -174,6 +191,7 @@ const EpubPage = () => {
       setFinalName(chapter ? chapter.label : undefined);
     }
     if (tocRef.current) {
+      // debugger
       const chapterName = tocRef?.current.item;
       setFinalName(chapterName);
     }
@@ -543,10 +561,12 @@ const EpubPage = () => {
         finalName
       );
       if (res) {
-        res.status && setBkmarkSaved(true);
+        // debugger
+        // console.log("result", res.result);
+        res.status
+          && setSavedBookMark(true);
       }
     } else if (state?.kalyanDetailId) {
-      debugger
       let res = await EpubServices.savebookmark(
         "kalyanbookmarks",
         state?.kalyanDetailId,
@@ -554,7 +574,8 @@ const EpubPage = () => {
         finalName
       );
       if (res) {
-        res.status && setBkmarkSaved(true);
+        res.status
+        // && setBkmarkSaved(true);
       }
     } else if (state?.kalpatrauDetailId) {
       let res = await EpubServices.savebookmark(
@@ -564,7 +585,8 @@ const EpubPage = () => {
         finalName
       );
       if (res) {
-        res.status && setBkmarkSaved(true);
+        res.status
+        // && setBkmarkSaved(true);
       }
     } else if (state?.magazineDetailId) {
       let res = await EpubServices.savebookmark(
@@ -574,17 +596,18 @@ const EpubPage = () => {
         finalName
       );
       if (res) {
-        res.status && setBkmarkSaved(true);
+        res.status
+        //  && setBkmarkSaved(true);
       }
     } else if (state?.vivekvaniDetailId) {
-      let res = await EpubServices.savebookmark(
-        "vivekvanimarks",
+      let res = await EpubServices.savevivekvanimark(
         state?.vivekvaniDetailId,
         location,
         finalName
       );
       if (res) {
-        res.status && setBkmarkSaved(true);
+        res.status
+        // && setBkmarkSaved(true);
       }
     }
     // let res = await EpubServices.savebookmark(
@@ -608,16 +631,55 @@ const EpubPage = () => {
   };
 
   function RemoveBkMark() {
-    EpubServices.removebookmark(
-      state?.bookDetailId ||
-      state?.kalyanDetailId ||
-      state?.kalpatrauDetailId ||
-      state?.magazineDetailId ||
-      state?.vivekvaniDetailId,
-      location
-    ).then((res: any) => {
-      res.status && setBkmarkSaved(false);
-    });
+    if (state?.bookDetailId) {
+      EpubServices.removebookmark(
+        "bookmarks",
+        state?.bookDetailId,
+        location
+      ).then((res: any) => {
+        res.status
+        //  && setBkmarkSaved(false);
+      });
+    }
+    if (state?.kalyanDetailId) {
+      EpubServices.removebookmark(
+        "kalyanbookmarks",
+        state?.kalyanDetailId,
+        location
+      ).then((res: any) => {
+        res.status
+        // && setBkmarkSaved(false);
+      });
+    }
+    if (state?.kalpatrauDetailId) {
+      EpubServices.removebookmark(
+        "kalyankalpatarubookmarks",
+        state?.kalpatrauDetailId,
+        location
+      ).then((res: any) => {
+        res.status
+        // && setBkmarkSaved(false);
+      });
+    }
+    if (state?.magazineDetailId) {
+      EpubServices.removebookmark(
+        "monthlymagazinebookmarks",
+        state?.magazineDetailId,
+        location
+      ).then((res: any) => {
+        res.status
+        // && setBkmarkSaved(false);
+      });
+    }
+    if (state?.vivekvaniDetailId) {
+      EpubServices.deletevivekmark(
+        state?.vivekvaniDetailId,
+        location
+      ).then((res: any) => {
+        res.status
+        // && setBkmarkSaved(false);
+      });
+    }
   }
 
   const [showBKdata, setShowBKdata] = useState<bookmark[] | undefined>(
@@ -628,6 +690,15 @@ const EpubPage = () => {
   const [lengthofbkm, setLengthofbkm] = useState<boolean>(false);
 
   useEffect(() => {
+    // const getcurrectlocation = () => {
+    showBKdata?.map((savedbookmarks: any, index: number) => {
+      location === savedbookmarks.cfi ? setSavedBookMark(true) : setSavedBookMark(false)
+    })
+    // }
+
+  }, [location, showBKdata, savedBookMark, locationChanged, showdata, RemoveBkMark, SaveBkMark, GetLstPosition])
+
+  useEffect(() => {
     if (showdata) {
       if (state.bookDetailId) {
         EpubServices.getbookmark(
@@ -635,8 +706,20 @@ const EpubPage = () => {
           state?.bookDetailId
         ).then((res: any) => {
           if (res.status) {
-            debugger
             setShowBKdata(res?.result);
+            // {
+            //   res.result.map((savedbookmarks: any, index: number) => {
+            //     // debugger
+            //     // console.log("savedbookmarks", savedbookmarks.cfi);
+            //     // console.log("location--", location);
+
+            //     if (location === savedbookmarks.cfi) {
+            //       // debugger
+            //       setSavedBookMark(true)
+            //     }
+
+            //   })
+            // }
             {
               res.result.length > 0
                 ? setLengthofbkm(true)
@@ -651,7 +734,6 @@ const EpubPage = () => {
           state?.kalyanDetailId
         ).then((res: any) => {
           if (res.status) {
-            debugger
             setShowBKdata(res?.result);
             {
               res.result.length > 0
@@ -692,8 +774,7 @@ const EpubPage = () => {
         });
       }
       if (state?.vivekvaniDetailId) {
-        EpubServices.getbookmark(
-          "vivekvanimarks",
+        EpubServices.getvivekvanimark(
           state?.vivekvaniDetailId,
         ).then((res: any) => {
           if (res.status) {
@@ -707,39 +788,121 @@ const EpubPage = () => {
         });
       }
     }
-  }, [showdata]);
+  }, [showdata, showBKdata, RemoveBkMark, location]);
 
   const handleDelete = (dataCfi: any) => {
-    EpubServices.removebookmark(
-      state?.bookDetailId ||
-      state?.kalyanDetailId ||
-      state?.kalpatrauDetailId ||
-      state?.magazineDetailId ||
-      state?.vivekvaniDetailId,
-      dataCfi
-    ).then((res: any) => {
-      res.status && setBkmarkSaved(false);
-    });
+    if (state?.bookDetailId) {
+      EpubServices.removebookmark(
+        "bookmarks",
+        state?.bookDetailId,
+        dataCfi
+      ).then((res: any) => {
+        res.status
+        // && setBkmarkSaved(false);
+      });
+    }
+    if (state?.kalyanDetailId) {
+      EpubServices.removebookmark(
+        "kalyanbookmarks",
+        state?.kalyanDetailId,
+        dataCfi
+      ).then((res: any) => {
+        res.status
+        // && setBkmarkSaved(false);
+      });
+    }
+    if (state?.kalpatrauDetailId) {
+      EpubServices.removebookmark(
+        "kalyankalpatarubookmarks",
+        state?.kalpatrauDetailId,
+        dataCfi
+      ).then((res: any) => {
+        res.status
+        //  && setBkmarkSaved(false);
+      });
+    }
+    if (state?.magazineDetailId) {
+      EpubServices.removebookmark(
+        "monthlymagazinebookmarks",
+        state?.magazineDetailId,
+        dataCfi
+      ).then((res: any) => {
+        res.status
+        // && setBkmarkSaved(false);
+      });
+    }
+    if (state?.vivekvaniDetailId) {
+      EpubServices.deletevivekmark(
+        state?.vivekvaniDetailId,
+        dataCfi
+      ).then((res: any) => {
+        res.status
+        // && setBkmarkSaved(false);
+      });
+    }
   };
 
   const [getcfi, setGetcfi] = useState<string>("");
 
   const [isClicked, setIsClicked] = useState(false);
+  const [bookName, setBookName] = useState<string>("")
 
-  useEffect(() => {
-    console.log("bkmarkSaved", bkmarkSaved);
-    console.log("getcfi", getcfi);
-    getcfi === location ? setBkmarkSaved(true) : setBkmarkSaved(false);
-  }, [location, getcfi]);
 
   useEffect(() => {
     showBKdata?.map((data: any) => {
       setGetcfi(data.cfi);
+      if (location === data.cfi) {
+        // debugger
+        // setBkmarkSaved(true)
+      }
       if (data.name === "undefined") {
         // setBookmarkName(Bookmark.index)
       }
     });
   }, [location]);
+
+  useEffect(() => {
+    if (state?.bookDetailId) {
+      BooksService.getCurrentBook(
+        state?.bookDetailId,
+        ""
+      ).then((res: any) => {
+        setBookName(res?.result?.name)
+      });
+    }
+    if (state?.kalyanDetailId) {
+      KalyansServices.getcurrentKalyan(
+        state?.kalyanDetailId,
+        ""
+      ).then((res) => {
+        setBookName(res?.result?.name)
+      });
+    }
+    if (state?.kalpatrauDetailId) {
+      KalpataruServices.getcurrentKalpatarul(
+        state?.kalpatrauDetailId,
+        ""
+      ).then((res) => {
+        setBookName(res?.result?.name)
+      });
+    }
+    if (state?.magazineDetailId) {
+      GeetGovindServices.getcurrentMagazine(
+        state?.magazineDetailId,
+        ""
+      ).then((res) => {
+        setBookName(res?.result?.name)
+      });
+    }
+    if (state?.vivekvaniDetailId) {
+      VivekService.VikekDetailService(
+        state.vivekvaniDetailId,
+        ""
+      ).then((res: any) => {
+        setBookName(res?.result?.name)
+      });
+    }
+  }, [bookName]);
 
   const CurrentTheme = localStorage.getItem("epub-theme") as any;
   const [clickedButton, setClickedButton] = useState(null);
@@ -753,12 +916,11 @@ const EpubPage = () => {
 
   const cardRef = useRef() as any;
 
-  // useClickAnimation(cardRef, {
-  //   color: "blue",
-  // });
-
   const [wobble, setWobble] = useState<any>(0);
-
+  useEffect(() => {
+    // debugger
+    // console.log("locationchanged--------->", locationChanged);
+  }, [])
   return (
     <div>
       <div
@@ -775,7 +937,7 @@ const EpubPage = () => {
           }}
         >
           <label style={{ fontSize: "larger" }}>
-            {state?.bookName} :
+            {bookName ? bookName : state?.bookName} :
             {finalName === state?.titleName ? state?.titleName : finalName}
           </label>
         </div>
@@ -794,11 +956,10 @@ const EpubPage = () => {
               ></div>
               <div
                 id="bkicon"
-                // ref={cardRef}
-                // className={`cardeffect ${bkmarkSaved ? "bookmarkicon-fill" : "bookmarkicon"}`}
-                className={bkmarkSaved ? "bookmarkicon-fill" : "bookmarkicon"}
+                // className={bkmarkSaved ? "bookmarkicon-fill" : "bookmarkicon"}
+                className={savedBookMark ? "bookmarkicon-fill" : "bookmarkicon"}
                 onClick={() => {
-                  !bkmarkSaved ? SaveBkMark() : RemoveBkMark();
+                  !savedBookMark ? SaveBkMark() : RemoveBkMark();
                 }}
               ></div>
               <img
@@ -926,39 +1087,44 @@ const EpubPage = () => {
           >
             <ul className="bklistul" style={{ listStyle: "none" }}>
               {showBKdata &&
-                showBKdata?.map((data: any, index: number) => (
-                  <div
-                    style={{ display: "flex", justifyContent: "space-between" }}
-                    key={index}
-                  >
-                    <li
-                      className="bklistitem"
-                      key={data.id}
-                      onClick={() => {
-                        setLocation(data.cfi);
-                        setFinalName(data.name);
-                        setShowdata(false);
-                      }}
+                showBKdata?.map((data: any, index: number) => {
+                  // console.log("showBKdata", data);
+
+                  return (
+                    <div
+                      style={{ display: "flex", justifyContent: "space-between" }}
+                      key={index}
                     >
-                      {data?.name}
-                    </li>
-                    <label
-                      onClick={() => {
-                        handleDelete(data.cfi);
-                        setShowdata(false);
-                      }}
-                      className="bookmark_del fa fa-trash"
-                      style={{
-                        marginRight: "40px",
-                        color: "red",
-                        border: "none",
-                        background: "none",
-                        fontSize: "24px",
-                        cursor: "pointer",
-                      }}
-                    ></label>
-                  </div>
-                ))}
+                      <li
+                        className="bklistitem"
+                        key={data.id}
+                        onClick={() => {
+                          setLocation(data.cfi);
+                          setFinalName(data.name);
+                          setShowdata(false);
+                        }}
+                      >
+                        {data?.name}
+                      </li>
+                      <label
+                        onClick={() => {
+                          handleDelete(data.cfi);
+                          setShowdata(false);
+                        }}
+                        className="bookmark_del fa fa-trash"
+                        style={{
+                          marginRight: "40px",
+                          color: "red",
+                          border: "none",
+                          background: "none",
+                          fontSize: "24px",
+                          cursor: "pointer",
+                        }}
+                      ></label>
+                    </div>
+                  )
+                }
+                )}
             </ul>
           </div>
         ) : (

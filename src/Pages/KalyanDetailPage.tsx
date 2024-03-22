@@ -16,6 +16,8 @@ import { toast } from "react-toastify";
 import { LogInModel } from "./LogInoutModel";
 import leftArrow from "../assets/img/leftArrow1.png";
 import rightArrow from "../assets/img/rightArrow1.png"
+import closeicon from "../Images/close-round-border.svg"
+import EpubServices from "../Services/Epub";
 
 const KalyanDetailPage = (props: any) => {
   const { t } = useTranslation();
@@ -48,6 +50,9 @@ const KalyanDetailPage = (props: any) => {
   const UserIdentity = localStorage.getItem("UserId") as any;
 
   const [toggleFav, setToggleFav] = useState<boolean>(false);
+
+  const [bookMark, setBookMark] = useState<boolean>(false)
+  const [bookMarkData, setBookMarkData] = useState<any[] | undefined | any>(undefined);
 
   const notificationRef = useRef<any>(null);
 
@@ -116,6 +121,19 @@ const KalyanDetailPage = (props: any) => {
       });
     }
   }, [refresh, i18n.language, kalyanId]);
+
+  useEffect(() => {
+    if (state?.kalyanId) {
+      EpubServices.getbookmark(
+        "kalyanbookmarks",
+        state?.kalyanId
+      ).then((res: any) => {
+        if (res.status) {
+          setBookMarkData(res?.result)
+        }
+      });
+    }
+  }, [refresh, i18n.language, userId]);
 
   return (
     <div
@@ -233,7 +251,62 @@ const KalyanDetailPage = (props: any) => {
                             onClick={() => {
                               if (!userId) setLogIn(true);
                             }}
+                            style={{ display: "flex", margin: 0 }}
                           >
+                            <label style={{ display: bookMarkData?.length > 0 ? "block" : "none", marginRight: "10px" }}>
+                              <div className="bkmarkicon"
+                                onClick={() => {
+                                  setBookMark(bookMark === true ? false : true)
+                                }}>
+                                <div>
+                                  {bookMark && userId && (
+                                    <div style={{
+                                      position: "absolute",
+                                      backgroundColor: "#fff6e1",
+                                      padding: "10px 5px",
+                                      top: "56px",
+                                      width: "162px",
+                                      borderRadius: "5px",
+                                      display: "grid",
+                                      zIndex: 1,
+                                    }}>
+                                      <div style={{
+                                        display: "flex",
+                                        backgroundColor: "#ff6427"
+                                      }}>
+                                        <p
+                                          style={{
+                                            color: "#fff",
+                                            fontStyle: "normal",
+                                            lineHeight: "normal",
+                                            borderBottom: "none",
+                                            padding: "0 0 0 10%",
+                                            margin: 0,
+                                          }}>{t("bk_mark_tr")}</p>
+                                        <img src={closeicon} style={{ width: "20px", height: "20px", margin: "4px 0 0 10px", cursor: "pointer" }} onClick={() => setBookMark(false)} alt="" />
+                                      </div>
+                                      <ol style={{ paddingLeft: "20px" }}>
+                                        {bookMarkData && bookMarkData?.map((item: any, index: number) => (
+                                          <li onClick={() => {
+                                            navigate(`/reader/kalyans/` + kalyanDetail.slug, {
+                                              state: {
+                                                kalyanDetailId: kalyanDetail.id,
+                                                bookName: kalyanDetail.name,
+                                                slug: kalyanDetail.slug,
+                                                location: item?.cfi,
+                                                type: BookContentType.kalyans,
+                                              },
+                                            });
+                                          }}>
+                                            <p style={{ borderBottom: "none", padding: 0, margin: "0 0 0 5px", color: "#000", cursor: "pointer" }}>{item?.name}</p></li>
+                                        ))}
+                                      </ol>
+                                    </div>
+                                  )}
+                                </div>
+                              </div>
+                            </label>
+
                             <label
                               onClick={() => {
                                 toggleLike();

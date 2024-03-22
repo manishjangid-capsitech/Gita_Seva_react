@@ -53,9 +53,10 @@ export const ProfileFav = () => {
 
   const initialDisplayCount = 4;
 
-  useEffect(() => { 
+  useEffect(() => {
     setRefresh(false);
     ProfileService.getfavData(0, 100).then((res: any) => {
+      console.log("res.result", res?.result);
       getBookMark(res?.result?.bookMarks);
       getKalyanMark(res?.result?.kalyanMarks);
       getKalpatruMark(res?.result?.kalyanKalpatarusMarks);
@@ -166,7 +167,7 @@ export const ProfileFav = () => {
                         bookMarks={bookMark}
                         marktitle={t("book_mark_tr")}
                         getMarks={(bookMark) => {
-                          navigate(`/reader/books/` + bookMark.id, {
+                          navigate(`/reader/books/` + bookMark?.slug, {
                             state: {
                               bookDetailId: bookMark.id,
                               titleName: bookMark.name,

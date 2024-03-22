@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import HomeService from "../Services/Home";
 import i18n, { _get_i18Lang } from "../i18n";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, NavLink, Link } from "react-router-dom";
 import "../Styles/Home.css";
 import Slider from "react-slick";
 import AuthorsService from "../Services/Authors";
@@ -28,6 +28,16 @@ import twitter from "../assets/img/twitter.png";
 import youtube from "../assets/img/youtube.png";
 import IosStore from "../assets/img/ios-app.png";
 import androidplaystore from "../assets/img/android-app.png";
+import { ImageGroup, Image } from "react-fullscreen-image";
+import WithoutLyrics from "../Images/audiolyrics.svg";
+import WithLyrics from "../Images/audiowithoutlyrics.svg";
+import DefaultArticle from "../Images/article.svg";
+import imgdownload from "../assets/audioPlayer/img/gradient.svg";
+import $ from "jquery";
+import GeetGovindServices from "../Services/GeetGovind";
+import KalyansServices from "../Services/Kalyan";
+import KalpatsruServices from "../Services/Kalpataru";
+import VivekService from "../Services/Vivekvani";
 
 
 interface IArticleProps {
@@ -50,6 +60,9 @@ const HomePage = () => {
   const [specialBooks, setspecialBooks] = useState<Array<any> | undefined>(
     undefined
   );
+  const [quotes, setquotes] = useState<Array<any> | undefined>(
+    undefined
+  );
   const [specialAudios, setspecialAudios] = useState<Array<any> | undefined>(
     undefined
   );
@@ -69,6 +82,13 @@ const HomePage = () => {
   const [playing, setPlaying] = React.useState(false);
   const refAudio = React.useRef<HTMLAudioElement>(null);
   const refLrc = React.useRef<any>(null);
+  const [hoverId, setHoverId] = useState<number | string>();
+
+  const [magazineData, setMagazineData] = useState<any[] | undefined>(undefined);
+  const [kalyanData, setKalyanData] = useState<any[] | undefined>(undefined);
+  const [kalpatruData, setKalpatruData] = useState<any[] | undefined>(undefined);
+  const [vivekVaniData, setVivekVaniData] = useState<any[] | undefined>(undefined);
+
 
   const infinite = banners ? React.Children.count(banners.length) > 0 : false;
   const settings = {
@@ -292,9 +312,16 @@ const HomePage = () => {
     }
   }
 
+  function activetab(PId: string) {
+    $("#nav-tab > button").removeClass("active");
+    $("#" + PId + "-tab").addClass("active");
+    $("#nav-tabContent > div").removeClass("show active");
+    $("#" + PId).addClass("show active");
+  }
+
   useEffect(() => {
     HomeService.getHomeData(_get_i18Lang(), "").then((res) => {
-      if (res) {
+      if (res?.status) {
         setbanners(res.result?.banners);
         setspecialBooks(res.result?.specialBooks);
         setspecialAudios(res.result?.specialAudios);
@@ -303,6 +330,14 @@ const HomePage = () => {
       }
     });
   }, [refresh, i18n.language]);
+
+  useEffect(() => {
+    HomeService.getQuotesData(0, 6).then((res) => {
+      if (res?.status) {
+        setquotes(res?.result?.items)
+      }
+    })
+  }, [])
 
   useEffect(() => {
     setRefresh(false);
@@ -338,6 +373,83 @@ const HomePage = () => {
       new RabbitLyrics(refLrc.current, refAudio.current as any);
     }
   }, []);
+
+  useEffect(() => {
+    setRefresh(false);
+    GeetGovindServices.getMonthlyMagazine(
+      0,
+      5,
+      false,
+      "",
+      "",
+      "",
+      "0", //sort
+      "",
+      window.location.pathname === "/books/special" ? true : false
+    ).then((res) => {
+      if (res?.status) {
+        setMagazineData(res.result?.items);
+      }
+    })
+  }, [refresh, i18n.language]);
+
+  useEffect(() => {
+    setRefresh(false);
+    KalyansServices.getKalyans(
+      0,
+      5,
+      false,
+      "",
+      "",
+      "",
+      "0", //sort
+      "",
+      window.location.pathname === "/kalyans/special" ? true : false
+    ).then((res) => {
+      if (res) {
+        setKalyanData(res.result?.items);
+      }
+    });
+  }, [refresh, i18n.language]);
+
+  useEffect(() => {
+    setRefresh(false);
+    KalpatsruServices.getKalyansKalpataru(
+      0,
+      5,
+      false,
+      "",
+      "",
+      "",
+      "0", //sort
+      "",
+      window.location.pathname === "/books/special" ? true : false
+    ).then((res) => {
+      if (res) {
+        setKalpatruData(res.result?.items);
+      }
+    });
+  }, [refresh, i18n.language]);
+
+  useEffect(() => {
+    setRefresh(false);
+    VivekService.getVanis(
+      0,
+      5,
+      "",
+      false,
+      "2",
+      "",
+      "",
+      "",
+      window.location.pathname === "/vivekvani/special" ? true : false
+    ).then((res) => {
+      if (res.status) {
+        setVivekVaniData(res.result?.items);
+      }
+    });
+  }, [refresh, i18n.language]);
+
 
   return (
     <>
@@ -389,7 +501,7 @@ const HomePage = () => {
                       {banners && banners.length > 0
                         ? banners.map((banner: any) => (
                           <div
-                            key={`banner-${banner.id}`}
+                            key={banner.id}
                             style={{
                               height: "332px",
                               border: "1px solid #f3e2e2",
@@ -476,7 +588,7 @@ const HomePage = () => {
                         </div>
                         <audio
                           ref={refAudio}
-                          id="audios"
+                          id="audios01"
                           onPlay={() => {
                             setPlaying(true);
                           }}
@@ -631,13 +743,13 @@ const HomePage = () => {
                 >
                   <div className="homepagebg"></div>
                   <h2 className="messageheader">
-                    {t("AmritVachan_tr")}
+                    {t("Article_tr")}
                   </h2>
                   <div className="messagebox"
                   >
                     <div>
                       {messages?.map((message: any, index: number) => (
-                        <div key={`message-${message.id}`}>
+                        <div key={message.id}>
                           <div
                             style={{
                               height: "90px",
@@ -700,6 +812,57 @@ const HomePage = () => {
                           </div>
                         </div>
                       ))}
+                      {/* <div
+                        style={{
+                          // height: "90px",
+                          overflow: "hidden",
+                          marginBottom: "5px",
+                        }}
+                      >
+                        <ImageGroup>
+                          <ul className="homedivine row" style={{
+                            display: "flex",
+                            gridGap: "0",
+                            margin: "0 7px 0 0",
+                            listStyle: "none",
+                            // // grid-template-columns: repeat(auto-fit, minmax(200px, 1fr))gridView,
+                            // gridGap: "50px gridView",
+                            // listStyle: "insidegridView",
+                            // margin: "0 gridView",
+                            // padding: "0 gridView",
+                            // listStyleType: "none",
+                          }}>
+                            {quotes?.slice(0, 6)?.map((quotes: any, index: number) => (
+                              <li className="col-6" key={index} style={{
+                                // position: "relative",
+                                paddingTop: "46%"
+                              }}>
+                                <Image
+                                  src={quotes?.quotesPath}
+                                  alt="image"
+                                  // style={{ width: "90%" }}
+                                  style={{
+                                    width: "92%",
+                                    margin: 0,
+                                    padding: 0,
+                                    border: "2px solid #fff",
+                                    borderRadius: "10px",
+                                    // position: "absolute",
+                                    // top: 0,
+                                    // left: 0,
+                                    // right: 0,
+                                    // bottom: 0,
+                                    // width: "100%",
+                                    // objectFit: "cover",
+                                    // borderRadius: "7px"
+                                  }}
+                                />
+                              </li>
+                            ))}
+                          </ul>
+                        </ImageGroup>
+                      </div> */}
+
                       <div
                         className="p-subbutton">
                         <div
@@ -770,10 +933,11 @@ const HomePage = () => {
                               backgroundColor: "#ffcd44",
                             }}
                             onClick={() => {
-                              navigate(`/audios/author/` + author.id, {
+                              navigate(`/audios/author/` + author?.slug, {
                                 state: {
                                   authorId: author.id,
                                   authorName: author?.name,
+                                  authorSlug: author?.slug,
                                   type: "audios"
                                 },
                               });
@@ -788,10 +952,11 @@ const HomePage = () => {
                               backgroundColor: "#ffcd44",
                             }}
                             onClick={() => {
-                              navigate(`/pravachans/author/` + author.id, {
+                              navigate(`/pravachans/author/` + author?.slug, {
                                 state: {
                                   authorId: author.id,
                                   authorName: author?.name,
+                                  authorSlug: author?.slug,
                                 },
                               });
                             }}
@@ -835,9 +1000,728 @@ const HomePage = () => {
           </div>
         </div>
 
+        <section className="service-tabs clearfix">
+          <div className="container">
+            <div className="homeNav">
+              <nav>
+                <div className="nav nav-tabs" id="nav-tab" role="tablist">
+                  <button
+                    className="nav-link active"
+                    id="e-books-tab"
+                    data-bs-toggle="tab"
+                    data-bs-target="#e-books"
+                    type="button"
+                    role="tab"
+                    aria-controls="e-books"
+                    aria-selected="true"
+                    onClick={() => {
+                      activetab("e-books");
+                    }}
+                  >
+                    {t("E_books_tr")}
+                  </button>
+                  <button
+                    className="nav-link"
+                    id="audios-tab"
+                    data-bs-toggle="tab"
+                    data-bs-target="#audios"
+                    type="button"
+                    role="tab"
+                    aria-controls="audios"
+                    aria-selected="false"
+                    onClick={() => {
+                      activetab("audios");
+                    }}
+                  >
+                    {t("Audios_tr")}
+                  </button>
+                  <button
+                    className="nav-link"
+                    id="pravachans-tab"
+                    data-bs-toggle="tab"
+                    data-bs-target="#pravachans"
+                    type="button"
+                    role="tab"
+                    aria-controls="pravachans"
+                    aria-selected="false"
+                    onClick={() => {
+                      activetab("pravachans");
+                    }}
+                  >
+                    {t("Pravachan_tr")}
+                  </button>
+                  <button
+                    className="nav-link"
+                    id="articles-tab"
+                    data-bs-toggle="tab"
+                    data-bs-target="#articles"
+                    type="button"
+                    role="tab"
+                    aria-controls="articles"
+                    aria-selected="false"
+                    onClick={() => {
+                      activetab("articles");
+                    }}
+                  >
+                    {t("Article_tr")}
+                  </button>
+                  <button
+                    className="nav-link"
+                    id="divine-quotes-tab"
+                    data-bs-toggle="tab"
+                    data-bs-target="#divine-quotes"
+                    type="button"
+                    role="tab"
+                    aria-controls="divine-quotes"
+                    aria-selected="false"
+                    onClick={() => {
+                      activetab("divine-quotes");
+                    }}
+                  >
+                    {t("Amrit_Vachan_tr")}
+                  </button>
+                  <button
+                    className="nav-link"
+                    id="magazine-tab"
+                    data-bs-toggle="tab"
+                    data-bs-target="#magazine"
+                    type="button"
+                    role="tab"
+                    aria-controls="magazine"
+                    aria-selected="false"
+                    onClick={() => {
+                      activetab("magazine");
+                    }}
+                  >
+                    {t("magazine_tr")}
+                  </button>
+                </div>
+              </nav>
+              <div className="tab-content" id="nav-tabContent">
+                <div
+                  className="tab-pane fade show active"
+                  id="e-books"
+                  role="tabpanel"
+                  style={{ overflow: "hidden" }}
+                  aria-labelledby="e-books-tab"
+                >
+                  <div className="tab-row">
+                    <div className="tabscroll">
+                      {specialBooks?.map((specialbook) => {
+                        return (
+                          <div
+                            className="tab-col"
+                            key={specialbook.id}
+                          >
+                            <div
+                              className="tab-data-audios"
+                              style={{ cursor: "pointer" }}
+                            >
+                              <a
+                                onClick={() => {
+                                  navigate(`/books/special/` + specialbook.slug, {
+                                    state: {
+                                      bookId: specialbook.id,
+                                      bookName: specialbook.name,
+                                      bookSlug: specialbook?.slug,
+                                      pathname: window.location?.pathname,
+                                    },
+                                  });
+                                }}
+                              >
+                                <img
+                                  style={{
+                                    borderRadius: "5px",
+                                  }}
+                                  className="img-fluid"
+                                  src={specialbook.bookThumbPath || DefaultBook}
+                                  onError={(e) => {
+                                    e.currentTarget.src = DefaultBook;
+                                  }}
+                                  alt="E-books"
+                                  title={specialbook.name}
+                                  width="150"
+                                  height="212"
+                                />
+                                <p
+                                  className="mb-0 mt-3"
+                                  style={{ cursor: "pointer" }}
+                                >
+                                  {specialbook.name != null &&
+                                    specialbook.name.length > 30
+                                    ? specialbook.name.slice(0, 15) + "..."
+                                    : specialbook.name}
+                                  {/* {specialbook.name} */}
+                                </p>
+                              </a>
+                            </div>
+                          </div>
+                        )
+                      }
+                      )}
+                    </div>
+                  </div>
+                  <div className="text-center" style={{ marginBottom: "35px" }}>
+                    <Link
+                      to={`/books/special`}
+                      className="view-service-btn"
+                      style={{
+                        color: "#3D2B31",
+                        backgroundColor: "#ff4e2a",
+                        borderRadius: "5px",
+                        // color: "#fff",
+                        cursor: "pointer",
+                        fontFamily: "ChanakyaUni",
+                        fontSize: "22px",
+                        padding: "5px 12px",
+                      }}
+                    >
+                      {t("All_Special_E_books_tr")}
+                    </Link>
+                  </div>
+                </div>
+
+                <div
+                  className="tab-pane fade"
+                  id="audios"
+                  style={{ overflow: "hidden" }}
+                  role="tabpanel"
+                  aria-labelledby="audios-tab"
+                >
+
+                  <div className="tab-row">
+                    <div className="tabscroll">
+                      {specialAudios?.map((specialaudio, index: number) => {
+                        return (
+                          <div
+                            className="tab-col"
+                            key={specialaudio.id}
+                          >
+                            <div
+                              className="tab-data-audios"
+                              style={{ cursor: "pointer" }}
+                            >
+                              <a
+                                onClick={() => {
+                                  localStorage.setItem("type", "audios");
+                                  //navigate(`/audios/${audio.id}`);
+                                  navigate(`/audios/${specialaudio.slug}`, {
+                                    state: {
+                                      audioId: specialaudio.id,
+                                      audioslug: specialaudio.slug,
+                                      sorting: "0",
+                                      index: index,
+                                    },
+                                  });
+                                }}
+                              >
+                                <img
+                                  src={
+                                    specialaudio.lyricsHash != null
+                                      ? WithLyrics
+                                      : WithoutLyrics
+                                  }
+                                  onError={(e) => {
+                                    e.currentTarget.src = WithoutLyrics;
+                                  }}
+                                  style={{ cursor: "pointer" }}
+                                  alt="E-books"
+                                  title={specialaudio.name}
+                                  onClick={() => {
+                                    navigate(`/audios/${specialaudio.slug}`, {
+                                      state: {
+                                        audioId: specialaudio.id,
+                                        audioslug: specialaudio.slug,
+                                        sorting: "0",
+                                        index: index,
+                                      },
+                                    });
+                                  }}
+                                  className="img-fluid"
+                                />
+                                <p
+                                  className="mb-0 mt-3 text-break"
+                                  style={{ cursor: "pointer" }}
+                                >
+                                  {specialaudio.name != null &&
+                                    specialaudio.name.length > 25
+                                    ? specialaudio.name.slice(0, 20) + "..."
+                                    : specialaudio.name}
+                                  {/* {specialaudio.name} */}
+                                </p>
+                              </a>
+                            </div>
+                          </div>
+                        )
+                      }
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="text-center" style={{ marginBottom: "35px" }}>
+                    <Link
+                      to={`/audios/special`}
+                      className="view-service-btn"
+                      style={{
+                        color: "#3D2B31",
+                        backgroundColor: "#ff4e2a",
+                        borderRadius: "5px",
+                        // color: "#fff",
+                        cursor: "pointer",
+                        fontFamily: "ChanakyaUni",
+                        fontSize: "22px",
+                        padding: "5px 12px",
+                      }}
+                    >
+                      {t("All_Special_Audios_tr")}
+                    </Link>
+                  </div>
+                </div>
+
+                <div
+                  className="tab-pane fade"
+                  id="pravachans"
+                  style={{ overflow: "hidden" }}
+                  role="tabpanel"
+                  aria-labelledby="pravachans-tab"
+                >
+                  <div className="tab-row ">
+                    <div className="tabscroll">
+                      {specialPravachans?.map(
+                        (specialpravachan, index: number) => {
+                          return (
+                            <div
+                              className="tab-col"
+                              key={specialpravachan.id}
+                            >
+                              <div
+                                className="tab-data-audios"
+                                style={{ cursor: "pointer" }}
+                              >
+                                <a
+                                  onClick={() => {
+                                    localStorage.setItem("type", "pravachans");
+                                    //navigate(`/audios/${audio.id}`);
+                                    navigate(
+                                      `/audios/${specialpravachan.slug}`,
+                                      {
+                                        state: {
+                                          audioId: specialpravachan.id,
+                                          audioslug: specialpravachan.slug,
+                                          sorting: "0",
+                                          index: index,
+                                        },
+                                      }
+                                    );
+                                  }}
+                                >
+                                  <img
+                                    className="img-fluid"
+                                    src={
+                                      specialpravachan.lyricsHash != null
+                                        ? WithLyrics
+                                        : WithoutLyrics
+                                    }
+                                    onError={(e) => {
+                                      e.currentTarget.src = WithoutLyrics;
+                                    }}
+                                    alt="E-books"
+                                    title={specialpravachan.name}
+                                    onClick={() => {
+                                      //navigate(`/audios/${audio.id}`);
+                                      navigate(
+                                        `/pravachans/${specialpravachan.slug}`,
+                                        {
+                                          state: {
+                                            pravachanId: specialpravachan.id,
+                                            pravachanslug:
+                                              specialpravachan.slug,
+                                            sorting: "0",
+                                            index: index,
+                                          },
+                                        }
+                                      );
+                                    }}
+                                  />
+                                  <p
+                                    className="mb-0 mt-3"
+                                    style={{ cursor: "pointer" }}
+                                  >
+                                    {specialpravachan.name != null &&
+                                      specialpravachan.name.length > 30
+                                      ? specialpravachan.name.slice(0, 15) +
+                                      "..."
+                                      : specialpravachan.name}
+                                    {/* {specialpravachan.name} */}
+                                  </p>
+                                </a>
+                              </div>
+                            </div>
+                          )
+                        }
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="text-center" style={{ marginBottom: "35px" }}>
+                    <Link
+                      to={`/pravachans/special`}
+                      className="view-service-btn"
+                      style={{
+                        color: "#3D2B31",
+                        backgroundColor: "#ff4e2a",
+                        borderRadius: "5px",
+                        // color: "#fff",
+                        cursor: "pointer",
+                        fontFamily: "ChanakyaUni",
+                        fontSize: "22px",
+                        padding: "5px 12px",
+                      }}
+                    >
+                      {t("All_Special_Pravachan_tr")}
+                    </Link>
+                  </div>
+                </div>
+
+                <div
+                  className="tab-pane fade"
+                  id="articles"
+                  style={{ overflow: "hidden" }}
+                  role="tabpanel"
+                  aria-labelledby="articles-tab"
+                >
+                  <div className="tab-row" style={{ display: "flex", padding: "20px 0 35px 0" }}>
+                    {/* <div className="tabscroll"> */}
+                    {specialArticles?.map((specialarticle) => {
+                      return (
+                        <div
+                          className="tab-col"
+                          key={specialarticle.id}
+                        >
+                          <div
+                            className="tab-data-audios"
+                            style={{ cursor: "pointer" }}
+                          >
+                            <a
+                              onClick={() => {
+                                navigate(`/articles/special/` + specialarticle.slug, {
+                                  state: {
+                                    articleId: specialarticle.id,
+                                    articleName: specialarticle.name,
+                                    articleSlug: specialarticle?.slug,
+                                    special: window.location.pathname
+                                  },
+                                });
+                              }}
+                            >
+                              <img
+                                className="img-fluid"
+                                src={
+                                  (specialarticle.lyricsHash = DefaultArticle)
+                                }
+                                onError={(e) => {
+                                  e.currentTarget.src = DefaultArticle;
+                                }}
+                                alt="E-books"
+                                title={specialarticle.name}
+                              />
+                              <p className="mb-0 mt-3">
+                                {specialarticle.name.length > 50 ? ".." : ""}
+                                {specialarticle.name}
+                              </p>
+                            </a>
+                          </div>
+                        </div>
+                      )
+                    }
+                    )}
+                  </div>
+
+                  <div className="text-center" style={{ margin: "25px 0 25px 0" }}>
+                    <Link
+                      to={`/articles/special`}
+                      className="view-service-btn"
+                      style={{
+                        color: "#3D2B31",
+                        backgroundColor: "#ff4e2a",
+                        borderRadius: "5px",
+                        // color: "#fff",
+                        cursor: "pointer",
+                        fontFamily: "ChanakyaUni",
+                        fontSize: "22px",
+                        padding: "5px 12px",
+                      }}
+                    >
+                      {t("All_Special_Article_tr")}
+                    </Link>
+                  </div>
+                </div>
+
+                <div
+                  className="tab-pane fade"
+                  id="divine-quotes"
+                  role="tabpanel"
+                  // style={{ overflow: "hidden" }}
+                  aria-labelledby="divine-quotes-tab"
+                >
+                  <div
+                    className="gst-page-content "
+                    style={{ gridGap: "26px !important" }}
+                  >
+                    <ImageGroup>
+                      <ul className="images bgcolor">
+                        {quotes
+                          ?.slice(0, 4)
+                          ?.map((divquote: any, index: number) => {
+                            return (
+                              <li key={divquote?.id}>
+                                <Image
+                                  src={divquote?.quotesPath}
+                                  alt="image"
+                                  style={{ width: "90%" }}
+                                  onMouseEnter={() => {
+                                    setHoverId(index);
+                                  }}
+                                  onMouseLeave={() => setHoverId("")}
+                                />
+                                {hoverId === index && (
+                                  <a
+                                    onMouseEnter={() => {
+                                      setHoverId(index);
+                                    }}
+                                    onMouseLeave={() => setHoverId("")}
+                                    id="download"
+                                    href={
+                                      `${process.env.REACT_APP_API_URL}/api/Quotes/` +
+                                      divquote.id +
+                                      "/quote?t=" +
+                                      "&download_attachment=true"
+                                    }
+                                    title="Download"
+                                    style={{ cursor: "pointer" }}
+                                  >
+                                    <img
+                                      alt="imgdownload"
+                                      src={imgdownload}
+                                      className="img-fluid"
+                                      style={{
+                                        height: "40px",
+                                        width: "40px",
+                                        margin: "10px",
+                                      }}
+                                    />
+                                  </a>
+                                )}
+                              </li>
+                            )
+                          }
+                          )}
+                      </ul>
+                    </ImageGroup>
+                  </div>
+                  <div className="text-center" style={{ margin: "30px 0 10px 0" }}>
+                    <Link
+                      to={`/divinequote`}
+                      className="view-service-btn"
+                      style={{
+                        color: "#3D2B31",
+                        backgroundColor: "#ff4e2a",
+                        borderRadius: "5px",
+                        // color: "#fff",
+                        cursor: "pointer",
+                        fontFamily: "ChanakyaUni",
+                        fontSize: "22px",
+                        padding: "5px 12px",
+                      }}
+                    >
+                      {t("All_divineQuotes_tr")}
+                    </Link>
+                  </div>
+                </div>
+
+                <div
+                  className="tab-pane fade"
+                  id="magazine"
+                  style={{ overflow: "hidden" }}
+                  role="tabpanel"
+                  aria-labelledby="magazine-tab"
+                >
+                  <div className="tab-row" style={{
+                    textAlign: "center", display: "flex", justifyContent: "center", padding: "20px 0 35px 0"
+                  }}>
+                    {magazineData?.slice(0, 1)?.map((geetgovind) => {
+                      return (
+                        <div
+                          className="tab-col"
+                          key={geetgovind.id}
+                        >
+                          <div
+                            className="tab-data-magazine"
+                          >
+                            <a
+                              onClick={() => {
+                                navigate(`/monthlymagazine`)
+                              }}
+                            >
+                              <img
+                                className="img-fluid"
+                                src={
+                                  (geetgovind.monthlyMagazinePath)
+                                }
+                                onError={(e) => {
+                                  e.currentTarget.src = DefaultArticle;
+                                }}
+                                alt="geetgovind"
+                                title={geetgovind.name}
+                                style={{ borderRadius: "5px", width: "150px", height: "212px" }}
+                              />
+                              <p className="mb-0 mt-3" style={{ fontFamily: "ChanakyaUniBold", fontSize: "20px", lineHeight: "22px", textAlign: "center" }}>
+                                {geetgovind.name.length > 50 ? ".." : ""}
+                                {geetgovind.name}
+                              </p>
+                            </a>
+                          </div>
+                        </div>
+                      )
+                    }
+                    )}
+                    {kalyanData?.slice(0, 1)?.map((kalyan) => {
+                      return (
+                        <div
+                          className="tab-col"
+                          key={kalyan.id}
+                        >
+                          <div
+                            className="tab-data-magazine"
+                            style={{ cursor: "pointer" }}
+                          >
+                            <a
+                              onClick={() => {
+                                navigate(`/kalyans`);
+                              }}
+                            >
+                              <img
+                                className="img-fluid"
+                                src={
+                                  (kalyan.kalyanThumbPath)
+                                }
+                                onError={(e) => {
+                                  e.currentTarget.src = DefaultArticle;
+                                }}
+                                alt="kalyan"
+                                title={kalyan.name}
+                                style={{ borderRadius: "5px", width: "150px", height: "212px" }}
+                              />
+                              <p className="mb-0 mt-3" style={{ fontFamily: "ChanakyaUniBold", fontSize: "20px", lineHeight: "22px", textAlign: "center" }}>
+                                {kalyan.name.length > 50 ? ".." : ""}
+                                {kalyan.name}
+                              </p>
+                            </a>
+                          </div>
+                        </div>
+                      )
+                    })}
+                    {kalpatruData?.slice(0, 1)?.map((kalpatru) => {
+                      return (
+                        <div
+                          className="tab-col"
+                          key={kalpatru.id}
+                        >
+                          <div
+                            className="tab-data-magazine"
+                            style={{ cursor: "pointer" }}
+                          >
+                            <a
+                              onClick={() => {
+                                navigate(`/kalyanskalpataru`);
+                              }}
+                            >
+                              <img
+                                className="img-fluid"
+                                src={
+                                  (kalpatru.kalyanKalpataruThumbPath)
+                                }
+                                onError={(e) => {
+                                  e.currentTarget.src = DefaultArticle;
+                                }}
+                                alt="kalpatru"
+                                title={kalpatru.name}
+                                style={{ borderRadius: "5px", width: "150px", height: "212px" }}
+                              />
+                              <p className="mb-0 mt-3" style={{ fontFamily: "ChanakyaUniBold", fontSize: "20px", lineHeight: "22px", textAlign: "center" }}>
+                                {kalpatru.name.length > 50 ? ".." : ""}
+                                {kalpatru.name}
+                              </p>
+                            </a>
+                          </div>
+                        </div>
+                      )
+                    })}
+                    {vivekVaniData?.slice(0, 1)?.map((vivekvani) => {
+                      return (
+                        <div
+                          className="tab-col"
+                          key={vivekvani.id}
+                        >
+                          <div
+                            className="tab-data-magazine"
+                            style={{ cursor: "pointer" }}
+                          >
+                            <a
+                              onClick={() => {
+                                navigate(`/vivekvani`);
+                              }}
+                            >
+                              <img
+                                className="img-fluid"
+                                src={
+                                  (vivekvani.vivekVaniThumbPath)
+                                }
+                                onError={(e) => {
+                                  e.currentTarget.src = DefaultArticle;
+                                }}
+                                alt="vivekvani"
+                                title={vivekvani.name}
+                                style={{ borderRadius: "5px", width: "150px", height: "212px" }}
+                              />
+                              <p className="mb-0 mt-3" style={{ fontFamily: "ChanakyaUniBold", fontSize: "20px", lineHeight: "22px", textAlign: "center" }}>
+                                {vivekvani.name.length > 50 ? ".." : ""}
+                                {vivekvani.name}
+                              </p>
+                            </a>
+                          </div>
+                        </div>
+                      )
+                    })}
+                  </div>
+                  {/* <div className="text-center" style={{ margin: "25px 0 25px 0" }}>
+                    <Link
+                      to={`/articles`}
+                      className="view-service-btn"
+                      style={{
+                        color: "#3D2B31",
+                        backgroundColor: "#ff4e2a",
+                        borderRadius: "5px",
+                        // color: "#fff",
+                        cursor: "pointer",
+                        fontFamily: "ChanakyaUni",
+                        fontSize: "22px",
+                        padding: "5px 12px",
+                      }}
+                    >
+                      {t("All_Special_Article_tr")}
+                    </Link>
+                  </div> */}
+                </div>
+              </div>
+            </div>
+          </div>
+        </section >
+
+
         {/* विशेष ई-पुस्तकें */}
 
-        <div
+        {/* <div
           className="newcontainer"
           style={{ margin: "2% 0 0", height: "550px" }}
         >
@@ -911,11 +1795,11 @@ const HomePage = () => {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
 
         {/* विशेष ऑडियो */}
 
-        <div
+        {/* <div
           className="newcontainer"
           style={{
             marginTop: "0px",
@@ -1019,11 +1903,11 @@ const HomePage = () => {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
 
         {/* विशेष प्रवचन */}
 
-        <div
+        {/* <div
           className="newcontainer"
           style={{
             marginTop: "0px",
@@ -1124,11 +2008,11 @@ const HomePage = () => {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
 
         {/* विशेष अनमोल लेख */}
 
-        <div
+        {/* <div
           className="newcontainer"
           style={{
             marginTop: "0px",
@@ -1209,7 +2093,8 @@ const HomePage = () => {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
+
         <div
           className="newcontainer"
           style={{ backgroundColor: "#fff0ce", marginTop: 0, paddingBottom: "40px" }}
@@ -1218,109 +2103,8 @@ const HomePage = () => {
             <ContactPage />
           </div>
         </div>
-      </div>
-
-      {/* मोबाइल ऐप डाउनलोड */}
-      {/* <div className="section8 showOnMobile">
-        <a href="https://gitaseva.org/app">
-
-        </a>
-      </div>
-      <div className="section7" style={{ backgroundColor: "#fff0ce", padding: "5% 0" }}>
-        <div className="container">
-          <div className="row">
-            <div style={{
-              backgroundColor: "#fff",
-              width: "276px",
-              padding: "15px 10px",
-              borderRadius: "9px",
-              boxShadow: "0 0 10px 0 #d6d1d1",
-              margin: "0 auto",
-              textAlign: "center",
-              color: " #585858",
-              fontSize: "20px",
-              fontWeight: 700,
-            }}>
-              <i className="fa fa-download" style={{ color: "#ff9237", fontSize: "35px" }}> </i>
-              <p style={{ margin: 0 }}>{t("download_mobile_app_tr")}</p>
-            </div>
-            <div><ContactPage /></div>
-          </div>
-          <div className="row">
-            <div className="app-icon">
-              <div className="socialicons col-12" style={{ border: "none" }}>
-                <a
-                  href="https://www.facebook.com/gitasevaapp"
-                  target="_blank"
-                >
-                  <img alt="facebook" src={facebook} width="50px" />
-                </a>
-                <a
-                  href="https://www.instagram.com/gitasevaapp"
-                  target="_blank"
-                >
-                  <img alt="instagram" src={instagram} width="50px" />
-                </a>
-                <a href="https://twitter.com/gitasevaapp" target="_blank">
-                  <img alt="twitter" src={twitter} width="50px" />
-                </a>
-                <a
-                  href="https://www.youtube.com/gitasevaapp"
-                  target="_blank"
-                >
-                  <img alt="youtube" src={youtube} width="50px" />
-                </a>
-              </div>
-              <div className="col-12s">
-                <a
-                  href="https://itunes.apple.com/us/app/gita-seva-app/id1418594830"
-                  target="_blank"
-                >
-                  <img
-                    alt="ios-app"
-                    src={IosStore}
-                    style={{ marginBottom: "12px", paddingBottom: "12px" }}
-                  />
-                </a>
-                <br />
-                <a
-                  href="https://play.google.com/store/apps/details?id=ct.android.gitasevakotlin"
-                  target="_blank"
-                >
-                  <img alt="android-app" src={androidplaystore} />
-                </a>
-              </div>
-              <div
-                style={{
-                  textAlign: "center",
-                  color: "#3f220d",
-                  fontSize: "13px",
-                  fontFamily: "Arial",
-                  padding: "25px 0 5px 0",
-                  backgroundColor: "#fee3a3",
-                  borderTop: "1px solid #fff2d3",
-                }}
-              >
-                <p className="gst-copyright">
-                  © Copyright |
-                  <span style={{ color: "#fe7921" }}>Gita Seva Trust</span> | All
-                  Rights Reserved 2017 - currYear
-                  <span style={{ paddingLeft: "30%" }}>
-                    Web Developed & Managed By:
-                    <a
-                      href="http://www.capsitech.com/"
-                      style={{ textDecoration: "none", color: "inherit" }}
-                    >
-                      Capsitech
-                    </a>
-                  </span>
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div > */}
+      </div >
     </>
-  );
+  )
 };
 export default HomePage;

@@ -40,7 +40,7 @@ const FooterPage = () => {
 
   useEffect(() => {
     setRefresh(false);
-    changeLocale(localStorage.getItem("locale") === "hi" ? "hi" : "en");
+    changeLocale(localStorage.getItem("locale") === "en" ? "en" : "hi");
   }, [refresh]);
 
   function menuid(menuname: string) {
@@ -65,7 +65,7 @@ const FooterPage = () => {
 
   useEffect(() => {
     setRefresh(false);
-    changeLocale(localStorage.getItem("locale") === "hi" ? "hi" : "en");
+    changeLocale(localStorage.getItem("locale") === "en" ? "en" : "hi");
     // localStorage.setItem("author_Id", "5bbc60101fd2d735b0087d36");
     $(".footer-menu > ul > li > a").removeClass("listActive");
     $("#menu_" + localStorage.getItem("MId")).addClass("listActive");

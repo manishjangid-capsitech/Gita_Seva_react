@@ -12,6 +12,8 @@ import Favempty from "../assets/img/fav.png";
 import { BookContentType } from "./Epub";
 import { toast } from "react-toastify";
 import { LogInModel } from "./LogInoutModel";
+import EpubServices from "../Services/Epub";
+import closeicon from "../Images/close-round-border.svg"
 
 const GeetGovindDetailPage = (props: any) => {
   const { t } = useTranslation();
@@ -30,6 +32,9 @@ const GeetGovindDetailPage = (props: any) => {
   };
 
   const [toggleFav, setToggleFav] = useState<boolean>(false);
+
+  const [bookMark, setBookMark] = useState<boolean>(false)
+  const [bookMarkData, setBookMarkData] = useState<any[] | undefined | any>(undefined);
 
   const UserIdentity = localStorage.getItem("UserId") as any;
 
@@ -89,6 +94,19 @@ const GeetGovindDetailPage = (props: any) => {
       });
     }
   }, [refresh, i18n.language, MagzineId]);
+
+  useEffect(() => {
+    if (state?.MonthId) {
+      EpubServices.getbookmark(
+        "monthlymagazinebookmarks",
+        state?.MonthId,
+      ).then((res: any) => {
+        if (res.status) {
+          setBookMarkData(res?.result)
+        }
+      })
+    }
+  }, [])
 
   return (
     <div
@@ -214,7 +232,67 @@ const GeetGovindDetailPage = (props: any) => {
                               onClick={() => {
                                 if (!UserIdentity) setLogIn(true);
                               }}
+
+                              style={{ display: "flex", margin: 0 }}
                             >
+                              <label style={{ display: bookMarkData?.length > 0 ? "block" : "none", marginRight: "10px" }}>
+                                <div className="bkmarkicon"
+                                  onClick={() => {
+                                    setBookMark(bookMark === true ? false : true)
+                                  }}>
+                                  <div>
+                                    {bookMark && UserIdentity && (
+                                      <div style={{
+                                        position: "absolute",
+                                        backgroundColor: "#fff6e1",
+                                        padding: "10px 5px",
+                                        top: "56px",
+                                        width: "162px",
+                                        borderRadius: "5px",
+                                        display: "grid",
+                                        zIndex: 1,
+                                      }}>
+                                        <div style={{
+                                          display: "flex",
+                                          backgroundColor: "#ff6427"
+                                        }}>
+                                          <p
+                                            style={{
+                                              color: "#fff",
+                                              fontStyle: "normal",
+                                              lineHeight: "normal",
+                                              borderBottom: "none",
+                                              padding: "0 0 0 10%",
+                                              margin: 0,
+                                            }}>{t("bk_mark_tr")}</p>
+                                          <img src={closeicon} style={{ width: "20px", height: "20px", margin: "4px 0 0 10px", cursor: "pointer" }} onClick={() => setBookMark(false)} alt="" />
+                                        </div>
+                                        <ol style={{ paddingLeft: "20px" }}>
+                                          {bookMarkData && bookMarkData?.map((item: any, index: number) => (
+                                            <li onClick={() => {
+                                              navigate(
+                                                `/reader/monthlymagazine/` +
+                                                magzineDetail.slug,
+                                                {
+                                                  state: {
+                                                    magazineDetailId: magzineDetail.id,
+                                                    bookName: magzineDetail.name,
+                                                    slug: magzineDetail.slug,
+                                                    location: item?.cfi,
+                                                    type: BookContentType.magazine,
+                                                  },
+                                                }
+                                              );
+                                            }}>
+                                              <p style={{ borderBottom: "none", padding: 0, margin: "0 0 0 5px", color: "#000", cursor: "pointer" }}>{item?.name}</p></li>
+                                          ))}
+                                        </ol>
+                                      </div>
+                                    )}
+                                  </div>
+                                </div>
+                              </label>
+
                               <label
                                 onClick={() => {
                                   toggleLike();
@@ -291,7 +369,7 @@ const GeetGovindDetailPage = (props: any) => {
           <LogInModel opens={logIn} onCloses={closeModal} />
         </div>
       </div>
-    </div>
+    </div >
   );
 };
 export default GeetGovindDetailPage;

@@ -7,17 +7,18 @@ class HomeServices {
   messageRoute = "/api/messages?lang=";
   messageIdRoute = "/api/articles/";
   allauthorRoute = "/api/Authors/5bbc60101fd2d735b0087d36?lang=";
-  quotesRoute = "/api/Quotes?usefor=2&start=0&length=5";
+  quotesRoute = "/api/Quotes?usefor=2";
   contactRoute = "/api/Settings/contactus";
   // contactRoute= "/api/Settings/contactuswithdevicedetails";
   sendfeedback = "/api/settings/contactus"
 
   get = (id: string) => ApiUtility.getResult(`${this.route}/${id}`);
 
-  GetHomeData = (lang: string, userid: string) =>{ 
-    return ApiUtility.get (this.homeRoute +   lang +
-    localStorage.getItem("u+serId")
-  )}  
+  // GetHomeData = (lang: string, userid: string) => {
+  //   return ApiUtility.get(this.homeRoute + lang +
+  //     localStorage.getItem("u+serId")
+  //   )
+  // }
 
   getHomeData = (lang: string, userid: string) => {
     return ApiUtility.get(
@@ -44,8 +45,8 @@ class HomeServices {
     return ApiUtility.get(this.messageIdRoute + id + "?lang=" + lang);
   };
 
-  getQuotesData = (search: string, usefor:number, start: number, length: number) => {
-    return ApiUtility.get(this.quotesRoute);
+  getQuotesData = (start: number, length: number) => {
+    return ApiUtility.get(this.quotesRoute + "&start=" + start + "&length=" + length);
   };
 
   postcontact = (params: any) => {

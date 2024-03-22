@@ -8,6 +8,7 @@ class AudiosService {
   categoryRouteAudio = "/api/Audios/Categories?lang=";
   pravachanfav = "/api/pravachans/";
   audiofavroute = "/api/audios/";
+  pravachanwithid = "/api/Pravachans/"
 
   getPravachanFilters = (productFor: string) => {
     return ApiUtility.get(
@@ -53,67 +54,76 @@ class AudiosService {
     if (type === "audios") {
       return ApiUtility.get(
         "/api/" +
-          "audios" +
-          "?lang=" +
-          localStorage.getItem("lan") +
-          "&start=" +
-          start +
-          "&length=" +
-          length +
-          "&categoryId=" +
-          categoryId +
-          "&IsChildLiterature=" +
-          IsChildLiterature +
-          "&authorId=" +
-          authorId +
-          "&search=" +
-          search +
-          "&sort=" +
-          sort +
-          "&lyrics=" +
-          lyrics +
-          "&audioLangauge=" +
-          langId +
-          "&isSpecial=" +
-          isSpecial,
+        "audios" +
+        "?lang=" +
+        localStorage.getItem("lan") +
+        "&start=" +
+        start +
+        "&length=" +
+        length +
+        "&categoryId=" +
+        categoryId +
+        "&IsChildLiterature=" +
+        IsChildLiterature +
+        "&authorId=" +
+        authorId +
+        "&search=" +
+        search +
+        "&sort=" +
+        sort +
+        "&lyrics=" +
+        lyrics +
+        "&audioLangauge=" +
+        langId +
+        "&isSpecial=" +
+        isSpecial,
         "&userId=" + userId + "&monthyear=0"
       );
     } else {
       return ApiUtility.get(
         "/api/" +
-          "pravachans" +
-          "?lang=" +
-          localStorage.getItem("lan") +
-          "&start=" +
-          start +
-          "&length=" +
-          length +
-          "&categoryId=" +
-          categoryId +
-          "&IsChildLiterature=" +
-          IsChildLiterature +
-          "&authorId=" +
-          authorId +
-          "&search=" +
-          search +
-          "&sort=" +
-          sort +
-          "&audioLangauge=" +
-          langId +
-          "&isSpecial=" +
-          isSpecial +
-          "&userId=" +
-          userId +
-          "&lyrics=" +
-          lyrics +
-          "&month=" +
-          month +
-          "&year=" +
-          year +
-          "&monthYear=1" 
+        "pravachans" +
+        "?lang=" +
+        localStorage.getItem("lan") +
+        "&start=" +
+        start +
+        "&length=" +
+        length +
+        "&categoryId=" +
+        categoryId +
+        "&IsChildLiterature=" +
+        IsChildLiterature +
+        "&authorId=" +
+        authorId +
+        "&search=" +
+        search +
+        "&sort=" +
+        sort +
+        "&audioLangauge=" +
+        langId +
+        "&isSpecial=" +
+        isSpecial +
+        "&userId=" +
+        userId +
+        "&lyrics=" +
+        lyrics +
+        "&month=" +
+        month +
+        "&year=" +
+        year +
+        "&monthYear=1"
       );
     }
   };
+
+  getaudioandpravachanbyid = (id: string, userIdentity: string) => {
+    if (localStorage.getItem("type") === "audios") {
+      return ApiUtility.get(this.audiofavroute + id + "?lang=" + localStorage.getItem("lan") + "&userId=" + userIdentity)                                   
+    }
+    else {
+      return ApiUtility.get(this.pravachanwithid + id + "?lang=" + localStorage.getItem("lan") + "&userId=" + userIdentity)
+    }
+  }
 
   addPravachanFavourite = (id: string) => {
     return ApiUtility.post(this.pravachanfav + id + "/favourite", {});

@@ -46,7 +46,6 @@ const AudiosPage = () => {
   const [LyricsId, setLyricsId] = useState<any>("");
   const [Singer, setSinger] = useState<any>("");
   const [SingerId, setSingerId] = useState<any>("");
-  const [isLiked, setIsLiked] = useState<boolean>(false);
 
   const [audiohash, setAudioHash] = useState("");
 
@@ -161,41 +160,6 @@ const AudiosPage = () => {
   }, [isSelected]);
 
   useEffect(() => {
-    AudiosService.getAudios(
-      pagination.pageNo === 0
-        ? 0
-        : pagination.recordsPerPage * pagination.pageNo - 12,
-      pagination.recordsPerPage,
-      false,
-      "",
-      "",
-      "",
-      SortValue,
-      "",
-      false,
-      "audios",
-      undefined,
-      "",
-      "",
-      UserIdentity
-    ).then((res) => {
-      if (res?.status) {
-        setAudios(res.result?.items);
-        res?.result?.items?.map((item: any, i: number) => {
-          debugger;
-          AudiosService.removeAudioFavourite("5cff74ac2faf8a09082b5549").then(
-            (res) => {
-              debugger
-            setIsLiked(res?.result)
-              console.log(res?.result);
-            }
-          );
-        });
-      }
-    });
-  }, []);
-
-  useEffect(() => {
     setRefresh(false);
     setType("audios");
     AudiosService.getAudios(
@@ -217,45 +181,12 @@ const AudiosPage = () => {
       UserIdentity
     ).then((res) => {
       if (res.status) setAudios(res.result?.items);
-      setIsLiked(res?.result?.isFavourite);
       setPagination({
         ...pagination,
         totalRecords: res.result?.totalRecords,
       });
     });
   }, [refresh, SortValue, i18n.language]);
-
-  const FavAudioAdd = (audioId: any) => {
-    debugger;
-    AudiosService.addAudioFavourite(audioId).then((res) => {
-      debugger;
-      setAudios(
-        audios?.map((a: any) => {
-          if (a.id === res.result?.productId) {
-            setIsLiked(true);
-          }
-          return a;
-        })
-      );
-    });
-    return;
-  };
-
-  const FavAudioRemove = (audioId: any) => {
-    debugger
-    AudiosService.removeAudioFavourite(audioId).then((res) => {
-      debugger
-      setAudios(
-        audios?.map((a: any) => {
-          if (a.id === audioId) {
-            setIsLiked(false);
-          }
-          return a;
-        })
-      );
-    });
-    return;
-  };
 
   const [bread, showBread] = useState<string>("");
 
@@ -429,31 +360,31 @@ const AudiosPage = () => {
                         >
                           {Singer && Singer.length > 0
                             ? Singer?.map((Singer: any) => (
-                                <div
-                                  key={`c-${Singer.id}`}
-                                  className="Authorlist"
-                                  onClick={() => {
-                                    setSingerId(Singer.id);
-                                  }}
-                                >
-                                  <ul style={{ margin: "5px 0 0 0" }}>
-                                    <li>
-                                      <div
-                                        style={{
-                                          fontSize: "21px",
-                                          cursor: "pointer",
-                                          fontWeight: 400,
-                                          color: "#545454",
-                                          fontFamily: "ChanakyaUni",
-                                        }}
-                                        id={`sin-${Singer.id}`}
-                                      >
-                                        {Singer.name}
-                                      </div>
-                                    </li>
-                                  </ul>
-                                </div>
-                              ))
+                              <div
+                                key={`c-${Singer.id}`}
+                                className="Authorlist"
+                                onClick={() => {
+                                  setSingerId(Singer.id);
+                                }}
+                              >
+                                <ul style={{ margin: "5px 0 0 0" }}>
+                                  <li>
+                                    <div
+                                      style={{
+                                        fontSize: "21px",
+                                        cursor: "pointer",
+                                        fontWeight: 400,
+                                        color: "#545454",
+                                        fontFamily: "ChanakyaUni",
+                                      }}
+                                      id={`sin-${Singer.id}`}
+                                    >
+                                      {Singer.name}
+                                    </div>
+                                  </li>
+                                </ul>
+                              </div>
+                            ))
                             : ""}
                         </AccordionDetails>
                       </Accordion>
@@ -645,7 +576,7 @@ const AudiosPage = () => {
                                   >
                                     <p>
                                       {audio.name != null &&
-                                      audio.name.length > 100
+                                        audio.name.length > 100
                                         ? audio.name.slice(0, 80) + "..."
                                         : audio.name}
                                     </p>
@@ -654,47 +585,7 @@ const AudiosPage = () => {
                                   <label>{audio.audioLength}</label>
                                 </a>
                               </div>
-                              <div
-                                onClick={() => {
-                                  if (!UserIdentity) setLogIn(true);
-                                }}
-                              >
-                                {audio?.isFavourite ? (
-                                  <label
-                                    id={`${audio.id}`}
-                                    onClick={() => {
-                                      FavAudioRemove(audio?.id);
-                                    }}
-                                  >
-                                    <img
-                                      src={Favadd}
-                                      alt="Favadd"
-                                      style={{
-                                        width: "36px",
-                                        marginRight: "8px",
-                                        marginTop: "2px",
-                                      }}
-                                    />
-                                  </label>
-                                ) : (
-                                  <label
-                                    id={`${audio.id}`}
-                                    onClick={() => {
-                                      FavAudioAdd(audio?.id);
-                                    }}
-                                  >
-                                    <img
-                                      src={Favicon}
-                                      alt="Favicon"
-                                      style={{
-                                        width: "36px",
-                                        marginRight: "8px",
-                                        marginTop: "2px",
-                                      }}
-                                    />
-                                  </label>
-                                )}
-                              </div>
+
                               <div className="btns">
                                 <div className="buttonres">
                                   <a

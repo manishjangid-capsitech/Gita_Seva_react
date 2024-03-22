@@ -75,9 +75,6 @@ const HeaderPage = () => {
     i18n.changeLanguage(l);
     localStorage.setItem("lan", _get_i18Lang());
     localStorage.setItem("locale", l);
-
-      // changeLocale(localStorage.getItem("locale") === "en" ? "en" : "hi");
-  
     if (localStorage.getItem("locale") === "en") {
       $(".select-lang").removeClass("langwidth");
     } else {
@@ -372,7 +369,7 @@ const HeaderPage = () => {
                       <div
                         style={{
                           fontSize: "22px",
-                          fontFamily: "ChanakyaUni",
+                          fontFamily: "ChanakyaUniBold",
                           fontWeight: 600,
                           cursor: "pointer",
                           marginLeft: "10px",

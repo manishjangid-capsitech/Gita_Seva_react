@@ -12,6 +12,9 @@ import imgpause from "../assets/audioPlayer/img/Pause.svg";
 import imgplay from "../assets/audioPlayer/img/bgorangepause.svg";
 import "../Styles/Audios.css";
 import { ProgressBar } from "react-bootstrap";
+import Favadd from "../assets/img/Like -Fill 1.svg";
+import Favicon from "../assets/img/Like-Stroke 1.svg";
+import AudiosService from "../Services/Audios";
 
 const AudioPlayer = () => {
   const navigate = useNavigate();
@@ -24,12 +27,22 @@ const AudioPlayer = () => {
     prev,
     setAudioInfoDialog,
     repeat,
+    playAudio,
   } = useAudio();
+
   const refAudio = React.useRef<HTMLAudioElement>(null);
+  const UserIdentity = localStorage.getItem("UserId") as any;
 
   const [cTime, setCTime] = useState(0);
   const [aLength, setALength] = useState(0);
   const [playing, setPlaying] = useState(false);
+  const [isLoading, setLoading] = useState(false);
+  const [isLiked, setIsLiked] = useState<boolean>(false);
+  const [toggleFav, setToggleFav] = useState<boolean>(false);
+  const [logIn, setLogIn] = useState<boolean>(false);
+  const closeModal = () => {
+    setLogIn(false);
+  };
 
   function formatCurrentTime(seconds: any) {
     var minutes: any = Math.floor(seconds / 60);
@@ -57,10 +70,38 @@ const AudioPlayer = () => {
   function onLoadedMetadata(event: any) {
     setALength(event.target.duration);
   }
+  const audioId = currentAudio?.id as any
+  const getType = localStorage.getItem("type") as string
 
-  useEffect(()=>{
+  const FavAdd = () => {
+    getType === "pravachans" ?
+      AudiosService.addPravachanFavourite(audioId).then((res) => {
+        res.status && setIsLiked(true);
+      })
+      :
+      AudiosService.addAudioFavourite(audioId).then((res) => {
+        res.status && setIsLiked(true);
+      })
+  };
 
-    },[currentAudio])
+  const FavRemove = () => {
+    getType === "pravachans" ?
+      AudiosService.removePravachanFaviourite(audioId).then((res) => {
+        res.status && setIsLiked(false);
+      })
+      :
+      AudiosService.removeAudioFavourite(audioId).then((res) => {
+        res.status && setIsLiked(false);
+      });
+  };
+
+  useEffect(() => {
+    AudiosService.getaudioandpravachanbyid(audioId, UserIdentity !== "" ? UserIdentity : "").then((res) => {
+      if (res.status) {
+        setIsLiked(res?.result?.isFavourite)
+      }
+    })
+  }, [isLiked, audioId])
 
   return (
     <div>
@@ -149,6 +190,49 @@ const AudioPlayer = () => {
               />
             </a>
           </div>
+
+          {isLiked ? (
+            <label
+              onClick={() => {
+                FavRemove();
+              }}
+            >
+              <img
+                src={Favadd}
+                alt="Favadd"
+                style={{
+                  marginTop: "8px",
+                }}
+              />
+            </label>
+          ) : (
+            <label
+              onClick={() => {
+                FavAdd();
+              }}
+            >
+              <img
+                src={Favicon}
+                alt="Favicon"
+                style={{
+                  marginTop: "8px",
+                }}
+              />
+            </label>
+          )}
+
+          {/* <label
+            onClick={() => {
+              toggleLike();
+              // notify();
+            }}
+            style={{ marginTop: "1px", cursor: "pointer" }}
+          >
+            <img
+              src={isLiked ? Favadd : Favicon}
+              alt="img"
+            />
+          </label> */}
           <div className="column">
             <button
               className="backcolor"

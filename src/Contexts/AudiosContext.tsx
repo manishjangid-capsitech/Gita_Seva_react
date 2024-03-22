@@ -34,6 +34,7 @@ interface IAudiosContextProps {
   playbackspeed: (e: any) => void;
   showList: boolean;
   setShowList: React.Dispatch<React.SetStateAction<boolean>>;
+  // currentaudioId: () => string;
 }
 
 const AudioContext = React.createContext<IAudiosContextProps>({} as any);
@@ -41,7 +42,7 @@ export function AudioProvider(props: { children: any }) {
   const [currentAudio, setCurrentAudio] = useState<IAudioItem | null>(null);
   const [audiosList, setAudiosList] = useState<IAudioItem[]>([]);
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
-  const [audioIndex, setAudioIndex] = useState(0);
+  const [audioIndex, setAudioIndex] = useState<any>(0);
   const [audioinfoDialog, setAudioinfoDialog] = useState(false);
   const [lyrtxt, setlyrtxt] = useState("");
   const [audioId, setaudioId] = useState("");
@@ -49,6 +50,8 @@ export function AudioProvider(props: { children: any }) {
   const [suff, setSuff] = useState<boolean>(false);
   const [isMinimise, setIsMinismise] = useState<boolean>(false);
   const [showList, setShowList] = useState<boolean>(true);
+
+  // let currentaudioId = audioId;
 
   const [isLoading, setLoading] = useState(false);
 
@@ -69,15 +72,16 @@ export function AudioProvider(props: { children: any }) {
       audioIndex < audiosList.length - 1
         ? audioIndex + 1
         : audiosList.length - 1 === audioIndex
-        ? 0
-        : audiosList.length
+          ? 0
+          : audiosList.length
     );
     setCurrentAudio({
       ...audiosList[audiosList.length - 1 === audioIndex ? 0 : audioIndex + 1],
     });
     let ind = audiosList.length - 1 === audioIndex ? 0 : audioIndex + 1;
     let dt = audiosList[ind];
-    playAudio(dt.id, ind);
+    playAudio(dt?.id, ind);
+    // if(audiosList = NaN)
   };
 
   const prev = () => {
@@ -85,14 +89,14 @@ export function AudioProvider(props: { children: any }) {
       audioIndex === 0
         ? audiosList.length - 1
         : audioIndex < audiosList.length + 1
-        ? audioIndex - 1
-        : 0
+          ? audioIndex - 1
+          : 0
     );
     setCurrentAudio({
       ...audiosList[
-        audioIndex === 0
-          ? audiosList.length - 1
-          : audioIndex < audiosList.length + 1
+      audioIndex === 0
+        ? audiosList.length - 1
+        : audioIndex < audiosList.length + 1
           ? audioIndex - 1
           : 0
       ],
@@ -101,8 +105,8 @@ export function AudioProvider(props: { children: any }) {
       audioIndex === 0
         ? audiosList.length - 1
         : audioIndex < audiosList.length + 1
-        ? audioIndex - 1
-        : 0;
+          ? audioIndex - 1
+          : 0;
     let dt = audiosList[ind];
     playAudio(dt.id, ind);
     // setAudioIndex( audioIndex === 0 ? audiosList.length -1  :audioIndex < audiosList.length + 1 ? (audioIndex - 1): 0);
@@ -130,12 +134,12 @@ export function AudioProvider(props: { children: any }) {
 
   const LoadLyrics = (id: string) => {
     setTimeout(function () {
-      const script = document.createElement("script");     
+      const script = document.createElement("script");
       script.type = "text/javascript";
       script.id = "rabbitlyrics";
       script.src = "/assets/rabbitLyrics";
       document.body.appendChild(script);
-      script.onload = function () { 
+      script.onload = function () {
       };
     }, 3000);
 
@@ -152,7 +156,7 @@ export function AudioProvider(props: { children: any }) {
         ? `${process.env.REACT_APP_API_URL}/api/Pravachans/`
         : `${process.env.REACT_APP_API_URL}/api/Audios/`;
     rawFile.open(
-     
+
       "GET",
       proc + id + `/lyrics`,
       false
@@ -186,6 +190,12 @@ export function AudioProvider(props: { children: any }) {
   useEffect(() => {
     setIsLoaded(true);
   }, [currentAudio]);
+
+  useEffect(() => {
+   if(audioIndex===undefined || NaN){
+    setAudioIndex(2)
+   }
+  }, [currentAudio, audioIndex, next, prev])
 
   useEffect(() => {
     setType(localStorage.getItem("type"));
@@ -223,6 +233,7 @@ export function AudioProvider(props: { children: any }) {
         playbackspeed,
         showList,
         setShowList,
+        // currentaudioId,
       }}
       {...props}
     />

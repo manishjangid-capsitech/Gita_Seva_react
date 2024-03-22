@@ -194,7 +194,7 @@ const AuthorsDataPage = () => {
               <div
                 className="cat"
                 onClick={() => {
-                  navigate(`/audios/author/` + autId, {
+                  navigate(`/audios/author/` + state?.authorSlug, {
                     state: {
                       authorId: autId,
                       authorName: name,
@@ -215,7 +215,7 @@ const AuthorsDataPage = () => {
                 className="cat"
                 style={{ cursor: "pointer" }}
                 onClick={() => {
-                  navigate(`/pravachans/author/` + autId, {
+                  navigate(`/pravachans/author/` + state?.authorSlug, {
                     state: {
                       authorId: autId,
                       authorName: name,
