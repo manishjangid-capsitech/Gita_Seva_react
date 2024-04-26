@@ -257,8 +257,7 @@ export const LogInModel: React.FC<LogInModalProps> = ({
               {/* <SignInFB /> */}
             </label>
           </div>
-          <div className="loginbuttons" onClick={() => setPhoneModel(true)}>
-            {/* <SignWithOtp /> */}
+          {/* <div className="loginbuttons" onClick={() => setPhoneModel(true)}>
             <img
               src={signinmobileno}
               alt="signinmobileno"
@@ -273,7 +272,7 @@ export const LogInModel: React.FC<LogInModalProps> = ({
             <label style={{ marginBottom: "0px" }}>
               {t("login_With_MobileNo_tr")}
             </label>
-          </div>
+          </div> */}
         </div>
         <Modal.Footer>
           <Button variant="dark" onClick={() => onClose()}>

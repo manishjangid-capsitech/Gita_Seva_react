@@ -1542,7 +1542,7 @@ const HomePage = () => {
                         backgroundColor: "#ff4e2a",
                         borderRadius: "5px",
                         // color: "#fff",
-                        cursor: pravachansLength ? "no-drop" : "pointer",
+                        // cursor: pravachansLength ? "no-drop" : "pointer",
                         fontFamily: "ChanakyaUni",
                         fontSize: "22px",
                         // padding: "5px 12px",
