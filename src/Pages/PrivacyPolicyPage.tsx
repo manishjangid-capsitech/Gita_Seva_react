@@ -47,6 +47,7 @@ const PrivacyPage = () => {
               fontWeight: 700,
               color: "rgb(209, 21, 1)",
               top: "155px",
+              fontFamily: "ChanakyaUniBold"
             }}
           >
             {t("Privacy_Policy_tr")}

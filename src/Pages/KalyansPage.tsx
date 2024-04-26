@@ -140,6 +140,7 @@ const KalyansPage = () => {
               fontWeight: 700,
               color: "rgb(209, 21, 1)",
               top: "155px",
+              fontFamily: "ChanakyaUniBold"
             }}
           >
             {t("Kalyan_tr")}
@@ -214,7 +215,7 @@ const KalyansPage = () => {
                           minHeight: "20px"
                         }}
                       >
-                        <h2 className="filtertitle">{t("Kalyan_Points_tr")}</h2>
+                        <h2 className="filtertitle" style={{ fontFamily:"ChanakyaUniBold" }}>{t("Kalyan_Points_tr")}</h2>
                       </AccordionSummary>
 
                       <AccordionDetails
@@ -344,7 +345,7 @@ const KalyansPage = () => {
                             </div>
                           ))}
                         </div>
-                        <div className="col-12" style={{ marginTop: "30px" }}>
+                        <div className="col-12" style={{ marginTop: "30px", display:pagination.totalRecords <= 12 ? "none" : "block"}}>
                           <ListPagination
                             totalRecords={pagination.totalRecords}
                             recordsPerPage={pagination.recordsPerPage}

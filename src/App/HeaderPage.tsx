@@ -23,8 +23,6 @@ const HeaderPage = () => {
     authorId: "",
   });
 
-  const [image, setImage] = useState("");
-
   const LoginEmail = localStorage.getItem("EmailForLogin") as any;
   const mobileNumber = localStorage.getItem("LoginphoneNumber") as any;
 
@@ -84,19 +82,18 @@ const HeaderPage = () => {
 
   useEffect(() => {
     if (LoginEmail != null && LoginEmail !== undefined) {
-      LoginServices.getUserLogin("", "", LoginEmail, 2, "", "", "").then(
-        (res) => {
-          if (res.status) {
-            setImage(res?.result?.imageThumbPath);
-            localStorage.setItem("UserId", res?.result?.userId);
-            localStorage.setItem("userName", res?.result?.name);
-            localStorage.setItem("Image", res?.result?.imageThumbPath);
-            localStorage.setItem("Email", res?.result?.email);
-            localStorage.setItem("Token", res?.result?.token);
-            localStorage.setItem("SignKey", res?.result?.signKey);
-          }
-        }
-      );
+      // LoginServices.getUserLogin("", "", LoginEmail, 2, "", "", "").then(
+      //   (res) => {
+      //     if (res.status) {
+      //       localStorage.setItem("UserId", res?.result?.userId);
+      //       localStorage.setItem("userName", res?.result?.name);
+      //       localStorage.setItem("Image", res?.result?.imageThumbPath);
+      //       localStorage.setItem("Email", res?.result?.email);
+      //       localStorage.setItem("Token", res?.result?.token);
+      //       localStorage.setItem("SignKey", res?.result?.signKey);
+      //     }
+      //   }
+      // );
     }
   }, [LoginEmail]);
 
@@ -104,13 +101,14 @@ const HeaderPage = () => {
     if (mobileNumber != null) {
       LoginServices.getUserLogin("", mobileNumber, "", 1, "", "", "").then(
         (res) => {
-          setImage(res?.result?.imageThumbPath);
-          localStorage.setItem("UserId", res?.result?.userId);
-          localStorage.setItem("userName", res?.result?.name);
-          localStorage.setItem("Image", res?.result?.imageThumbPath);
-          localStorage.setItem("PhoneNumber", res?.result?.phoneNumber);
-          localStorage.setItem("Token", res?.result?.token);
-          localStorage.setItem("SignKey", res?.result?.signKey);
+          if (res?.status) {
+            localStorage.setItem("UserId", res?.result?.userId);
+            localStorage.setItem("userName", res?.result?.name);
+            localStorage.setItem("Image", res?.result?.imageThumbPath);
+            localStorage.setItem("PhoneNumber", res?.result?.phoneNumber);
+            localStorage.setItem("Token", res?.result?.token);
+            localStorage.setItem("SignKey", res?.result?.signKey);
+          }
         }
       );
     }
@@ -122,6 +120,8 @@ const HeaderPage = () => {
       document.removeEventListener("click", handleClickOutside);
     };
   }, [isOpened, showLang, menu]);
+
+  const imgs = localStorage.getItem("Image")
 
   return (
     <>
@@ -364,8 +364,8 @@ const HeaderPage = () => {
                     </NavLink>
                   </li>
 
-                  <li style={{ display: "contents" }}>
-                    <div>
+                  <li>
+                    <div style={{ display: "inline-block" }}>
                       <div
                         style={{
                           fontSize: "22px",
@@ -383,7 +383,7 @@ const HeaderPage = () => {
                           style={{
                             height: "12px",
                             width: "11px",
-                            margin: "5px -5px 0 5px",
+                            margin: "-2px -5px 0 5px",
                           }}
                         />
                       </div>
@@ -523,13 +523,13 @@ const HeaderPage = () => {
                       margin: "15px 0 0 0",
                     }}
                   >
-                    {image || userId ? (
+                    {imgs ? (
                       <img
                         id="userimg"
                         src={
-                          image === null && undefined
-                            ? "https://gitaseva.org/assets/img/userWhite.png"
-                            : image
+                          imgs === null && undefined
+                            ? "https://gitaseva.org/assets/img/userWhite.png" :
+                            imgs
                         }
                         title="User Login"
                         className="nousericon"
@@ -703,7 +703,7 @@ const HeaderPage = () => {
                     onClose={handleCloseDialog}
                   />
                 </div>
-                <LogInModel opens={logIn} onCloses={closeModal} />
+                {/* <LogInModel opens={logIn} onCloses={closeModal} /> */}
               </div>
             </div>
           </div>

@@ -15,6 +15,7 @@ import { ProgressBar } from "react-bootstrap";
 import Favadd from "../assets/img/Like -Fill 1.svg";
 import Favicon from "../assets/img/Like-Stroke 1.svg";
 import AudiosService from "../Services/Audios";
+import { AudioInfoDialog } from "../Pages/AudioInfoDialog";
 
 const AudioPlayer = () => {
   const navigate = useNavigate();
@@ -25,7 +26,7 @@ const AudioPlayer = () => {
     close,
     next,
     prev,
-    setAudioInfoDialog,
+    // setAudioInfoDialog,
     repeat,
     playAudio,
   } = useAudio();
@@ -39,10 +40,16 @@ const AudioPlayer = () => {
   const [isLoading, setLoading] = useState(false);
   const [isLiked, setIsLiked] = useState<boolean>(false);
   const [toggleFav, setToggleFav] = useState<boolean>(false);
+  const [audioinfoDialog, setAudioinfoDialog] = useState(false);
   const [logIn, setLogIn] = useState<boolean>(false);
-  const closeModal = () => {
-    setLogIn(false);
-  };
+
+const closeInfoModel = () => {
+  setAudioinfoDialog(false)
+}
+
+  // const closeModal = () => {
+  //   setLogIn(false);
+  // };
 
   function formatCurrentTime(seconds: any) {
     var minutes: any = Math.floor(seconds / 60);
@@ -93,6 +100,14 @@ const AudioPlayer = () => {
       AudiosService.removeAudioFavourite(audioId).then((res) => {
         res.status && setIsLiked(false);
       });
+  };
+
+  const setAudioInfoDialog = () => {
+    if (audioinfoDialog) {
+      setAudioinfoDialog(false);
+    } else {
+      setAudioinfoDialog(true);
+    }
   };
 
   useEffect(() => {
@@ -387,6 +402,7 @@ const AudioPlayer = () => {
       ) : (
         ""
       )}
+      <AudioInfoDialog showModal={audioinfoDialog} onCloses={closeInfoModel} />
     </div>
   );
 };

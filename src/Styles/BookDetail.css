@@ -6,6 +6,23 @@
   border-radius: 4px;
 }
 
+.bookdecription {
+  display: flex;
+  text-align: center;
+  width: 115%;
+}
+
+.bookdecription span {
+  font-size: 18px;
+  font-family: 'ChanakyaUniBold'
+}
+
+.yearmonth {
+  display: grid;
+  border: 3px solid gray;
+  width: 20% 
+}
+
 /* .containers {
   width: 1170px;
   margin: 0 auto;

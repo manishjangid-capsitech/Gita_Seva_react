@@ -236,12 +236,13 @@ export const ContactPage = () => {
                           ...data,
                           phoneNumber: v,
                         });
-                      } else {
-                        setData({
-                          ...data,
-                          phoneNumber: "",
-                        });
-                      }
+                      } 
+                      // else {
+                      //   setData({
+                      //     ...data,
+                      //     phoneNumber: "" ,
+                      //   });
+                      // }
                     }}
                     value={data.phoneNumber}
                     className="input contactContent"
@@ -496,7 +497,7 @@ export const ContactPage = () => {
               }}
               variant="secondary"
             >
-              Close
+             {t("close_tr")}
             </Button>
           </Modal.Footer>
         </Modal>

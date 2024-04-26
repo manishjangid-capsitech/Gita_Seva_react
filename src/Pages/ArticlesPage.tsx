@@ -145,6 +145,7 @@ const ArticlesPage = () => {
               fontWeight: 700,
               color: "rgb(209, 21, 1)",
               top: "155px",
+              fontFamily: "ChanakyaUniBold"
             }}
           >
             {state?.authorName ? (
@@ -246,7 +247,7 @@ const ArticlesPage = () => {
                         style={{
                           display: "block",
                           background: "#FFFAF0",
-                          padding: 0,
+                          padding: "10px 0 0 0"
                         }}
                       >
                         {Category && Category.length > 0
@@ -298,7 +299,7 @@ const ArticlesPage = () => {
                         style={{
                           display: "block",
                           background: "#FFFAF0",
-                          padding: 0,
+                          padding: "10px 0 0 0"
                         }}
                       >
                         {Authors && Authors.length > 0
@@ -482,7 +483,7 @@ const ArticlesPage = () => {
                           ))}
                         </div>
                       </div>
-                      <div className="col-12" style={{ marginTop: "30px" }}>
+                      <div className="col-12" style={{ marginTop: "30px", display: pagination.totalRecords <= 12 ? "none" : "block" }}>
                         <ListPagination
                           totalRecords={pagination.totalRecords}
                           recordsPerPage={pagination.recordsPerPage}

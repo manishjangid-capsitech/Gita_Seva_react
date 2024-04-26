@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { useEffect, useState } from "react";
+import { SetStateAction, useEffect, useState } from "react";
 import Reset from "../Images/reset.png";
 import AudiosService from "../Services/Audios";
 import AuthorsService from "../Services/Authors";
@@ -34,7 +34,10 @@ const PravachansPage = () => {
   const navigate = useNavigate();
   const [audios, setAudios] = useState<any[] | undefined>(undefined);
   const [refresh, setRefresh] = useState(false);
-  const [SortValue, setSortValue] = useState("3");
+  const [SortValue, setSortValue] = useState("");
+  const handleSelectChange = (e: { target: { value: SetStateAction<string>; }; }) => {
+    setSortValue(e.target.value);
+  };
   const [Type, setType] = useState<any | undefined>(undefined);
   const [SortMonthValue, setSortMonthValue] = useState<string>("0");
   const [SortYearValue, setSortYearValue] = useState<string>("0");
@@ -57,6 +60,12 @@ const PravachansPage = () => {
   const state = location.state as { authorId: string; authorName: string };
 
   const [logIn, setLogIn] = useState<boolean>(false);
+
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  // Conditionally set the default expanded state of the accordion
+  const defaultExpandedValue = isExpanded ? true : false;
+
   const closeModal = () => {
     setLogIn(false);
   };
@@ -114,11 +123,6 @@ const PravachansPage = () => {
     });
   }
 
-  // useEffect(() => {
-  //   debugger
-  //   console.log("location?.state", location?.state);
-  // }, [])
-
   useEffect(() => {
     if (SortYearValue === "0") {
       setSortMonthValue("0");
@@ -157,6 +161,18 @@ const PravachansPage = () => {
       showBread(res?.result?.name);
     });
   }, [i18n.language, refresh]);
+
+  useEffect(() => {
+    if (state?.authorId === "5bbc5fa51fd2d735b0087d34" || state?.authorId === "5bbc5fcd1fd2d735b0087d35") {
+      setSortValue("0")
+    }
+    else if (state?.authorId === "5bbc60101fd2d735b0087d36") {
+      setSortValue("4")
+    }
+    else {
+      setSortValue("3")
+    }
+  }, [state?.authorId, i18n.language, refresh])
 
   useEffect(() => {
     setRefresh(false);
@@ -210,6 +226,7 @@ const PravachansPage = () => {
               fontWeight: 700,
               color: "rgb(209, 21, 1)",
               top: "155px",
+              fontFamily: "ChanakyaUniBold"
             }}
           >
             {state?.authorName ? (
@@ -303,7 +320,8 @@ const PravachansPage = () => {
                         className="filteryearmonth"
                         style={{
                           marginTop: "15px",
-                          display: "flex",
+                          // display: "flex",
+                          display: state?.authorId === "5bbc5fa51fd2d735b0087d34" || state?.authorId === "5bbc5fcd1fd2d735b0087d35" ? "none" : "flex",
                           alignItems: "baseline",
                         }}
                       >
@@ -345,7 +363,8 @@ const PravachansPage = () => {
                       style={{
                         paddingTop: "5px",
                         alignItems: "baseline",
-                        display: "flex",
+                        // display: "flex",
+                        display: state?.authorId === "5bbc5fa51fd2d735b0087d34" || state?.authorId === "5bbc5fcd1fd2d735b0087d35" ? "none" : "flex",
                       }}
                     >
                       <div style={{ width: "30%" }}>
@@ -420,6 +439,7 @@ const PravachansPage = () => {
                                         fontWeight: 400,
                                         color: "#545454",
                                         fontFamily: "ChanakyaUni",
+                                        marginTop: "10px"
                                       }}
                                       id={`par-${preacher.id}`}
                                     >
@@ -433,12 +453,12 @@ const PravachansPage = () => {
                         </AccordionDetails>
                       </Accordion>
                       {/* Pravachanlist  */}
-                      <Accordion elevation={0}>
+                      <Accordion elevation={0} defaultExpanded={state?.authorId ? true : false}>
                         <AccordionSummary
-                        // if (window?.location?.path === "/pravachans/author/honorable-shri-jayadayal-ji-goyandka") {
-                        //   defaultExpanded ? pravachans/author/honorable-shri-jayadayal-ji-goyandka
-                        //   defaultExpanded ? pravachans/author/honorable-shri-jayadayal-ji-goyandka
-                        // }
+                          // if (window?.location?.path === "/pravachans/author/honorable-shri-jayadayal-ji-goyandka") {
+                          //   defaultExpanded ? pravachans/author/honorable-shri-jayadayal-ji-goyandka
+                          //   defaultExpanded ? pravachans/author/honorable-shri-jayadayal-ji-goyandka
+                          // }
                           expandIcon={<ExpandMore />}
                           style={{
                             height: 0,
@@ -732,7 +752,7 @@ const PravachansPage = () => {
                           </div>
                         </div>
                       ))}
-                      <div className="col-12" style={{ marginTop: "30px" }}>
+                      <div className="col-12" style={{ marginTop: "30px", display: pagination.totalRecords <= 12 ? "none" : "block" }}>
                         <ListPagination
                           totalRecords={pagination.totalRecords}
                           recordsPerPage={pagination.recordsPerPage}
@@ -763,7 +783,7 @@ const PravachansPage = () => {
           </div>
         </div>
       </div>
-      <LogInModel opens={logIn} onCloses={closeModal} />
+      {/* <LogInModel opens={logIn} onCloses={closeModal} /> */}
     </>
   );
 };

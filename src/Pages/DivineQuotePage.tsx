@@ -81,11 +81,12 @@ const DivineQuotesPage = () => {
                             fontWeight: 700,
                             color: "rgb(209, 21, 1)",
                             top: "155px",
+                            fontFamily: "ChanakyaUniBold"
                         }}
                     >
                         <div
                             style={{
-                                fontFamily: "ChanakyaUni,NalandaTim,Tunga",
+                                fontFamily: "ChanakyaUniBold,NalandaTim,Tunga",
                                 fontSize: "36px",
                                 fontStyle: "normal",
                                 fontWeight: "700",
@@ -137,16 +138,25 @@ const DivineQuotesPage = () => {
                 }}
             >
                 <div className="containers">
-
+            <div
+              className="filter1"
+              style={{ margin: "5px 0" }}
+            >
+              <span>
+                {t("Total_Records_tr")} : {pagination.totalRecords}
+              </span>
+            </div>
+          </div>
+                <div className="containers">
                     <div className="gst-page-content" style={{
                         display: "block",
-                        padding: "25px 0 0 25px",
+                        padding: "25px 0 25px 25px",
                         borderRadius: "4px",
                         background: "#fff6e1",
                         boxShadow: "0 0 7px 1px #f5deb1",
                         fontFamily: "ChanakyaUni",
                         height: "100%",
-                        margin: "30px 0 0 0"
+                        margin: "15px 0 0 0"
                     }}>
                         <ImageGroup>
                             <ul className="images bgcolor" style={{ backgroundColor: "#fff6e1" }}>

@@ -132,6 +132,7 @@ const GeetgovindPage = () => {
               fontWeight: 700,
               color: "rgb(209, 21, 1)",
               top: "155px",
+              fontFamily: "ChanakyaUniBold"
             }}
           >
             {t("MonthlyMagazine_tr")}
@@ -333,7 +334,7 @@ const GeetgovindPage = () => {
                             </div>
                           ))}
                         </div>
-                        <div className="col-12" style={{ marginTop: "30px" }}>
+                        <div className="col-12" style={{ marginTop: "30px", display:pagination.totalRecords <= 12 ? "none" : "block" }}>
                           <ListPagination
                             totalRecords={pagination.totalRecords}
                             recordsPerPage={pagination.recordsPerPage}

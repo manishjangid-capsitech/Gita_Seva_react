@@ -40,6 +40,7 @@ interface bookmark {
 }
 
 const EpubPage = () => {
+
   var signKey = localStorage.getItem("SignKey");
 
   var token = localStorage.getItem("Token");
@@ -74,7 +75,7 @@ const EpubPage = () => {
     },
   };
 
-  const [size, setSize] = useState(100);
+  const [size, setSize] = useState<number>(100);
 
   const renditionRef = useRef<any>(undefined);
 
@@ -106,10 +107,10 @@ const EpubPage = () => {
   const [colortheme, setTheme] = useState<any | String>(undefined);
   const [fontcolor, setFontColor] = useState<any | String>(undefined);
   const [themecolor, setThemeColor] = useState("white");
-
+  const [toast, setToast] = useState<{ show: boolean, message: string }>({ show: false, message: '' })
   const { t } = useTranslation();
 
-  // const [bkmarkSaved, setBkmarkSaved] = useState<boolean>(false);
+  // const [bkmarkSaved, setSavedBookMark] = useState<boolean>(false);
   const [savedBookMark, setSavedBookMark] = useState<boolean>(false)
 
   const locationDetail = useLocation();
@@ -124,6 +125,7 @@ const EpubPage = () => {
     type: BookContentType;
     titleName: string;
     location: string;
+    reload: string;
   };
 
   const getUrlBytype = (type: BookContentType) => {
@@ -160,41 +162,25 @@ const EpubPage = () => {
     // `${process.env.REACT_APP_API_URL}/api/VivekVanis/64de212fd06c418558f180f2/epubstrem/`
     //`http://localhost:55049/v1/api/VivekVanis/64de212fd06c418558f180f2/epubstrem/`
   );
+
   // const sublocation = localStorage.getItem("location")
   const [location, setLocation] = useState<any>(undefined);
-  const locationChanged = (epubcifi: any) => {
-    // debugger
-    // console.log("epubcifi", epubcifi);
-    // console.log("location", location);
+  const locationChanged = (epubcifi: any, heading: string = '') => {
 
 
-    // epubcifi =
-    // "epubcfi(/6/2[The-Secrets-of-Gita]!/4[The-Secrets-of-Gita]/2/2[toc_marker-1]/2/1:0)";
-    // epubcifi is a internal string used by epubjs to point to a location in an epub.
-    //  It looks like this: epubcfi(/6/6[titlepage]!/4/2/12[pgepubid00003]/3:0)
-    // setLocation
-    // if (epubcifi === "undefined") {
-    // setLocation(sublocation ? sublocation : epubcifi)
-    // }
-    // else {
     setLocation(epubcifi)
-    // }
+
 
     if (renditionRef?.current && tocRef?.current) {
-      // debugger
       const { displayed, href } = renditionRef?.current?.location?.start;
-      const chapter = tocRef?.current?.find((item: any) => item?.href === href);
+      const chapter = tocRef?.current?.find((item: any) => item?.href.includes(href));
       setPage(
         `Page ${displayed?.page} of ${displayed?.total} in chapter ${chapter ? chapter?.label : "n/a"
         }`
       );
       setFinalName(chapter ? chapter.label : undefined);
     }
-    if (tocRef.current) {
-      // debugger
-      const chapterName = tocRef?.current.item;
-      setFinalName(chapterName);
-    }
+
   };
 
   const head = {
@@ -247,7 +233,7 @@ const EpubPage = () => {
       state?.vivekvaniDetailId,
       location,
       "100"
-    ).then((res) => { });
+    ).then((res) => {});
   }
 
   useEffect(() => {
@@ -259,16 +245,29 @@ const EpubPage = () => {
   useEffect(() => {
     setTimeout(() => {
       GetLstPosition(state?.bookDetailId);
-      location ? setLocation(state?.location) : setLocation(cfiresult);
+      setLocation(cfiresult);
+      // location ? setLocation(state?.location) : setLocation(cfiresult);
     }, 400);
-  }, [state?.bookDetailId, cfiresult]);
+  }, [state, cfiresult]);
+
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     GetLstPosition(state?.bookDetailId);
+  //     setLocation(cfiresult);
+  //   }, 500);
+  // }, [state?.bookDetailId, cfiresult]);
+
 
   useEffect(() => {
     clickOnTheme(false);
   }, []);
 
+  // useEffect(() => {
+  // }, [userid])
+
   useEffect(() => {
     if (renditionRef.current) {
+      // debugger
       renditionRef.current.themes.register("custom", {
         body: {
           // background: colortheme,
@@ -321,6 +320,7 @@ const EpubPage = () => {
           },
           body: {
             // background: "#000000",
+            setFontColor: "#ffffff",
             "overflow-wrap": "break-word",
             hyphens: "auto",
           },
@@ -503,20 +503,21 @@ const EpubPage = () => {
     // return GetSignKey();
   }, [colortheme, fontcolor, state?.bookDetailId, cfiresult]);
 
-  var iframe = document?.getElementsByTagName("iframe");
-  const Name =
-    iframe[0]?.contentWindow?.document?.getElementsByClassName(
-      "Chapter-Heading"
-    )[0]?.innerHTML ||
-    iframe[0]?.contentWindow?.document?.getElementsByClassName("Heading")[0]
-      ?.innerHTML;
+  // console.log("document?.getElementsByTagNameiframe", document?.getElementsByTagName("iframe")?.HTMLCollection?.srcdoc);
 
-  const [finalName, setFinalName] = useState<string>("");
-  const newString = `${Name}`;
-  // const setFinalName = newString?.split("<")[0]
-  useEffect(() => {
-    setFinalName(newString?.split("<")[0]);
-  }, [finalName]);
+
+  // var iframe = document?.getElementsByTagName("iframe");
+  // const Name: string =
+  //   iframe[0]?.contentWindow?.document?.getElementsByClassName(
+  //     "Chapter-Heading"
+  //   )[0]?.innerHTML ||
+  //   iframe[0]?.contentWindow?.document?.getElementsByClassName("Heading")[0]
+  //     ?.innerHTML
+  //   ||
+  //   iframe[0]?.contentWindow?.document?.getElementsByClassName("char-style-override-1")[0]
+  //     ?.innerHTML || '';
+
+  const [finalName, setFinalName] = useState<string>('');
 
   const navigate = useNavigate();
 
@@ -552,133 +553,103 @@ const EpubPage = () => {
     }
   };
 
-  const SaveBkMark = async () => {
+  const SaveBookMark = async () => {
+    let res;
     if (state?.bookDetailId) {
-      let res = await EpubServices.savebookmark(
+      res = await EpubServices.savebookmark(
         "bookmarks",
         state?.bookDetailId,
         location,
         finalName
       );
-      if (res) {
-        // debugger
-        // console.log("result", res.result);
-        res.status
-          && setSavedBookMark(true);
-      }
     } else if (state?.kalyanDetailId) {
-      let res = await EpubServices.savebookmark(
+      res = await EpubServices.savebookmark(
         "kalyanbookmarks",
         state?.kalyanDetailId,
         location,
         finalName
       );
-      if (res) {
-        res.status
-        // && setBkmarkSaved(true);
-      }
     } else if (state?.kalpatrauDetailId) {
-      let res = await EpubServices.savebookmark(
+      res = await EpubServices.savebookmark(
         "kalyankalpatarubookmarks",
         state?.kalpatrauDetailId,
         location,
         finalName
       );
-      if (res) {
-        res.status
-        // && setBkmarkSaved(true);
-      }
     } else if (state?.magazineDetailId) {
-      let res = await EpubServices.savebookmark(
+      res = await EpubServices.savebookmark(
         "monthlymagazinebookmarks",
         state?.magazineDetailId,
         location,
         finalName
       );
-      if (res) {
-        res.status
-        //  && setBkmarkSaved(true);
-      }
     } else if (state?.vivekvaniDetailId) {
-      let res = await EpubServices.savevivekvanimark(
+      res = await EpubServices.savevivekvanimark(
         state?.vivekvaniDetailId,
         location,
         finalName
       );
-      if (res) {
-        res.status
-        // && setBkmarkSaved(true);
-      }
     }
-    // let res = await EpubServices.savebookmark(
-    //   "bookmarks" ||
-    //     "kalyanbookmarks" ||
-    //     "kalyankalpatarubookmarks" ||
-    //     "monthlymagazinebookmarks" ||
-    //     "vivekvanimarks",
-    //   state?.bookDetailId ||
-    //     state?.kalyanDetailId ||
-    //     state?.kalpatrauDetailId ||
-    //     state?.magazineDetailId ||
-    //     state?.vivekvaniDetailId,
-    //   location,
-    //   finalName
-    // );
-    // if (res) {
-    //   debugger;
-    //   res.status && setBkmarkSaved(true);
-    // }
+
+    if (res?.status) {
+      setSavedBookMark(true)
+      showNotification(localStorage.getItem("lan") === "hindi"
+        ? "बुकमार्क को सफलतापूर्वक जोड़ा गया |"
+        : "Bookmark added successfully")
+    }
   };
 
-  function RemoveBkMark() {
+
+  const showNotification = (message: any) => {
+    setToast({ show: true, message })
+    setTimeout(() => {
+      setToast({ show: false, message: '' })
+    }, 2000); // Hide the notification after 2 seconds
+  };
+
+  const RemoveBookMark = async () => {
+    let res;
     if (state?.bookDetailId) {
-      EpubServices.removebookmark(
+      res = await EpubServices.removebookmark(
         "bookmarks",
         state?.bookDetailId,
         location
-      ).then((res: any) => {
-        res.status
-        //  && setBkmarkSaved(false);
-      });
+      )
     }
     if (state?.kalyanDetailId) {
-      EpubServices.removebookmark(
+      res = await EpubServices.removebookmark(
         "kalyanbookmarks",
         state?.kalyanDetailId,
         location
-      ).then((res: any) => {
-        res.status
-        // && setBkmarkSaved(false);
-      });
+      )
     }
     if (state?.kalpatrauDetailId) {
-      EpubServices.removebookmark(
+      res = await EpubServices.removebookmark(
         "kalyankalpatarubookmarks",
         state?.kalpatrauDetailId,
         location
-      ).then((res: any) => {
-        res.status
-        // && setBkmarkSaved(false);
-      });
+      )
     }
     if (state?.magazineDetailId) {
-      EpubServices.removebookmark(
+      res = await EpubServices.removebookmark(
         "monthlymagazinebookmarks",
         state?.magazineDetailId,
         location
-      ).then((res: any) => {
-        res.status
-        // && setBkmarkSaved(false);
-      });
+      )
     }
     if (state?.vivekvaniDetailId) {
-      EpubServices.deletevivekmark(
+      res = await EpubServices.deletevivekmark(
+        "vivekvanimarks",
         state?.vivekvaniDetailId,
         location
-      ).then((res: any) => {
-        res.status
-        // && setBkmarkSaved(false);
-      });
+      )
+    }
+
+    if (res?.status) {
+      setSavedBookMark(false);
+      showNotification(localStorage.getItem("lan") === "hindi"
+        ? "बुकमार्क को सफलतापूर्वक हटाया गया |"
+        : "Bookmark removed successfully")
     }
   }
 
@@ -689,177 +660,143 @@ const EpubPage = () => {
   const [showdata, setShowdata] = useState<boolean>(false);
   const [lengthofbkm, setLengthofbkm] = useState<boolean>(false);
 
+  // useEffect(() => {
+  //   // const getcurrectlocation = () => {
+  //   showBKdata?.map((savedbookmarks: any, index: number) => {
+  //     // console.log("location", location);
+  //     // console.log(savedbookmarks.name,"-->",savedbookmarks.cfi);
+
+  //     location === savedbookmarks.cfi ? setSavedBookMark(true) : setSavedBookMark(false)
+
+  //     // location === savedbookmarks.cfi ? setSavedBookMark(true) : setSavedBookMark(false)
+  //   })
+  //   // }
+
+  // }, [showBKdata, savedBookMark, GetLstPosition])
+
   useEffect(() => {
-    // const getcurrectlocation = () => {
-    showBKdata?.map((savedbookmarks: any, index: number) => {
-      location === savedbookmarks.cfi ? setSavedBookMark(true) : setSavedBookMark(false)
-    })
-    // }
-
-  }, [location, showBKdata, savedBookMark, locationChanged, showdata, RemoveBkMark, SaveBkMark, GetLstPosition])
-
-  useEffect(() => {
-    if (showdata) {
-      if (state.bookDetailId) {
-        EpubServices.getbookmark(
-          "bookmarks",
-          state?.bookDetailId
-        ).then((res: any) => {
-          if (res.status) {
-            setShowBKdata(res?.result);
-            // {
-            //   res.result.map((savedbookmarks: any, index: number) => {
-            //     // debugger
-            //     // console.log("savedbookmarks", savedbookmarks.cfi);
-            //     // console.log("location--", location);
-
-            //     if (location === savedbookmarks.cfi) {
-            //       // debugger
-            //       setSavedBookMark(true)
-            //     }
-
-            //   })
-            // }
-            {
-              res.result.length > 0
-                ? setLengthofbkm(true)
-                : setLengthofbkm(false);
-            }
-          }
-        });
-      }
-      if (state?.kalyanDetailId) {
-        EpubServices.getbookmark(
-          "kalyanbookmarks",
-          state?.kalyanDetailId
-        ).then((res: any) => {
-          if (res.status) {
-            setShowBKdata(res?.result);
-            {
-              res.result.length > 0
-                ? setLengthofbkm(true)
-                : setLengthofbkm(false);
-            }
-          }
-        });
-      }
-      if (state?.kalpatrauDetailId) {
-        EpubServices.getbookmark(
-          "kalyankalpatarubookmarks",
-          state?.kalpatrauDetailId
-        ).then((res: any) => {
-          if (res.status) {
-            setShowBKdata(res?.result);
-            {
-              res.result.length > 0
-                ? setLengthofbkm(true)
-                : setLengthofbkm(false);
-            }
-          }
-        });
-      }
-      if (state?.magazineDetailId) {
-        EpubServices.getbookmark(
-          "monthlymagazinebookmarks",
-          state?.magazineDetailId,
-        ).then((res: any) => {
-          if (res.status) {
-            setShowBKdata(res?.result);
-            {
-              res.result.length > 0
-                ? setLengthofbkm(true)
-                : setLengthofbkm(false);
-            }
-          }
-        });
-      }
-      if (state?.vivekvaniDetailId) {
-        EpubServices.getvivekvanimark(
-          state?.vivekvaniDetailId,
-        ).then((res: any) => {
-          if (res.status) {
-            setShowBKdata(res?.result);
-            {
-              res.result.length > 0
-                ? setLengthofbkm(true)
-                : setLengthofbkm(false);
-            }
-          }
-        });
-      }
-    }
-  }, [showdata, showBKdata, RemoveBkMark, location]);
-
-  const handleDelete = (dataCfi: any) => {
-    if (state?.bookDetailId) {
-      EpubServices.removebookmark(
+    if (state.bookDetailId) {
+      EpubServices.getbookmark(
         "bookmarks",
-        state?.bookDetailId,
-        dataCfi
+        state?.bookDetailId
       ).then((res: any) => {
-        res.status
-        // && setBkmarkSaved(false);
+        if (res.status) {
+          setShowBKdata(res?.result);
+          {
+            res.result.length > 0
+              ? setLengthofbkm(true)
+              : setLengthofbkm(false);
+          }
+        }
       });
     }
     if (state?.kalyanDetailId) {
-      EpubServices.removebookmark(
+      EpubServices.getbookmark(
         "kalyanbookmarks",
-        state?.kalyanDetailId,
-        dataCfi
+        state?.kalyanDetailId
       ).then((res: any) => {
-        res.status
-        // && setBkmarkSaved(false);
+        if (res.status) {
+          setShowBKdata(res?.result);
+          {
+            res.result.length > 0
+              ? setLengthofbkm(true)
+              : setLengthofbkm(false);
+          }
+        }
       });
     }
     if (state?.kalpatrauDetailId) {
-      EpubServices.removebookmark(
+      EpubServices.getbookmark(
         "kalyankalpatarubookmarks",
-        state?.kalpatrauDetailId,
-        dataCfi
+        state?.kalpatrauDetailId
       ).then((res: any) => {
-        res.status
-        //  && setBkmarkSaved(false);
+        if (res.status) {
+          setShowBKdata(res?.result);
+          {
+            res.result.length > 0
+              ? setLengthofbkm(true)
+              : setLengthofbkm(false);
+          }
+        }
       });
     }
     if (state?.magazineDetailId) {
-      EpubServices.removebookmark(
+      EpubServices.getbookmark(
         "monthlymagazinebookmarks",
         state?.magazineDetailId,
-        dataCfi
       ).then((res: any) => {
-        res.status
-        // && setBkmarkSaved(false);
+        if (res.status) {
+          setShowBKdata(res?.result);
+          {
+            res.result.length > 0
+              ? setLengthofbkm(true)
+              : setLengthofbkm(false);
+          }
+        }
       });
     }
     if (state?.vivekvaniDetailId) {
-      EpubServices.deletevivekmark(
+      EpubServices.getvivekvanimark(
         state?.vivekvaniDetailId,
-        dataCfi
       ).then((res: any) => {
-        res.status
-        // && setBkmarkSaved(false);
+        if (res.status) {
+          setShowBKdata(res?.result);
+          {
+            res.result.length > 0
+              ? setLengthofbkm(true)
+              : setLengthofbkm(false);
+          }
+        }
       });
+    }
+  }, [showBKdata, RemoveBookMark, location]);
+
+  const handleDelete = async (dataCfi: any) => {
+    let res;
+    if (state?.bookDetailId) {
+      res = await EpubServices.removebookmark(
+        "bookmarks",
+        state?.bookDetailId,
+        dataCfi
+      )
+    }
+    if (state?.kalyanDetailId) {
+      res = await EpubServices.removebookmark(
+        "kalyanbookmarks",
+        state?.kalyanDetailId,
+        dataCfi
+      )
+    }
+    if (state?.kalpatrauDetailId) {
+      res = await EpubServices.removebookmark(
+        "kalyankalpatarubookmarks",
+        state?.kalpatrauDetailId,
+        dataCfi
+      )
+    }
+    if (state?.magazineDetailId) {
+      res = await EpubServices.removebookmark(
+        "monthlymagazinebookmarks",
+        state?.magazineDetailId,
+        dataCfi
+      )
+    }
+    if (state?.vivekvaniDetailId) {
+      res = await EpubServices.deletevivekmark(
+        "vivekvanimarks",
+        state?.vivekvaniDetailId,
+        dataCfi)
+    }
+
+    if (res?.status) {
+      setSavedBookMark(false)
+      showNotification(localStorage.getItem("lan") === "hindi"
+        ? "बुकमार्क को सफलतापूर्वक हटाया गया |"
+        : "Bookmark removed successfully")
     }
   };
 
-  const [getcfi, setGetcfi] = useState<string>("");
-
-  const [isClicked, setIsClicked] = useState(false);
   const [bookName, setBookName] = useState<string>("")
-
-
-  useEffect(() => {
-    showBKdata?.map((data: any) => {
-      setGetcfi(data.cfi);
-      if (location === data.cfi) {
-        // debugger
-        // setBkmarkSaved(true)
-      }
-      if (data.name === "undefined") {
-        // setBookmarkName(Bookmark.index)
-      }
-    });
-  }, [location]);
 
   useEffect(() => {
     if (state?.bookDetailId) {
@@ -905,22 +842,11 @@ const EpubPage = () => {
   }, [bookName]);
 
   const CurrentTheme = localStorage.getItem("epub-theme") as any;
-  const [clickedButton, setClickedButton] = useState(null);
 
-  const handleButtonClick = (buttonIndex: any) => {
-    setClickedButton(buttonIndex);
-    setTimeout(() => {
-      setClickedButton(null);
-    }, 300);
-  };
+  // console.log("location",location);
+  // console.log("showBKdata",showBKdata);
+  // showBKdata?.find((i:any) => i?.cfi === location)
 
-  const cardRef = useRef() as any;
-
-  const [wobble, setWobble] = useState<any>(0);
-  useEffect(() => {
-    // debugger
-    // console.log("locationchanged--------->", locationChanged);
-  }, [])
   return (
     <div>
       <div
@@ -937,8 +863,7 @@ const EpubPage = () => {
           }}
         >
           <label style={{ fontSize: "larger" }}>
-            {bookName ? bookName : state?.bookName} :
-            {finalName === state?.titleName ? state?.titleName : finalName}
+            {bookName ? bookName : state?.bookName} : {finalName}
           </label>
         </div>
 
@@ -950,27 +875,23 @@ const EpubPage = () => {
                 style={{ border: "none" }}
                 // className="cardeffect"
                 // ref={cardRef}
-                onClick={() => {
-                  setShowdata(showdata ? false : true);
-                }}
+                onClick={() => setShowdata(prev => !prev)}
               ></div>
               <div
-                id="bkicon"
-                // className={bkmarkSaved ? "bookmarkicon-fill" : "bookmarkicon"}
-                className={savedBookMark ? "bookmarkicon-fill" : "bookmarkicon"}
+                id={`bkicon  ${finalName}`}
+                // className={showBKdata?.map((data:any, i:number) => data?.cfi == location) ? "bookmarkicon-fill" : "bookmarkicon"}
+                className={showBKdata?.find((i: any) => i?.cfi === location) ? "bookmarkicon-fill" : "bookmarkicon"}
                 onClick={() => {
-                  !savedBookMark ? SaveBkMark() : RemoveBkMark();
+                  !savedBookMark ? SaveBookMark() : RemoveBookMark();
                 }}
               ></div>
               <img
                 alt=""
-                onAnimationEnd={() => setWobble(0)}
                 // wobble={wobble}
                 style={{ width: "22px" }}
                 src={min}
                 onClick={() => {
                   changeSize(Math.max(50, size - 10));
-                  setWobble(1);
                 }}
               />
               <div
@@ -1088,8 +1009,6 @@ const EpubPage = () => {
             <ul className="bklistul" style={{ listStyle: "none" }}>
               {showBKdata &&
                 showBKdata?.map((data: any, index: number) => {
-                  // console.log("showBKdata", data);
-
                   return (
                     <div
                       style={{ display: "flex", justifyContent: "space-between" }}
@@ -1099,8 +1018,8 @@ const EpubPage = () => {
                         className="bklistitem"
                         key={data.id}
                         onClick={() => {
-                          setLocation(data.cfi);
-                          setFinalName(data.name);
+                          setLocation(data?.cfi);
+                          setFinalName(data?.name);
                           setShowdata(false);
                         }}
                       >
@@ -1108,8 +1027,7 @@ const EpubPage = () => {
                       </li>
                       <label
                         onClick={() => {
-                          handleDelete(data.cfi);
-                          setShowdata(false);
+                          handleDelete(data?.cfi)
                         }}
                         className="bookmark_del fa fa-trash"
                         style={{
@@ -1131,15 +1049,40 @@ const EpubPage = () => {
           <div style={{ display: "none", position: "relative" }}></div>
         )}
       </div>
+
+      <div
+        style={{
+          margin: "50px 40% auto",
+          padding: "10px",
+          textAlign: "center",
+          zIndex: 1,
+          position: "absolute",
+        }}
+      >
+        {toast.show && <div
+          className="modal-content"
+          style={{
+            backgroundColor: "#FF8B33",
+            color: "#fff",
+            fontSize: "22px",
+            fontFamily: "ChanakyaUni",
+            margin: "0 10px",
+          }}
+        >{toast.message}</div>}
+      </div>
+
       <div style={{ height: "93vh" }} className="myReader">
         <EpubReader
           location={location}
           locationChanged={locationChanged}
+          // heading={(h) => setFinalName(h)}
+          // subHeading={(h) => setFinalName(h)}
           //styles={ownStyles}
           //url='https://gerhardsletten.github.io/react-reader/files/alice.epub'
           url={url}
           epubInitOptions={{ requestHeaders: head }}
-          tocChanged={(toc) => {
+          tocChanged={(toc: any) => {
+            if (!finalName) setFinalName(toc[0]?.label || '')
             tocRef.current = toc;
           }}
           getRendition={(rendition) => {

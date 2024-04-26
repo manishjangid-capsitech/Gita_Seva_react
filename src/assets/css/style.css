@@ -22,6 +22,11 @@ body a:focus {
   cursor: pointer;
 }
 
+.modal-content {
+  width: 100% !important;
+  padding: 0 !important;
+}
+
 .modal-backdrop {
   z-index: 0 !important;
 }

@@ -23,12 +23,12 @@ const AudioLyrics = () => {
 
   return (
     <div style={{ marginTop: "-70px" }}>
-      <div className="header">      
-          <span style={{ fontSize: 25, color: "#ff9c00" }}>
-            {currentAudio?.name != null && currentAudio.name.length > 15
-              ? currentAudio.name.slice(0, 42)
-              : currentAudio?.name}
-          </span>
+      <div className="header">
+        <span style={{ fontSize: 25, color: "#ff9c00", margin: "0 0 0 -15%" }}>
+          {currentAudio?.name != null && currentAudio.name.length > 15
+            ? currentAudio.name.slice(0, 100)
+            : currentAudio?.name}
+        </span>
       </div>
       <div>
         {currentAudio?.lyricsHash != null ? (
@@ -48,10 +48,11 @@ const AudioLyrics = () => {
         ) : (
           <div
             style={{
-              width: "88%",
+              // width: "88%",
+              width: "85%",
               float: "left",
               textAlign: "center",
-              marginLeft: "8%",
+              // marginLeft: "8%",
             }}
           >
             <img

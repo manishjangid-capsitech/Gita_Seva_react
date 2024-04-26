@@ -17,6 +17,9 @@ import Slider from "react-slick";
 import nolyrics from "../assets/img/icons1.png";
 import withlyrics from "../assets/img/icons3.png";
 import artical from "../assets/img/article-icon.png";
+import BooksService from "../Services/Books";
+import AudiosService from "../Services/Audios";
+import ArticlesService from "../Services/Articles";
 
 const AuthorsDataPage = () => {
   const settings = {
@@ -26,6 +29,7 @@ const AuthorsDataPage = () => {
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 2000,
+    arrows: false
   };
 
   const settingsAudio = {
@@ -35,6 +39,7 @@ const AuthorsDataPage = () => {
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 2000,
+    arrows: false
   };
 
   const settingsArticle = {
@@ -44,6 +49,7 @@ const AuthorsDataPage = () => {
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 2000,
+    arrows: false
   };
 
   const { t } = useTranslation();
@@ -90,6 +96,93 @@ const AuthorsDataPage = () => {
     );
   }, [refresh, i18n.language, autId]);
 
+  const [booksLength, setBooksLength] = useState("")
+  const [audioLength, setAudiosLength] = useState("")
+  const [pravachanLength, setPravachanLength] = useState("")
+  const [articlelength, setArticlesLength] = useState("")
+  useEffect(() => {
+    setRefresh(false);
+    BooksService.getBooks(
+      0,
+      500,
+      false,
+      "",
+      state?.authorId,
+      "",
+      "", //sort
+      "",
+      window.location.pathname === "/books/special" ? true : false
+    ).then((res) => {
+      if (res.status) {
+        setBooksLength(res.result?.items?.length);
+      }
+    });
+  }, [refresh, i18n.language]);
+
+  useEffect(() => {
+    setRefresh(false);
+    AudiosService.getAudios(
+      0,
+      500,
+      false,
+      "",
+      state?.authorId,
+      "",
+      "",
+      "",
+      window.location.pathname === "/audios/special" ? true : false,
+      "audios",
+      undefined,
+      "",
+      "",
+      ""
+    ).then((res) => {
+      if (res.status)
+        setAudiosLength(res.result?.items?.length);
+    })
+  }, [refresh, i18n.language])
+
+  useEffect(() => {
+    setRefresh(false);
+    AudiosService.getAudios(
+      0,
+      500,
+      false,
+      "",
+      state?.authorId,
+      "",
+      "",
+      "",
+      window.location.pathname === "/pravachans/special" ? true : false,
+      "pravachans",
+      undefined,
+      "",
+      "",
+      ""
+    ).then((res) => {
+      if (res.status) setPravachanLength(res?.result?.items?.length)
+    });
+  }, [i18n.language, refresh]);
+
+  useEffect(() => {
+    setRefresh(false);
+    ArticlesService.getArticles(
+      0,
+      500,
+      false,
+      "",
+      state?.authorId,
+      "",
+      "",
+      "",
+      window.location.pathname === "/articles/special" ? true : false
+    ).then((res) => {
+      if (res) {
+        setArticlesLength(res.result?.items?.length)
+      }
+    })
+  }, [i18n.language, refresh])
+
   return (
     <div style={{ backgroundColor: "#fff6e1" }}>
       <div
@@ -112,6 +205,7 @@ const AuthorsDataPage = () => {
               fontWeight: 700,
               color: "rgb(209, 21, 1)",
               top: "155px",
+              fontFamily: "ChanakyaUniBold"
             }}
           >
             {t("Legends_Introduction_tr")}
@@ -265,7 +359,7 @@ const AuthorsDataPage = () => {
               >
                 {t("E_books_tr")}
               </h2>
-              <div className="row" style={{ width: "100%" }}>
+              <div className="row">
                 <Slider {...settings}>
                   {books && books.length > 0
                     ? books.map((book) => (
@@ -314,7 +408,7 @@ const AuthorsDataPage = () => {
               <div
                 style={{
                   margin: "30px 42% auto",
-                  padding: "10px",
+                  padding: "0",
                   textAlign: "center",
                   marginTop: "30px",
                 }}
@@ -324,6 +418,9 @@ const AuthorsDataPage = () => {
                   style={{
                     fontFamily: "ChanakyaUni",
                     fontSize: "22px",
+                    display: "flex",
+                    justifyContent: "center",
+                    padding: "2px 0 0 10px"
                   }}
                   onClick={() => {
                     navigate(`/books/author/` + state?.authorSlug, {
@@ -333,7 +430,9 @@ const AuthorsDataPage = () => {
                     });
                   }}
                 >
-                  {t("All_e_books_tr")}
+                  {t("view_all_tr")}
+                  <p style={{ margin: "0 8px 0 8px", fontWeight: 600 }}>{booksLength}</p>
+                  {t("books_tr")}
                 </div>
               </div>
             </div>
@@ -360,7 +459,9 @@ const AuthorsDataPage = () => {
                 {t("Audios_tr")}
               </h2>
               {audios && audios.length > 5 ? (
-                <div className="row" style={{ width: "100%" }}>
+                <div className="row"
+                // style={{ width: "100%" }}
+                >
                   <Slider {...settingsAudio}>
                     {audios.map((audio, i) => (
                       <div
@@ -482,7 +583,7 @@ const AuthorsDataPage = () => {
               )}
               <div
                 style={{
-                  margin: "30px 42% auto",
+                  margin: "30px 41% auto",
                   padding: "10px",
                   textAlign: "center",
                   marginTop: "30px",
@@ -493,6 +594,9 @@ const AuthorsDataPage = () => {
                   style={{
                     fontFamily: "ChanakyaUni",
                     fontSize: "22px",
+                    display: "flex",
+                    justifyContent: "center",
+                    padding: "2px 0 0 5px"
                   }}
                   onClick={() => {
                     navigate(`/audios/author/` + autId, {
@@ -502,7 +606,9 @@ const AuthorsDataPage = () => {
                     });
                   }}
                 >
-                  {t("All_audios_tr")}
+                  {t("view_all_tr")}
+                  <p style={{ margin: "0 8px 0 8px", fontWeight: 600 }}>{audioLength}</p>
+                  {t("Audios_tr")}
                 </div>
               </div>
             </div>
@@ -528,7 +634,9 @@ const AuthorsDataPage = () => {
               >
                 {t("Pravachan_tr")}
               </h2>
-              <div className="row" style={{ width: "100%" }}>
+              <div className="row"
+              //  style={{ width: "100%" }}
+              >
                 <Slider {...settingsAudio}>
                   {pravachans && pravachans.length > 0
                     ? pravachans.map((pravachan, i) => (
@@ -605,7 +713,7 @@ const AuthorsDataPage = () => {
               </div>
               <div
                 style={{
-                  margin: "30px 41% auto",
+                  margin: "30px 40% auto",
                   padding: "10px",
                   textAlign: "center",
                   marginTop: "30px",
@@ -613,7 +721,13 @@ const AuthorsDataPage = () => {
               >
                 <div
                   className="btnSubmit"
-                  style={{ fontFamily: "ChanakyaUni", fontSize: "22px" }}
+                  style={{
+                    fontFamily: "ChanakyaUni",
+                    fontSize: "22px",
+                    display: "flex",
+                    justifyContent: "center",
+                    padding: "2px 0 0 5px"
+                  }}
                   onClick={() => {
                     navigate(`/pravachans/author/` + autId, {
                       state: {
@@ -622,9 +736,9 @@ const AuthorsDataPage = () => {
                     });
                   }}
                 >
-                  {/* {t("All_Special_Pravachan_tr")}
-                   */}
-                  {t("All_pravachan_tr")}
+                  {t("view_all_tr")}
+                  <p style={{ margin: "0 8px 0 8px", fontWeight: 600 }}>{pravachanLength}</p>
+                  {t("Pravachan_tr")}
                 </div>
               </div>
             </div>
@@ -791,7 +905,13 @@ const AuthorsDataPage = () => {
               >
                 <div
                   className="btnSubmit"
-                  style={{ fontFamily: "ChanakyaUni", fontSize: "22px" }}
+                  style={{
+                    fontFamily: "ChanakyaUni",
+                    fontSize: "22px",
+                    display: "flex",
+                    justifyContent: "center",
+                    padding: "0px 7px 0px 7px"
+                  }}
                   onClick={() => {
                     navigate(`/articles/author/` + state?.authorSlug, {
                       state: {
@@ -800,7 +920,9 @@ const AuthorsDataPage = () => {
                     });
                   }}
                 >
-                  {t("All_Article_tr")}
+                  {t("view_all_tr")}
+                  <p style={{ margin: "0px 8px 0px 8px", fontWeight: 600 }}>{articlelength}</p>
+                  {t("Article_tr")}
                 </div>
               </div>
             </div>

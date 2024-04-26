@@ -10,8 +10,7 @@ import i18n, { _get_i18Lang } from "../i18n";
 import Favfill from "../assets/img/favadd.png";
 import Favempty from "../assets/img/fav.png";
 import { BookContentType } from "./Epub";
-import { toast } from "react-toastify";
-import { LogInModel } from "./LogInoutModel";
+import { LogInModel, getMonthNameFromNumber } from "./LogInoutModel";
 import EpubServices from "../Services/Epub";
 import closeicon from "../Images/close-round-border.svg"
 
@@ -39,6 +38,8 @@ const GeetGovindDetailPage = (props: any) => {
   const UserIdentity = localStorage.getItem("UserId") as any;
 
   const notificationRef = useRef<any>(null);
+
+  const monthName = getMonthNameFromNumber(magzineDetail?.months);
 
   const showNotification = (message: any) => {
     notificationRef.current.innerText = message;
@@ -137,6 +138,7 @@ const GeetGovindDetailPage = (props: any) => {
               fontWeight: 700,
               color: "rgb(209, 21, 1)",
               top: "155px",
+              fontFamily: "ChanakyaUniBold"
             }}
           >
             {t("MonthlyMagazine_tr")}
@@ -354,7 +356,21 @@ const GeetGovindDetailPage = (props: any) => {
                           >
                             {t("read_magazine_tr")}
                           </p>
-                          <div ref={notificationRef} style={{ color: "#ff3d28", fontSize: '20px', marginTop: "10px" }} className="notification-bar"></div>
+                          <div ref={notificationRef} style={{ color: "#ff3d28", fontSize: '20px', marginTop: "10px", height:"20px" }} className="notification-bar"></div>
+                        </div>
+                        <div className="bookdecription">
+                          <div className="yearmonth" style={{ borderRight: "none" }}>
+                            <span>{t("Year_tr")}</span>
+                            <span>{magzineDetail?.years}</span>
+                          </div>
+                          <div className="yearmonth" style={{ borderRight: "none" }}>
+                            <span>{t("Month_tr")}</span>
+                            <span>{monthName}</span>
+                          </div>
+                          <div className="yearmonth">
+                            <span>{t("Number_tr")}</span>
+                            <span>{magzineDetail?.editionNo}</span>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -366,7 +382,7 @@ const GeetGovindDetailPage = (props: any) => {
               )}
             </div>
           </div>
-          <LogInModel opens={logIn} onCloses={closeModal} />
+          {/* <LogInModel opens={logIn} onCloses={closeModal} /> */}
         </div>
       </div>
     </div >

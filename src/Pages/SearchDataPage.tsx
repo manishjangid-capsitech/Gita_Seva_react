@@ -16,7 +16,7 @@ import i18n from "../i18n";
 const SearchDataPage = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const [Searchdata, setSearchdata] = useState<any[] | undefined>(undefined);
+  const [Searchdata, setSearchdata] = useState<any[] | undefined | any>(undefined);
   const [pagination, setPagination] = useState({
     pageNo: 1,
     recordsPerPage: 12,
@@ -38,6 +38,7 @@ const SearchDataPage = () => {
     }
   };
 
+
   useEffect(() => {
     if (params?.usr !== undefined) {
       SearchDataService.searchData({
@@ -51,13 +52,22 @@ const SearchDataPage = () => {
           setSearchdata(res?.result);
           setPagination({
             ...pagination,
-            recordsPerPage: 12,
+            // recordsPerPage: 12,
             totalRecords: res?.result?.length,
           });
         }
       });
     }
   }, [params, i18n.language]);
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(12);
+
+
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = Searchdata?.slice(indexOfFirstItem, indexOfLastItem);
+  const paginate = (pageNumber: any) => setCurrentPage(pageNumber);
 
   return (
     <>
@@ -81,6 +91,7 @@ const SearchDataPage = () => {
               fontWeight: 700,
               color: "rgb(209, 21, 1)",
               top: "155px",
+              fontFamily: "ChanakyaUniBold"
             }}
           >
             {t("Search_tr")}
@@ -151,11 +162,11 @@ const SearchDataPage = () => {
               className="listcolor"
               style={{ padding: "35px", background: "#fffaf0" }}
             >
-              {Searchdata &&
-                Searchdata !== undefined &&
-                Searchdata.length > 0 ? (
+              {currentItems &&
+                currentItems !== undefined &&
+                currentItems.length > 0 ? (
                 <div className="row">
-                  {Searchdata.map((search: any, i) => (
+                  {currentItems.map((search: any, i: number) => (
                     <div
                       className="col-lg-12"
                       key={`searchbook-${search.id}`}
@@ -225,7 +236,7 @@ const SearchDataPage = () => {
                                 index: i,
                                 searched: window.location.pathname,
                               },
-                            })                          
+                            })
                         }
                         if (search.product === "pravachan") {
                           navigate(`/pravachans/` + search?.id,
@@ -308,19 +319,27 @@ const SearchDataPage = () => {
                       </div>
                     </div>
                   ))}
-
-                  <ListPagination
-                    totalRecords={pagination.totalRecords}
-                    recordsPerPage={pagination.recordsPerPage}
-                    currentPage={pagination.pageNo}
-                    onClick={(p) => {
-                      setPagination({
-                        ...pagination,
-                        pageNo: p,
-                      });
-                      setRefresh(true);
-                    }}
-                  />
+                  <div style={{ display: Searchdata?.length <= 12 ? "none" : "block" }}>
+                    <div className="button-container" style={{ display: "flex" }}>
+                      <button className="page-link" onClick={() => setCurrentPage(1)} disabled={currentPage === 1}>
+                        {'<<'}
+                      </button>
+                      <button className="page-link" onClick={() => setCurrentPage(prevPage => prevPage - 1)} disabled={currentPage === 1}>
+                        {'<'}
+                      </button>
+                      {Array.from({ length: Math.ceil(Searchdata?.length / itemsPerPage) }).map((_, index) => (
+                        <button key={index} onClick={() => paginate(index + 1)} className={currentPage === index + 1 ? 'active' : ''}>
+                          {index + 1}
+                        </button>
+                      ))}
+                      <button className="page-link" onClick={() => setCurrentPage(prevPage => prevPage + 1)} disabled={currentPage === Math.ceil(Searchdata?.length / itemsPerPage)}>
+                        {'>'}
+                      </button>
+                      <button className="page-link" onClick={() => setCurrentPage(Math.ceil(Searchdata?.length / itemsPerPage))} disabled={currentPage === Math.ceil(Searchdata?.length / itemsPerPage)}>
+                        {'>>'}
+                      </button>
+                    </div>
+                  </div>
                 </div>
               ) : (
                 <div className="ebooks-category resultnotfound">

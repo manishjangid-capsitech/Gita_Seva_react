@@ -47,11 +47,11 @@ const ArticlesDetailPage = (props: any) => {
   const toggleLike = () => {
     !isLiked
       ? ArticlesService.addArticlesFavourite(articleId).then((res) => {
-          res.status && setIsLiked(true);
-        })
+        res.status && setIsLiked(true);
+      })
       : ArticlesService.removeArticlesFaviourite(articleId).then((res) => {
-          res.status && setIsLiked(false);
-        });
+        res.status && setIsLiked(false);
+      });
     setToggleFav((x) => !x);
   };
 
@@ -106,10 +106,12 @@ const ArticlesDetailPage = (props: any) => {
               fontWeight: 700,
               color: "rgb(209, 21, 1)",
               top: "155px",
+              fontFamily: "ChanakyaUniBold"
             }}
           >
             {window.location.pathname ===
               "/searchdata/article/" + state?.articleSlug && t("Article_tr")}
+            {/* {state?.articleSlug === "भगवान्-सूर्यकी-उपासना-तथा-संक्रान्तिमें-दान-का-माहात्म्य" && */}
             {window.location?.pathname === "/articles/" + state?.articleSlug &&
               t("Article_tr")}
             {window.location?.pathname ===
@@ -131,22 +133,22 @@ const ArticlesDetailPage = (props: any) => {
               </Link>
               {window.location?.pathname ===
                 "/articles/" + state?.articleId && (
-                <Link
-                  to={"/articles"}
-                  style={{ marginRight: "8px", color: "#2d2a29" }}
-                >
-                  / {t("Article_tr")}
-                </Link>
-              )}
+                  <Link
+                    to={"/articles"}
+                    style={{ marginRight: "8px", color: "#2d2a29" }}
+                  >
+                    / {t("Article_tr")}
+                  </Link>
+                )}
               {window.location?.pathname ===
                 "/articles/special/" + state.articleSlug && (
-                <Link
-                  to={"/articles/special"}
-                  style={{ marginRight: "8px", color: "#2d2a29" }}
-                >
-                  / {t("Special_Article_tr")}
-                </Link>
-              )}
+                  <Link
+                    to={"/articles/special"}
+                    style={{ marginRight: "8px", color: "#2d2a29" }}
+                  >
+                    / {t("Special_Article_tr")}
+                  </Link>
+                )}
               {state?.authorId !== undefined ? (
                 <>
                   {" "}
@@ -234,8 +236,7 @@ const ArticlesDetailPage = (props: any) => {
                           </label>
                         </label>
                       </div>
-
-                      <p>
+                      <p style={{display: ArticlesDetail?.author?.length > 0 ? "block" : "none"}}>
                         <label>{t("Article_tr")}: </label>
                         {ArticlesDetail.author}
                       </p>
@@ -243,6 +244,7 @@ const ArticlesDetailPage = (props: any) => {
                         <label>{t("Language_tr")} </label>
                         {ArticlesDetail.articleLanguage}
                       </p>
+
                     </div>
                   </div>
                 </div>
@@ -276,7 +278,7 @@ const ArticlesDetailPage = (props: any) => {
           )}
         </div>
       </div>
-      <LogInModel opens={logIn} onCloses={closeModal} />
+      {/* <LogInModel opens={logIn} onCloses={closeModal} /> */}
     </div>
   );
 };

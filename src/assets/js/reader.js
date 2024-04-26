@@ -14,8 +14,11 @@
   'use strict';
 
   function indexOf(callbacks, callback) {
+    debugger
     for (var i = 0, l = callbacks.length; i < l; i++) {
+      debugger
       if (callbacks[i] === callback) {
+        debugger
         return i;
       }
     }
@@ -237,8 +240,10 @@
   var _isArray = void 0;
   if (Array.isArray) {
     _isArray = Array.isArray;
+    debugger
   } else {
     _isArray = function (x) {
+      debugger
       return Object.prototype.toString.call(x) === '[object Array]';
     };
   }
@@ -255,6 +260,7 @@
 
   function scheduleFlush() {
     setTimeout(function () {
+      debugger
       for (var i = 0; i < queue.length; i++) {
         var entry = queue[i];
 
@@ -4165,6 +4171,8 @@ EPUBJS.reader.NotesController = function () {
 
     cfi = epubcfi.generateCfiFromTextNode(textNode, offset, book.renderer.currentChapter.cfiBase);
 
+    console.log("cfi",book.renderer.currentChapter );
+
     annotation = {
       annotatedAt: new Date(),
       anchor: cfi,
@@ -4827,6 +4835,7 @@ rendition.on('renderered', chapterChange);
 
 
   $list.find(".toc_link").on("click", function (event) {
+    debugger
     var url = this.getAttribute('href');
     event.preventDefault();
     var targetName = event.currentTarget.innerHTML;
@@ -4834,7 +4843,9 @@ rendition.on('renderered', chapterChange);
     var bookname = "";
     var booktyp = localStorage.getItem("booktype");
      bookname = booktyp === "books" ? localStorage.getItem('BookName') : booktyp === "kalyans" ? localStorage.getItem('KalyanName') : localStorage.getItem('KalyanKalpataruName');
+     debugger
     document.getElementById("ChapterName").innerHTML =  bookname + ' : ' + targetName;
+    debugger
     //var ms = new Date().getMilliseconds();
     
     // call 2 times for Redirecting accurate

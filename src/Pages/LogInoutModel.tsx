@@ -26,6 +26,7 @@ import Loading from "../Components/Loading";
 import { t } from "i18next";
 import { storage } from "./Firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import LoginServices from "../Services/Login";
 
 interface LogOutModalProps {
   open: boolean;
@@ -34,7 +35,7 @@ interface LogOutModalProps {
 interface LogInModalProps {
   opens: boolean;
   onCloses: () => void;
-  // onLoginStateChange: (newState: string) => void;
+  onLoginStateChange: (newState: string) => void;
 }
 
 export const LogOutModel: React.FC<LogOutModalProps> = ({ open, onClose }) => {
@@ -116,13 +117,14 @@ export const LogOutModel: React.FC<LogOutModalProps> = ({ open, onClose }) => {
 export const LogInModel: React.FC<LogInModalProps> = ({
   opens,
   onCloses: onClose,
-  // onLoginStateChange,
+  onLoginStateChange,
 }) => {
   const { t } = useTranslation();
   const [phoneModel, setPhoneModel] = useState<boolean>(false);
   const [refresh, setRefresh] = useState(false);
   const provider = new GoogleAuthProvider();
   const currlang = localStorage.getItem("lan");
+  
   return (
     <>
       <Modal
@@ -198,8 +200,19 @@ export const LogInModel: React.FC<LogInModalProps> = ({
                 .then((result) => {
                   const email = result?.user?.email;
                   if (email) {
-                    localStorage?.setItem("EmailForLogin", email);
-                    // onLoginStateChange("loggedIn");
+                    LoginServices.getUserLogin("", "", email, 2, "", "", "").then(
+                      (res) => {
+                        if (res.status) {
+                          localStorage.setItem("UserId", res?.result?.userId);
+                          localStorage.setItem("userName", res?.result?.name);
+                          localStorage.setItem("Image", res?.result?.imageThumbPath);
+                          localStorage.setItem("Email", res?.result?.email);
+                          localStorage.setItem("Token", res?.result?.token);
+                          localStorage.setItem("SignKey", res?.result?.signKey);
+                          onLoginStateChange("loggedIn");
+                        }
+                      }
+                    );                 
                     onClose();
                   }
                 })
@@ -292,7 +305,7 @@ export const LogInModel: React.FC<LogInModalProps> = ({
               <SignWithOtp />
             </div>
           </Modal>
-          
+
         </>
       )}
     </>
@@ -787,4 +800,82 @@ export const FavouriteArticals = ({
       )}
     </div>
   );
+};
+
+// enums.js
+export const Month = {
+  January: 1,
+  February: 2,
+  March: 3,
+  April: 4,
+  May: 5,
+  June: 6,
+  July: 7,
+  August: 8,
+  September: 9,
+  October: 10,
+  November: 11,
+  December: 12,
+};
+
+export const getMonthNameFromNumber = (monthNumber: any) => {
+  if (localStorage.getItem("lan") === "english") {
+    switch (monthNumber) {
+      case Month.January:
+        return 'January';
+      case Month.February:
+        return 'February';
+      case Month.March:
+        return 'March';
+      case Month.April:
+        return 'April';
+      case Month.May:
+        return 'May';
+      case Month.June:
+        return 'June';
+      case Month.July:
+        return 'July';
+      case Month.August:
+        return 'August';
+      case Month.September:
+        return 'September';
+      case Month.October:
+        return 'October';
+      case Month.November:
+        return 'November';
+      case Month.December:
+        return 'December';
+      default:
+        return 'Invalid Month';
+    }
+  } else {
+    switch (monthNumber) {
+      case Month.January:
+        return 'जनवरी';
+      case Month.February:
+        return 'फरवरी';
+      case Month.March:
+        return 'मार्च';
+      case Month.April:
+        return 'अप्रैल';
+      case Month.May:
+        return 'मई';
+      case Month.June:
+        return 'जून';
+      case Month.July:
+        return 'जुलाई';
+      case Month.August:
+        return 'अगस्त';
+      case Month.September:
+        return 'सितंबर';
+      case Month.October:
+        return 'अक्टूबर';
+      case Month.November:
+        return 'नवंबर';
+      case Month.December:
+        return 'दिसंबर';
+      default:
+        return 'Invalid Month';
+    }
+  }
 };

@@ -381,7 +381,8 @@ img {
 }
 
 .gst-header {
-  background: url("https://gitaseva.org/assets/img/headerBG.png") no-repeat top;
+  background: url("../assets/img/headerBG.png") no-repeat top;
+  /* background: url("https://gitaseva.org/assets/img/headerBG.png") no-repeat top; */
   height: 175px;
   position: relative;
 }

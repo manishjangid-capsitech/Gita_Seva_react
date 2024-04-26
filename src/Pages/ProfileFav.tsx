@@ -56,7 +56,6 @@ export const ProfileFav = () => {
   useEffect(() => {
     setRefresh(false);
     ProfileService.getfavData(0, 100).then((res: any) => {
-      console.log("res.result", res?.result);
       getBookMark(res?.result?.bookMarks);
       getKalyanMark(res?.result?.kalyanMarks);
       getKalpatruMark(res?.result?.kalyanKalpatarusMarks);
@@ -97,6 +96,7 @@ export const ProfileFav = () => {
               fontWeight: 700,
               color: "rgb(209, 21, 1)",
               top: "155px",
+              fontFamily: "ChanakyaUniBold"
             }}
           >
             {t("Profile_tr")}

@@ -13,10 +13,11 @@ import { BookContentType } from "./Epub";
 import { useTranslation } from "react-i18next";
 import { userId } from "../Contexts/LocaleContext";
 import "react-toastify/dist/ReactToastify.css";
-import { LogInModel } from "./LogInoutModel";
+import { LogInModel, getMonthNameFromNumber } from "./LogInoutModel";
 import { toast } from "react-toastify";
 import EpubServices from "../Services/Epub";
 import closeicon from "../Images/close-round-border.svg"
+import Vivekvani from "../Services/Vivekvani";
 
 export interface ISingleBook {
   bookLanguageId: string;
@@ -68,6 +69,8 @@ const VivekvaniDetailPage = () => {
   const [toggleFav, setToggleFav] = React.useState<boolean>(false);
 
   const notificationRef = useRef<any>(null);
+
+  const monthName = getMonthNameFromNumber(vaniDetail?.months);
 
   const showNotification = (message: any) => {
     notificationRef.current.innerText = message;
@@ -166,6 +169,7 @@ const VivekvaniDetailPage = () => {
               fontWeight: 700,
               color: "rgb(209, 21, 1)",
               top: "155px",
+              fontFamily: "ChanakyaUniBold"
             }}
           >
             {t("vivek_vani_tr")}
@@ -380,7 +384,21 @@ const VivekvaniDetailPage = () => {
                           >
                             {t("read_magazine_tr")}
                           </p>
-                          <div ref={notificationRef} style={{ color: "#ff3d28", fontSize: '20px', marginTop: "10px" }} className="notification-bar"></div>
+                          <div ref={notificationRef} style={{ color: "#ff3d28", fontSize: '20px', marginTop: "10px", height: "20px" }} className="notification-bar"></div>
+                        </div>
+                        <div className="bookdecription">
+                          <div className="yearmonth" style={{ borderRight: "none" }}>
+                            <span>{t("Year_tr")}</span>
+                            <span>{vaniDetail?.years}</span>
+                          </div>
+                          <div className="yearmonth" style={{ borderRight: "none" }}>
+                            <span>{t("Month_tr")}</span>
+                            <span>{monthName}</span>
+                          </div>
+                          <div className="yearmonth">
+                            <span>{t("Number_tr")}</span>
+                            <span>{vaniDetail?.editionNo}</span>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -450,7 +468,7 @@ const VivekvaniDetailPage = () => {
               )}
             </div>
           </div>
-          <LogInModel opens={logIn} onCloses={closeModal} />
+          {/* <LogInModel opens={logIn} onCloses={closeModal} /> */}
         </div>
       </div>
     </div>

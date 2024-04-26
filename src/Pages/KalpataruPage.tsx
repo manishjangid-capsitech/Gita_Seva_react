@@ -142,6 +142,7 @@ const KalpataruPage = () => {
               fontWeight: 700,
               color: "rgb(209, 21, 1)",
               top: "155px",
+              fontFamily: "ChanakyaUniBold"
             }}
           >
             {t("Kalpataru_tr")}
@@ -213,10 +214,10 @@ const KalpataruPage = () => {
                         style={{
                           height: 0,
                           background: "#FFFAF0",
-                          minHeight: "20px"
+                          // minHeight: "20px"
                         }}
                       >
-                        <h2 className="filtertitle">
+                        <h2 className="filtertitle" style={{ fontFamily:"ChanakyaUniBold" }}>
                           {t("Kalyan_kalpataru_number_tr")}
                         </h2>
                       </AccordionSummary>
@@ -351,7 +352,7 @@ const KalpataruPage = () => {
                             </div>
                           ))}
                         </div>
-                        <div className="col-12" style={{ marginTop: "30px" }}>
+                        <div className="col-12" style={{ marginTop: "30px", display:pagination.totalRecords <= 12 ? "none" : "block" }}>
                           <ListPagination
                             totalRecords={pagination.totalRecords}
                             recordsPerPage={pagination.recordsPerPage}

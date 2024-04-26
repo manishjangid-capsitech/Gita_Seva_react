@@ -94,7 +94,7 @@ class EpubService {
     return ApiUtility.get(this.getvivekvanibookmarks + bookId);
   };
 
-  deletevivekmark(bookId: string, cfi: string) {
+  deletevivekmark(bookmarkposition: string, bookId: string, cfi: string) {
     return ApiUtility.delete(this.removevanimark + bookId + "&cfi=" + cfi);
   }
 

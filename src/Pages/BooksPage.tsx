@@ -55,6 +55,11 @@ const BooksPage = () => {
     catName: string;
   };
 
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  // Conditionally set the default expanded state of the accordion
+  const defaultExpandedValue = isExpanded ? true : false;
+
   function ResetData() {
     setSortValue("3");
     setLanguageId("");
@@ -183,6 +188,7 @@ const BooksPage = () => {
               fontWeight: 700,
               color: "rgb(209, 21, 1)",
               top: "155px",
+              fontFamily: "ChanakyaUniBold"
             }}
           >
             {state?.authorId ? <span>{writer}</span> : <span>{bread}</span>}
@@ -278,7 +284,7 @@ const BooksPage = () => {
                   </div>
                   <div>
                     {/* category */}
-                    <Accordion elevation={0} defaultExpanded>
+                    <Accordion elevation={0} defaultExpanded style={{ display: state?.authorId ? "none" : "block" }}>
                       <AccordionSummary
                         expandIcon={<ExpandMore />}
                         style={{
@@ -294,7 +300,7 @@ const BooksPage = () => {
                         style={{
                           display: "block",
                           background: "#FFFAF0",
-                          padding: 0,
+                          padding: "10px 0 0 0"
                         }}
                       >
                         {Category && Category.length > 0
@@ -332,6 +338,7 @@ const BooksPage = () => {
 
                     <Accordion
                       elevation={0}
+                      // defaultExpanded={defaultExpandedValue}
                       style={{ display: state?.authorId ? "none" : "block" }}
                     >
                       <AccordionSummary
@@ -349,7 +356,7 @@ const BooksPage = () => {
                         style={{
                           display: "block",
                           background: "#FFFAF0",
-                          padding: 0,
+                          padding: "10px 0 0 0",
                         }}
                       >
                         {Author && Author.length > 0
@@ -371,6 +378,7 @@ const BooksPage = () => {
                                       fontWeight: 400,
                                       color: "#545454",
                                       fontFamily: "ChanakyaUni",
+                                      margin: "8px 0 0 0"
                                     }}
                                     id={`aut-${author.id}`}
                                   >
@@ -384,7 +392,7 @@ const BooksPage = () => {
                       </AccordionDetails>
                     </Accordion>
                     {/* language */}
-                    <Accordion elevation={0}>
+                    <Accordion elevation={0} defaultExpanded={state?.authorId ? true : false}>
                       <AccordionSummary
                         expandIcon={<ExpandMore />}
                         style={{
@@ -399,7 +407,7 @@ const BooksPage = () => {
                         style={{
                           display: "block",
                           background: "#FFFAF0",
-                          padding: 0,
+                          padding: "10px 0 0 0"
                         }}
                       >
                         {language &&
@@ -581,7 +589,7 @@ const BooksPage = () => {
                             </div>
                           ))}
                         </div>
-                        <div className="col-12" style={{ marginTop: "30px" }}>
+                        <div className="col-12" style={{ marginTop: "30px", display: pagination.totalRecords <= 12 ? "none" : "block" }}>
                           <ListPagination
                             totalRecords={pagination.totalRecords}
                             recordsPerPage={pagination.recordsPerPage}

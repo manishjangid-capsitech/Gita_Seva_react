@@ -63,6 +63,7 @@ const MessagesPage = () => {
               fontWeight: 700,
               color: "rgb(209, 21, 1)",
               top: "155px",
+              fontFamily: "ChanakyaUniBold"
             }}
           >
             {t("AmritVachan_tr")}

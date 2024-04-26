@@ -16,11 +16,12 @@ const AudioPlayerPage = ({ match }: any) => {
   const navigate = useNavigate();
   const {
     setAudiosList,
+    isMinimise,
     setIsMinismise,
     audiosList,
     playAudio,
     currentAudio,
-    audioInfoDialog,
+    // audioInfoDialog,
     close,
     showList,
     setShowList,
@@ -42,6 +43,9 @@ const AudioPlayerPage = ({ match }: any) => {
   const [Type, setType] = useState<any | undefined>(
     localStorage.getItem("type")
   );
+
+  const [displayState, setDisplayState] = useState(false)
+
 
   useEffect(() => {
     setType(localStorage.getItem("type"));
@@ -70,21 +74,23 @@ const AudioPlayerPage = ({ match }: any) => {
 
   const sideNavRef = useRef(null);
 
-  useEffect(() => {
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [!showList]);
+  // useEffect(() => {
+  //   document.addEventListener('mousedown', handleClickOutside);
+  //   return () => {
+  //     document.removeEventListener('mousedown', handleClickOutside);
+  //   };
+  // }, [!showList]);
 
-  function handleClickOutside(e: any) {
-    if (!showList === false) {
-      setShowList(true)
-    }
-  }
+  // function handleClickOutside(e: any) {
+  //   if (!showList === false) {
+  //     setShowList(true)
+  //   }
+  // }
+
 
   return (
-    <div className="">
+    <div className=""
+    >
       <div
         className="row"
         style={{
@@ -100,7 +106,7 @@ const AudioPlayerPage = ({ match }: any) => {
               position: "absolute",
               width: "50%",
               border: "none",
-              marginTop: "15%"
+              marginTop: "15%",
             }}
           >
             <div className="songSidebar" style={{ widows: "137%" }}>
@@ -254,8 +260,15 @@ const AudioPlayerPage = ({ match }: any) => {
                 style={{ marginLeft: "10px" }}
                 className="pe-sm-2"
                 onClick={() => {
+                  // debugger
+                  // console.log("isMinimise",isMinimise);                  
                   setIsMinismise(true);
-                  navigate(`/${Type}/`);
+                  // console.log("isMinimise",isMinimise);                  
+                  setIsMinismise(true)
+                  navigate(`/${Type}/`)
+                  // navigate(-1)
+                  // navigate(`/${Type}/`+ currentAudio?.id);
+                  // window.location.reload()
                 }}
               ></img>
             </a>
@@ -274,11 +287,11 @@ const AudioPlayerPage = ({ match }: any) => {
             </a>
           </div>
           <AudioLyrics />
-          {currentAudio?.id ? (
-            <AudioInfoDialog showModal={audioInfoDialog} />
+          {/* {currentAudio?.id ? (
+            // <AudioInfoDialog showModal={audioInfoDialog} />
           ) : (
             ""
-          )}
+          )} */}
         </div>
       </div>
     </div>

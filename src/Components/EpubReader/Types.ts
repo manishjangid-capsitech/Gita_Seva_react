@@ -11,6 +11,8 @@ export interface IEpubViewProps {
   loadingView?: React.ReactNode;
   location?: string | number;
   showToc?: boolean;
+  heading?(value: string): void;
+  subHeading?(value: string): void;
   locationChanged?(value: string | number): void;
   tocChanged?(value: IToc): void;
   getRendition?(rendition: Rendition): void;

@@ -22,8 +22,8 @@ interface IAudiosContextProps {
   setIsMinismise: React.Dispatch<React.SetStateAction<boolean>>;
   audiosList: IAudioItem[];
   currentAudio: IAudioItem | null;
-  audioInfoDialog: boolean;
-  setAudioInfoDialog: () => void;
+  // audioInfoDialog: boolean;
+  // setAudioInfoDialog: () => void;
   setAudiosList: React.Dispatch<React.SetStateAction<IAudioItem[]>>;
   playAudio: (id: string, index: number) => void;
   close: () => void;
@@ -43,7 +43,7 @@ export function AudioProvider(props: { children: any }) {
   const [audiosList, setAudiosList] = useState<IAudioItem[]>([]);
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
   const [audioIndex, setAudioIndex] = useState<any>(0);
-  const [audioinfoDialog, setAudioinfoDialog] = useState(false);
+  // const [audioinfoDialog, setAudioinfoDialog] = useState(false);
   const [lyrtxt, setlyrtxt] = useState("");
   const [audioId, setaudioId] = useState("");
   const [Type, setType] = useState<any | undefined>(undefined);
@@ -56,16 +56,23 @@ export function AudioProvider(props: { children: any }) {
   const [isLoading, setLoading] = useState(false);
 
   const navigate = useNavigate();
+
   const playAudio = (id: string, index: number) => {
     setAudioIndex(index);
     setaudioId(id);
-    navigate(`/${localStorage.getItem("type")}/${id}`);
+    // navigate(`/${localStorage.getItem("type")}/${id}`);
   };
+
+  const [displayState, setDisplayState] = useState(false)
+
   const close = () => {
     setAudiosList([]);
     setaudioId("");
     setCurrentAudio(null);
-    navigate(`/${Type}/`);
+    setDisplayState(true)
+    // change navigation
+    // navigate(-1)
+    // navigate(`/${Type}/`);
   };
   const next = () => {
     setAudioIndex(
@@ -132,21 +139,28 @@ export function AudioProvider(props: { children: any }) {
     window.addEventListener("load", playbackspeed);
   };
 
+
+// https://api.gitaseva.org/v1/api/Audios/610acdced241741fdf0b9b7a/lyrics?t=ieUUHT8l4DvlEnwEf1w%2BEA%3D%3D
+// https://api.gitaseva.org/v1/api/Audios/5cb1c895e3fbda2174b7f268/lyrics
+// https://api.gitaseva.org/v1/api/Audios/5db19f4c934e6e1c584fa80a/lyrics
+
+
   const LoadLyrics = (id: string) => {
     setTimeout(function () {
       const script = document.createElement("script");
       script.type = "text/javascript";
       script.id = "rabbitlyrics";
-      script.src = "/assets/rabbitLyrics";
+      script.src = "/assets/rabbitLyrics/rabbit-lyrics.js";
       document.body.appendChild(script);
       script.onload = function () {
       };
     }, 3000);
-
     var todayDate = new Date();
     var signKey = localStorage.getItem("SignKey");
     var token = localStorage.getItem("Token");
 
+    
+    
     let securekey = window.btoa(
       signKey + "|" + id + "|2|" + todayDate.toISOString().substr(0, 10)
     );
@@ -163,7 +177,7 @@ export function AudioProvider(props: { children: any }) {
     );
     rawFile.setRequestHeader("Authorization", "Bearer " + token);
     rawFile.setRequestHeader("X-Signature", securekey);
-    rawFile.setRequestHeader("X-Plateform", "2");
+    rawFile.setRequestHeader("X-Plateform", "1");
     rawFile.onreadystatechange = function () {
       if (rawFile.readyState === 4) {
         if (rawFile.status === 200 || rawFile.status === 0) {
@@ -179,22 +193,31 @@ export function AudioProvider(props: { children: any }) {
     rawFile?.send();
   };
 
-  const setAudioInfoDialog = () => {
-    if (audioinfoDialog) {
-      setAudioinfoDialog(false);
-    } else {
-      setAudioinfoDialog(true);
-    }
-  };
+  // const setAudioInfoDialog = () => {
+  //   if (audioinfoDialog) {
+  //     setAudioinfoDialog(false);
+  //   } else {
+  //     setAudioinfoDialog(true);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   if (isMinimise === true ? true : false) {
+  //     debugger
+  //     console.log("isMinimise", isMinimise);
+
+  //     setIsMinismise(isMinimise === false ? false : true)
+  //   }
+  // }, [isMinimise, next, prev])
 
   useEffect(() => {
     setIsLoaded(true);
   }, [currentAudio]);
 
   useEffect(() => {
-   if(audioIndex===undefined || NaN){
-    setAudioIndex(2)
-   }
+    if (audioIndex === undefined || NaN) {
+      setAudioIndex(2)
+    }
   }, [currentAudio, audioIndex, next, prev])
 
   useEffect(() => {
@@ -222,8 +245,8 @@ export function AudioProvider(props: { children: any }) {
         currentAudio,
         playAudio,
         audiosList,
-        audioInfoDialog: audioinfoDialog,
-        setAudioInfoDialog,
+        // audioInfoDialog: audioinfoDialog,
+        // setAudioInfoDialog,
         setAudiosList,
         close,
         next,

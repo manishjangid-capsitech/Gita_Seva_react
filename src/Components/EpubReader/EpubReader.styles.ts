@@ -112,6 +112,7 @@ export const EpubReaderStyles: IEpubReaderStyles = {
     cursor: "pointer",
     fontSize: 20,
     fontFamily: "ChanakyaUni, serif",
+    margin: "0 0 0 10px"
   },
   tocButton: {
     // background: "#ffb82d",
