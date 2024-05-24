@@ -23,23 +23,6 @@ const DivineQuotesPage = () => {
     });
     const [SortValue, setSortValue] = React.useState("");
 
-    // function ClickOnFilter(cat: string, aut: string, lan: string) {
-    //   setRefresh(false);
-    //   DivineQuotesService.getDivineQuotes(
-    //     "",
-    //     pagination.pageNo,
-    //     pagination.recordsPerPage
-    //   ).then((res) => {
-    //     if (res) {
-    //       setDivineQuotes(res.result?.items);
-    //       setPagination({
-    //         ...pagination,
-    //         totalRecords: res.result?.totalRecords,
-    //       });
-    //     }
-    //   });
-    // }
-
     React.useEffect(() => {
         setRefresh(false);
         DivineQuotesService.getDivineQuotes(
@@ -107,20 +90,6 @@ const DivineQuotesPage = () => {
                             <Link style={{ marginRight: "4px", color: "#2d2a29" }} to="/">
                                 {t("Home_tr")}
                             </Link>
-                            {/* {state?.authorName ? (
-                                <Link
-                                    to={"/author/ + "}
-                                    state={{
-                                        authorId: state?.authorId,
-                                        authorName: state?.authorName,
-                                    }}
-                                    style={{ marginRight: "8px", color: "#2d2a29" }}
-                                >
-                                    / {bread}
-                                </Link>
-                            ) : (
-                                ""
-                            )} */}
                             <span style={{ color: "#2d2a29" }}>
                                 <span>/ {t("Amrit_Vachan_tr")}</span>
                             </span>
@@ -138,15 +107,15 @@ const DivineQuotesPage = () => {
                 }}
             >
                 <div className="containers">
-            <div
-              className="filter1"
-              style={{ margin: "5px 0" }}
-            >
-              <span>
-                {t("Total_Records_tr")} : {pagination.totalRecords}
-              </span>
-            </div>
-          </div>
+                    <div
+                        className="filter1"
+                        style={{ margin: "5px 0" }}
+                    >
+                        <span>
+                            {t("Total_Records_tr")} : {pagination.totalRecords}
+                        </span>
+                    </div>
+                </div>
                 <div className="containers">
                     <div className="gst-page-content" style={{
                         display: "block",

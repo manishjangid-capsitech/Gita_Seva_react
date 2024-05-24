@@ -12,22 +12,12 @@ import bookicon from "../assets/img/book-icon.png";
 import audioicon from "../assets/img/audio-icon.png";
 import articleicon from "../assets/img/article-icon.png";
 import DefaultBook from "../Images/defaultBook.png";
-import nolyrics from "../assets/img/icons1.png";
-import withlyrics from "../assets/img/icons3.png";
-import artical from "../assets/img/article-icon.png";
 import { ContactPage } from "./ContactPage";
-import playimg from "../assets/img/vol.png";
 import RabbitLyrics from "rabbit-lyrics";
 import leftArrow from "../assets/img/leftArrow1.png";
 import rightArrow from "../assets/img/rightArrow1.png"
 import "../Styles/slick.css"
 import styles from "../Styles/slick.module.css";
-import facebook from "../assets/img/facebook.png";
-import instagram from "../assets/img/instagram.png";
-import twitter from "../assets/img/twitter.png";
-import youtube from "../assets/img/youtube.png";
-import IosStore from "../assets/img/ios-app.png";
-import androidplaystore from "../assets/img/android-app.png";
 import { ImageGroup, Image } from "react-fullscreen-image";
 import WithoutLyrics from "../Images/audiolyrics.svg";
 import WithLyrics from "../Images/audiowithoutlyrics.svg";
@@ -42,8 +32,8 @@ import ArticlesService from "../Services/Articles";
 import BooksService from "../Services/Books";
 import AudiosService from "../Services/Audios";
 import DivineQuotesService from "../Services/DivineQuotes";
-import Loading from "../Components/Loading";
 import Spinner from "./Spinner";
+import LyricsComponent from "../Components/LyricsComponent";
 
 
 interface IArticleProps {
@@ -56,10 +46,8 @@ interface IArticleProps {
 }
 
 const HomePage = () => {
-  const audio = require("../assets/rabbitLyrics/YadaYadaHomePage.mp3");
   const text = require("../assets/defaultAudLyrics.txt");
-  const [Articletcontent, setarticleContent] = useState<IArticleProps[]>([]);
-  const [fetchArticle, setFetchArticle] = React.useState(false);
+  const [Articletcontent, setarticleContent] = useState<IArticleProps[] | any>([]);
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [banners, setbanners] = useState<Array<any> | undefined>(undefined);
@@ -98,7 +86,7 @@ const HomePage = () => {
 
   const [articlesBox, setArticlesBox] = useState<any[] | undefined>(undefined);
 
-  const infinite = banners ? React.Children.count(banners.length) > 0 : false;
+  const infinite = banners ? React.Children.count(banners?.length) > 0 : false;
   const settings = {
     infinite,
     dots: true,
@@ -141,9 +129,10 @@ const HomePage = () => {
   function createMarkuparticle(index: number) {
     return {
       __html: fetchArticle
-        ? Articletcontent[index].messageText.length > 90
-          ? Articletcontent[index].messageText.slice(0, 90) + ".."
-          : Articletcontent[index].messageText
+        ? Articletcontent[index]?.articleContent?.length > 90
+          ? Articletcontent[index]?.articleContent?.slice(0, 150) + ".."
+          // ? Articletcontent[index]?.articleContent?.slice(233, 400) + ".."
+          : Articletcontent[index]?.articleContent
         : null,
     };
   }
@@ -340,15 +329,15 @@ const HomePage = () => {
       "",
       window.location.pathname === "/articles/special" ? true : false
     ).then((res) => {
-      if (res.status)
-        setArticlesBox(res.result?.items);
-      // setarticleContent(res.result.items);
+      if (res.status) {
+        setArticlesBox(res?.result?.items?.filter
+          ((item: any) => item.id === "5d78ecc0e42a7838149ecb29" || item.id === "5d78ea81e42a7838149ecb23" || item.id === "5cb1cb25e3fbda2174b7f26c"));
+        setarticleContent(res?.result?.items?.filter
+          ((item: any) => item.id === "5d78ecc0e42a7838149ecb29" || item.id === "5d78ea81e42a7838149ecb23" || item.id === "5cb1cb25e3fbda2174b7f26c"));
+        setFetchArticle(true);
+      }
     });
   }, [refresh, i18n.language]);
-
-  const filteredItems = articlesBox?.filter
-    (item => item.id === "5d78ecc0e42a7838149ecb29" || item.id === "5d78ea81e42a7838149ecb23" || item.id === "5cb1cb25e3fbda2174b7f26c")
-  // .sort((a, b) => b.name.localeCompare(a.name));
 
   useEffect(() => {
     HomeService.getHomeData(_get_i18Lang(), "").then((res) => {
@@ -365,7 +354,7 @@ const HomePage = () => {
   const [isLoading, setLoading] = useState(false);
   const [booklength, setBookLength] = useState("")
   const [audiosLength, setAudiosLength] = useState("")
-  const [pravachansLength, setPravachansLength] = useState("")
+  const [pravachansLength, setPravachansLength] = useState<any>("")
   const [articleLength, setArticleLength] = useState("")
   const [divineQuoteLength, setDivineLength] = useState("")
 
@@ -480,21 +469,22 @@ const HomePage = () => {
     });
   }, [refresh, i18n.language]);
 
-  useEffect(() => {
-    setRefresh(false);
-    HomeService.getMessage(_get_i18Lang(), 0, 3).then((res) => {
-      if (res.status) {
-        setmessages(res.result?.items);
-        // setarticleContent(res.result.items);
-        setFetchArticle(true);
-      }
-    });
-  }, [refresh, i18n.language]);
+  // useEffect(() => {
+  //   setRefresh(false);
+  //   HomeService.getMessage(_get_i18Lang(), 0, 3).then((res) => {
+  //     if (res.status) {
+  //       // setmessages(res.result?.items);
+  //       // setarticleContent(res.result.items);
+  //       // setFetchArticle(true);
+  //     }
+  //   });
+  // }, [refresh, i18n.language]);
 
   useEffect(() => {
     fetch(text)
       .then((response) => response?.text())
       .then((textContent) => {
+        // console.log(textContent)
         var lyrics = textContent.replace(/\[[^\]]+\]/g, "").trim();
         setDefaultAudLyrics(lyrics);
       });
@@ -608,6 +598,8 @@ const HomePage = () => {
     }
   }, [activetab]);
 
+  const [fetchArticle, setFetchArticle] = React.useState(false);
+
   return (
     <>
       <div
@@ -695,7 +687,7 @@ const HomePage = () => {
                         ))
                         : ""}
                     </Slider>
-                    <div
+                    {/* <div
                       className="parentBox"
                     >
                       <div
@@ -745,7 +737,7 @@ const HomePage = () => {
                         </div>
                         <audio
                           ref={refAudio}
-                          id="audios01"
+                          id="#audio1"
                           onPlay={() => {
                             setPlaying(true);
                           }}
@@ -762,14 +754,16 @@ const HomePage = () => {
                             cursor: "pointer",
                             padding: "18px 11px 0 10px",
                           }}
+                          // data-audio="#audio1"
                         >
                           {defaultlyrics
                             ?.replace(/\r/g, "")
                             ?.split("\n")
-                            ?.map((l: any) => {
+                            ?.map((l: any,index) => {
                               return <span key={l?.id} style={{ fontSize: 23 }}>{l}</span>;
                             })}
-                        </div>
+                        </div> 
+                        <LyricsComponent/>
                       </div>
                       <div
                         className="audioBox2"
@@ -783,7 +777,7 @@ const HomePage = () => {
                             fontFamily: "ChanakyaUni",
                           }}
                         >
-                          <div
+                          { <div
                             className="line"
                             id="lineDiv1"
                             data-start="2.48"
@@ -792,9 +786,9 @@ const HomePage = () => {
                             कंस और चाणूरका वध करने वाले, देवकीके आनन्दवर्धन,
                             वसुदेवनन्दन जगद्गुरु श्रीकृष्णचन्द्रकी मैं वन्दना
                             करता हूँ। <br />
-                          </div>
+                          </div>}
 
-                          <div
+                         { <div
                             className="line active"
                             style={{ display: "none" }}
                             id="lineDiv2"
@@ -805,7 +799,7 @@ const HomePage = () => {
                             प्राणियोंका ईश्वर होते हुए भी अपनी प्रकृतिको अधीन
                             करके अपनी योगमायासे प्रकट होता हूँ।
                             <br />
-                          </div>
+                          </div>}
 
                           <div
                             className="line active"
@@ -891,7 +885,8 @@ const HomePage = () => {
                           </div>
                         </div>
                       </div>
-                    </div>
+                    </div> */}
+                    <LyricsComponent />
                   </div>
                 </div>
                 <div
@@ -905,9 +900,8 @@ const HomePage = () => {
                   <div className="messagebox"
                   >
                     <div>
-                      {filteredItems?.map((article: any, index: number) => {
+                      {articlesBox?.map((article: any, index: number) => {
                         return (
-
                           <div key={article.id}>
                             <div
                               style={{
@@ -930,27 +924,21 @@ const HomePage = () => {
                                     }}
                                   >
                                     {article.name != null &&
-                                      article.name.length > 31
-                                      ? article.name.slice(0, 30) + ".."
+                                      article.name.length > 100
+                                      ? article.name.slice(50, 60) + ".."
                                       : article.name}
                                   </div>
                                 </div>
-                                {/* {article?.articleContent.length > 100 
-                                  ? Articletcontent[index].messageText.slice(0, 90) + ".."
-                                  : Articletcontent[index].messageText
-                                } */}
                                 <p
                                   style={{
                                     margin: "0 0 6px 0",
                                     borderBottom: "none",
                                     paddingBottom: "0px",
-                                    color: "black",
-                                    fontWeight: "500"
                                   }}
-                                  dangerouslySetInnerHTML={{ __html: article?.articleContent }}
-                                // dangerouslySetInnerHTML={createMarkuparticle(
-                                //   index
-                                // )}
+                                  className="htmlContent"
+                                  dangerouslySetInnerHTML={createMarkuparticle(
+                                    index
+                                  )}
                                 ></p>
                               </div>
                             </div>
@@ -987,7 +975,7 @@ const HomePage = () => {
                         <div
                           className="btnSubmit"
                           onClick={() => {
-                            navigate(`/articles/`);
+                            navigate(`/articles`);
                           }}
                         >
                           {t("SeeAll_tr")}
@@ -1321,16 +1309,16 @@ const HomePage = () => {
                       }}
                     >
                       {/* {t("All_Special_E_books_tr")} */}
-                      {t("view_all_tr")}
+                      {t("all_tr")}
                       {/* {booklength ?
                         <Spinner />
                         : */}
                       <p style={{
-                        margin: "0px 8px",
-                        fontWeight: 600
+                        margin: "0px 8px"
                       }}>{booklength}</p>
                       {/* } */}
                       {t("E_books_tr")}
+                      <p style={{ margin: "0 0 0 10px" }}>{t("view_tr")}</p>
                     </Link>
                   </div>
                 </div>
@@ -1432,16 +1420,16 @@ const HomePage = () => {
                         marginBottom: "35px"
                       }}
                     >
-                      {t("view_all_tr")}
+                      {t("all_tr")}
                       {/* {audiosLength ?
                         <Spinner />
                         : */}
                       <p style={{
-                        margin: " 0px 8px",
-                        fontWeight: 600
+                        margin: " 0px 8px"
                       }}>{audiosLength}</p>
                       {/* } */}
                       {t("Audios_tr")}
+                      <p style={{ margin: "0 0 0 10px" }}>{t("view_tr")}</p>
                       {/* {t("All_Special_Audios_tr")} */}
                     </Link>
                   </div>
@@ -1532,7 +1520,7 @@ const HomePage = () => {
                     </div>
                   </div>
 
-                  <div className="text-center" style={{ margin: "0 40% auto" }}>                    
+                  <div className="text-center" style={{ margin: "0 40% auto" }}>
                     <Link
                       to={`/pravachans`}
                       // to={`/pravachans/special`}
@@ -1552,16 +1540,16 @@ const HomePage = () => {
                         marginBottom: "35px"
                       }}
                     >
-                      {t("view_all_tr")}
+                      {t("all_tr")}
                       {pravachansLength ?
                         <Spinner />
                         :
                         < p style={{
-                          margin: "0px 8px",
-                          fontWeight: 600
+                          margin: "0px 8px"
                         }}>{pravachansLength}</p>
                       }
                       {t("Pravachan_tr")}
+                      <p style={{ margin: "0 0 0 10px" }}>{t("view_tr")}</p>
                       {/* {t("All_Special_Pravachan_tr")} */}
                     </Link>
 
@@ -1642,15 +1630,15 @@ const HomePage = () => {
                         marginBottom: "35px"
                       }}
                     >
-                      {t("view_all_tr")}
+                      {t("all_tr")}
                       {/* {articleLength ?
                         <Spinner /> : */}
                       <p style={{
-                        margin: " 0px 8px",
-                        fontWeight: 600
+                        margin: "0px 8px"
                       }}>{articleLength}</p>
                       {/* } */}
                       {t("Article_tr")}
+                      <p style={{ margin: "0 0 0 10px" }}>{t("view_tr")}</p>
                       {/* {t("All_Special_Article_tr")} */}
                     </Link>
                   </div>
@@ -1737,14 +1725,14 @@ const HomePage = () => {
                         marginBottom: "35px"
                       }}
                     >
-                      {t("view_all_tr")}
+                      {t("all_tr")}
                       <p style={{
-                        margin: " 0px 8px",
-                        fontWeight: 600
+                        margin: "0px 8px"
                       }}>
                         {divineQuoteLength}
                       </p>
                       {t("Amrit_Vachan_tr")}
+                      <p style={{ margin: "0 0 0 10px" }}>{t("view_tr")}</p>
                     </Link>
                   </div>
                 </div>
@@ -1785,9 +1773,10 @@ const HomePage = () => {
                                 title={geetgovind.name}
                                 style={{ borderRadius: "5px", width: "150px", height: "212px" }}
                               />
-                              <p className="mb-0 mt-3" style={{ fontFamily: "ChanakyaUniBold", fontSize: "20px", lineHeight: "22px", textAlign: "center" }}>
-                                {geetgovind.name.length > 50 ? ".." : ""}
-                                {geetgovind.name}
+                              <p className="mb-0 mt-3 magzinetitle">
+                                {/* {geetgovind.name.length > 50 ? ".." : ""}
+                                {geetgovind.name} */}
+                                {t("MonthlyMagazine_tr")}
                               </p>
                             </a>
                           </div>
@@ -1822,9 +1811,10 @@ const HomePage = () => {
                                 title={kalyan.name}
                                 style={{ borderRadius: "5px", width: "150px", height: "212px" }}
                               />
-                              <p className="mb-0 mt-3" style={{ fontFamily: "ChanakyaUniBold", fontSize: "20px", lineHeight: "22px", textAlign: "center" }}>
-                                {kalyan.name.length > 50 ? ".." : ""}
-                                {kalyan.name}
+                              <p className="mb-0 mt-3 magzinetitle">
+                                {/* {kalyan.name.length > 50 ? ".." : ""}
+                                {kalyan.name} */}
+                                {t("Kalyan_tr")}
                               </p>
                             </a>
                           </div>
@@ -1858,9 +1848,10 @@ const HomePage = () => {
                                 title={kalpatru.name}
                                 style={{ borderRadius: "5px", width: "150px", height: "212px" }}
                               />
-                              <p className="mb-0 mt-3" style={{ fontFamily: "ChanakyaUniBold", fontSize: "20px", lineHeight: "22px", textAlign: "center" }}>
-                                {kalpatru.name.length > 50 ? ".." : ""}
-                                {kalpatru.name}
+                              <p className="mb-0 mt-3 magzinetitle">
+                                {/* {kalpatru.name.length > 50 ? ".." : ""}
+                                {kalpatru.name} */}
+                                {t("Kalyan_Kalpataru_tr")}
                               </p>
                             </a>
                           </div>
@@ -1894,9 +1885,8 @@ const HomePage = () => {
                                 title={vivekvani.name}
                                 style={{ borderRadius: "5px", width: "150px", height: "212px" }}
                               />
-                              <p className="mb-0 mt-3" style={{ fontFamily: "ChanakyaUniBold", fontSize: "20px", lineHeight: "22px", textAlign: "center" }}>
-                                {vivekvani.name.length > 50 ? ".." : ""}
-                                {vivekvani.name}
+                              <p className="mb-0 mt-3 magzinetitle">
+                                {t("vivek_vani_tr")}
                               </p>
                             </a>
                           </div>

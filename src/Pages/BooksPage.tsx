@@ -55,11 +55,6 @@ const BooksPage = () => {
     catName: string;
   };
 
-  const [isExpanded, setIsExpanded] = useState(false);
-
-  // Conditionally set the default expanded state of the accordion
-  const defaultExpandedValue = isExpanded ? true : false;
-
   function ResetData() {
     setSortValue("3");
     setLanguageId("");
@@ -552,17 +547,6 @@ const BooksPage = () => {
                                     });
                                   }
                                 }}
-                              // navigate(`/books/category/` + book.id, {
-                              //   state: {
-                              //     bookId: book.id,
-                              //     bookName: book.name,
-                              //     authorId: state?.authorId,
-                              //     authorName: state?.authorName,
-                              //     special: window.location.pathname,
-                              //     langId: state?.langId,
-                              //     catId: state?.catId,
-                              //   },
-                              // });
                               >
                                 <div className="bookBox">
                                   <a>

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import React from "react";
 import { GoogleAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
 import app from "./Firebase";
 import FacebookLogin from "react-facebook-login";
@@ -32,10 +32,6 @@ export const SignInFB = () => {
             fjs.parentNode.insertBefore(js, fjs);
         })(document, 'script', 'facebook-jssdk');
     };
-
-    // useEffect(() => {
-    //     fbLibrary();
-    // }, []);
 
     const responseFacebook = (response) => {
         // Handle the response when the user logs in with Facebook

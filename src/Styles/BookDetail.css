@@ -8,19 +8,17 @@
 
 .bookdecription {
   display: flex;
-  text-align: center;
-  width: 115%;
 }
 
 .bookdecription span {
-  font-size: 18px;
-  font-family: 'ChanakyaUniBold'
+  /* font-size: 20px;
+  font-family: 'ChanakyaUniBold' */
 }
 
 .yearmonth {
   display: grid;
-  border: 3px solid gray;
-  width: 20% 
+  /* border: 3px solid gray; */
+  width: 100%
 }
 
 /* .containers {

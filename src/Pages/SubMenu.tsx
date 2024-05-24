@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { CSSProperties } from "styled-components";
-import dot from "../assets/img/Dot.svg";
 import { useTranslation } from "react-i18next";
+import minus from "../assets/img/minus.png";
+import plus from "../assets/img/plus.png";
+import dot from "../assets/img/dott.png"
 
 const SubMenu = ({
   value,
@@ -50,7 +52,7 @@ const SubMenu = ({
                 marginRight: '5px'
               }}
             >
-              -
+              <img src={minus} width="20px" alt="" />
             </label>
           ) : value.items ? (
             <label
@@ -61,7 +63,7 @@ const SubMenu = ({
                 marginRight: '5px'
               }}
             >
-              +
+              <img src={plus} width="20px" alt="" />
             </label>
           ) : (
             <p
@@ -71,7 +73,8 @@ const SubMenu = ({
                 color: "#FB9C34",
                 marginRight: '5px'
               }}
-            >.
+            >
+              <img src={dot} width="20px" alt="" />
               {/* <img
                 src={dot}
                 alt="dot"

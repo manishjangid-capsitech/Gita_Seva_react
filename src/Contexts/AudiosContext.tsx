@@ -22,8 +22,6 @@ interface IAudiosContextProps {
   setIsMinismise: React.Dispatch<React.SetStateAction<boolean>>;
   audiosList: IAudioItem[];
   currentAudio: IAudioItem | null;
-  // audioInfoDialog: boolean;
-  // setAudioInfoDialog: () => void;
   setAudiosList: React.Dispatch<React.SetStateAction<IAudioItem[]>>;
   playAudio: (id: string, index: number) => void;
   close: () => void;
@@ -34,7 +32,6 @@ interface IAudiosContextProps {
   playbackspeed: (e: any) => void;
   showList: boolean;
   setShowList: React.Dispatch<React.SetStateAction<boolean>>;
-  // currentaudioId: () => string;
 }
 
 const AudioContext = React.createContext<IAudiosContextProps>({} as any);
@@ -43,15 +40,12 @@ export function AudioProvider(props: { children: any }) {
   const [audiosList, setAudiosList] = useState<IAudioItem[]>([]);
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
   const [audioIndex, setAudioIndex] = useState<any>(0);
-  // const [audioinfoDialog, setAudioinfoDialog] = useState(false);
   const [lyrtxt, setlyrtxt] = useState("");
   const [audioId, setaudioId] = useState("");
   const [Type, setType] = useState<any | undefined>(undefined);
   const [suff, setSuff] = useState<boolean>(false);
   const [isMinimise, setIsMinismise] = useState<boolean>(false);
   const [showList, setShowList] = useState<boolean>(true);
-
-  // let currentaudioId = audioId;
 
   const [isLoading, setLoading] = useState(false);
 
@@ -60,7 +54,6 @@ export function AudioProvider(props: { children: any }) {
   const playAudio = (id: string, index: number) => {
     setAudioIndex(index);
     setaudioId(id);
-    // navigate(`/${localStorage.getItem("type")}/${id}`);
   };
 
   const [displayState, setDisplayState] = useState(false)
@@ -70,9 +63,6 @@ export function AudioProvider(props: { children: any }) {
     setaudioId("");
     setCurrentAudio(null);
     setDisplayState(true)
-    // change navigation
-    // navigate(-1)
-    // navigate(`/${Type}/`);
   };
   const next = () => {
     setAudioIndex(
@@ -88,7 +78,6 @@ export function AudioProvider(props: { children: any }) {
     let ind = audiosList.length - 1 === audioIndex ? 0 : audioIndex + 1;
     let dt = audiosList[ind];
     playAudio(dt?.id, ind);
-    // if(audiosList = NaN)
   };
 
   const prev = () => {
@@ -115,9 +104,7 @@ export function AudioProvider(props: { children: any }) {
           ? audioIndex - 1
           : 0;
     let dt = audiosList[ind];
-    playAudio(dt.id, ind);
-    // setAudioIndex( audioIndex === 0 ? audiosList.length -1  :audioIndex < audiosList.length + 1 ? (audioIndex - 1): 0);
-    // setCurrentAudio({ ...audiosList[audioIndex === 0 ? audiosList.length -1  :audioIndex < audiosList.length + 1 ? (audioIndex - 1): 0], playing: true});
+    playAudio(dt.id, ind);    
   };
 
   const repeat = () => {
@@ -138,12 +125,6 @@ export function AudioProvider(props: { children: any }) {
     }
     window.addEventListener("load", playbackspeed);
   };
-
-
-// https://api.gitaseva.org/v1/api/Audios/610acdced241741fdf0b9b7a/lyrics?t=ieUUHT8l4DvlEnwEf1w%2BEA%3D%3D
-// https://api.gitaseva.org/v1/api/Audios/5cb1c895e3fbda2174b7f268/lyrics
-// https://api.gitaseva.org/v1/api/Audios/5db19f4c934e6e1c584fa80a/lyrics
-
 
   const LoadLyrics = (id: string) => {
     setTimeout(function () {
@@ -193,23 +174,6 @@ export function AudioProvider(props: { children: any }) {
     rawFile?.send();
   };
 
-  // const setAudioInfoDialog = () => {
-  //   if (audioinfoDialog) {
-  //     setAudioinfoDialog(false);
-  //   } else {
-  //     setAudioinfoDialog(true);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   if (isMinimise === true ? true : false) {
-  //     debugger
-  //     console.log("isMinimise", isMinimise);
-
-  //     setIsMinismise(isMinimise === false ? false : true)
-  //   }
-  // }, [isMinimise, next, prev])
-
   useEffect(() => {
     setIsLoaded(true);
   }, [currentAudio]);
@@ -245,8 +209,6 @@ export function AudioProvider(props: { children: any }) {
         currentAudio,
         playAudio,
         audiosList,
-        // audioInfoDialog: audioinfoDialog,
-        // setAudioInfoDialog,
         setAudiosList,
         close,
         next,
@@ -256,7 +218,6 @@ export function AudioProvider(props: { children: any }) {
         playbackspeed,
         showList,
         setShowList,
-        // currentaudioId,
       }}
       {...props}
     />

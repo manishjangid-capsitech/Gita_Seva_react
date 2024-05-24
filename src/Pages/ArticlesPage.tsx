@@ -447,12 +447,12 @@ const ArticlesPage = () => {
                                 }}
                               >
                                 <div>
-                                  <a>
+                                  <a style={{ cursor: "pointer", }}>
                                     <img
                                       style={{
                                         width: "28px",
                                         height: "34px",
-                                        cursor: "pointer",
+
                                         borderRadius: 0,
                                       }}
                                       src={articalIcon}
@@ -462,7 +462,7 @@ const ArticlesPage = () => {
                                       alt={article.name}
                                       title={article.name}
                                       width="60"
-                                      onClick={() => { }}
+                                    // onClick={() => { }}
                                     />
                                     <p
                                       style={{

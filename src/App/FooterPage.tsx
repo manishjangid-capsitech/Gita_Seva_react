@@ -3,7 +3,7 @@
 /* eslint-disable react/jsx-no-target-blank */
 import { useTranslation } from "react-i18next";
 import i18n, { _get_i18Lang } from "../i18n";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import $ from "jquery";
 import { NavLink } from "react-router-dom";
 import facebook from "../assets/img/facebook.png";
@@ -17,7 +17,6 @@ import AuthorsService from "../Services/Authors";
 const FooterPage = () => {
   const { t } = useTranslation();
   const [refresh, setRefresh] = useState(false);
-  const currentLanguage = _get_i18Lang();
 
   const [MenuId, setMenuId] = useState("");
   const [MenuName, setMenuName] = useState("");
@@ -46,7 +45,6 @@ const FooterPage = () => {
   function menuid(menuname: string) {
     $(".header-menu > ul > li > a").removeClass("listActive");
     $("#menu_" + menuname).addClass("listActive");
-    localStorage.setItem("MId", menuname);
 
     if (menuname === "about") {
       setMenuName(t("Introduction_tr"));
@@ -66,9 +64,7 @@ const FooterPage = () => {
   useEffect(() => {
     setRefresh(false);
     changeLocale(localStorage.getItem("locale") === "en" ? "en" : "hi");
-    // localStorage.setItem("author_Id", "5bbc60101fd2d735b0087d36");
     $(".footer-menu > ul > li > a").removeClass("listActive");
-    $("#menu_" + localStorage.getItem("MId")).addClass("listActive");
   }, []);
 
   useEffect(() => {
@@ -79,8 +75,8 @@ const FooterPage = () => {
     <div style={{ marginTop: 'auto' }}>
       <div className="gst-footer">
         <div className="containers">
-          <div className="row">
-            <div className="col-3">
+          <div style={{ width: "100%", display: "flex" }}>
+            <div style={{ width: "30%" }}>
               <h2>{t("Legends_Introduction_tr")}</h2>
               <div style={{ display: "grid" }}>
                 {authors?.map((author: any) => (
@@ -110,7 +106,7 @@ const FooterPage = () => {
                 ))}
               </div>
             </div>
-            <div className="col-2">
+            <div style={{ width: "25%", margin: "0 15px" }}>
               <h2>{t("Subject_tr")}</h2>
               <div className="footermenu">
                 <NavLink
@@ -181,8 +177,41 @@ const FooterPage = () => {
                   {t("Kalpataru_tr")}
                 </NavLink>
               </div>
+              <div className="footermenu">
+                <NavLink
+                  to="/vivekvani"
+                  className="ftmenulink"
+                  style={({ isActive }) => {
+                    return { color: isActive ? "#d11501" : "#472d1e" };
+                  }}
+                >
+                  {t("vivek_vani_tr")}
+                </NavLink>
+                <p className="footermenucoma">,</p>
+                <NavLink
+                  to="/monthlymagazine"
+                  className="ftmenulink"
+                  style={({ isActive }) => {
+                    return { color: isActive ? "#d11501" : "#472d1e" };
+                  }}
+                >
+                  {t("MonthlyMagazine_tr")}
+                </NavLink>
+              </div>
+
+              <div className="footermenu">
+                <NavLink
+                  to="/divinequote"
+                  className="ftmenulink"
+                  style={({ isActive }) => {
+                    return { color: isActive ? "#d11501" : "#472d1e" };
+                  }}
+                >
+                  {t("Amrit_Vachan_tr")}
+                </NavLink>
+              </div>
             </div>
-            <div className="col-2">
+            <div className="" style={{ width: "20%" }}>
               <h2>{t("Our_Policies_tr")}</h2>
               <div className="footermenu" style={{ display: "grid" }}>
                 <NavLink
@@ -218,7 +247,7 @@ const FooterPage = () => {
                 </NavLink>
               </div>
             </div>
-            <div className="col-3">
+            <div style={{ width: "25%" }}>
               <div
                 style={{
                   float: "left",
@@ -238,7 +267,7 @@ const FooterPage = () => {
                 <span>Scan to download the App</span>
               </div>
             </div>
-            <div className="col-2">
+            <div style={{ width: "20%" }}>
               <div className="app-icon">
                 <div className="socialicons">
                   <a

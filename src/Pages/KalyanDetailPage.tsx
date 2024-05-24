@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import DefaultBook from "../Images/defaultBook.png";
 import KalyansServices from "../Services/Kalyan";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -18,7 +18,7 @@ import rightArrow from "../assets/img/rightArrow1.png"
 import closeicon from "../Images/close-round-border.svg"
 import EpubServices from "../Services/Epub";
 
-const KalyanDetailPage = (props: any) => {
+const KalyanDetailPage = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [kalyanDetail, setKalyanDetail] = useState<any>(undefined);
@@ -27,8 +27,13 @@ const KalyanDetailPage = (props: any) => {
   const [relateds, setRelatedKalyans] = useState<any[] | undefined>(undefined);
 
   const location = useLocation();
-  const [isLiked, setIsLiked] = React.useState<boolean>(false);
-  const state = location.state as { kalyanId: string };
+  const [isLiked, setIsLiked] = useState<boolean>(false);
+  const state = location.state as {
+    kalyanId: string,
+    kalyanSlug: string,
+    bookName: string,
+  };
+
   const settings = {
     infinite: true,
     speed: 500,
@@ -62,6 +67,20 @@ const KalyanDetailPage = (props: any) => {
     setTimeout(() => {
       notificationRef.current.style.display = 'none';
     }, 3000); // Hide the notification after 2 seconds
+  };
+
+  const [loginState, setLoginState] = useState<string | null>(null);
+
+  const handleLoginStateChange = (newState: any) => {
+    setLoginState(newState);
+    navigate(`/reader/kalyans/` + kalyanDetail.slug, {
+      state: {
+        kalyanDetailId: state?.kalyanId,
+        bookName: state?.bookName,
+        slug: state?.kalyanSlug,
+        type: BookContentType.kalyans,
+      },
+    });
   };
 
   const notify = () => {
@@ -343,6 +362,20 @@ const KalyanDetailPage = (props: any) => {
                       ) : (
                         ""
                       )}
+                      <div className="bookdecription">
+                        <div className="yearmonth" style={{ display: "flex", justifyContent: "center", border: "1px solid #ffaf68", paddingTop: "15px", borderTopLeftRadius: "5px", borderBottomLeftRadius: "5px" }}>
+                          <label style={{ color: "#472d1e", fontSize: "23px", fontFamily: "ChanakyaUni", margin: '0 40% 0 0', paddingBottom: 0 }}>{t("Year_tr")}</label>
+                          <label style={{ fontSize: "23px", color: "#ff731f" }}>{kalyanDetail?.years}</label>
+                        </div>
+                        <div className="yearmonth" style={{ display: "flex", justifyContent: "center", border: "1px solid #ffaf68", paddingTop: "15px", borderLeft: 0, borderRight: 0 }}>
+                          <label style={{ color: "#472d1e", fontSize: "23px", fontFamily: "ChanakyaUni", margin: '0 40% 0 0' }}>{t("Month_tr")}</label>
+                          <label style={{ fontSize: "23px", color: "#ff731f" }}>{monthName}</label>
+                        </div>
+                        <div className="yearmonth" style={{ display: "flex", justifyContent: "center", border: "1px solid #ffaf68", paddingTop: "15px", borderTopRightRadius: "5px", borderBottomRightRadius: "5px" }}>
+                          <label style={{ color: "#472d1e", fontSize: "23px", fontFamily: "ChanakyaUni", margin: '0 40% 0 0' }}>{t("Number_tr")}</label>
+                          <label style={{ fontSize: "23px", color: "#ff731f" }}>{kalyanDetail?.editionNo}</label>
+                        </div>
+                      </div>
                       <div className="next-read" style={{ marginTop: "50px" }}>
                         <p
                           style={{ cursor: "pointer", display: "inline" }}
@@ -364,20 +397,6 @@ const KalyanDetailPage = (props: any) => {
                           {t("read_magazine_tr")}
                         </p>
                         <div ref={notificationRef} style={{ color: "#ff3d28", fontSize: '20px', marginTop: "10px", height: "20px" }} className="notification-bar"></div>
-                      </div>
-                      <div className="bookdecription">
-                        <div className="yearmonth" style={{ borderRight: "none" }}>
-                          <span>{t("Year_tr")}</span>
-                          <span>{kalyanDetail?.years}</span>
-                        </div>
-                        <div className="yearmonth" style={{ borderRight: "none" }}>
-                          <span>{t("Month_tr")}</span>
-                          <span>{monthName}</span>
-                        </div>
-                        <div className="yearmonth">
-                          <span>{t("Number_tr")}</span>
-                          <span>{kalyanDetail?.editionNo}</span>
-                        </div>
                       </div>
                     </div>
                   </div>
@@ -451,7 +470,7 @@ const KalyanDetailPage = (props: any) => {
             )}
           </div>
         </div>
-        {/* <LogInModel opens={logIn} onCloses={closeModal} /> */}
+        <LogInModel opens={logIn} onCloses={closeModal} onLoginStateChange={handleLoginStateChange} />
       </div>
     </div>
   );

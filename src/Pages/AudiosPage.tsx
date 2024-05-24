@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import AudiosService from "../Services/Audios";
 import AuthorsService from "../Services/Authors";
 import WithoutLyrics from "../Images/audiolyrics.svg";
@@ -24,8 +24,6 @@ import {
   AccordionSummary,
 } from "@material-ui/core";
 import ExpandMore from "@mui/icons-material/ExpandMore";
-import Favadd from "../assets/img/favouritefilled.png";
-import Favicon from "../assets/img/pravachanfavbtn.png";
 import { LogInModel } from "./LogInoutModel";
 import { SideBar } from "./SubMenu";
 
@@ -38,7 +36,6 @@ const AudiosPage = () => {
   const [refresh, setRefresh] = useState(false);
 
   const [SortValue, setSortValue] = useState("3");
-  const [Type, setType] = useState<any | undefined>(undefined);
 
   const [categories, setCategories] = useState<any[]>([]);
   const [CategoryId, setCategoryId] = useState("");
@@ -68,11 +65,32 @@ const AudiosPage = () => {
   };
   const UserIdentity = localStorage.getItem("UserId") as any;
   const location = useLocation();
+
+  const [loginState, setLoginState] = useState<string | null>(null);
+
+  const handleLoginStateChange = (newState: any) => {
+    setLoginState(newState);
+    {
+      audios?.map((audio, i) => (
+        navigate(`/audios/` + audio?.slug, {
+          state: {
+            audioId: audio.id,
+            audioslug: audio.slug,
+            sorting: SortValue,
+            index: i,
+            audiocat: CategoryId,
+          },
+        })
+      ))
+    }
+  };
+
   const state = location.state as {
     authorId: string;
     authorName: string;
     type: string;
   };
+  const [bread, showBread] = useState<string>("");
 
   function ResetData() {
     setCategoryId("");
@@ -93,7 +111,6 @@ const AudiosPage = () => {
     LyricsId: number
   ) {
     setRefresh(false);
-    setType("audios");
     AudiosService.getAudios(
       0,
       pagination.recordsPerPage,
@@ -141,6 +158,7 @@ const AudiosPage = () => {
   useEffect(() => {
     AudiosService.getFilters("audio").then((res) => {
       if (res.status) {
+        debugger
         setSinger(res.result.authors);
         setLyrics(res.result);
       }
@@ -161,7 +179,6 @@ const AudiosPage = () => {
 
   useEffect(() => {
     setRefresh(false);
-    setType("audios");
     AudiosService.getAudios(
       pagination.pageNo === 0
         ? 0
@@ -188,13 +205,17 @@ const AudiosPage = () => {
     });
   }, [refresh, SortValue, i18n.language]);
 
-  const [bread, showBread] = useState<string>("");
-
   useEffect(() => {
     AuthorsService.GetAuthorDataById(state?.authorId, "").then((res) => {
       showBread(res?.result?.name);
     });
   }, [i18n.language, refresh]);
+
+  useEffect(() => {
+    if (CategoryId !== "") {
+      setSortValue("0")
+    }
+  }, [CategoryId])
 
   return (
     <>
@@ -539,6 +560,28 @@ const AudiosPage = () => {
                                     alt={audio.name}
                                     title={audio.name}
                                     onClick={() => {
+                                      if (UserIdentity) {
+                                        navigate(`/audios/` + audio.slug, {
+                                          state: {
+                                            audioId: audio.id,
+                                            audioslug: audio.slug,
+                                            sorting: SortValue,
+                                            index: i,
+                                            audiocat: CategoryId,
+                                          },
+                                        });
+                                      } else {
+                                        setLogIn(true);
+                                      }
+                                    }}
+                                  />
+                                </a>
+                              </div>
+                              <div style={{ width: "100%" }}>
+                                <a
+                                  style={{ cursor: "pointer" }}
+                                  onClick={() => {
+                                    if (UserIdentity) {
                                       navigate(`/audios/` + audio.slug, {
                                         state: {
                                           audioId: audio.id,
@@ -548,23 +591,9 @@ const AudiosPage = () => {
                                           audiocat: CategoryId,
                                         },
                                       });
-                                    }}
-                                  />
-                                </a>
-                              </div>
-                              <div style={{ width: "100%" }}>
-                                <a
-                                  style={{ cursor: "pointer" }}
-                                  onClick={() => {
-                                    navigate(`/audios/` + audio.slug, {
-                                      state: {
-                                        audioId: audio.id,
-                                        audioslug: audio.slug,
-                                        sorting: SortValue,
-                                        index: i,
-                                        audiocat: CategoryId,
-                                      },
-                                    });
+                                    } else {
+                                      setLogIn(true);
+                                    }
                                   }}
                                 >
                                   <p
@@ -616,16 +645,19 @@ const AudiosPage = () => {
                                   <img
                                     alt=""
                                     onClick={() => {
-                                      //navigate(`/audios/${audio.id}`);
-                                      navigate(`/audios/` + audio.slug, {
-                                        state: {
-                                          audioId: audio.id,
-                                          audioslug: audio.slug,
-                                          sorting: SortValue,
-                                          index: i,
-                                          audiocat: CategoryId,
-                                        },
-                                      });
+                                      if (UserIdentity) {
+                                        navigate(`/audios/` + audio.slug, {
+                                          state: {
+                                            audioId: audio.id,
+                                            audioslug: audio.slug,
+                                            sorting: SortValue,
+                                            index: i,
+                                            audiocat: CategoryId,
+                                          },
+                                        });
+                                      } else {
+                                        setLogIn(true);
+                                      }
                                     }}
                                     title="Play"
                                     src={imgpause}
@@ -637,7 +669,7 @@ const AudiosPage = () => {
                           </div>
                         </div>
                       ))}
-                      <div className="col-12" style={{ marginTop: "30px", display:pagination.totalRecords <= 12 ? "none" : "block" }}>
+                      <div className="col-12" style={{ marginTop: "30px", display: pagination.totalRecords <= 12 ? "none" : "block" }}>
                         <ListPagination
                           totalRecords={pagination.totalRecords}
                           recordsPerPage={pagination.recordsPerPage}
@@ -654,7 +686,6 @@ const AudiosPage = () => {
                     </div>
                   ) : (
                     <div className="ebooks-category resultnotfound">
-                      {/* <Loading /> */}
                       {audios?.length === 0 ? (
                         <label>{t("result_not_found_tr")}</label>
                       ) : (
@@ -668,7 +699,7 @@ const AudiosPage = () => {
           </div>
         </div>
       </div>
-      {/* <LogInModel opens={logIn} onCloses={closeModal} /> */}
+      <LogInModel opens={logIn} onCloses={closeModal} onLoginStateChange={handleLoginStateChange} />
     </>
   );
 };

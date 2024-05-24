@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import DefaultBook from "../Images/defaultBook.png";
 import BooksService from "../Services/Books";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -20,8 +20,6 @@ import leftArrow from "../assets/img/leftArrow1.png";
 import rightArrow from "../assets/img/rightArrow1.png";
 import EpubServices from "../Services/Epub";
 import closeicon from "../Images/close-round-border.svg";
-import { log } from "console";
-import Login from "../Services/Login";
 
 const BookDetailPage = (props: any) => {
   const { t } = useTranslation();
@@ -94,27 +92,42 @@ const BookDetailPage = (props: any) => {
             ? "पुस्तक को सफलतापूर्वक मेरी पसंद में जोड़ा गया है।"
             : "Book has been successfully added to the favourites"
           : localStorage.getItem("lan") === "hindi"
-          ? "पुस्तक मेरी पसंद से हटा दी गई है।"
-          : "Book has been removed from favourites"
+            ? "पुस्तक मेरी पसंद से हटा दी गई है।"
+            : "Book has been removed from favourites"
       );
     }
   };
 
   const toggleLike = () => {
     !isLiked
-      ? BooksService.addFavourite(state.bookId).then((res) => {
-          res.status && setIsLiked(true);
-        })
-      : BooksService.removeFavourite(state.bookId).then((res) => {
-          res.status && setIsLiked(false);
-        });
+      ? BooksService.addFavourite(state?.bookId).then((res) => {
+        res.status && setIsLiked(true);
+      })
+      : BooksService.removeFavourite(state?.bookId).then((res) => {
+        res.status && setIsLiked(false);
+      });
     setToggleFav((x) => !x);
+  };
+
+  const [loginState, setLoginState] = useState<string | null>(null);
+
+  const handleLoginStateChange = (newState: any) => {
+    setLoginState(newState);
+    navigate(`/reader/books/` + state?.bookSlug, {
+      state: {
+        bookDetailId: state?.bookId,
+        bookName: state?.bookName,
+        slug: state?.bookSlug,
+        label: state?.bookId,
+        type: BookContentType.books,
+      },
+    });
   };
 
   useEffect(() => {
     setRefresh(false);
     BooksService.getCurrentBook(
-      state.bookId,
+      state?.bookId,
       UserIdentity !== "" ? UserIdentity : ""
     ).then((res: any) => {
       setBookDetail(res.result);
@@ -134,42 +147,12 @@ const BookDetailPage = (props: any) => {
 
   useEffect(() => {
     setRefresh(false);
-    BooksService.getRelatedBooks(state.bookId, "").then((res) => {
+    BooksService.getRelatedBooks(state?.bookId, "").then((res) => {
       if (res.status) {
         setRelatedBooks(res.result);
       }
     });
   }, [refresh, i18n.language]);
-
-  const [loginState, setLoginState] = useState<string | null>(null);
-
-  // useEffect(() => {
-  //   const userId = localStorage.getItem('userId');
-  //   if (userId && Login ) {
-  //     navigate(`/reader/books/` + state?.bookSlug, {
-  //       state: {
-  //         bookDetailId: state?.bookId,
-  //         bookName: state?.bookName,
-  //         slug: state?.bookSlug,
-  //         label: state?.bookId,
-  //         type: BookContentType.books,
-  //       },
-  //     });
-  //   }
-  // }, [ setLoginState, Login ]);
-
-  const handleLoginStateChange = (newState: any) => {
-    setLoginState(newState);
-    navigate(`/reader/books/` + state?.bookSlug, {
-      state: {
-        bookDetailId: state?.bookId,
-        bookName: state?.bookName,
-        slug: state?.bookSlug,
-        label: state?.bookId,
-        type: BookContentType.books,
-      },      
-    });
-  };
 
   useEffect(() => {
     BooksService.GetLanguageDataById(state?.langId).then((res) => {
@@ -207,9 +190,9 @@ const BookDetailPage = (props: any) => {
           >
             {window.location.pathname === "/profile/fav" + state?.bookSlug &&
               t("E_books_tr")}
-            {window.location?.pathname === "/books/" + state.bookSlug &&
+            {window.location?.pathname === "/books/" + state?.bookSlug &&
               t("E_books_tr")}
-            {window.location?.pathname === "/books/special/" + state.bookSlug &&
+            {window.location?.pathname === "/books/special/" + state?.bookSlug &&
               t("Special_E_books_tr")}
             {state?.authorId !== undefined && <span>{state?.authorName}</span>}
             {state?.langId !== undefined && <span>{lang}</span>}
@@ -225,7 +208,7 @@ const BookDetailPage = (props: any) => {
               <Link style={{ marginRight: "8px", color: "#2d2a29" }} to="/">
                 {t("Home_tr")}
               </Link>
-              {window.location?.pathname === "/books/" + state.bookSlug ? (
+              {window.location?.pathname === "/books/" + state?.bookSlug ? (
                 <Link
                   to={"/books"}
                   style={{ marginRight: "6px", color: "#2d2a29" }}
@@ -236,7 +219,7 @@ const BookDetailPage = (props: any) => {
                 ""
               )}
               {window.location?.pathname ===
-              "/books/special/" + state?.bookSlug ? (
+                "/books/special/" + state?.bookSlug ? (
                 <Link
                   to={"/books/special"}
                   style={{ marginRight: "6px", color: "#2d2a29" }}
@@ -377,7 +360,7 @@ const BookDetailPage = (props: any) => {
                             </label>
                             <label
                               onClick={() => {
-                                if (!userId) setLogIn(true);
+                                if (!UserIdentity) setLogIn(true);
                               }}
                               style={{ display: "flex", margin: 0 }}
                             >
@@ -390,6 +373,7 @@ const BookDetailPage = (props: any) => {
                               >
                                 <div
                                   className="bkmarkicon"
+                                  style={{ cursor: "pointer" }}
                                   onClick={() => {
                                     setBookMark(
                                       bookMark === true ? false : true
@@ -448,15 +432,16 @@ const BookDetailPage = (props: any) => {
                                                   onClick={() => {
                                                     navigate(
                                                       `/reader/books/` +
-                                                        bookDetail.slug,
+                                                      bookDetail?.slug,
                                                       {
                                                         state: {
                                                           bookDetailId:
-                                                            bookDetail.id,
+                                                            bookDetail?.id,
                                                           bookName:
-                                                            bookDetail.name,
-                                                          slug: bookDetail.slug,
+                                                            bookDetail?.name,
+                                                          slug: bookDetail?.slug,
                                                           location: item?.cfi,
+                                                          chapterName: item?.name,
                                                           type: BookContentType.books,
                                                         },
                                                       }
@@ -523,12 +508,12 @@ const BookDetailPage = (props: any) => {
                             style={{ cursor: "pointer", display: "inline" }}
                             onClick={() => {
                               if (UserIdentity) {
-                                navigate(`/reader/books/` + bookDetail.slug, {
+                                navigate(`/reader/books/` + bookDetail?.slug, {
                                   state: {
-                                    bookDetailId: bookDetail.id,
-                                    bookName: bookDetail.name,
-                                    slug: bookDetail.slug,
-                                    label: bookDetail.label,
+                                    bookDetailId: bookDetail?.id,
+                                    bookName: bookDetail?.name,
+                                    slug: bookDetail?.slug,
+                                    label: bookDetail?.label,
                                     type: BookContentType.books,
                                   },
                                 });
@@ -574,157 +559,145 @@ const BookDetailPage = (props: any) => {
                           <Slider {...settings}>
                             {relateds && relateds.length > 0
                               ? relateds.map((related) => (
-                                  <div
-                                    style={{ display: "flex" }}
-                                    className="slider-books sidebarmargin"
-                                    key={`related-${related.id}`}
-                                    onClick={() => {
-                                      if (
-                                        window.location.pathname ===
-                                        `/books/` + state?.bookSlug
-                                      ) {
-                                        navigate(`/books/` + related.slug, {
+                                <div
+                                  style={{ display: "flex" }}
+                                  className="slider-books sidebarmargin"
+                                  key={`related-${related.id}`}
+                                  onClick={() => {
+                                    if (
+                                      window.location.pathname ===
+                                      `/books/` + state?.bookSlug
+                                    ) {
+                                      navigate(`/books/` + related?.slug, {
+                                        state: {
+                                          bookId: related?.id,
+                                          bookName: related?.name,
+                                          bookSlug: related?.slug,
+                                          special: window?.location?.pathname,
+                                          pathname:
+                                            window?.location?.pathname,
+                                        },
+                                      });
+                                    }
+                                    if (
+                                      window.location.pathname ===
+                                      `/books/special/` + state?.bookSlug
+                                    ) {
+                                      navigate(
+                                        `/books/special/` + related?.slug,
+                                        {
                                           state: {
-                                            bookId: related.id,
-                                            bookName: related.name,
+                                            bookId: related?.id,
+                                            bookName: related?.name,
                                             bookSlug: related?.slug,
-                                            special: window.location.pathname,
+                                            special: window?.location?.pathname,
                                             pathname:
                                               window?.location?.pathname,
                                           },
-                                        });
-                                      }
-                                      if (
-                                        window.location.pathname ===
-                                        `/books/special/` + state?.bookSlug
-                                      ) {
-                                        navigate(
-                                          `/books/special/` + related.slug,
-                                          {
-                                            state: {
-                                              bookId: related.id,
-                                              bookName: related.name,
-                                              bookSlug: related?.slug,
-                                              special: window.location.pathname,
-                                              pathname:
-                                                window?.location?.pathname,
-                                            },
-                                          }
-                                        );
-                                      }
-                                      if (
-                                        window.location.pathname ===
-                                        "/books/author/" +
-                                          state?.authorSlug +
-                                          "/" +
-                                          state?.bookSlug
-                                      ) {
-                                        navigate(
-                                          "/books/author/" +
-                                            state?.authorSlug +
-                                            "/" +
-                                            related.slug,
-                                          {
-                                            state: {
-                                              bookId: related.id,
-                                              bookName: related.name,
-                                              bookSlug: related?.slug,
-                                              authorId: state?.authorId,
-                                              authorName: state?.authorName,
-                                              authorSlug: state?.authorSlug,
-                                              pathname:
-                                                window?.location?.pathname,
-                                            },
-                                          }
-                                        );
-                                      }
-                                      if (
-                                        window.location.pathname ===
-                                        `/books/category/` +
-                                          state?.catSlug +
-                                          "/" +
-                                          state.bookSlug
-                                      ) {
-                                        navigate(
-                                          `/books/category/` +
-                                            state?.catSlug +
-                                            "/" +
-                                            related.slug,
-                                          {
-                                            state: {
-                                              bookId: related.id,
-                                              bookName: related.name,
-                                              catId: state?.catId,
-                                              catSlug: state?.catSlug,
-                                              bookSlug: related?.slug,
-                                              pathname:
-                                                window?.location?.pathname,
-                                            },
-                                          }
-                                        );
-                                      }
-                                      if (
-                                        window.location.pathname ===
-                                        `/books/language/` +
-                                          state?.langId +
-                                          "/" +
-                                          state.bookSlug
-                                      ) {
-                                        navigate(
-                                          `/books/language/` +
-                                            state?.langId +
-                                            "/" +
-                                            related.slug,
-                                          {
-                                            state: {
-                                              bookId: related.id,
-                                              bookName: related.name,
-                                              bookSlug: related.slug,
-                                              langId: state?.langId,
-                                              pathname:
-                                                window?.location?.pathname,
-                                            },
-                                          }
-                                        );
-                                      }
-                                      // navigate(`/books/special/` + related.slug, {
-                                      //   state: {
-                                      //     bookId: related.id,
-                                      //     bookName: related.name,
-                                      //     authorId: state?.authorId,
-                                      //     authorName: state?.authorName,
-                                      //     special: window.location.pathname,
-                                      //     langId: state?.langId,
-                                      //     catId: state?.catId,
-                                      //     isspecial: true,
-                                      //   },
-                                      // });
-                                      window.location.reload();
-                                    }}
-                                  >
-                                    <div>
-                                      <img
-                                        style={{
-                                          cursor: "pointer",
-                                        }}
-                                        className="imgcenter"
-                                        src={
-                                          related.bookThumbPath == null
-                                            ? DefaultBook
-                                            : related.bookThumbPath
                                         }
-                                        onError={(e) => {
-                                          e.currentTarget.src = DefaultBook;
-                                        }}
-                                        alt={related.name}
-                                        title={related.name}
-                                        width="150"
-                                        height="212"
-                                      />
-                                      <p>{related?.name}</p>
-                                    </div>
+                                      );
+                                    }
+                                    if (
+                                      window.location.pathname ===
+                                      "/books/author/" +
+                                      state?.authorSlug +
+                                      "/" +
+                                      state?.bookSlug
+                                    ) {
+                                      navigate(
+                                        "/books/author/" +
+                                        state?.authorSlug +
+                                        "/" +
+                                        related?.slug,
+                                        {
+                                          state: {
+                                            bookId: related?.id,
+                                            bookName: related?.name,
+                                            bookSlug: related?.slug,
+                                            authorId: state?.authorId,
+                                            authorName: state?.authorName,
+                                            authorSlug: state?.authorSlug,
+                                            pathname:
+                                              window?.location?.pathname,
+                                          },
+                                        }
+                                      );
+                                    }
+                                    if (
+                                      window?.location?.pathname ===
+                                      `/books/category/` +
+                                      state?.catSlug +
+                                      "/" +
+                                      state?.bookSlug
+                                    ) {
+                                      navigate(
+                                        `/books/category/` +
+                                        state?.catSlug +
+                                        "/" +
+                                        related?.slug,
+                                        {
+                                          state: {
+                                            bookId: related?.id,
+                                            bookName: related?.name,
+                                            catId: state?.catId,
+                                            catSlug: state?.catSlug,
+                                            bookSlug: related?.slug,
+                                            pathname:
+                                              window?.location?.pathname,
+                                          },
+                                        }
+                                      );
+                                    }
+                                    if (
+                                      window?.location?.pathname ===
+                                      `/books/language/` +
+                                      state?.langId +
+                                      "/" +
+                                      state?.bookSlug
+                                    ) {
+                                      navigate(
+                                        `/books/language/` +
+                                        state?.langId +
+                                        "/" +
+                                        related.slug,
+                                        {
+                                          state: {
+                                            bookId: related?.id,
+                                            bookName: related?.name,
+                                            bookSlug: related?.slug,
+                                            langId: state?.langId,
+                                            pathname:
+                                              window?.location?.pathname,
+                                          },
+                                        }
+                                      );
+                                    }
+                                    window.location.reload();
+                                  }}
+                                >
+                                  <div>
+                                    <img
+                                      style={{
+                                        cursor: "pointer",
+                                      }}
+                                      className="imgcenter"
+                                      src={
+                                        related?.bookThumbPath == null
+                                          ? DefaultBook
+                                          : related?.bookThumbPath
+                                      }
+                                      onError={(e) => {
+                                        e.currentTarget.src = DefaultBook;
+                                      }}
+                                      alt={related?.name}
+                                      title={related?.name}
+                                      width="150"
+                                      height="212"
+                                    />
+                                    <p>{related?.name}</p>
                                   </div>
-                                ))
+                                </div>
+                              ))
                               : ""}
                           </Slider>
                         </div>
@@ -741,8 +714,6 @@ const BookDetailPage = (props: any) => {
           </div>
         </div>
       </div>
-
-      {/* <LogInModel opens={logIn} onCloses={closeModal} /> */}
       <LogInModel
         opens={logIn}
         onCloses={closeModal}

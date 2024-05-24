@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable array-callback-return */
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import GeetGovindServices from "../Services/GeetGovind";
 import DefaultBook from "../Images/defaultBook.png";
 import ListPagination from "../Components/ListPagination";
@@ -305,8 +305,13 @@ const GeetgovindPage = () => {
                                 key={`book-${Month.id}`}
                                 onClick={() => {
                                   navigate(`/monthlymagazine/` + Month.slug, {
-                                    state: { MonthId: Month.id },
-                                  });
+                                    state: {
+                                      MonthId: Month.id,
+                                      bookName: Month?.name,
+                                      slug: Month.slug,
+                                      label: Month.label
+                                    }
+                                  })
                                 }}
                               >
                                 <div className="bookBox">
@@ -334,7 +339,7 @@ const GeetgovindPage = () => {
                             </div>
                           ))}
                         </div>
-                        <div className="col-12" style={{ marginTop: "30px", display:pagination.totalRecords <= 12 ? "none" : "block" }}>
+                        <div className="col-12" style={{ marginTop: "30px", display: pagination.totalRecords <= 12 ? "none" : "block" }}>
                           <ListPagination
                             totalRecords={pagination.totalRecords}
                             recordsPerPage={pagination.recordsPerPage}

@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import WithoutLyrics from "../Images/audiolyrics.svg";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import $ from "jquery";
 import ListPagination from "../Components/ListPagination";
 import "../Styles/Audios.css";
 import "../Styles/Sidebar.css";

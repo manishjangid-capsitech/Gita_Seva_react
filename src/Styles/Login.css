@@ -14,3 +14,9 @@
   font-family: ChanakyaUni;
   font-size: 20px;
 }
+
+.PhoneInputInput {
+  flex:none;
+  min-width: 10px;
+  width: 100px
+}

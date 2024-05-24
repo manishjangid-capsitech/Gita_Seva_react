@@ -10,7 +10,6 @@ import mni from "../Images/minimize-C.png";
 import AudioLyrics from "../Components/AudioLyrics";
 import i18n, { _get_i18Lang } from "../i18n";
 import { useLocation, useNavigate } from "react-router-dom";
-import { AudioInfoDialog } from "../Pages/AudioInfoDialog";
 
 const AudioPlayerPage = ({ match }: any) => {
   const navigate = useNavigate();
@@ -21,7 +20,6 @@ const AudioPlayerPage = ({ match }: any) => {
     audiosList,
     playAudio,
     currentAudio,
-    // audioInfoDialog,
     close,
     showList,
     setShowList,
@@ -43,9 +41,6 @@ const AudioPlayerPage = ({ match }: any) => {
   const [Type, setType] = useState<any | undefined>(
     localStorage.getItem("type")
   );
-
-  const [displayState, setDisplayState] = useState(false)
-
 
   useEffect(() => {
     setType(localStorage.getItem("type"));
@@ -71,22 +66,6 @@ const AudioPlayerPage = ({ match }: any) => {
       }
     });
   }, [auid, i18n.language, catId]);
-
-  const sideNavRef = useRef(null);
-
-  // useEffect(() => {
-  //   document.addEventListener('mousedown', handleClickOutside);
-  //   return () => {
-  //     document.removeEventListener('mousedown', handleClickOutside);
-  //   };
-  // }, [!showList]);
-
-  // function handleClickOutside(e: any) {
-  //   if (!showList === false) {
-  //     setShowList(true)
-  //   }
-  // }
-
 
   return (
     <div className=""
@@ -260,22 +239,15 @@ const AudioPlayerPage = ({ match }: any) => {
                 style={{ marginLeft: "10px" }}
                 className="pe-sm-2"
                 onClick={() => {
-                  // debugger
-                  // console.log("isMinimise",isMinimise);                  
                   setIsMinismise(true);
-                  // console.log("isMinimise",isMinimise);                  
                   setIsMinismise(true)
                   navigate(`/${Type}/`)
-                  // navigate(-1)
-                  // navigate(`/${Type}/`+ currentAudio?.id);
-                  // window.location.reload()
                 }}
               ></img>
             </a>
 
             <a>
               <img
-                // style={{marginLeft:'10px'}}
                 alt=""
                 src={closeimg}
                 onClick={() => {
@@ -287,11 +259,6 @@ const AudioPlayerPage = ({ match }: any) => {
             </a>
           </div>
           <AudioLyrics />
-          {/* {currentAudio?.id ? (
-            // <AudioInfoDialog showModal={audioInfoDialog} />
-          ) : (
-            ""
-          )} */}
         </div>
       </div>
     </div>

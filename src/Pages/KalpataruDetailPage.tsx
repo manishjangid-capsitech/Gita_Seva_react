@@ -30,7 +30,11 @@ const KalpataruDetailPage = (props: any) => {
   );
 
   const location = useLocation();
-  const state = location.state as { kalpatruId: string };
+  const state = location.state as {
+    kalpatruId: string,
+    kalpatruSlug: string,
+    bookName: string,
+  };
   const settings = {
     infinite: true,
     speed: 500,
@@ -54,6 +58,25 @@ const KalpataruDetailPage = (props: any) => {
 
   const [bookMark, setBookMark] = useState<boolean>(false)
   const [bookMarkData, setBookMarkData] = useState<any[] | undefined | any>(undefined);
+
+  const [loginState, setLoginState] = useState<string | null>(null);
+
+  const handleLoginStateChange = (newState: any) => {
+    setLoginState(newState);
+
+    navigate(
+      `/reader/kalyanskalpataru/` +
+      kalpatrauDetail.slug,
+      {
+        state: {
+          kalpatrauDetailId: state?.kalpatruId,
+          bookName: state?.bookName,
+          slug: state?.kalpatruSlug,
+          type: BookContentType.kalpatru,
+        },
+      }
+    );
+  };
 
   const notificationRef = useRef<any>(null);
 
@@ -136,7 +159,7 @@ const KalpataruDetailPage = (props: any) => {
         }
       });
     }
-  })
+  }, [])
 
   return (
     <div
@@ -356,6 +379,20 @@ const KalpataruDetailPage = (props: any) => {
                         ) : (
                           ""
                         )}
+                        <div className="bookdecription">
+                          <div className="yearmonth" style={{ display: "flex", justifyContent: "center", border: "1px solid #ffaf68", paddingTop: "15px", borderTopLeftRadius: "5px", borderBottomLeftRadius: "5px" }}>
+                            <label style={{ color: "#472d1e", fontSize: "23px", fontFamily: "ChanakyaUni", margin: '0 40% 0 0', paddingBottom: 0 }}>{t("Year_tr")}</label>
+                            <label style={{ fontSize: "23px", color: "#ff731f" }}>{kalpatrauDetail?.years}</label>
+                          </div>
+                          <div className="yearmonth" style={{ display: "flex", justifyContent: "center", border: "1px solid #ffaf68", paddingTop: "15px", borderLeft: 0, borderRight: 0 }}>
+                            <label style={{ color: "#472d1e", fontSize: "23px", fontFamily: "ChanakyaUni", margin: '0 40% 0 0' }}>{t("Month_tr")}</label>
+                            <label style={{ fontSize: "23px", color: "#ff731f" }}>{monthName}</label>
+                          </div>
+                          <div className="yearmonth" style={{ display: "flex", justifyContent: "center", border: "1px solid #ffaf68", paddingTop: "15px", borderTopRightRadius: "5px", borderBottomRightRadius: "5px" }}>
+                            <label style={{ color: "#472d1e", fontSize: "23px", fontFamily: "ChanakyaUni", margin: '0 40% 0 0' }}>{t("Number_tr")}</label>
+                            <label style={{ fontSize: "23px", color: "#ff731f" }}>{kalpatrauDetail?.editionNo}</label>
+                          </div>
+                        </div>
                         <div
                           className="next-read"
                           style={{ marginTop: "50px" }}
@@ -384,20 +421,6 @@ const KalpataruDetailPage = (props: any) => {
                             {t("read_magazine_tr")}
                           </p>
                           <div ref={notificationRef} style={{ color: "#ff3d28", fontSize: '20px', marginTop: "10px", height: "20px" }} className="notification-bar"></div>
-                        </div>
-                        <div className="bookdecription">
-                          <div className="yearmonth" style={{ borderRight: "none" }}>
-                            <span>{t("Year_tr")}</span>
-                            <span>{kalpatrauDetail?.years}</span>
-                          </div>
-                          <div className="yearmonth" style={{ borderRight: "none" }}>
-                            <span>{t("Month_tr")}</span>
-                            <span>{monthName}</span>
-                          </div>
-                          <div className="yearmonth">
-                            <span>{t("Number_tr")}</span>
-                            <span>{kalpatrauDetail?.editionNo}</span>
-                          </div>
                         </div>
                       </div>
                     </div>
@@ -464,12 +487,11 @@ const KalpataruDetailPage = (props: any) => {
                   </div>
                 </div>
               ) : (
-                // <Loading />
                 ""
               )}
             </div>
           </div>
-          {/* <LogInModel opens={logIn} onCloses={closeModal} /> */}
+          <LogInModel opens={logIn} onCloses={closeModal} onLoginStateChange={handleLoginStateChange} />
         </div>
       </div>
     </div>

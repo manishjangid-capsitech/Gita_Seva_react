@@ -150,7 +150,10 @@
   "Kalyan_Kalpataru_mark_tr": "Kalyana Kalpataru BookMark",
   "MonthlyMagazine_mark_tr": "Geet-Govind BookMark",
   "vivek_vani_mark_tr": "Vivek Vani BookMark",
-  "view_all_tr": "View All",
+  "view_tr": "View",
   "books_tr": "Books",
-  "Number_tr": "Number"
+  "Number_tr": "Number",
+  "enter_otp_tr": "Enter Your Otp",
+  "enter_mobile_no": "Enter your mobile no",
+  "otp_validation": "Invalid OTP. Please enter a valid Otp."
 }

@@ -1,3 +1,22 @@
+.htmlContent {
+  color: #212529 !important;
+}
+
+.htmlContent span {
+  color: #212529 !important;
+}
+
+.htmlContent strong {
+  font-weight: 500 !important;
+}
+
+.magzinetitle {
+  font-family: "ChanakyaUniBold";
+  font-size: 22px;
+  line-height: 22px;
+  text-align: center
+}
+
 .spinner {
   border: 4px solid rgba(0, 0, 0, 0.1);
   border-left-color: #333;
@@ -510,5 +529,20 @@ input::-webkit-inner-spin-button {
     border-radius: 5px;
     color: #fff;
   }
-
 }
+
+@media (min-width: 992px) and (max-width: 1200px) {
+  
+}
+
+/* @media only screen and (min-width: 992px) {
+  .example {background: orange;}
+}  */
+/* @media (min-width: 1024px) and (max-width: 1279px) {
+  .containers {
+    max-width: 100%;
+    width: 100%;
+    width: 1200px;
+    margin: 0 auto;
+  }
+} */

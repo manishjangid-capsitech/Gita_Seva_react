@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable array-callback-return */
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import AuthorService from "../Services/Authors";
 import DefaultBook from "../Images/defaultBook.png";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -100,6 +100,7 @@ const AuthorsDataPage = () => {
   const [audioLength, setAudiosLength] = useState("")
   const [pravachanLength, setPravachanLength] = useState("")
   const [articlelength, setArticlesLength] = useState("")
+
   useEffect(() => {
     setRefresh(false);
     BooksService.getBooks(
@@ -117,7 +118,7 @@ const AuthorsDataPage = () => {
         setBooksLength(res.result?.items?.length);
       }
     });
-  }, [refresh, i18n.language]);
+  }, [refresh, i18n.language, state?.authorId, state?.authorName]);
 
   useEffect(() => {
     setRefresh(false);
@@ -140,7 +141,7 @@ const AuthorsDataPage = () => {
       if (res.status)
         setAudiosLength(res.result?.items?.length);
     })
-  }, [refresh, i18n.language])
+  }, [refresh, i18n.language, state?.authorId, state?.authorName])
 
   useEffect(() => {
     setRefresh(false);
@@ -162,7 +163,7 @@ const AuthorsDataPage = () => {
     ).then((res) => {
       if (res.status) setPravachanLength(res?.result?.items?.length)
     });
-  }, [i18n.language, refresh]);
+  }, [refresh, i18n.language, state?.authorId, state?.authorName]);
 
   useEffect(() => {
     setRefresh(false);
@@ -181,7 +182,7 @@ const AuthorsDataPage = () => {
         setArticlesLength(res.result?.items?.length)
       }
     })
-  }, [i18n.language, refresh])
+  }, [refresh, i18n.language, state?.authorId, state?.authorName])
 
   return (
     <div style={{ backgroundColor: "#fff6e1" }}>
@@ -420,7 +421,7 @@ const AuthorsDataPage = () => {
                     fontSize: "22px",
                     display: "flex",
                     justifyContent: "center",
-                    padding: "2px 0 0 10px"
+                    padding: "2px 10px 0 10px"
                   }}
                   onClick={() => {
                     navigate(`/books/author/` + state?.authorSlug, {
@@ -430,9 +431,10 @@ const AuthorsDataPage = () => {
                     });
                   }}
                 >
-                  {t("view_all_tr")}
-                  <p style={{ margin: "0 8px 0 8px", fontWeight: 600 }}>{booksLength}</p>
+                  {t("all_tr")}
+                  <p style={{ margin: "0 8px 0 8px" }}>{booksLength}</p>
                   {t("books_tr")}
+                  <p style={{ margin: "0 0 0 10px" }}>{t("view_tr")}</p>
                 </div>
               </div>
             </div>
@@ -460,7 +462,6 @@ const AuthorsDataPage = () => {
               </h2>
               {audios && audios.length > 5 ? (
                 <div className="row"
-                // style={{ width: "100%" }}
                 >
                   <Slider {...settingsAudio}>
                     {audios.map((audio, i) => (
@@ -606,9 +607,10 @@ const AuthorsDataPage = () => {
                     });
                   }}
                 >
-                  {t("view_all_tr")}
-                  <p style={{ margin: "0 8px 0 8px", fontWeight: 600 }}>{audioLength}</p>
+                  {t("all_tr")}
+                  <p style={{ margin: "0 8px 0 8px" }}>{audioLength}</p>
                   {t("Audios_tr")}
+                  <p style={{ margin: "0 0 0 10px" }}>{t("view_tr")}</p>
                 </div>
               </div>
             </div>
@@ -635,7 +637,6 @@ const AuthorsDataPage = () => {
                 {t("Pravachan_tr")}
               </h2>
               <div className="row"
-              //  style={{ width: "100%" }}
               >
                 <Slider {...settingsAudio}>
                   {pravachans && pravachans.length > 0
@@ -713,7 +714,7 @@ const AuthorsDataPage = () => {
               </div>
               <div
                 style={{
-                  margin: "30px 40% auto",
+                  margin: "30px 39% auto",
                   padding: "10px",
                   textAlign: "center",
                   marginTop: "30px",
@@ -736,9 +737,10 @@ const AuthorsDataPage = () => {
                     });
                   }}
                 >
-                  {t("view_all_tr")}
-                  <p style={{ margin: "0 8px 0 8px", fontWeight: 600 }}>{pravachanLength}</p>
+                  {t("all_tr")}
+                  <p style={{ margin: "0 8px 0 8px" }}>{pravachanLength}</p>
                   {t("Pravachan_tr")}
+                  <p style={{ margin: "0 0 0 10px" }}>{t("view_tr")}</p>
                 </div>
               </div>
             </div>
@@ -897,7 +899,7 @@ const AuthorsDataPage = () => {
               )}
               <div
                 style={{
-                  margin: "30px 41% auto",
+                  margin: "30px 40% auto",
                   padding: "10px",
                   textAlign: "center",
                   marginTop: "30px",
@@ -920,9 +922,10 @@ const AuthorsDataPage = () => {
                     });
                   }}
                 >
-                  {t("view_all_tr")}
-                  <p style={{ margin: "0px 8px 0px 8px", fontWeight: 600 }}>{articlelength}</p>
+                  {t("all_tr")}
+                  <p style={{ margin: "0px 8px 0px 8px" }}>{articlelength}</p>
                   {t("Article_tr")}
+                  <p style={{ margin: "0 0 0 10px" }}>{t("view_tr")}</p>
                 </div>
               </div>
             </div>

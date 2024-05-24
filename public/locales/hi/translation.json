@@ -151,7 +151,10 @@
   "Kalyan_Kalpataru_mark_tr": "कल्याण कल्पतरु बुकमार्क",
   "MonthlyMagazine_mark_tr": "गीत-गोविंद बुकमार्क",
   "vivek_vani_mark_tr": "विवेक-वाणी बुकमार्क",
-  "view_all_tr": "सभी देखें",
+  "view_tr": "देखें",
   "books_tr": "ई-पुस्तकें",
-  "Number_tr": "संख्या"
+  "Number_tr": "संख्या",
+  "enter_otp_tr": "अपना ओटीपी दर्ज करें",
+  "enter_mobile_no": "अपना मोबाइल नंबर दर्ज करें",
+  "otp_validation": "कृपया एक वैध ओटीपी दर्ज करें"
 }

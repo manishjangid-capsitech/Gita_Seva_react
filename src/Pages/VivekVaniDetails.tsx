@@ -48,7 +48,11 @@ const VivekvaniDetailPage = () => {
   const [bookMarkData, setBookMarkData] = useState<any[] | undefined | any>(undefined);
 
   const location = useLocation();
-  const state = location.state as { vivekId: string; vivekName: string };
+  const state = location.state as {
+    vivekId: string;
+    bookName: string;
+    vivekSlug: string
+  };
   const settings = {
     infinite: true,
     speed: 500,
@@ -71,6 +75,24 @@ const VivekvaniDetailPage = () => {
   const notificationRef = useRef<any>(null);
 
   const monthName = getMonthNameFromNumber(vaniDetail?.months);
+
+  const [loginState, setLoginState] = useState<string | null>(null);
+
+  const handleLoginStateChange = (newState: any) => {
+    setLoginState(newState);
+
+    navigate(
+      `/reader/vivekvanis/` + vaniDetail.slug,
+      {
+        state: {
+          vivekvaniDetailId: state?.vivekId,
+          bookName: state?.bookName,
+          slug: state?.vivekSlug,
+          type: BookContentType.vivek,
+        },
+      }
+    );
+  };
 
   const showNotification = (message: any) => {
     notificationRef.current.innerText = message;
@@ -351,16 +373,30 @@ const VivekvaniDetailPage = () => {
                         ) : (
                           ""
                         )}
-                        {vaniDetail.bookLanguage ? (
+                        {vaniDetail.vivekVaniLanguage ? (
                           <div>
                             <p>
                               <label>{t("Language_tr")} </label>
-                              {vaniDetail.bookLanguage}
+                              {vaniDetail.vivekVaniLanguage}
                             </p>
                           </div>
                         ) : (
                           ""
                         )}
+                        <div className="bookdecription">
+                          <div className="yearmonth" style={{ display: "flex", justifyContent: "center", border: "1px solid #ffaf68", paddingTop: "15px", borderTopLeftRadius: "5px", borderBottomLeftRadius: "5px" }}>
+                            <label style={{ color: "#472d1e", fontSize: "23px", fontFamily: "ChanakyaUni", margin: '0 40% 0 0', paddingBottom: 0 }}>{t("Year_tr")}</label>
+                            <label style={{ fontSize: "23px", color: "#ff731f" }}>{vaniDetail?.years}</label>
+                          </div>
+                          <div className="yearmonth" style={{ display: "flex", justifyContent: "center", border: "1px solid #ffaf68", paddingTop: "15px", borderLeft: 0, borderRight: 0 }}>
+                            <label style={{ color: "#472d1e", fontSize: "23px", fontFamily: "ChanakyaUni", margin: '0 40% 0 0' }}>{t("Month_tr")}</label>
+                            <label style={{ fontSize: "23px", color: "#ff731f" }}>{monthName}</label>
+                          </div>
+                          <div className="yearmonth" style={{ display: "flex", justifyContent: "center", border: "1px solid #ffaf68", paddingTop: "15px", borderTopRightRadius: "5px", borderBottomRightRadius: "5px" }}>
+                            <label style={{ color: "#472d1e", fontSize: "23px", fontFamily: "ChanakyaUni", margin: '0 40% 0 0' }}>{t("Number_tr")}</label>
+                            <label style={{ fontSize: "23px", color: "#ff731f" }}>{vaniDetail?.editionNo}</label>
+                          </div>
+                        </div>
                         <div className="next-read">
                           <p
                             style={{ cursor: "pointer", display: "inline" }}
@@ -385,20 +421,6 @@ const VivekvaniDetailPage = () => {
                             {t("read_magazine_tr")}
                           </p>
                           <div ref={notificationRef} style={{ color: "#ff3d28", fontSize: '20px', marginTop: "10px", height: "20px" }} className="notification-bar"></div>
-                        </div>
-                        <div className="bookdecription">
-                          <div className="yearmonth" style={{ borderRight: "none" }}>
-                            <span>{t("Year_tr")}</span>
-                            <span>{vaniDetail?.years}</span>
-                          </div>
-                          <div className="yearmonth" style={{ borderRight: "none" }}>
-                            <span>{t("Month_tr")}</span>
-                            <span>{monthName}</span>
-                          </div>
-                          <div className="yearmonth">
-                            <span>{t("Number_tr")}</span>
-                            <span>{vaniDetail?.editionNo}</span>
-                          </div>
                         </div>
                       </div>
                     </div>
@@ -468,7 +490,7 @@ const VivekvaniDetailPage = () => {
               )}
             </div>
           </div>
-          {/* <LogInModel opens={logIn} onCloses={closeModal} /> */}
+          <LogInModel opens={logIn} onCloses={closeModal} onLoginStateChange={handleLoginStateChange} />
         </div>
       </div>
     </div>

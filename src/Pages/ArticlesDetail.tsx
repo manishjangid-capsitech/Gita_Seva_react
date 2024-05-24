@@ -11,7 +11,6 @@ import artimg from "../Images/atul-assets-img.png";
 import i18n, { _get_i18Lang } from "../i18n";
 import Favfill from "../assets/img/favadd.png";
 import Favempty from "../assets/img/fav.png";
-import { LogInModel } from "./LogInoutModel";
 import $ from "jquery";
 
 const ArticlesDetailPage = (props: any) => {
@@ -39,10 +38,6 @@ const ArticlesDetailPage = (props: any) => {
   const [toggleFav, setToggleFav] = useState<boolean>(false);
   const [logIn, setLogIn] = useState<boolean>(false);
   const [articleId, setArticleId] = useState("");
-  const closeModal = () => {
-    setLogIn(false);
-  };
-
   const UserIdentity = localStorage.getItem("UserId") as any;
   const toggleLike = () => {
     !isLiked
@@ -236,8 +231,8 @@ const ArticlesDetailPage = (props: any) => {
                           </label>
                         </label>
                       </div>
-                      <p style={{display: ArticlesDetail?.author?.length > 0 ? "block" : "none"}}>
-                        <label>{t("Article_tr")}: </label>
+                      <p style={{ display: ArticlesDetail?.author?.length > 0 ? "block" : "none" }}>
+                        <label>{t("Authors_tr")}: </label>
                         {ArticlesDetail.author}
                       </p>
                       <p style={{ borderBottom: "0", marginBottom: "0" }}>
@@ -278,7 +273,6 @@ const ArticlesDetailPage = (props: any) => {
           )}
         </div>
       </div>
-      {/* <LogInModel opens={logIn} onCloses={closeModal} /> */}
     </div>
   );
 };

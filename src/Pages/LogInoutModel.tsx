@@ -10,7 +10,7 @@ import {
 import { _get_i18Lang } from "../i18n";
 import { Modal } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import SignWithOtp, { SignInWithFB, auth } from "./AuthSocial";
+import { SignInWithFB, auth } from "./AuthSocial";
 import loginLogo from "../assets/img/loginLogo.png";
 import signingoogle from "../assets/img/signingoogle.svg";
 import signinfacebook from "../assets/img/loginwithfacebook.svg";
@@ -22,11 +22,8 @@ import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import WithoutLyrics from "../Images/audiolyrics.svg";
 import WithLyrics from "../Images/audiowithoutlyrics.svg";
 import articalIcon from "../assets/img/article-icon.png";
-import Loading from "../Components/Loading";
-import { t } from "i18next";
-import { storage } from "./Firebase";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import LoginServices from "../Services/Login";
+import 'react-phone-number-input/style.css'
 
 interface LogOutModalProps {
   open: boolean;
@@ -122,15 +119,88 @@ export const LogInModel: React.FC<LogInModalProps> = ({
   const { t } = useTranslation();
   const [phoneModel, setPhoneModel] = useState<boolean>(false);
   const [refresh, setRefresh] = useState(false);
+  const [phoneNumber, setPhoneNumber] = useState<any>()
   const provider = new GoogleAuthProvider();
   const currlang = localStorage.getItem("lan");
-  
+  const navigate = useNavigate();
+
+  const [countryCode, setCountryCode] = useState("");
+  const [formattedValue, setFormattedValue] = useState<any>(91);
+  const [confirmation, setConfirmation] = React.useState<any>();
+  const [result, setResult] = React.useState<string>('')
+  const [isOtp, setIsOTP] = React.useState<boolean>(false)
+  const [enterOtp, setEnterOtp] = useState("")
+  const [pnModel, setPnModel] = useState(false)
+
+  const [notification, setNotification] = useState(false)
+
+  const signInWithPhoneNumber = async (phone: string) => {
+    if (phone !== '') {
+      try {
+        const confirmation = LoginServices.sendOtp(phoneNumber, '1').then((res: any) => {
+          console.log(res);
+
+          localStorage.setItem('oldid', JSON.stringify(res.result));
+          setResult(res.result)
+        })
+        setConfirmation(confirmation)
+        setIsOTP(true);
+      } catch (error) {
+        console.log("error", error);
+      }
+    } else {
+      console.log('false otp')
+    }
+  };
+
+  const confirmOTP = async (code: any) => {
+    try {
+      LoginServices.validOtp(result, enterOtp).then((res: any) => {
+        if (res?.result === false) {
+          setNotification(true)
+        }
+        console.log('response kya aa rha hai----------------->', res)
+        if (res.status && res.result) {
+          console.log("formattedValue", formattedValue);
+          LoginServices.getUserLogin(
+            formattedValue,
+            phoneNumber,
+            '',
+            1,
+            "",
+            "",
+            ""
+          ).then((res: any) => {
+            localStorage.setItem("UserId", res?.result?.userId);
+            localStorage.setItem("userName", res?.result?.name);
+            localStorage.setItem("Image", res?.result?.imageThumbPath);
+            localStorage.setItem("Email", res?.result?.email);
+            localStorage.setItem("Token", res?.result?.token);
+            localStorage.setItem("SignKey", res?.result?.signKey);
+            onLoginStateChange("loggedIn");
+          });
+          onClose();
+          setPhoneModel(false)
+        }
+        else {
+          console.log("res.result is false");          
+        }
+      })
+      await confirmation.confirm(code);
+
+    } catch (error) { }
+  };
+
+  useEffect(() => {
+    setPnModel(false)
+  }, [phoneModel])
+
   return (
     <>
       <Modal
         show={opens}
         onClose={onClose}
-        style={{ padding: "20px 0 50px 0" }}
+      // style={{ padding: "20px 0 50px 0" }}
       >
         <div style={{ textAlign: "center" }}>
           <div style={{ display: "inline-grid" }}>
@@ -146,6 +216,7 @@ export const LogInModel: React.FC<LogInModalProps> = ({
                 background: "#FCF0E2",
                 borderRadius: "5px",
                 boxShadow: "#000 0px 0px 5px -1px",
+                textAlign: "center"
               }}
             >
               {currlang === "hindi" ? (
@@ -212,7 +283,7 @@ export const LogInModel: React.FC<LogInModalProps> = ({
                           onLoginStateChange("loggedIn");
                         }
                       }
-                    );                 
+                    );
                     onClose();
                   }
                 })
@@ -257,7 +328,7 @@ export const LogInModel: React.FC<LogInModalProps> = ({
               {/* <SignInFB /> */}
             </label>
           </div>
-          {/* <div className="loginbuttons" onClick={() => setPhoneModel(true)}>
+          <div className="loginbuttons" onClick={() => setPhoneModel(true)}>
             <img
               src={signinmobileno}
               alt="signinmobileno"
@@ -272,7 +343,7 @@ export const LogInModel: React.FC<LogInModalProps> = ({
             <label style={{ marginBottom: "0px" }}>
               {t("login_With_MobileNo_tr")}
             </label>
-          </div> */}
+          </div>
         </div>
         <Modal.Footer>
           <Button variant="dark" onClick={() => onClose()}>
@@ -282,7 +353,7 @@ export const LogInModel: React.FC<LogInModalProps> = ({
       </Modal>
       {phoneModel && (
         <>
-          <Modal show={phoneModel} style={{ paddingLeft: "8px" }}>
+          <Modal show={phoneModel} style={{ textAlign: "center" }}>
             <div style={{ textAlign: "center" }}>
               <div style={{ display: "inline-grid" }}>
                 <img src={loginLogo} alt="" />
@@ -300,13 +371,130 @@ export const LogInModel: React.FC<LogInModalProps> = ({
                 </label>
               </div>
             </div>
-            <div className="loginbuttons" style={{ border: "none" }}>
-              <SignWithOtp />
+            <div
+              style={{
+                width: "320px",
+                background: "#FCF0E2",
+                borderRadius: "5px",
+                boxShadow: "#000 0px 0px 5px -1px",
+                marginLeft: "16%",
+                textAlign: "center"
+              }}>
+              {currlang === "hindi" ? (
+                <p
+                  style={{
+                    fontFamily: "ChanakyaUni",
+                    fontSize: "19px",
+                    color: "#000",
+                    lineHeight: "20px",
+                    padding: "8px",
+                    fontWeight: 500,
+                  }}
+                >
+                  कृपया अपना दस अंकों का मोबाइल नंबर बिना +91 या 0 लगाये दर्ज करें |
+                </p>
+              ) : (
+                <p
+                  style={{
+                    fontFamily: "ChanakyaUni",
+                    fontSize: "20px",
+                    color: "#000",
+                    lineHeight: "20px",
+                    padding: "12px",
+                    fontWeight: 500,
+                  }}
+                >
+                  Please enter only 10 digit mobile number without any country code +91 or 0
+                </p>
+              )}
             </div>
+            <div style={{ margin: "8% 0" }}>
+              <div className="loginbuttons" style={{ border: "none", marginLeft: "12%" }}>
+                {pnModel ?
+                  <div>
+                    <label style={{ fontSize: "22px", fontFamily: 'ChanakyaUni' }}>{t("enter_otp_tr")}</label>
+                    <div style={{ display: "flex", width: "max-content" }}>
+                      <input
+                        value={enterOtp}
+                        type="number"
+                        maxLength={10}
+                        placeholder={t("enter_otp_tr")}
+                        style={{ border: "1px solid #EB7D16", borderRadius: "5px" }}
+                        onChange={(e) => {
+                          let v = e.currentTarget?.value ?? undefined;
+                          setEnterOtp(v)
+                        }}
+                      />
+                      <button onClick={confirmOTP}
+                        style={{
+                          margin: "5px 0 0 25px",
+                          borderRadius: "5px",
+                          color: "black",
+                          borderColor: "burlywood"
+                        }}>Confirm Otp</button>
+                    </div>
+                    {notification && <div style={{ color: "red" }}>{t("otp_validation")}</div>}
+                  </div>
+                  :
+                  <div>
+                    <label style={{ fontSize: "22px", fontFamily: 'ChanakyaUni' }}>{t("enter_mobile_no")}</label>
+                    {/* <PhoneInput
+                    international
+                    defaultCountry="IN"
+                    flags={flags}
+                    value={`+${countryCode}${phoneNumber}`}
+                    placeholder={t("enter_mobile_no")}
+                    onChange={(e: any) => {
+                      debugger
+                      // setValue
+                      let v = e?.target?.value
+                      let ccode = phoneNumber?.substring(0, phoneNumber.indexOf('-'))
+
+                      setCountryCode(ccode)
+                      setPhoneNumber(phoneNumber?.substring(phoneNumber?.indexOf(' ') + 1));
+
+                      console.log("phoneNumber", phoneNumber);
+                      console.log("countryCode", countryCode);
+                    }}
+                  /> */}
+                    <div>
+                      <input type="number" maxLength={10} placeholder={t("enter_mobile_no")} value={phoneNumber} style={{ border: "1px solid #EB7D16", borderRadius: "5px" }}
+                        onChange={(e) => {
+                          let v = e.currentTarget?.value ?? undefined;
+                          setFormattedValue(`+${countryCode + v}`);
+                          if (/^\d*$/.test(v) && v?.length === 10) {
+                            setPhoneNumber(v);
+                          }
+                        }}
+                      />
+                      <button style={{
+                        margin: "5px 0 0 25px",
+                        borderRadius: "5px",
+                        color: "black",
+                        borderColor: "burlywood"
+                      }} onClick={() => {
+                        if (phoneNumber !== undefined && phoneNumber?.length === 10) {
+                          signInWithPhoneNumber(phoneNumber)
+                          setPnModel(true)
+                        }
+                      }}>Login</button>
+                    </div>
+                  </div>
+                }
+              </div>
+            </div>
+            <Modal.Footer>
+              <Button variant="dark" onClick={() => {
+                setPhoneModel(false)
+              }}>
+                {t("Cancel_tr")}
+              </Button>
+            </Modal.Footer>
           </Modal>
 
         </>
-      )}
+      )
+      }
     </>
   );
 };
@@ -801,7 +989,6 @@ export const FavouriteArticals = ({
   );
 };
 
-// enums.js
 export const Month = {
   January: 1,
   February: 2,

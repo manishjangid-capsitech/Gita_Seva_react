@@ -1,5 +1,6 @@
 import Axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { stringify } from "qs";
+// import { DomainName } from "../Contexts/UserContext";
 
 export interface IApiResponse<T = any> {
   json(): any;
@@ -262,7 +263,8 @@ class ApiUtilityBase {
       ...rest,
     };
   };
-  getBaseUrl = () => process.env.REACT_APP_API_URL;
+  getBaseUrl = () =>  process.env.REACT_APP_API_URL;
+  // getBaseUrl =  () => DomainName;
 }
 interface IAxiosOptionsRequestConfig extends AxiosRequestConfig {
   contentType?: string;

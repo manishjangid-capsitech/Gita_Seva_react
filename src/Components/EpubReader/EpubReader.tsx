@@ -31,16 +31,21 @@ interface ITocItemProps {
 }
 
 class TocItem extends PureComponent<ITocItemProps> {
-
   state = {
     isExpanded: false,
-    heading:'',
-    subHeading:''
+    heading: '',
+    subHeading: ''
   }
 
-  setLocation = (event: any, href: any,heading:string = '',subHeading:string = '') => {
+  componentDidMount() {
+    const themecolor = localStorage.getItem('epub-theme');
+    // Store the fetched data in the state
+    this.setState({ themecolor });
+  }
+
+  setLocation = (event: any, href: any, heading: string = '', subHeading: string = '') => {
     event.preventDefault(); // Prevent default link behavior
-    this.props.setLocation(href,heading,subHeading); // Set location based on clicked href   
+    this.props.setLocation(href, heading, subHeading); // Set location based on clicked href   
   };
 
   collapse = () => {
@@ -51,8 +56,6 @@ class TocItem extends PureComponent<ITocItemProps> {
 
   render() {
     const { label, styles, subitems } = this.props;
-    // debugger  
-    // console.log("this.props",this.props);
 
     return (
       <div className="" style={{
@@ -77,7 +80,7 @@ class TocItem extends PureComponent<ITocItemProps> {
         </span>
         <div>
           <div>
-            <button id="titlename" onClick={(event) => this.setLocation(event, this.props.href,label)} style={{
+            <div id="titlename" onClick={(event) => this.setLocation(event, this.props.href, label)} style={{
               userSelect: "none",
               appearance: "none",
               background: "none",
@@ -89,7 +92,6 @@ class TocItem extends PureComponent<ITocItemProps> {
               textAlign: "left",
               padding: "5px 0 0 5px",
               borderBottom: "1px solid #ddd",
-              color: "#aaa",
               boxSizing: "border-box",
               outline: "none",
               cursor: "pointer",
@@ -98,7 +100,7 @@ class TocItem extends PureComponent<ITocItemProps> {
               margin: subitems?.length > 0 ? "0 10px 0 0" : "0 0 0 10px",
             }}>
               {label}
-            </button>
+            </div>
           </div>
           <div>
             {subitems?.map((subitem: any, index: number) => {
@@ -106,7 +108,7 @@ class TocItem extends PureComponent<ITocItemProps> {
                 <div
                   key={index}
                   onClick={(event) => {
-                    this.setLocation(event, subitem.href,label,subitem?.label)
+                    this.setLocation(event, subitem.href, label, subitem?.label)
                   }}
                   style={{
                     display: this?.state?.isExpanded ? "block" : "none",
@@ -121,7 +123,6 @@ class TocItem extends PureComponent<ITocItemProps> {
                     width: "100%",
                     textAlign: "left",
                     padding: "5px 0px 0px 5px",
-                    color: " rgb(170, 170, 170)",
                     boxSizing: "border-box",
                     outline: "none",
                     cursor: "pointer",
@@ -206,10 +207,7 @@ export class EpubReader extends PureComponent<
 
           <div style={styles.toc}>
             {toc?.length > 0 &&
-              toc[0].map((item: any, i: number) => {          
-                // debugger
-                // console.log("index",i);
-                     
+              toc[0].map((item: any, i: number) => {
                 return (
                   <TocItem
                     {...item}
@@ -228,15 +226,16 @@ export class EpubReader extends PureComponent<
     );
   }
 
-  setLocation = (loc: string | number,title:string = '',sub:string = '') => {
-    const { locationChanged,heading,subHeading } = this.props;
+  setLocation = (loc: string | number, title: string = '', sub: string = '') => {
+    const { locationChanged, heading, subHeading } = this.props;
     this.setState(
       {
         expandedToc: false,
       },
-      () =>{ locationChanged && locationChanged(loc)
+      () => {
+        locationChanged && locationChanged(loc)
         heading && heading(title);
-        subHeading && subHeading(title + (sub ? (" : " +sub) : '')) 
+        subHeading && subHeading(title + (sub ? (" : " + sub) : ''))
       }
     );
   };

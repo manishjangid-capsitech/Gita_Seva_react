@@ -32,6 +32,7 @@ const PravachanPlayerPage = ({ match }: any) => {
   const [Type, setType] = React.useState<any | undefined>(
     localStorage.getItem("type")
   );
+
   React.useEffect(() => {
     setType(localStorage.getItem("type"));
     PravachanPlayer.getPravachanPlayer(
@@ -64,7 +65,6 @@ const PravachanPlayerPage = ({ match }: any) => {
                   alt=""
                   src={arleft}
                   onClick={() => {
-                    //navigate(`/audios/${audio.id}`);
                     navigate(`/${Type}`);
                   }}
                 ></img>
@@ -115,13 +115,11 @@ const PravachanPlayerPage = ({ match }: any) => {
                 alt=""
                 src={close}
                 onClick={() => {
-                  //navigate(`/audios/${audio.id}`);
                   navigate(`/${Type}`);
                 }}
               ></img>
             </a>
           </div>
-
           <PravachanLyrics />
         </Col>
       </div>

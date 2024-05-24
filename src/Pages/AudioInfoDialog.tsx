@@ -1,6 +1,6 @@
 import { Button, Modal } from "react-bootstrap";
 import { useAudio } from "../Contexts/AudiosContext";
-import i18n, { _get_i18Lang } from "../i18n";
+import { _get_i18Lang } from "../i18n";
 import { useTranslation } from "react-i18next";
 
 interface audiologprops {
@@ -12,7 +12,6 @@ export const AudioInfoDialog: React.FC<audiologprops> = ({ showModal,
   onCloses: onClose, }) => {
   const { t } = useTranslation();
   const {currentAudio} = useAudio();
-  // const { setAudioInfoDialog, currentAudio } = useAudio();
   return (
     <Modal
       show={showModal}

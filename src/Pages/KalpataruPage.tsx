@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable array-callback-return */
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import KalpatsruServices from "../Services/Kalpataru";
 import DefaultBook from "../Images/defaultBook.png";
 import ListPagination from "../Components/ListPagination";
@@ -217,7 +217,7 @@ const KalpataruPage = () => {
                           // minHeight: "20px"
                         }}
                       >
-                        <h2 className="filtertitle" style={{ fontFamily:"ChanakyaUniBold" }}>
+                        <h2 className="filtertitle" style={{ fontFamily: "ChanakyaUniBold" }}>
                           {t("Kalyan_kalpataru_number_tr")}
                         </h2>
                       </AccordionSummary>
@@ -319,7 +319,11 @@ const KalpataruPage = () => {
                                   navigate(
                                     `/kalyanskalpataru/` + kalpatru.slug,
                                     {
-                                      state: { kalpatruId: kalpatru.id },
+                                      state: {
+                                        kalpatruId: kalpatru.id,
+                                        kalpatruSlug: kalpatru.slug,
+                                        bookName: kalpatru?.name,
+                                      },
                                     }
                                   );
                                 }}
@@ -352,7 +356,7 @@ const KalpataruPage = () => {
                             </div>
                           ))}
                         </div>
-                        <div className="col-12" style={{ marginTop: "30px", display:pagination.totalRecords <= 12 ? "none" : "block" }}>
+                        <div className="col-12" style={{ marginTop: "30px", display: pagination.totalRecords <= 12 ? "none" : "block" }}>
                           <ListPagination
                             totalRecords={pagination.totalRecords}
                             recordsPerPage={pagination.recordsPerPage}

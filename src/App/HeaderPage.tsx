@@ -6,12 +6,15 @@ import i18n, { _get_i18Lang } from "../i18n";
 import { ISearchParams } from "../Services/SearchData";
 import { Link, useNavigate, NavLink } from "react-router-dom";
 import "../Styles/style.css";
+// import "../Styles/PageHeader.css"
 import arrowdown from "../assets/img/drop_down.svg";
 import arrowdownblack from "../assets/img/dropdownblack.svg";
 import { useTranslation } from "react-i18next";
 import LoginServices from "../Services/Login";
-import { userId } from "../Contexts/LocaleContext";
 import { LogInModel, LogOutModel } from "../Pages/LogInoutModel";
+import gitalogo from "../Images/logo_Main.png"
+import $ from "jquery";
+
 
 const HeaderPage = () => {
   const { t } = useTranslation();
@@ -22,9 +25,6 @@ const HeaderPage = () => {
     searchValue: "",
     authorId: "",
   });
-
-  const LoginEmail = localStorage.getItem("EmailForLogin") as any;
-  const mobileNumber = localStorage.getItem("LoginphoneNumber") as any;
 
   const [isOpened, setIsOpened] = useState<boolean>(false);
 
@@ -38,6 +38,7 @@ const HeaderPage = () => {
   };
 
   const [logIn, setLogIn] = useState<boolean>(false);
+  const [loginState, setLoginState] = useState<string | null>(null);
 
   const closeModal = () => {
     setLogIn(false);
@@ -80,39 +81,16 @@ const HeaderPage = () => {
     }
   }
 
-  useEffect(() => {
-    if (LoginEmail != null && LoginEmail !== undefined) {
-      // LoginServices.getUserLogin("", "", LoginEmail, 2, "", "", "").then(
-      //   (res) => {
-      //     if (res.status) {
-      //       localStorage.setItem("UserId", res?.result?.userId);
-      //       localStorage.setItem("userName", res?.result?.name);
-      //       localStorage.setItem("Image", res?.result?.imageThumbPath);
-      //       localStorage.setItem("Email", res?.result?.email);
-      //       localStorage.setItem("Token", res?.result?.token);
-      //       localStorage.setItem("SignKey", res?.result?.signKey);
-      //     }
-      //   }
-      // );
-    }
-  }, [LoginEmail]);
+  const handleLoginStateChange = (newState: any) => {
+    setLoginState(newState);
+  };
+
+  const UserId = localStorage.getItem("UserId")
 
   useEffect(() => {
-    if (mobileNumber != null) {
-      LoginServices.getUserLogin("", mobileNumber, "", 1, "", "", "").then(
-        (res) => {
-          if (res?.status) {
-            localStorage.setItem("UserId", res?.result?.userId);
-            localStorage.setItem("userName", res?.result?.name);
-            localStorage.setItem("Image", res?.result?.imageThumbPath);
-            localStorage.setItem("PhoneNumber", res?.result?.phoneNumber);
-            localStorage.setItem("Token", res?.result?.token);
-            localStorage.setItem("SignKey", res?.result?.signKey);
-          }
-        }
-      );
+    if (UserId) {
     }
-  }, [mobileNumber]);
+  }, [logIn, loginState]);
 
   useEffect(() => {
     document.addEventListener("click", handleClickOutside);
@@ -133,7 +111,7 @@ const HeaderPage = () => {
               <div className="gst-logo" style={{ float: "none", width: "55%" }}>
                 <Link to="/">
                   <img
-                    src="https://gitaseva.org/assets/img/logo_Main.png"
+                    src={gitalogo}
                     alt="gstlogo"
                   />
                 </Link>
@@ -151,7 +129,7 @@ const HeaderPage = () => {
                 <div className="gst-menu">
                   <select
                     className="allCatSearch"
-                    style={{ width: "95px" }}
+                    // style={{ width: "95px" }}
                     onChange={(e) => {
                       searchValue.productType =
                         e.currentTarget?.value ?? undefined;
@@ -210,7 +188,6 @@ const HeaderPage = () => {
                         }
                       }}
                     />
-
                     <img
                       style={{
                         width: "22px",
@@ -233,7 +210,6 @@ const HeaderPage = () => {
                     />
                   </form>
                 </div>
-
                 <div className="gst-menu" style={{ marginLeft: "17px" }}>
                   <div
                     className="allCatSearch"
@@ -245,7 +221,6 @@ const HeaderPage = () => {
                       cursor: "pointer",
                       marginLeft: "12px",
                       display: "flex",
-                      // justifyContent: "space-between",
                       justifyContent: "space-between",
                     }}
                     onClick={toggleLang}
@@ -681,6 +656,9 @@ const HeaderPage = () => {
                             height: "25px",
                             margin: "0 12px",
                           }}
+                          onClick={() => {
+                            setIsDialogOpen(true);
+                          }}
                         />
                         <p
                           style={{
@@ -703,7 +681,7 @@ const HeaderPage = () => {
                     onClose={handleCloseDialog}
                   />
                 </div>
-                {/* <LogInModel opens={logIn} onCloses={closeModal} /> */}
+                <LogInModel opens={logIn} onCloses={closeModal} onLoginStateChange={handleLoginStateChange} />
               </div>
             </div>
           </div>

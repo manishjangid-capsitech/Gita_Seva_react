@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { GoogleAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
 import app from "./Firebase";
 import { BsFillShieldLockFill } from "react-icons/bs";
@@ -11,13 +11,9 @@ import 'react-phone-input-2/lib/style.css';
 import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
 import { toast, Toaster } from "react-hot-toast";
 import leftArrow from "../assets/img/leftArrow1.png";
-import LoginServices from "../Services/Login";
 import FacebookLogin from "react-facebook-login";
 
-const provider = new GoogleAuthProvider();
 export const auth = getAuth(app);
-
-// sign in with facebook
 
 export const SignInWithFB = () => {
   const fbLibrary = () => {
@@ -114,7 +110,6 @@ const SignWithOtp = () => {
     window.confirmationResult
       .confirm(otp)
       .then(async (result) => {
-        // const mobileNumber = result?.user?.phoneNumber;
         localStorage.setItem("LoginphoneNumber", result?.user?.phoneNumber);
         setUser(result.user);
         setLoading(false);

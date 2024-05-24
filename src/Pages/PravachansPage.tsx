@@ -18,8 +18,6 @@ import imgdownload from "../Images/downloadpravachan.svg";
 import imgpause from "../assets/audioPlayer/img/yellowplay.svg";
 import Loading from "../Components/Loading";
 import { useUser } from "../Contexts/UserContext";
-import Favadd from "../assets/img/favouritefilled.png";
-import Favicon from "../assets/img/pravachanfavbtn.png";
 import {
   Accordion,
   AccordionDetails,
@@ -35,9 +33,6 @@ const PravachansPage = () => {
   const [audios, setAudios] = useState<any[] | undefined>(undefined);
   const [refresh, setRefresh] = useState(false);
   const [SortValue, setSortValue] = useState("");
-  const handleSelectChange = (e: { target: { value: SetStateAction<string>; }; }) => {
-    setSortValue(e.target.value);
-  };
   const [Type, setType] = useState<any | undefined>(undefined);
   const [SortMonthValue, setSortMonthValue] = useState<string>("0");
   const [SortYearValue, setSortYearValue] = useState<string>("0");
@@ -78,6 +73,25 @@ const PravachansPage = () => {
     setActiveIndex(index);
   };
 
+  const [loginState, setLoginState] = useState<string | null>(null);
+
+  const handleLoginStateChange = (newState: any) => {
+    setLoginState(newState);
+    {
+      audios?.map((audio, i) => (
+        navigate(`/pravachans/` + audio.slug, {
+          state: {
+            audioId: audio.id,
+            audioslug: audio.slug,
+            sorting: SortValue,
+            index: i,
+            audiocat: CategoryId,
+          },
+        })
+      ))
+    }
+  };
+
   function ResetData() {
     setPreacherId("");
     setCategoryId("");
@@ -102,6 +116,7 @@ const PravachansPage = () => {
       false,
       CategoryId,
       PreacherId || state?.authorId,
+      // PreacherId || state?.authorId || "5bbc5fa51fd2d735b0087d34" || "5bbc5fcd1fd2d735b0087d35" || "5bbc60101fd2d735b0087d36",
       "",
       SortValue,
       "",
@@ -132,6 +147,7 @@ const PravachansPage = () => {
   useEffect(() => {
     AudiosService.getPravachanFilters("pravachan").then((res) => {
       if (res) {
+        console.log("category", res.result.categories?.length);
         setPreacher(res.result.authors);
         setCategory(res.result.categories);
         setLyrics(res.result);
@@ -163,16 +179,29 @@ const PravachansPage = () => {
   }, [i18n.language, refresh]);
 
   useEffect(() => {
-    if (state?.authorId === "5bbc5fa51fd2d735b0087d34" || state?.authorId === "5bbc5fcd1fd2d735b0087d35") {
-      setSortValue("0")
-    }
-    else if (state?.authorId === "5bbc60101fd2d735b0087d36") {
-      setSortValue("4")
+    if (state?.authorId) {
+      if (state?.authorId === "5bbc5fa51fd2d735b0087d34" || state?.authorId === "5bbc5fcd1fd2d735b0087d35") {
+        setSortValue("0")
+      }
+      else if (state?.authorId === "5bbc60101fd2d735b0087d36") {
+        setSortValue("4")
+      }
+      else {
+        setSortValue("3")
+      }
     }
     else {
-      setSortValue("3")
+      if (PreacherId === "5bbc5fa51fd2d735b0087d34" || PreacherId === "5bbc5fcd1fd2d735b0087d35") {
+        setSortValue("0")
+      }
+      else if (PreacherId === "5bbc60101fd2d735b0087d36") {
+        setSortValue("4")
+      }
+      else {
+        setSortValue("3")
+      }
     }
-  }, [state?.authorId, i18n.language, refresh])
+  }, [state?.authorId, state?.authorName, PreacherId, i18n.language, refresh])
 
   useEffect(() => {
     setRefresh(false);
@@ -321,7 +350,7 @@ const PravachansPage = () => {
                         style={{
                           marginTop: "15px",
                           // display: "flex",
-                          display: state?.authorId === "5bbc5fa51fd2d735b0087d34" || state?.authorId === "5bbc5fcd1fd2d735b0087d35" ? "none" : "flex",
+                          display: state?.authorId === "5bbc60101fd2d735b0087d36" ? "flex" : "none",
                           alignItems: "baseline",
                         }}
                       >
@@ -364,7 +393,7 @@ const PravachansPage = () => {
                         paddingTop: "5px",
                         alignItems: "baseline",
                         // display: "flex",
-                        display: state?.authorId === "5bbc5fa51fd2d735b0087d34" || state?.authorId === "5bbc5fcd1fd2d735b0087d35" ? "none" : "flex",
+                        display: state?.authorId === "5bbc60101fd2d735b0087d36" ? "flex" : "none",
                       }}
                     >
                       <div style={{ width: "30%" }}>
@@ -439,7 +468,7 @@ const PravachansPage = () => {
                                         fontWeight: 400,
                                         color: "#545454",
                                         fontFamily: "ChanakyaUni",
-                                        marginTop: "10px"
+                                        paddingTop: "10px"
                                       }}
                                       id={`par-${preacher.id}`}
                                     >
@@ -450,6 +479,85 @@ const PravachansPage = () => {
                               </div>
                             ))
                             : ""}
+                          <div style={{ display: PreacherId === "5bbc60101fd2d735b0087d36" ? "block" : "none", marginLeft: "20px" }}>
+                            <div>
+                              <div
+                                className="filteryearmonth"
+                                style={{
+                                  marginTop: "15px",
+                                  display: "flex",
+                                  alignItems: "baseline",
+                                }}
+                              >
+                                <div style={{ width: "30%" }}>
+                                  <span>{t("Year_tr")}</span>
+                                </div>
+
+                                <div style={{ width: "80%" }}>
+                                  <select
+                                    onChange={(e) => {
+                                      setSortYearValue(e.target.value);
+                                    }}
+                                    value={SortYearValue}
+                                  >
+                                    <option value="0">All</option>
+                                    <option value="1990">1990</option>
+                                    <option value="1991">1991</option>
+                                    <option value="1992">1992</option>
+                                    <option value="1993">1993</option>
+                                    <option value="1994">1994</option>
+                                    <option value="1995">1995</option>
+                                    <option value="1996">1996</option>
+                                    <option value="1997">1997</option>
+                                    <option value="1998">1998</option>
+                                    <option value="1999">1999</option>
+                                    <option value="2000">2000</option>
+                                    <option value="2001">2001</option>
+                                    <option value="2002">2002</option>
+                                    <option value="2003">2003</option>
+                                    <option value="2004">2004</option>
+                                    <option value="2005">2005</option>
+                                  </select>
+                                </div>
+                              </div>
+                            </div>
+
+                            <div
+                              className="filteryearmonth"
+                              style={{
+                                paddingTop: "5px",
+                                alignItems: "baseline",
+                                display: "flex",
+                              }}
+                            >
+                              <div style={{ width: "30%" }}>
+                                <span>{t("Month_tr")}</span>
+                              </div>
+                              <div style={{ width: "80%" }}>
+                                <select
+                                  disabled={SortYearValue !== "0" ? false : true}
+                                  onChange={(e) => {
+                                    setSortMonthValue(e.target.value);
+                                  }}
+                                  value={SortMonthValue}
+                                >
+                                  <option value="0">All</option>
+                                  <option value="1">January</option>
+                                  <option value="2">February</option>
+                                  <option value="3">March</option>
+                                  <option value="4">April</option>
+                                  <option value="5">May</option>
+                                  <option value="6">June</option>
+                                  <option value="7">July</option>
+                                  <option value="8">August</option>
+                                  <option value="9">September</option>
+                                  <option value="10">October</option>
+                                  <option value="11">November</option>
+                                  <option value="12">December</option>
+                                </select>
+                              </div>
+                            </div>
+                          </div>
                         </AccordionDetails>
                       </Accordion>
                       {/* Pravachanlist  */}
@@ -649,6 +757,28 @@ const PravachansPage = () => {
                                     alt={audio.name}
                                     title={audio.name}
                                     onClick={() => {
+                                      if (UserIdentity) {
+                                        navigate(`/pravachans/` + audio.slug, {
+                                          state: {
+                                            audioId: audio.id,
+                                            audioslug: audio.slug,
+                                            sorting: SortValue,
+                                            index: i,
+                                            audiocat: CategoryId,
+                                          },
+                                        });
+                                      } else {
+                                        setLogIn(true);
+                                      }
+                                    }}
+                                  />
+                                </a>
+                              </div>
+                              <div style={{ width: "100%" }}>
+                                <a
+                                  style={{ cursor: "pointer", display: "grid" }}
+                                  onClick={() => {
+                                    if (UserIdentity) {
                                       navigate(`/pravachans/` + audio.slug, {
                                         state: {
                                           audioId: audio.id,
@@ -658,23 +788,9 @@ const PravachansPage = () => {
                                           audiocat: CategoryId,
                                         },
                                       });
-                                    }}
-                                  />
-                                </a>
-                              </div>
-                              <div style={{ width: "100%" }}>
-                                <a
-                                  style={{ cursor: "pointer", display: "grid" }}
-                                  onClick={() => {
-                                    navigate(`/pravachans/` + audio.slug, {
-                                      state: {
-                                        audioId: audio.id,
-                                        audioslug: audio.slug,
-                                        sorting: SortValue,
-                                        index: i,
-                                        audiocat: CategoryId,
-                                      },
-                                    });
+                                    } else {
+                                      setLogIn(true);
+                                    }
                                   }}
                                 >
                                   <p
@@ -732,15 +848,19 @@ const PravachansPage = () => {
                                   <img
                                     alt=""
                                     onClick={() => {
-                                      navigate(`/pravachans/` + audio.slug, {
-                                        state: {
-                                          audioId: audio.id,
-                                          audioslug: audio.slug,
-                                          sorting: SortValue,
-                                          index: i,
-                                          audiocat: CategoryId,
-                                        },
-                                      });
+                                      if (UserIdentity) {
+                                        navigate(`/pravachans/` + audio.slug, {
+                                          state: {
+                                            audioId: audio.id,
+                                            audioslug: audio.slug,
+                                            sorting: SortValue,
+                                            index: i,
+                                            audiocat: CategoryId,
+                                          },
+                                        });
+                                      } else {
+                                        setLogIn(true);
+                                      }
                                     }}
                                     title="Play"
                                     src={imgpause}
@@ -783,7 +903,7 @@ const PravachansPage = () => {
           </div>
         </div>
       </div>
-      {/* <LogInModel opens={logIn} onCloses={closeModal} /> */}
+      <LogInModel opens={logIn} onCloses={closeModal} onLoginStateChange={handleLoginStateChange} />
     </>
   );
 };

@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import DefaultBook from "../Images/defaultBook.png";
 import GeetGovindServices from "../Services/GeetGovind";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -21,13 +21,17 @@ const GeetGovindDetailPage = (props: any) => {
   const [refresh, setRefresh] = useState(false);
   const location = useLocation();
   const [MagzineId, setMagzineId] = useState("");
-  const state = location.state as { MonthId: string };
   const [isLiked, setIsLiked] = useState<boolean>(false);
 
   const [logIn, setLogIn] = useState<boolean>(false);
 
   const closeModal = () => {
     setLogIn(false);
+  };
+  const state = location.state as {
+    MonthId: string,
+    bookName: string,
+    slug: string,
   };
 
   const [toggleFav, setToggleFav] = useState<boolean>(false);
@@ -40,6 +44,25 @@ const GeetGovindDetailPage = (props: any) => {
   const notificationRef = useRef<any>(null);
 
   const monthName = getMonthNameFromNumber(magzineDetail?.months);
+
+  const [loginState, setLoginState] = useState<string | null>(null);
+
+
+  const handleLoginStateChange = (newState: any) => {
+    setLoginState(newState);
+    navigate(
+      `/reader/monthlymagazine/` +
+      magzineDetail.slug,
+      {
+        state: {
+          magazineDetailId: state?.MonthId,
+          bookName: state?.bookName,
+          slug: state?.slug,
+          type: BookContentType.magazine,
+        },
+      }
+    );
+  };
 
   const showNotification = (message: any) => {
     notificationRef.current.innerText = message;
@@ -74,6 +97,8 @@ const GeetGovindDetailPage = (props: any) => {
       });
     setToggleFav((x) => !x);
   };
+
+
 
   useEffect(() => {
     if (location.state) {
@@ -329,6 +354,20 @@ const GeetGovindDetailPage = (props: any) => {
                         ) : (
                           ""
                         )}
+                        <div className="bookdecription">
+                          <div className="yearmonth" style={{ display: "flex", justifyContent: "center", border: "1px solid #ffaf68", paddingTop: "15px", borderTopLeftRadius: "5px", borderBottomLeftRadius: "5px" }}>
+                            <label style={{ color: "#472d1e", fontSize: "23px", fontFamily: "ChanakyaUni", margin: '0 40% 0 0', paddingBottom: 0 }}>{t("Year_tr")}</label>
+                            <label style={{ fontSize: "23px", color: "#ff731f" }}>{magzineDetail?.years}</label>
+                          </div>
+                          <div className="yearmonth" style={{ display: "flex", justifyContent: "center", border: "1px solid #ffaf68", paddingTop: "15px", borderLeft: 0, borderRight: 0 }}>
+                            <label style={{ color: "#472d1e", fontSize: "23px", fontFamily: "ChanakyaUni", margin: '0 40% 0 0' }}>{t("Month_tr")}</label>
+                            <label style={{ fontSize: "23px", color: "#ff731f" }}>{monthName}</label>
+                          </div>
+                          <div className="yearmonth" style={{ display: "flex", justifyContent: "center", border: "1px solid #ffaf68", paddingTop: "15px", borderTopRightRadius: "5px", borderBottomRightRadius: "5px" }}>
+                            <label style={{ color: "#472d1e", fontSize: "23px", fontFamily: "ChanakyaUni", margin: '0 40% 0 0' }}>{t("Number_tr")}</label>
+                            <label style={{ fontSize: "23px", color: "#ff731f" }}>{magzineDetail?.editionNo}</label>
+                          </div>
+                        </div>
                         <div
                           className="next-read"
                           style={{ marginTop: "50px" }}
@@ -356,33 +395,18 @@ const GeetGovindDetailPage = (props: any) => {
                           >
                             {t("read_magazine_tr")}
                           </p>
-                          <div ref={notificationRef} style={{ color: "#ff3d28", fontSize: '20px', marginTop: "10px", height:"20px" }} className="notification-bar"></div>
-                        </div>
-                        <div className="bookdecription">
-                          <div className="yearmonth" style={{ borderRight: "none" }}>
-                            <span>{t("Year_tr")}</span>
-                            <span>{magzineDetail?.years}</span>
-                          </div>
-                          <div className="yearmonth" style={{ borderRight: "none" }}>
-                            <span>{t("Month_tr")}</span>
-                            <span>{monthName}</span>
-                          </div>
-                          <div className="yearmonth">
-                            <span>{t("Number_tr")}</span>
-                            <span>{magzineDetail?.editionNo}</span>
-                          </div>
+                          <div ref={notificationRef} style={{ color: "#ff3d28", fontSize: '20px', marginTop: "10px", height: "20px" }} className="notification-bar"></div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
               ) : (
-                // <Loading />
                 ""
               )}
             </div>
           </div>
-          {/* <LogInModel opens={logIn} onCloses={closeModal} /> */}
+          <LogInModel opens={logIn} onCloses={closeModal} onLoginStateChange={handleLoginStateChange} />
         </div>
       </div>
     </div >

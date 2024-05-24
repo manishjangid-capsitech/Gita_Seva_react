@@ -80,7 +80,7 @@ export const ProfileContact = () => {
     };
 
     if (data.name !== "" && data.comment !== "") {
-      if (data.comment.length > 0) {
+      if (data?.comment?.length > 0) {
         newEntry.comment = "message from Gita seva trust: " + newEntry.comment;
         HomeService.sendFeedback(
           data.name,
@@ -280,7 +280,7 @@ export const ProfileContact = () => {
                                       fontSize: "22px",
                                       paddingLeft: "15px",
                                       background:
-                                        data.phoneNumber.length > 0
+                                        data?.phoneNumber?.length > 0
                                           ? "#E9ECEF"
                                           : "#fff",
                                       border: "1px solid gray",
@@ -313,7 +313,7 @@ export const ProfileContact = () => {
                                       paddingLeft: "15px",
                                       marginBottom: "15px",
                                       background:
-                                        data.email.length > 0
+                                        data?.email?.length > 0
                                           ? "#E9ECEF"
                                           : "#fff",
                                       border: "1px solid gray",

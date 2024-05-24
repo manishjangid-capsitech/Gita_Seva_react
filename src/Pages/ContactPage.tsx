@@ -65,15 +65,6 @@ export const ContactPage = () => {
         contactType: parseInt(data.contactType),
       };
 
-      // if (
-      //   data.name !== "" &&
-      //   data.email !== "" &&
-      //   data.phoneNumber !== "" &&
-      //   data.messageContent !== "" &&
-      //   captchaValue !== "" &&
-      //   captchaValue.length > 6 &&
-      //   captchaValue.length < 6
-      // ) {
       if (data.messageContent.length > 0 && data.phoneNumber.length === 10) {
         newEntry.messageContent =
           "message from swamiji.gitaseva: " + newEntry.messageContent;
@@ -103,8 +94,16 @@ export const ContactPage = () => {
         });
       }
     }
-    // } else {
-    // }
+  };
+
+  const characters = 'abc123';
+  const generateCaptcha = (length: any) => {
+    let result = '';
+    const charactersLength = characters.length;
+    for (let i = 0; i < length; i++) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+      setCompareCaptcha(result)
+    }
   };
 
   const handleValidation = () => {
@@ -140,16 +139,6 @@ export const ContactPage = () => {
     // Generate the CAPTCHA value when the component mounts
     generateCaptcha(6);
   }, [showSuccess]);
-
-  const characters = 'abc123';
-  const generateCaptcha = (length: any) => {
-    let result = '';
-    const charactersLength = characters.length;
-    for (let i = 0; i < length; i++) {
-      result += characters.charAt(Math.floor(Math.random() * charactersLength));
-      setCompareCaptcha(result)
-    }
-  };
 
   return (
     <div className="row">
@@ -236,13 +225,7 @@ export const ContactPage = () => {
                           ...data,
                           phoneNumber: v,
                         });
-                      } 
-                      // else {
-                      //   setData({
-                      //     ...data,
-                      //     phoneNumber: "" ,
-                      //   });
-                      // }
+                      }
                     }}
                     value={data.phoneNumber}
                     className="input contactContent"
@@ -301,10 +284,6 @@ export const ContactPage = () => {
                           ...e,
                           email: "Please enter a valid email address",
                         }));
-                        // setValidation({
-                        //   ...validation,
-                        //   email: "Please enter a valid email address",
-                        // });
                       } else {
                         setData({
                           ...data,
@@ -424,9 +403,6 @@ export const ContactPage = () => {
                             captchaError: "Please enter a valid captcha",
                           }));
                         }
-                        //  else {
-                        //   setCaptchaValue("");
-                        // }
                       }}
                     />
                     <img
@@ -497,7 +473,7 @@ export const ContactPage = () => {
               }}
               variant="secondary"
             >
-             {t("close_tr")}
+              {t("close_tr")}
             </Button>
           </Modal.Footer>
         </Modal>
