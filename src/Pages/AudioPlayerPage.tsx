@@ -15,14 +15,12 @@ const AudioPlayerPage = ({ match }: any) => {
   const navigate = useNavigate();
   const {
     setAudiosList,
-    isMinimise,
     setIsMinismise,
     audiosList,
     playAudio,
     currentAudio,
     close,
     showList,
-    setShowList,
   } = useAudio();
 
   const location = useLocation();
@@ -57,7 +55,7 @@ const AudioPlayerPage = ({ match }: any) => {
       false,
       Type
     ).then((res) => {
-      if (res) {
+      if (res?.status) {
         setIsMinismise(false);
         setAudiosList(res.result.items);
         playAudio(state?.audioId!, state?.index);

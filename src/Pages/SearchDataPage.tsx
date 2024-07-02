@@ -205,7 +205,7 @@ const SearchDataPage = () => {
                             })
                         }
                         if (search.product === "geetgovind") {
-                          navigate("/monthlymagazine/" + search.slug,
+                          navigate("/geetgovind/" + search.slug,
                             {
                               state: {
                                 MonthId: search.id,

@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAudio } from "../Contexts/AudiosContext";
 import imgdownload from "../assets/audioPlayer/img/download.svg";
-import imgrepeat from "../assets/audioPlayer/img/whiterepeat.svg";
+import imgrepeatOn from "../assets/audioPlayer/img/repeatON.svg";
+import imgrepeatOff from "../assets/audioPlayer/img/repeatOFF.svg";
 import imgback from "../assets/audioPlayer/img/whiteprevious.svg";
 import imgforward from "../assets/audioPlayer/img/whitenext.svg";
 import imgclose from "../assets/audioPlayer/img/whitecancel.svg";
@@ -26,33 +27,25 @@ const AudioPlayer = () => {
     close,
     next,
     prev,
-    // setAudioInfoDialog,
-    repeat,
-    playAudio,
+    isLiked,
+    favaddremove,
   } = useAudio();
 
   const refAudio = React.useRef<HTMLAudioElement>(null);
-  const UserIdentity = localStorage.getItem("UserId") as any;
 
   const [cTime, setCTime] = useState(0);
   const [aLength, setALength] = useState(0);
   const [playing, setPlaying] = useState(false);
-  const [isLoading, setLoading] = useState(false);
-  const [isLiked, setIsLiked] = useState<boolean>(false);
-  const [toggleFav, setToggleFav] = useState<boolean>(false);
   const [audioinfoDialog, setAudioinfoDialog] = useState(false);
-  const [logIn, setLogIn] = useState<boolean>(false);
 
-const closeInfoModel = () => {
-  setAudioinfoDialog(false)
-}
-
-  // const closeModal = () => {
-  //   setLogIn(false);
-  // };
+  const closeInfoModel = () => {
+    setAudioinfoDialog(false)
+  }
 
   function formatCurrentTime(seconds: any) {
-    var minutes: any = Math.floor(seconds / 60);
+    var hours: any = Math.floor(seconds / 3600);
+    var minutes: any = Math.floor((seconds % 3600) / 60);;
+    // ((seconds % 3600) / 60);
     var remainingSeconds: any = Math.floor(seconds % 60);
     if (remainingSeconds < 10) {
       remainingSeconds = "0" + remainingSeconds;
@@ -60,11 +53,12 @@ const closeInfoModel = () => {
     if (minutes < 10) {
       minutes = "0" + minutes;
     }
-    return minutes + ":" + remainingSeconds;
+    return hours + ":" + minutes + ":" + remainingSeconds;
   }
 
   function formatLastMinuteAndSecond() {
-    var lastMinute: any = Math.floor(aLength / 60);
+    var hours: any = Math.floor(aLength / 3600);
+    var lastMinute: any = Math.floor((aLength % 3600) / 60);;
     var lastSeconds: any = Math.floor(aLength % 60);
     if (lastSeconds < 10) {
       lastSeconds = "0" + lastSeconds;
@@ -72,35 +66,15 @@ const closeInfoModel = () => {
     if (lastMinute < 10) {
       lastMinute = "0" + lastMinute;
     }
-    return lastMinute + ":" + lastSeconds;
+    return hours + ":" + lastMinute + ":" + lastSeconds;
   }
+
   function onLoadedMetadata(event: any) {
     setALength(event.target.duration);
   }
+
   const audioId = currentAudio?.id as any
   const getType = localStorage.getItem("type") as string
-
-  const FavAdd = () => {
-    getType === "pravachans" ?
-      AudiosService.addPravachanFavourite(audioId).then((res) => {
-        res.status && setIsLiked(true);
-      })
-      :
-      AudiosService.addAudioFavourite(audioId).then((res) => {
-        res.status && setIsLiked(true);
-      })
-  };
-
-  const FavRemove = () => {
-    getType === "pravachans" ?
-      AudiosService.removePravachanFaviourite(audioId).then((res) => {
-        res.status && setIsLiked(false);
-      })
-      :
-      AudiosService.removeAudioFavourite(audioId).then((res) => {
-        res.status && setIsLiked(false);
-      });
-  };
 
   const setAudioInfoDialog = () => {
     if (audioinfoDialog) {
@@ -110,14 +84,11 @@ const closeInfoModel = () => {
     }
   };
 
-  useEffect(() => {
-    AudiosService.getaudioandpravachanbyid(audioId, UserIdentity !== "" ? UserIdentity : "").then((res) => {
-      if (res.status) {
-        setIsLiked(res?.result?.isFavourite)
-      }
-    })
-  }, [isLiked, audioId])
+  const [isRepeating, setIsRepeating] = useState(false);
 
+  const repeataudio = () => {
+    setIsRepeating(!isRepeating);
+  };
   return (
     <div>
       {currentAudio?.id ? (
@@ -134,7 +105,8 @@ const closeInfoModel = () => {
                 <audio
                   ref={refAudio}
                   id={`audio-${currentAudio.id}`}
-                  autoPlay
+                  autoPlay={true}
+                  loop={isRepeating}
                   src={
                     currentAudio.audioUrl != null
                       ? currentAudio.audioUrl
@@ -161,7 +133,7 @@ const closeInfoModel = () => {
                   onLoad={(e: any) => (e.target.currentTime = 0)}
 
                 />
-                <div>
+                <div style={{ fontSize: "20px" }}>
                   {currentAudio?.name}
                 </div>
               </div>
@@ -184,7 +156,7 @@ const closeInfoModel = () => {
           </div>
           <div
             className="column"
-            style={{ marginRight: "2px", marginLeft: "2px" }}
+            style={{ margin: "0 5px" }}
           >
             <a
               id="download"
@@ -205,59 +177,27 @@ const closeInfoModel = () => {
               />
             </a>
           </div>
-
-          {isLiked ? (
-            <label
-              onClick={() => {
-                FavRemove();
-              }}
-            >
-              <img
-                src={Favadd}
-                alt="Favadd"
-                style={{
-                  marginTop: "8px",
-                }}
-              />
-            </label>
-          ) : (
-            <label
-              onClick={() => {
-                FavAdd();
-              }}
-            >
-              <img
-                src={Favicon}
-                alt="Favicon"
-                style={{
-                  marginTop: "8px",
-                }}
-              />
-            </label>
-          )}
-
-          {/* <label
+          <label
             onClick={() => {
-              toggleLike();
-              // notify();
+              favaddremove();
             }}
-            style={{ marginTop: "1px", cursor: "pointer" }}
+            style={{ margin: "0 5px" }}
           >
             <img
               src={isLiked ? Favadd : Favicon}
-              alt="img"
+              alt="Favicon"
             />
-          </label> */}
-          <div className="column">
+          </label>
+          <div className="column" style={{ margin: "0 5px" }}>
             <button
               className="backcolor"
               onClick={() => {
-                repeat();
+                repeataudio();
               }}
             >
               <img
                 alt="imgrepeat"
-                src={imgrepeat}
+                src={isRepeating ? imgrepeatOn : imgrepeatOff}
                 title="repeat"
                 width="30px"
               />

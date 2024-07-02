@@ -13,6 +13,7 @@ import { BookContentType } from "./Epub";
 import { LogInModel, getMonthNameFromNumber } from "./LogInoutModel";
 import EpubServices from "../Services/Epub";
 import closeicon from "../Images/close-round-border.svg"
+import { Breadcrumbs } from "./E-BooksComponent";
 
 const GeetGovindDetailPage = (props: any) => {
   const { t } = useTranslation();
@@ -47,11 +48,10 @@ const GeetGovindDetailPage = (props: any) => {
 
   const [loginState, setLoginState] = useState<string | null>(null);
 
-
   const handleLoginStateChange = (newState: any) => {
     setLoginState(newState);
     navigate(
-      `/reader/monthlymagazine/` +
+      `/reader/geetgovind/` +
       magzineDetail.slug,
       {
         state: {
@@ -98,8 +98,6 @@ const GeetGovindDetailPage = (props: any) => {
     setToggleFav((x) => !x);
   };
 
-
-
   useEffect(() => {
     if (location.state) {
       setMagzineId(state?.MonthId);
@@ -143,7 +141,7 @@ const GeetGovindDetailPage = (props: any) => {
         marginTop: 0,
       }}
     >
-      <div
+      {/* <div
         className="breadcrumbs-head newcontainer"
         style={{
           width: "100%",
@@ -180,7 +178,7 @@ const GeetGovindDetailPage = (props: any) => {
               </Link>
               <Link
                 style={{ margin: "0 5px 0 0", color: "#2d2a29" }}
-                to="/monthlymagazine"
+                to="/geetgovind"
               >
                 / {t("MonthlyMagazine_tr")}
               </Link>
@@ -188,7 +186,19 @@ const GeetGovindDetailPage = (props: any) => {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
+      <Breadcrumbs
+        mainsubBreadCrumb={t("MonthlyMagazine_tr")}
+        subBreadCrumb={t("Home_tr")}
+        navigatemainsubBreadCrumb={() => {
+          navigate(`/home`);
+        }}
+        subBreadCrumbTwo={t("MonthlyMagazine_tr")}
+        navigatesubBreadCrumb={() => {
+          navigate(`/geetgovind`)
+        }}
+        subBreadCrumbThree={magzineDetail?.name}
+      />
       <div className="container">
         <div>
           <div className="row">
@@ -298,7 +308,7 @@ const GeetGovindDetailPage = (props: any) => {
                                           {bookMarkData && bookMarkData?.map((item: any, index: number) => (
                                             <li onClick={() => {
                                               navigate(
-                                                `/reader/monthlymagazine/` +
+                                                `/reader/geetgovind/` +
                                                 magzineDetail.slug,
                                                 {
                                                   state: {
@@ -378,7 +388,7 @@ const GeetGovindDetailPage = (props: any) => {
                               setLogIn(true);
                               if (UserIdentity) {
                                 navigate(
-                                  `/reader/monthlymagazine/` +
+                                  `/reader/geetgovind/` +
                                   magzineDetail.slug,
                                   {
                                     state: {

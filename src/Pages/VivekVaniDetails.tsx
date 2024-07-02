@@ -18,6 +18,7 @@ import { toast } from "react-toastify";
 import EpubServices from "../Services/Epub";
 import closeicon from "../Images/close-round-border.svg"
 import Vivekvani from "../Services/Vivekvani";
+import { Breadcrumbs } from "./E-BooksComponent";
 
 export interface ISingleBook {
   bookLanguageId: string;
@@ -171,7 +172,21 @@ const VivekvaniDetailPage = () => {
         marginTop: 0,
       }}
     >
-      <div
+      <Breadcrumbs
+        mainsubBreadCrumb={t("vivek_vani_tr")}
+        subBreadCrumb={t("Home_tr")}
+        navigatemainsubBreadCrumb={() => {
+          navigate(`/home`);
+        }}
+        subBreadCrumbTwo={window.location.pathname === "/vivekvani/special"
+          ? t("Special_vivek_vani_tr")
+          : t("vivek_vani_tr")}
+        navigatesubBreadCrumb={() => {
+          navigate(`/vivekvani`)
+        }}
+        subBreadCrumbThree={vaniDetail?.name}
+      />
+      {/* <div
         className="breadcrumbs-head newcontainer"
         style={{
           width: "100%",
@@ -219,7 +234,7 @@ const VivekvaniDetailPage = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
       <div className="container">
         <div>
           <div className="row">

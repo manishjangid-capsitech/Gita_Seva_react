@@ -11,8 +11,6 @@ class SearchDataService {
   route = "/posts";
   searchRoute = "/api/settings/search?searchtext=";
 
-  get = (id: string) => ApiUtility.getResult(`${this.route}/${id}`);
-
   searchData = (value: ISearchParams) => {
     return ApiUtility.get(
       this.searchRoute +

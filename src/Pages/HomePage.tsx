@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import HomeService from "../Services/Home";
 import i18n, { _get_i18Lang } from "../i18n";
 import { useTranslation } from "react-i18next";
@@ -34,6 +34,12 @@ import AudiosService from "../Services/Audios";
 import DivineQuotesService from "../Services/DivineQuotes";
 import Spinner from "./Spinner";
 import LyricsComponent from "../Components/LyricsComponent";
+import geethindi from "../Images/Geet-Govind-Hindi-Cover.jpg";
+import geetenglish from "../Images/Geet-Govind-English-Cover.jpg";
+import kalyancover from "../Images/Kalyan-Cover.jpg"
+import kalpatrucover from "../Images/Kalyana-Kalpataru-Cover.jpg"
+import VivekvaniCover from "../Images/Vivek-vani-cover.jpg"
+import { Specialmagzine } from "./LogInoutModel";
 
 
 interface IArticleProps {
@@ -74,16 +80,16 @@ const HomePage = () => {
 
   const [defaultlyrics, setDefaultAudLyrics] = useState("");
 
-  const [playing, setPlaying] = React.useState(false);
-  const refAudio = React.useRef<HTMLAudioElement>(null);
-  const refLrc = React.useRef<any>(null);
+  const [playing, setPlaying] = useState(false);
+  const refAudio = useRef<HTMLAudioElement>(null);
+  const refLrc = useRef<any>(null);
   const [hoverId, setHoverId] = useState<number | string>();
 
   const [magazineData, setMagazineData] = useState<any[] | undefined>(undefined);
   const [kalyanData, setKalyanData] = useState<any[] | undefined>(undefined);
   const [kalpatruData, setKalpatruData] = useState<any[] | undefined>(undefined);
   const [vivekVaniData, setVivekVaniData] = useState<any[] | undefined>(undefined);
-
+  const [fetchArticle, setFetchArticle] = useState(false);
   const [articlesBox, setArticlesBox] = useState<any[] | undefined>(undefined);
 
   const infinite = banners ? React.Children.count(banners?.length) > 0 : false;
@@ -263,16 +269,16 @@ const HomePage = () => {
         navigate("/monthlymagazines/language/" + targetId);
         break;
       case 45:
-        navigate("/monthlymagazine");
+        navigate("/geetgovind");
         break;
       case 46:
-        navigate("/monthlymagazine/" + slug);
+        navigate("/geetgovind/" + slug);
         break;
       case 47:
-        navigate("/monthlymagazine/category/" + targetId);
+        navigate("/geetgovind/category/" + targetId);
         break;
       case 48:
-        navigate("/monthlymagazine");
+        navigate("/geetgovind");
         break;
       case 49:
         navigate("/vivekvani/:cat/:langid" + slug, {
@@ -469,17 +475,6 @@ const HomePage = () => {
     });
   }, [refresh, i18n.language]);
 
-  // useEffect(() => {
-  //   setRefresh(false);
-  //   HomeService.getMessage(_get_i18Lang(), 0, 3).then((res) => {
-  //     if (res.status) {
-  //       // setmessages(res.result?.items);
-  //       // setarticleContent(res.result.items);
-  //       // setFetchArticle(true);
-  //     }
-  //   });
-  // }, [refresh, i18n.language]);
-
   useEffect(() => {
     fetch(text)
       .then((response) => response?.text())
@@ -575,7 +570,7 @@ const HomePage = () => {
   const [saveActivtab, setSaveActivetab] = useState("")
 
   useEffect(() => {
-    const storedItem = localStorage.getItem('currentActivtab');
+    const storedItem = localStorage.getItem('currentActivetab');
     if (storedItem) {
       if (storedItem === "e-books") {
         activetab("e-books")
@@ -597,8 +592,6 @@ const HomePage = () => {
       }
     }
   }, [activetab]);
-
-  const [fetchArticle, setFetchArticle] = React.useState(false);
 
   return (
     <>
@@ -887,6 +880,7 @@ const HomePage = () => {
                       </div>
                     </div> */}
                     <LyricsComponent />
+                    {/* <LyricsDB /> */}
                   </div>
                 </div>
                 <div
@@ -915,7 +909,7 @@ const HomePage = () => {
                                   className="p-head-line"
                                   style={{ cursor: "pointer", marginTop: "15px" }}
                                 >
-                                  <div
+                                  <div style={{ fontSize: "22px" }}
                                     onClick={() => {
                                       navigate(`/articles/` + article.slug, {
                                         state: { articleId: article.id, articleSlug: article?.slug },
@@ -934,6 +928,7 @@ const HomePage = () => {
                                     margin: "0 0 6px 0",
                                     borderBottom: "none",
                                     paddingBottom: "0px",
+                                    color: "#3f220d",
                                   }}
                                   className="htmlContent"
                                   dangerouslySetInnerHTML={createMarkuparticle(
@@ -948,12 +943,13 @@ const HomePage = () => {
                               }}
                             >
                               <p style={{ textAlign: "right" }}>
-                                <p
+                                <a
                                   style={{
                                     cursor: "pointer",
                                     color: " #9c4439",
                                     margin: 0,
                                     borderBottom: "none",
+                                    fontSize: "18px"
                                   }}
                                   onClick={() => {
                                     navigate(`/articles/` + article.slug, {
@@ -962,7 +958,7 @@ const HomePage = () => {
                                   }}
                                 >
                                   {t("Read_More_tr")}
-                                </p>
+                                </a>
                               </p>
                             </div>
                           </div>
@@ -1113,7 +1109,7 @@ const HomePage = () => {
               <nav>
                 <div className="nav nav-tabs" id="nav-tab" role="tablist">
                   <button
-                    className="nav-link active"
+                    className="nav-link"
                     id="e-books-tab"
                     data-bs-toggle="tab"
                     data-bs-target="#e-books"
@@ -1123,11 +1119,28 @@ const HomePage = () => {
                     aria-selected="true"
                     onClick={() => {
                       setSaveActivetab("e-books")
-                      localStorage.setItem("currentActivtab", "e-books")
+                      localStorage.setItem("currentActivetab", "e-books")
                       // activetab("e-books");
                     }}
                   >
                     {t("E_books_tr")}
+                  </button>
+                  <button
+                    className="nav-link"
+                    id="magazine-tab"
+                    data-bs-toggle="tab"
+                    data-bs-target="#magazine"
+                    type="button"
+                    role="tab"
+                    aria-controls="magazine"
+                    aria-selected="false"
+                    onClick={() => {
+                      setSaveActivetab("magazine")
+                      localStorage.setItem("currentActivetab", "magazine")
+                      // activetab("magazine");
+                    }}
+                  >
+                    {t("magazine_tr")}
                   </button>
                   <button
                     className="nav-link"
@@ -1140,7 +1153,7 @@ const HomePage = () => {
                     aria-selected="false"
                     onClick={() => {
                       setSaveActivetab("audios")
-                      localStorage.setItem("currentActivtab", "audios")
+                      localStorage.setItem("currentActivetab", "audios")
                       // activetab("audios");
                     }}
                   >
@@ -1157,7 +1170,7 @@ const HomePage = () => {
                     aria-selected="false"
                     onClick={() => {
                       setSaveActivetab("pravachans")
-                      localStorage.setItem("currentActivtab", "pravachans")
+                      localStorage.setItem("currentActivetab", "pravachans")
                       // activetab("pravachans");
                     }}
                   >
@@ -1174,7 +1187,7 @@ const HomePage = () => {
                     aria-selected="false"
                     onClick={() => {
                       setSaveActivetab("articles")
-                      localStorage.setItem("currentActivtab", "articles")
+                      localStorage.setItem("currentActivetab", "articles")
                       // activetab("articles");
                     }}
                   >
@@ -1191,28 +1204,11 @@ const HomePage = () => {
                     aria-selected="false"
                     onClick={() => {
                       setSaveActivetab("divine-quotes")
-                      localStorage.setItem("currentActivtab", "divine-quotes")
+                      localStorage.setItem("currentActivetab", "divine-quotes")
                       // activetab("divine-quotes");
                     }}
                   >
                     {t("Amrit_Vachan_tr")}
-                  </button>
-                  <button
-                    className="nav-link"
-                    id="magazine-tab"
-                    data-bs-toggle="tab"
-                    data-bs-target="#magazine"
-                    type="button"
-                    role="tab"
-                    aria-controls="magazine"
-                    aria-selected="false"
-                    onClick={() => {
-                      setSaveActivetab("magazine")
-                      localStorage.setItem("currentActivtab", "magazine")
-                      // activetab("magazine");
-                    }}
-                  >
-                    {t("magazine_tr")}
                   </button>
                 </div>
               </nav>
@@ -1656,12 +1652,25 @@ const HomePage = () => {
                     style={{ gridGap: "26px !important" }}
                   >
                     <ImageGroup>
-                      <ul className="images bgcolor">
+                      <ul className="images bgcolor" style={{
+                        width: "90%",
+                        display: "grid",
+                        gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+                        gridGap: "50px",
+                        listStyle: "inside",
+                        margin: 0,
+                        padding: 0,
+                        height: "150px"
+                      }}>
                         {quotes
                           ?.slice(0, 4)
                           ?.map((divquote: any, index: number) => {
                             return (
-                              <li key={divquote?.id}>
+                              <li key={divquote?.id} style={{
+                                position: "relative",
+                                paddingTop: "22%",
+                                listStyle: "none"
+                              }}>
                                 <Image
                                   src={divquote?.quotesPath}
                                   alt="image"
@@ -1708,7 +1717,7 @@ const HomePage = () => {
                   </div>
                   <div className="text-center" style={{ margin: "30px 39% auto" }}>
                     <Link
-                      to={`/divinequote`}
+                      to={`/divinequotes`}
                       className="view-service-btn"
                       style={{
                         color: "#3D2B31",
@@ -1722,7 +1731,8 @@ const HomePage = () => {
                         padding: "5px",
                         display: "flex",
                         justifyContent: "center",
-                        marginBottom: "35px"
+                        marginBottom: "35px",
+                        marginTop: "50px"
                       }}
                     >
                       {t("all_tr")}
@@ -1740,178 +1750,59 @@ const HomePage = () => {
                 <div
                   className="tab-pane fade"
                   id="magazine"
-                  style={{ overflow: "hidden" }}
                   role="tabpanel"
                   aria-labelledby="magazine-tab"
+                  style={{ overflow: "hidden" }}
                 >
-                  <div className="tab-row" style={{
-                    textAlign: "center", display: "flex", justifyContent: "center", padding: "20px 0 35px 0"
-                  }}>
-                    {magazineData?.slice(0, 1)?.map((geetgovind) => {
-                      return (
-                        <div
-                          className="tab-col"
-                          key={geetgovind.id}
-                        >
-                          <div
-                            className="tab-data-magazine"
-                          >
-                            <a
-                              onClick={() => {
-                                navigate(`/monthlymagazine`)
-                              }}
-                            >
-                              <img
-                                className="img-fluid"
-                                src={
-                                  (geetgovind.monthlyMagazinePath)
-                                }
-                                onError={(e) => {
-                                  e.currentTarget.src = DefaultArticle;
-                                }}
-                                alt="geetgovind"
-                                title={geetgovind.name}
-                                style={{ borderRadius: "5px", width: "150px", height: "212px" }}
-                              />
-                              <p className="mb-0 mt-3 magzinetitle">
-                                {/* {geetgovind.name.length > 50 ? ".." : ""}
-                                {geetgovind.name} */}
-                                {t("MonthlyMagazine_tr")}
-                              </p>
-                            </a>
-                          </div>
-                        </div>
-                      )
-                    }
-                    )}
-                    {kalyanData?.slice(0, 1)?.map((kalyan) => {
-                      return (
-                        <div
-                          className="tab-col"
-                          key={kalyan.id}
-                        >
-                          <div
-                            className="tab-data-magazine"
-                            style={{ cursor: "pointer" }}
-                          >
-                            <a
-                              onClick={() => {
-                                navigate(`/kalyans`);
-                              }}
-                            >
-                              <img
-                                className="img-fluid"
-                                src={
-                                  (kalyan.kalyanThumbPath)
-                                }
-                                onError={(e) => {
-                                  e.currentTarget.src = DefaultArticle;
-                                }}
-                                alt="kalyan"
-                                title={kalyan.name}
-                                style={{ borderRadius: "5px", width: "150px", height: "212px" }}
-                              />
-                              <p className="mb-0 mt-3 magzinetitle">
-                                {/* {kalyan.name.length > 50 ? ".." : ""}
-                                {kalyan.name} */}
-                                {t("Kalyan_tr")}
-                              </p>
-                            </a>
-                          </div>
-                        </div>
-                      )
-                    })}
-                    {kalpatruData?.slice(0, 1)?.map((kalpatru) => {
-                      return (
-                        <div
-                          className="tab-col"
-                          key={kalpatru.id}
-                        >
-                          <div
-                            className="tab-data-magazine"
-                            style={{ cursor: "pointer" }}
-                          >
-                            <a
-                              onClick={() => {
-                                navigate(`/kalyanskalpataru`);
-                              }}
-                            >
-                              <img
-                                className="img-fluid"
-                                src={
-                                  (kalpatru.kalyanKalpataruThumbPath)
-                                }
-                                onError={(e) => {
-                                  e.currentTarget.src = DefaultArticle;
-                                }}
-                                alt="kalpatru"
-                                title={kalpatru.name}
-                                style={{ borderRadius: "5px", width: "150px", height: "212px" }}
-                              />
-                              <p className="mb-0 mt-3 magzinetitle">
-                                {/* {kalpatru.name.length > 50 ? ".." : ""}
-                                {kalpatru.name} */}
-                                {t("Kalyan_Kalpataru_tr")}
-                              </p>
-                            </a>
-                          </div>
-                        </div>
-                      )
-                    })}
-                    {vivekVaniData?.slice(0, 1)?.map((vivekvani) => {
-                      return (
-                        <div
-                          className="tab-col"
-                          key={vivekvani.id}
-                        >
-                          <div
-                            className="tab-data-magazine"
-                            style={{ cursor: "pointer" }}
-                          >
-                            <a
-                              onClick={() => {
-                                navigate(`/vivekvani`);
-                              }}
-                            >
-                              <img
-                                className="img-fluid"
-                                src={
-                                  (vivekvani.vivekVaniThumbPath)
-                                }
-                                onError={(e) => {
-                                  e.currentTarget.src = DefaultArticle;
-                                }}
-                                alt="vivekvani"
-                                title={vivekvani.name}
-                                style={{ borderRadius: "5px", width: "150px", height: "212px" }}
-                              />
-                              <p className="mb-0 mt-3 magzinetitle">
-                                {t("vivek_vani_tr")}
-                              </p>
-                            </a>
-                          </div>
-                        </div>
-                      )
-                    })}
-                  </div>
-                  {/* <div className="text-center" style={{ margin: "25px 0 25px 0" }}>
-                    <Link
-                      to={`/articles`}
-                      className="view-service-btn"
-                      style={{
-                        color: "#3D2B31",
-                        backgroundColor: "#ff4e2a",
-                        borderRadius: "5px",
-                        // color: "#fff",
-                        cursor: "pointer",
-                        fontFamily: "ChanakyaUni",
-                        fontSize: "22px",
-                        padding: "5px 12px",
+                  <div className="tab-row"
+                    style={{
+                      textAlign: "center", display: "flex", justifyContent: "center", padding: "20px 0 35px 0"
+                    }}>
+
+                    <Specialmagzine
+                      magzinetitle={t("MonthlyMagazine_lang_hindi_tr")}
+                      clickevent={() => {
+                        navigate(`/geetgovind`, {
+                          state: {
+                            language: 0
+                          }
+                        })
                       }}
-                    >
-                      {t("All_Special_Article_tr")}
-                    </Link>
-                  </div> */}
+                      magzinecoverimage={geethindi} />
+
+                    <Specialmagzine
+                      magzinetitle={t("MonthlyMagazine_lang_english_tr")}
+                      clickevent={() => {
+                        navigate(`/geetgovind`, {
+                          state: {
+                            language: 1
+                          }
+                        })
+                      }}
+                      magzinecoverimage={geetenglish} />
+
+                    <Specialmagzine
+                      magzinetitle={t("Kalyan_lang_tr")}
+                      clickevent={() => {
+                        navigate(`/kalyan`);
+                      }}
+                      magzinecoverimage={kalyancover} />
+
+                    <Specialmagzine
+                      magzinetitle={t("Kalpataru_lang_tr")}
+                      clickevent={() => {
+                        navigate(`/kalyanakalpataru`);
+                      }}
+                      magzinecoverimage={kalpatrucover} />
+
+                    <Specialmagzine
+                      magzinetitle={t("vivek_vani_lang_tr")}
+                      clickevent={() => {
+                        navigate(`/vivekvani`);
+                      }}
+                      magzinecoverimage={VivekvaniCover} />
+
+                  </div>
                 </div>
               </div>
             </div>

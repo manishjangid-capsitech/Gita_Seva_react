@@ -1,16 +1,15 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useAudio } from "../Contexts/AudiosContext";
 import RabbitLyrics from "rabbit-lyrics";
 import "../Styles/AudioPlayer.css";
 import lyricsnotfound from "../Images/lyricsnotfound.png";
 import Loading from "./Loading";
-import menu from "../Images/menu.png";
 
 const AudioLyrics = () => {
-  const { currentAudio, lyrt, showList, setShowList } = useAudio();
+  const { currentAudio, lyrt, message } = useAudio();
   const refLrc = React.useRef<any>(null);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (currentAudio) {
       if (refLrc.current) {
         new RabbitLyrics(
@@ -62,8 +61,29 @@ const AudioLyrics = () => {
             ></img>
           </div>
         )}
+        <div
+          style={{
+            textAlign: "center",
+            zIndex: 1,
+            position: "absolute",
+            display: "flex",
+            top: "750px",
+            left: "280px",
+          }}
+        >
+          <p
+            style={{
+              fontSize: "22px",
+              fontFamily: "ChanakyaUni",
+              margin: "0 10px",
+              color: "#ff9c00",
+              borderBottom: "2px solid #FE8B35"
+            }}
+          >{message}
+          </p>
+        </div>
       </div>
-    </div>
+    </div >
   );
 };
 export default AudioLyrics;

@@ -17,6 +17,7 @@ import leftArrow from "../assets/img/leftArrow1.png";
 import rightArrow from "../assets/img/rightArrow1.png"
 import closeicon from "../Images/close-round-border.svg"
 import EpubServices from "../Services/Epub";
+import { Breadcrumbs } from "./E-BooksComponent";
 
 const KalpataruDetailPage = (props: any) => {
   const { t } = useTranslation();
@@ -170,7 +171,7 @@ const KalpataruDetailPage = (props: any) => {
         marginTop: 0,
       }}
     >
-      <div
+      {/* <div
         className="breadcrumbs-head newcontainer"
         style={{
           width: "100%",
@@ -217,7 +218,19 @@ const KalpataruDetailPage = (props: any) => {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
+      <Breadcrumbs
+        mainsubBreadCrumb={t("Kalpataru_tr")}
+        subBreadCrumb={t("Home_tr")}
+        navigatemainsubBreadCrumb={() => {
+          navigate(`/home`);
+        }}
+        subBreadCrumbTwo={t("Kalpataru_tr")}
+        navigatesubBreadCrumb={() => {
+          navigate(`/kalyanskalpataru`)
+        }}
+        subBreadCrumbThree={kalpatrauDetail?.name}
+      />
       <div className="container">
         <div>
           <div className="row">

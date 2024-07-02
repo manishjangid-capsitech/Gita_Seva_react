@@ -4,30 +4,11 @@ class AuthorsService {
   route = "/posts";
   authorRoute = "/api/authors/slug-";
   autroute = "/api/authors?lang=";
-  // authordata = "/api/authors/slug-";
-
-  get = (id: string) => ApiUtility.getResult(`${this.route}/${id}`);
 
   getAuthorData = (authorfor: string, limit: number) =>
     ApiUtility.get(this.autroute + localStorage.getItem("lan"), {
       authorfor,
       limit,
-    });
-
-    
-  getList = (
-    start: number,
-    length: number,
-    sortCol?: string,
-    sortDir?: string,
-    search?: string
-  ) =>
-    ApiUtility.get(this.route, {
-      start,
-      length,
-      sortCol,
-      sortDir,
-      search,
     });
 
   getAuthors = (id: string, lang: string, userId: string) => {

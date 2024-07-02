@@ -249,7 +249,7 @@ export const ProfileFav = () => {
                         books={geetgovind}
                         initialDisplayCount={initialDisplayCount}
                         getBook={(kalpatru) => {
-                          navigate(`/monthlymagazine/` + kalpatru.slug, {
+                          navigate(`/geetgovind/` + kalpatru.slug, {
                             state: { MonthId: kalpatru.id },
                           });
                         }}
@@ -261,7 +261,7 @@ export const ProfileFav = () => {
                         marktitle={t("MonthlyMagazine_mark_tr")}
                         getMarks={(geetgovindMark) => {
                           navigate(
-                            `/reader/monthlymagazine/` + geetgovindMark.slug,
+                            `/reader/geetgovind/` + geetgovindMark.slug,
                             {
                               state: {
                                 magazineDetailId: geetgovindMark.id,

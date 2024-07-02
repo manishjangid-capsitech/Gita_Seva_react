@@ -4842,7 +4842,7 @@ rendition.on('renderered', chapterChange);
     document.getElementById("ChapterName").innerHTML = "";
     var bookname = "";
     var booktyp = localStorage.getItem("booktype");
-     bookname = booktyp === "books" ? localStorage.getItem('BookName') : booktyp === "kalyans" ? localStorage.getItem('KalyanName') : localStorage.getItem('KalyanKalpataruName');
+     bookname = booktyp === "books" ? localStorage.getItem('BookName') : booktyp === "kalyan" ? localStorage.getItem('KalyanName') : localStorage.getItem('KalyanKalpataruName');
      debugger
     document.getElementById("ChapterName").innerHTML =  bookname + ' : ' + targetName;
     debugger

@@ -155,5 +155,11 @@
   "Number_tr": "Number",
   "enter_otp_tr": "Enter Your Otp",
   "enter_mobile_no": "Enter your mobile no",
-  "otp_validation": "Invalid OTP. Please enter a valid Otp."
+  "otp_validation": "Invalid OTP. Please enter a valid Otp.",
+  "Kalyan_lang_tr": "Kalyana (Hindi)",
+  "Kalpataru_lang_tr": "Kalyana-Kalpataru (English)",
+  "vivek_vani_lang_tr": "Vivek Vani (Bengali)",
+  "MonthlyMagazine_lang_hindi_tr": "Geet-Govind (Hindi)",
+  "MonthlyMagazine_lang_english_tr": "Geet-Govind (English)",
+  "back_tr":"Back"
 }

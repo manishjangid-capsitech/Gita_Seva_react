@@ -13,6 +13,7 @@ import youtube from "../assets/img/youtube.png";
 import IosStore from "../assets/img/ios-app.png";
 import androidplaystore from "../assets/img/android-app.png";
 import AuthorsService from "../Services/Authors";
+import "../Styles/style.css"
 
 const FooterPage = () => {
   const { t } = useTranslation();
@@ -22,11 +23,26 @@ const FooterPage = () => {
   const [MenuName, setMenuName] = useState("");
   const [authors, setAuthors] = useState<any[]>([]);
 
+  const getCurrentYear = () => new Date().getFullYear();
+
+  const [currentYear, setCurrentYear] = useState(getCurrentYear);
+
   function changeLocale(l: string) {
     i18n.changeLanguage(l);
     localStorage.setItem("lan", _get_i18Lang());
     localStorage.setItem("locale", l);
   }
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const newYear = getCurrentYear();
+      if (newYear !== currentYear) {
+        setCurrentYear(newYear);
+      }
+    }, 1000 * 60 * 60 * 24); // Check every 24 hours
+
+    return () => clearInterval(interval);
+  }, [currentYear]);
 
   useEffect(() => {
     setRefresh(false)
@@ -189,7 +205,7 @@ const FooterPage = () => {
                 </NavLink>
                 <p className="footermenucoma">,</p>
                 <NavLink
-                  to="/monthlymagazine"
+                  to="/geetgovind"
                   className="ftmenulink"
                   style={({ isActive }) => {
                     return { color: isActive ? "#d11501" : "#472d1e" };
@@ -201,7 +217,7 @@ const FooterPage = () => {
 
               <div className="footermenu">
                 <NavLink
-                  to="/divinequote"
+                  to="/divinequotes"
                   className="ftmenulink"
                   style={({ isActive }) => {
                     return { color: isActive ? "#d11501" : "#472d1e" };
@@ -326,9 +342,11 @@ const FooterPage = () => {
         }}
       >
         <p className="gst-copyright">
-          © Copyright |
-          <span style={{ color: "#fe7921" }}>Gita Seva Trust</span> | All
-          Rights Reserved 2017 - currYear
+          © Copyright
+          <span style={{ margin: "0 3px" }}> | </span>
+          <span style={{ color: "#fe7921" }}>Gita Seva Trust</span>
+          <span style={{ margin: "0 5px" }}> | </span>
+          All Rights Reserved 2017 - {currentYear}
           <span style={{ paddingLeft: "30%" }}>
             Web Developed & Managed By:
             <a

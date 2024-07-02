@@ -20,6 +20,7 @@ import leftArrow from "../assets/img/leftArrow1.png";
 import rightArrow from "../assets/img/rightArrow1.png";
 import EpubServices from "../Services/Epub";
 import closeicon from "../Images/close-round-border.svg";
+import Loading from "../Components/Loading";
 
 const BookDetailPage = (props: any) => {
   const { t } = useTranslation();
@@ -124,12 +125,21 @@ const BookDetailPage = (props: any) => {
     });
   };
 
+  const [description, setDescription] = useState({
+    __html: "",
+  });
+
+  function createMarkup() {
+    return { __html: description.__html };
+  }
+
   useEffect(() => {
     setRefresh(false);
     BooksService.getCurrentBook(
       state?.bookId,
       UserIdentity !== "" ? UserIdentity : ""
     ).then((res: any) => {
+      setDescription({ __html: res?.result?.description });
       setBookDetail(res.result);
       setIsLiked(res?.result?.isFavourite);
     });
@@ -312,7 +322,7 @@ const BookDetailPage = (props: any) => {
                   }}
                 >
                   <div className="mat-card row" key={`book-${bookDetail.id}`}>
-                    <div style={{ padding: "15px", margin: "0 0 25px 0" }}>
+                    <div style={{ padding: "15px" }}>
                       <div className="single-product col-lg-3">
                         <div
                           style={{
@@ -531,15 +541,51 @@ const BookDetailPage = (props: any) => {
                               color: "#ff3d28",
                               fontSize: "20px",
                               marginTop: "10px",
+                              height: "25px"
                             }}
                           ></div>
                         </div>
                       </div>
                     </div>
                   </div>
-
+                  {description === null &&
+                    <div style={{ margin: "0 45px 5% 40px" }}>
+                      <h1 style={{
+                        color: "#ff731f",
+                        fontSize: "30px",
+                        margin: "10px 0 20px",
+                        fontStyle: "normal",
+                        fontWeight: 700
+                      }}> विवरण
+                      </h1>
+                      <div>
+                        {description ? (
+                          <div className="">
+                            <div
+                              style={{
+                                color: " #472d1e",
+                                fontFamily: "ChanakyaUni, NalandaTim, Tunga",
+                                fontSize: "24px",
+                                fontStyle: "normal",
+                                fontWeight: "500",
+                                margin: 0,
+                                textAlign: "justify",
+                                lineHeight: "36px"
+                              }}
+                              dangerouslySetInnerHTML={createMarkup()}
+                            ></div>
+                          </div>
+                        ) : (
+                          <div className="ebooks-category resultnotfound">
+                            <Loading />
+                            {t("result_not_found_tr")}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  }
                   <div className="clsslide">
-                    {relateds && relateds.length > 5 ? (
+                    {relateds && relateds?.length > 5 ? (
                       <div>
                         <h1
                           style={{ fontSize: "30px!important" }}
@@ -557,7 +603,7 @@ const BookDetailPage = (props: any) => {
                           }}
                         >
                           <Slider {...settings}>
-                            {relateds && relateds.length > 0
+                            {relateds && relateds?.length > 0
                               ? relateds.map((related) => (
                                 <div
                                   style={{ display: "flex" }}

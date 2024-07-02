@@ -78,17 +78,14 @@ const PravachansPage = () => {
   const handleLoginStateChange = (newState: any) => {
     setLoginState(newState);
     {
-      audios?.map((audio, i) => (
-        navigate(`/pravachans/` + audio.slug, {
-          state: {
-            audioId: audio.id,
-            audioslug: audio.slug,
-            sorting: SortValue,
-            index: i,
-            audiocat: CategoryId,
-          },
-        })
-      ))
+      audios?.map((audio, i) => {
+        return (
+          downloadPravachan(`${process.env.REACT_APP_API_URL}/api/Pravachans/` +
+            audio?.id +
+            "/pravachan?t=" +
+            "&download_attachment=true")
+        )
+      })
     }
   };
 
@@ -147,7 +144,6 @@ const PravachansPage = () => {
   useEffect(() => {
     AudiosService.getPravachanFilters("pravachan").then((res) => {
       if (res) {
-        console.log("category", res.result.categories?.length);
         setPreacher(res.result.authors);
         setCategory(res.result.categories);
         setLyrics(res.result);
@@ -182,6 +178,8 @@ const PravachansPage = () => {
     if (state?.authorId) {
       if (state?.authorId === "5bbc5fa51fd2d735b0087d34" || state?.authorId === "5bbc5fcd1fd2d735b0087d35") {
         setSortValue("0")
+        setSortMonthValue("0");
+        setSortYearValue("0");
       }
       else if (state?.authorId === "5bbc60101fd2d735b0087d36") {
         setSortValue("4")
@@ -193,6 +191,8 @@ const PravachansPage = () => {
     else {
       if (PreacherId === "5bbc5fa51fd2d735b0087d34" || PreacherId === "5bbc5fcd1fd2d735b0087d35") {
         setSortValue("0")
+        setSortMonthValue("0");
+        setSortYearValue("0");
       }
       else if (PreacherId === "5bbc60101fd2d735b0087d36") {
         setSortValue("4")
@@ -201,7 +201,7 @@ const PravachansPage = () => {
         setSortValue("3")
       }
     }
-  }, [state?.authorId, state?.authorName, PreacherId, i18n.language, refresh])
+  }, [state?.authorId, state?.authorName, PreacherId, i18n.language, refresh, SortValue])
 
   useEffect(() => {
     setRefresh(false);
@@ -233,6 +233,13 @@ const PravachansPage = () => {
     });
   }, [SortValue, i18n.language, refresh]);
 
+  const downloadPravachan = (pravachanPath: any) => {
+    const imageUrl = pravachanPath;
+    const link = document.createElement('a');
+    link.href = imageUrl; link.download = 'image.jpg';
+    document.body.appendChild(link); link.click();
+    document.body.removeChild(link);
+  };
   return (
     <>
       <div
@@ -812,25 +819,39 @@ const PravachansPage = () => {
                                         : audio.name}
                                     </p>
                                   </p>
-                                  <label>
-                                    {t("Preacher_tr")}: {audio.author}
+                                  <label style={{ display: "flex", color: "#6c6c6c" }}>
+                                    <h1 style={{ color: "#6c6c6c", fontSize: "20px" }}>{t("Preacher_tr")}</h1>: {audio.author}
                                   </label>
-                                  <label>{audio.description}</label>
-                                  <label>{audio.pravachanLength}</label>
+                                  <label style={{ color: "#6c6c6c" }}>{audio.description}</label>
+                                  <label style={{ color: "#6c6c6c" }}>{audio.pravachanLength}</label>
                                 </a>
                               </div>
 
                               <div className="btns">
                                 <div className="buttonres">
+                                  <div id="download"
+                                    title="Download"
+                                  >
+                                  </div>
                                   <a
                                     id="download"
                                     title="Download"
-                                    href={
-                                      `${process.env.REACT_APP_API_URL}/api/Pravachans/` +
-                                      audio.id +
-                                      "/pravachan?t=" +
-                                      "&download_attachment=true"
-                                    }
+                                    onClick={() => {
+                                      if (UserIdentity) {
+                                        downloadPravachan(`${process.env.REACT_APP_API_URL}/api/Pravachans/` +
+                                          audio?.id +
+                                          "/pravachan?t=" +
+                                          "&download_attachment=true")
+                                      } else {
+                                        setLogIn(true);
+                                      }
+                                    }}
+                                    // href={
+                                    //   `${process.env.REACT_APP_API_URL}/api/Pravachans/` +
+                                    //   audio?.id +
+                                    //   "/pravachan?t=" +
+                                    //   "&download_attachment=true"
+                                    // }
                                   >
                                     <img
                                       alt="download"

@@ -83,7 +83,6 @@ const Profile = () => {
         console.log(error.message);
       });
   };
-
   const handleImageChange = (e: any) => {
     const filesSelected = e.target.files;
 
@@ -97,6 +96,17 @@ const Profile = () => {
       };
 
       fileReader.readAsDataURL(fileToLoad);
+    }
+  };
+  const getDistrict = async (id: string) => {
+    if (id) {
+      const res = await ProfileService.getDistrict(id, _get_i18Lang());
+      if (res?.status) {
+        setDistrict(res?.result);
+        // setData({ ...data, city: res?.result?.name });
+      } else {
+        console.error("Error fetching data:", res?.message);
+      }
     }
   };
 
@@ -151,21 +161,10 @@ const Profile = () => {
       )?.id;
       if (stateId) {
         getDistrict(stateId);
+        // getDistrict(data?.state)
       }
     }
   }, [data?.state, refresh, i18n.language]);
-
-  const getDistrict = async (id: string) => {
-    if (id) {
-      const res = await ProfileService.getDistrict(id, _get_i18Lang());
-      if (res?.status) {
-        setDistrict(res?.result);
-        setData({ ...data, city: res?.result[0]?.name });
-      } else {
-        console.error("Error fetching data:", res?.message);
-      }
-    }
-  };
 
   useEffect(() => {
     if (data.phoneNumber.length > 10) {
@@ -297,22 +296,11 @@ const Profile = () => {
                               height: hide ? "145px" : "619px",
                             }}
                           >
-                            {/* {UserImage ? ( */}
                             <img
                               src={baseFile ? baseFile : UserImage}
                               alt="Selected Profile"
                               style={{ width: '140px' }}
                             />
-                            {/* ) : (
-                              <img
-                                id="userimg"
-                                src="https://gitaseva.org/assets/img/profile-image1.png"
-                                title="User Login"
-                                className="nousericon"
-                                alt="user"
-                                width="140"
-                              />
-                            )} */}
                           </div>
                           <div
                             style={{
@@ -354,10 +342,10 @@ const Profile = () => {
                                 {t("Mobile_No_tr")}
                               </h6>
                               <input
-                                disabled={!hide}
+                                disabled
                                 type="number"
                                 className="inputBoxStyle"
-                                style={{ color: hide ? "#000" : "#ff731f" }}
+                                // style={{ color: hide ? "#000" : "#ff731f" }}
                                 value={data.phoneNumber}
                                 onChange={(evt: any) => {
                                   let value = evt.target.value;
@@ -382,16 +370,16 @@ const Profile = () => {
                                 {t("E_Mail_tr")}
                               </h6>
                               <input
-                                disabled={!hide}
+                                disabled={!data.phoneNumber || !hide}
                                 className="inputBoxStyle"
                                 value={data.email}
                                 style={{ color: hide ? "#000" : "#ff731f" }}
                                 onChange={(evt: any) => {
                                   let value = evt.target.value;
-                                  setData((d: IUserModel) => ({
-                                    ...d,
-                                    email: value!,
-                                  }));
+                                    setData((d: IUserModel) => ({
+                                      ...d,
+                                      email: value!,
+                                    }));                                  
                                 }}
                               />
                             </div>
@@ -526,7 +514,7 @@ const Profile = () => {
                                   </h6>
                                   <select
                                     className="inputBoxStyle"
-                                    value={data.state}
+                                    value={data?.state}
                                     onChange={(e) => {
                                       setData((d: IUserModel) => ({
                                         ...d,

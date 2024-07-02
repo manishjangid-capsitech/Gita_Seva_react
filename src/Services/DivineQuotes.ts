@@ -1,11 +1,12 @@
 import { ApiUtility } from "./ApiUtility";
 
-class BooksService {
+class QuoteService {
   route = "/posts";
   divinequotesRoute = "/api/Quotes";
   categoryRoute = "/api/settings/filters?lang=";
+  download = "/api/Quotes/";
 
-  get = (id: string) => ApiUtility.getResult(`${this.route}/${id}`);
+
 
   getFilters = (lang: string, productFor: string) => {
     return ApiUtility.get(
@@ -22,13 +23,17 @@ class BooksService {
   getDivineQuotes = (search: string, start: number, length: number) => {
     return ApiUtility.get(
       this.divinequotesRoute +
-        "?search=" +
-        search +
-        "&start=" +
-        start +
-        "&length=" +
-        length
+      "?search=" +
+      search +
+      "&start=" +
+      start +
+      "&length=" +
+      length
     );
   };
+
+  downloadQuotes = (id: string) => {
+    return ApiUtility.get(`https://apidev.gitaseva.org/v1/api/Quotes/${id}/quote?download_attachment=true`)
+  }
 }
-export default new BooksService();
+export default new QuoteService();

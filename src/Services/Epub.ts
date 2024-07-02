@@ -11,8 +11,6 @@ class EpubService {
   removebkmark = "/api/user/bookmarks?bookId=";
   getbkmark = "/api/user/bookmarks?BookId=";
 
-  get = (id: string) => ApiUtility.getResult(`${this.route}/${id}`);
-
   getAboutData = (lang: string) => {
     return ApiUtility.get(this.aboutRoute + lang);
   };

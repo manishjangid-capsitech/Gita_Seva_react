@@ -205,6 +205,32 @@ class ApiUtilityBase {
     };
     return headers;
   };
+  // getAuthResult = async <T = any>(endpoint: string, id?: any) => {
+  //   try {
+  //     const data = await this.get<IApiResponse<T>>(endpoint, '', id);
+  //     if (data) {
+  //       return data;
+  //     } else {
+  //       4
+  //       // this.handleErrorResponse(data.message, data.errors);
+  //     }
+  //   } catch (error: any) {
+  //     if (error!.isAxiosError) {
+  //       this.handleResponse(error.response);
+  //       const data = await this.get<IApiResponse<T>>(endpoint, '', id);
+  //       if (data) {
+  //         return data;
+  //       }
+  //     } else {
+  //       this.handleResponse(error);
+  //       const data = await this.get<IApiResponse<T>>(endpoint, '', id);
+  //       if (data) {
+  //         return data;
+  //       }
+  //     }
+  //   }
+  //   return null;
+  // };
 
   handleResponse = <T = IApiResponse>(
     response: AxiosResponse<T>,

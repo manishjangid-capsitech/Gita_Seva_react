@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import GeetGovindServices from "../Services/GeetGovind";
 import DefaultBook from "../Images/defaultBook.png";
 import ListPagination from "../Components/ListPagination";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import "../Styles/Books.css";
 import i18n from "../i18n";
 import { useTranslation } from "react-i18next";
@@ -18,6 +18,7 @@ import {
   AccordionSummary,
 } from "@material-ui/core";
 import ExpandMore from "@mui/icons-material/ExpandMore";
+import { Breadcrumbs } from "./E-BooksComponent"
 
 const GeetgovindPage = () => {
   const { t } = useTranslation();
@@ -29,11 +30,17 @@ const GeetgovindPage = () => {
   const [Language, setLanguage] = useState<any>("");
   const [LanguageId, setLanguageId] = useState<any>("");
 
+
   const [pagination, setPagination] = useState({
     pageNo: 1,
     recordsPerPage: 12,
     totalRecords: 0,
   });
+
+  const location = useLocation();
+  const state = location.state as {
+    language: number
+  };
 
   function ResetData() {
     setSortValue("0");
@@ -74,16 +81,28 @@ const GeetgovindPage = () => {
     ClickOnFilter(LanguageId);
     $(".LanguageList > ul > li > div").removeClass("listActive");
     $("#lan-" + LanguageId).addClass("listActive");
-  }, [LanguageId]);
+  }, [LanguageId, refresh]);
 
   useEffect(() => {
     setRefresh(false);
-    GeetGovindServices.getGeetFilters("monthlymagazine").then((res) => {
-      if (res) {
+    GeetGovindServices.getGeetFilters("geetgovind").then((res) => {
+      if (res?.status) {
         setLanguage(res?.result?.languages);
       }
     });
   }, [i18n.language]);
+
+  useEffect(() => {
+    if (state?.language === 0) {
+      setLanguageId("hindi")
+    }
+    else if (state?.language === 1) {
+      setLanguageId("english")
+    }
+    else {
+      setLanguageId("")
+    }
+  }, [state?.language])
 
   useEffect(() => {
     setRefresh(false);
@@ -97,7 +116,7 @@ const GeetgovindPage = () => {
       "",
       "",
       SortValue, //sort
-      LanguageId,
+      LanguageId || state?.language,
       window.location.pathname === "/books/special" ? true : false
     ).then((res) => {
       if (res?.status) {
@@ -112,7 +131,7 @@ const GeetgovindPage = () => {
 
   return (
     <>
-      <div
+      {/* <div
         className="breadcrumbs-head newcontainer"
         style={{
           width: "100%",
@@ -151,7 +170,17 @@ const GeetgovindPage = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
+      <Breadcrumbs
+        mainsubBreadCrumb={t("MonthlyMagazine_tr")}
+        subBreadCrumb={t("Home_tr")}
+        navigatemainsubBreadCrumb={() => {
+          navigate(`/home`);
+        }}
+        subBreadCrumbTwo={t("MonthlyMagazine_tr")}
+        navigatesubBreadCrumb={() => {
+        }}
+      />
       <div
         className="fontfamily"
         style={{
@@ -299,12 +328,12 @@ const GeetgovindPage = () => {
                       <div>
                         <div className="row">
                           {Monthly.map((Month) => (
-                            <div className="col-lg-3 col-sm-6 col-md-6">
+                            <div key={Month?.id} className="col-lg-3 col-sm-6 col-md-6">
                               <div
                                 className="sidebarmargin"
                                 key={`book-${Month.id}`}
                                 onClick={() => {
-                                  navigate(`/monthlymagazine/` + Month.slug, {
+                                  navigate(`/geetgovind/` + Month.slug, {
                                     state: {
                                       MonthId: Month.id,
                                       bookName: Month?.name,

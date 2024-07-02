@@ -20,6 +20,7 @@ import {
 } from "@material-ui/core";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import ArticlesService from "../Services/Articles";
+import { LogInModel } from "./LogInoutModel";
 
 const ArticlesPage = () => {
   const { t } = useTranslation();
@@ -41,6 +42,34 @@ const ArticlesPage = () => {
 
   const location = useLocation();
   const state = location.state as { authorId: string; authorName: string, authorSlug: string };
+  const UserIdentity = localStorage.getItem("UserId") as any;
+
+  const [logIn, setLogIn] = useState<boolean>(false);
+
+  const closeModal = () => {
+    setLogIn(false);
+  };
+
+  const [loginState, setLoginState] = useState<string | null>(null);
+
+  const handleLoginStateChange = (newState: any) => {
+    setLoginState(newState);
+    {
+      articles?.map((article: any) => (
+        navigate(`/articles/` + article?.slug, {
+          state: {
+            articleId: article?.id,
+            articleName: article?.name,
+            articleSlug: article?.slug,
+            authorId: state?.authorId,
+            authorName: state?.authorName,
+            special: window?.location?.pathname,
+          },
+        })
+      ))
+    };
+  }
+
 
   function ResetData() {
     setCategoryId("");
@@ -389,7 +418,7 @@ const ArticlesPage = () => {
                     <>
                       <div>
                         <div className="row">
-                          {articles.map((article) => (
+                          {articles?.map((article) => (
                             <div
                               className="col-lg-4"
                               style={{ marginTop: "28px" }}
@@ -407,42 +436,47 @@ const ArticlesPage = () => {
                                   margin: "6px 0 22px",
                                 }}
                                 onClick={() => {
-                                  if (window.location.pathname === `/articles`) {
-                                    navigate(`/articles/` + article?.slug, {
-                                      state: {
-                                        articleId: article?.id,
-                                        articleName: article?.name,
-                                        articleSlug: article?.slug,
-                                        authorId: state?.authorId,
-                                        authorName: state?.authorName,
-                                        special: window?.location?.pathname,
-                                      },
-                                    });
+                                  if (UserIdentity) {
+                                    if (window.location.pathname === `/articles`) {
+                                      navigate(`/articles/` + article?.slug, {
+                                        state: {
+                                          articleId: article?.id,
+                                          articleName: article?.name,
+                                          articleSlug: article?.slug,
+                                          authorId: state?.authorId,
+                                          authorName: state?.authorName,
+                                          special: window?.location?.pathname,
+                                        },
+                                      });
+                                    }
+                                    if (window.location.pathname === `/articles/special`) {
+                                      navigate(`/articles/special/` + article?.slug, {
+                                        state: {
+                                          articleId: article?.id,
+                                          articleName: article?.name,
+                                          articleSlug: article?.slug,
+                                          authorId: state?.authorId,
+                                          authorName: state?.authorName,
+                                          special: window?.location?.pathname,
+                                        },
+                                      });
+                                    }
+                                    if (window.location.pathname === `/articles/author/` + state?.authorSlug) {
+                                      navigate(`/articles/author/` + state?.authorSlug + "/" + article?.slug, {
+                                        state: {
+                                          articleId: article?.id,
+                                          articleName: article?.name,
+                                          articleSlug: article?.slug,
+                                          authorId: state?.authorId,
+                                          authorName: state?.authorName,
+                                          authorSlug: state?.authorSlug,
+                                          special: window?.location?.pathname,
+                                        },
+                                      });
+                                    }
                                   }
-                                  if (window.location.pathname === `/articles/special`) {
-                                    navigate(`/articles/special/` + article?.slug, {
-                                      state: {
-                                        articleId: article?.id,
-                                        articleName: article?.name,
-                                        articleSlug: article?.slug,
-                                        authorId: state?.authorId,
-                                        authorName: state?.authorName,
-                                        special: window?.location?.pathname,
-                                      },
-                                    });
-                                  }
-                                  if (window.location.pathname === `/articles/author/` + state?.authorSlug) {
-                                    navigate(`/articles/author/` + state?.authorSlug + "/" + article?.slug, {
-                                      state: {
-                                        articleId: article?.id,
-                                        articleName: article?.name,
-                                        articleSlug: article?.slug,
-                                        authorId: state?.authorId,
-                                        authorName: state?.authorName,
-                                        authorSlug: state?.authorSlug,
-                                        special: window?.location?.pathname,
-                                      },
-                                    });
+                                  else {
+                                    setLogIn(true)
                                   }
                                 }}
                               >
@@ -508,6 +542,11 @@ const ArticlesPage = () => {
             </div>
           </div>
         </div>
+        <LogInModel
+          opens={logIn}
+          onCloses={closeModal}
+          onLoginStateChange={handleLoginStateChange}
+        />
       </div>
     </>
   );

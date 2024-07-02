@@ -1,3 +1,22 @@
+/* breadcrumbs */
+
+.hoverSpan {
+  color: #2d2a29;
+}
+
+.hoverSpan sapn {
+  color: #2d2a29;
+}
+
+.hoverSpan span:hover {
+  color: red;
+  cursor: pointer;
+}
+
+/* bookBox:hover p {
+  color: #d11501;
+} */
+
 /* filter dot color */
 .CategoryList ul li {
   color: #fb9c34;
@@ -147,7 +166,7 @@
   text-align: center;
   background-color: #fff;
   border-radius: 6px;
-  padding: 28px;
+  padding: 20px;
   height: 300px;
   border: 1px solid #f7ebce;
   margin: 0 0 30px;
@@ -164,6 +183,7 @@
   margin: 13px 0 0;
   line-height: 18px;
   font-family: ChanakyaUniBold, NalandaTim, Tunga;
+  padding: 5px 0 0 0;
 }
 
 .bookBox:hover p {

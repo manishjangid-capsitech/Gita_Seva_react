@@ -11,7 +11,7 @@ interface audiologprops {
 export const AudioInfoDialog: React.FC<audiologprops> = ({ showModal,
   onCloses: onClose, }) => {
   const { t } = useTranslation();
-  const {currentAudio} = useAudio();
+  const { currentAudio } = useAudio();
   return (
     <Modal
       show={showModal}
@@ -28,8 +28,8 @@ export const AudioInfoDialog: React.FC<audiologprops> = ({ showModal,
       </Modal.Header>
       <Modal.Body>
         <h4></h4>
-        <div style={{ display: 'flex' }}> <p>{t("Title_tr")} :</p> <p style={{ fontWeight: 600 }}>{currentAudio?.name}</p></div>
-        <div style={{ display: 'flex' }}><p>{t("Preacher_tr")} :</p> <p style={{ fontWeight: 600 }}>{currentAudio?.author}</p></div>
+        <div style={{ display: 'flex', fontSize: "22px" }}> <p>{t("Title_tr")} :</p> <p style={{ fontWeight: 600 }}>{currentAudio?.name}</p></div>
+        <div style={{ display: 'flex', fontSize: "22px" }}><p>{t("Preacher_tr")} :</p> <p style={{ fontWeight: 600 }}>{currentAudio?.author}</p></div>
         <p></p>
       </Modal.Body>
       <Modal.Footer>

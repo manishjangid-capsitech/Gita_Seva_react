@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="13" height="15.777" viewBox="0 0 13 15.777">
+  <defs>
+    <linearGradient id="linear-gradient" x1="0.5" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#ffb63f"/>
+      <stop offset="1" stop-color="#ff4513"/>
+    </linearGradient>
+  </defs>
+  <path id="bokmarked" d="M-1104.537-567.662h12.486a.257.257,0,0,1,.257.258v15.261a.257.257,0,0,1-.4.214l-5.957-3.976a.261.261,0,0,0-.286,0l-5.957,3.976a.257.257,0,0,1-.4-.214V-567.4A.257.257,0,0,1-1104.537-567.662Z" transform="translate(1104.794 567.662)" fill="url(#linear-gradient)"/>
+</svg>

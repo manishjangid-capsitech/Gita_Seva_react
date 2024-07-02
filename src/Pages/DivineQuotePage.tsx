@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import DivineQuotesService from "../Services/DivineQuotes";
 import ListPagination from "../Components/ListPagination";
 import "../Styles/DivineQuote.css"
@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import { ImageGroup, Image } from "react-fullscreen-image";
 import imgdownload from "../assets/audioPlayer/img/gradient.svg";
 import { Link } from "react-router-dom";
+import { LogInModel } from "./LogInoutModel";
 
 const DivineQuotesPage = () => {
     const { t } = useTranslation();
@@ -15,13 +16,37 @@ const DivineQuotesPage = () => {
 
     const [refresh, setRefresh] = useState(false);
     const [hoverId, setHoverId] = useState<number | string>();
+    const UserIdentity = localStorage.getItem("UserId") as any;
 
     const [pagination, setPagination] = useState({
         pageNo: 0,
         recordsPerPage: 20,
         totalRecords: 0,
     });
-    const [SortValue, setSortValue] = React.useState("");
+
+    const [logIn, setLogIn] = useState<boolean>(false);
+
+    const closeModal = () => {
+        setLogIn(false);
+    };
+
+    const [loginState, setLoginState] = useState<string | null>(null);
+
+    const handleLoginStateChange = (newState: any) => {
+        setLoginState(newState);
+        {
+            divinequotes?.map((divquote: any, index: number) => {
+                return (
+                    hoverId === index && (
+                        downloadImage(`${process.env.REACT_APP_API_URL}/api/Quotes/` +
+                            divquote.id +
+                            "/quote?t=" +
+                            "&download_attachment=true")
+                    )
+                )
+            })
+        }
+    }
 
     React.useEffect(() => {
         setRefresh(false);
@@ -40,7 +65,15 @@ const DivineQuotesPage = () => {
                 });
             }
         });
-    }, [refresh, SortValue]);
+    }, [refresh]);
+
+    const downloadImage = (imagePath: any) => {
+        const imageUrl = imagePath;
+        const link = document.createElement('a');
+        link.href = imageUrl; link.download = 'image.jpg';
+        document.body.appendChild(link); link.click();
+        document.body.removeChild(link);
+    };
 
     return (
         <>
@@ -117,20 +150,21 @@ const DivineQuotesPage = () => {
                     </div>
                 </div>
                 <div className="containers">
-                    <div className="gst-page-content" style={{
-                        display: "block",
-                        padding: "25px 0 25px 25px",
-                        borderRadius: "4px",
-                        background: "#fff6e1",
-                        boxShadow: "0 0 7px 1px #f5deb1",
-                        fontFamily: "ChanakyaUni",
-                        height: "100%",
-                        margin: "15px 0 0 0"
-                    }}>
+                    <div className="gst-page-content"
+                        style={{
+                            display: "block",
+                            padding: "25px 0 25px 25px",
+                            borderRadius: "4px",
+                            background: "#fff6e1",
+                            boxShadow: "0 0 7px 1px #f5deb1",
+                            fontFamily: "ChanakyaUni",
+                            height: "100%",
+                            margin: "15px 0 0 0"
+                        }}>
                         <ImageGroup>
-                            <ul className="images bgcolor" style={{ backgroundColor: "#fff6e1" }}>
+                            <ul className="images bgcolor row" style={{ backgroundColor: "#fff6e1" }}>
                                 {divinequotes?.map((divquote: any, index: number) => (
-                                    <li key={index}>
+                                    <li key={index} className="col-3">
                                         <Image
                                             src={divquote?.quotesPath}
                                             alt="image"
@@ -140,19 +174,25 @@ const DivineQuotesPage = () => {
                                             }}
                                             onMouseLeave={() => setHoverId("")}
                                         />
-                                        {hoverId === index && (
+                                        {hoverId === index &&
+                                            // UserIdentity ?   
+                                            //  :                                        
                                             <a
                                                 onMouseEnter={() => {
                                                     setHoverId(index);
                                                 }}
                                                 onMouseLeave={() => setHoverId("")}
                                                 id="download"
-                                                href={
-                                                    `${process.env.REACT_APP_API_URL}/api/Quotes/` +
-                                                    divquote.id +
-                                                    "/quote?t=" +
-                                                    "&download_attachment=true"
-                                                }
+                                                onClick={() => {
+                                                    if (UserIdentity) {
+                                                        downloadImage(`${process.env.REACT_APP_API_URL}/api/Quotes/` +
+                                                            divquote.id +
+                                                            "/quote?t=" +
+                                                            "&download_attachment=true")
+                                                    } else {
+                                                        setLogIn(true);
+                                                    }
+                                                }}
                                                 title="Download"
                                                 style={{ cursor: "pointer" }}
                                             >
@@ -167,7 +207,7 @@ const DivineQuotesPage = () => {
                                                     }}
                                                 />
                                             </a>
-                                        )}
+                                        }
                                     </li>
                                 ))}
                             </ul>
@@ -188,6 +228,7 @@ const DivineQuotesPage = () => {
                     </div>
                 </div>
             </div>
+            <LogInModel opens={logIn} onCloses={closeModal} onLoginStateChange={handleLoginStateChange} />
         </>
     );
 };

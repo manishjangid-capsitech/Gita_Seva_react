@@ -19,6 +19,7 @@ import {
   AccordionSummary,
 } from "@material-ui/core";
 import ExpandMore from "@mui/icons-material/ExpandMore";
+import { Breadcrumbs } from "./E-BooksComponent";
 
 const KalpataruPage = () => {
   const { isSelected, setItemColored } = useUser();
@@ -122,7 +123,7 @@ const KalpataruPage = () => {
 
   return (
     <>
-      <div
+      {/* <div
         className="breadcrumbs-head newcontainer"
         style={{
           width: "100%",
@@ -161,7 +162,18 @@ const KalpataruPage = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
+      <Breadcrumbs
+        mainsubBreadCrumb= {t("Kalpataru_tr")}
+        subBreadCrumb={t("Home_tr")}
+        navigatemainsubBreadCrumb={() => {
+          navigate(`/home`);
+        }}
+        subBreadCrumbTwo= {t("Kalpataru_tr")}
+        navigatesubBreadCrumb={() => {
+        }}
+      />
+      
       <div
         className="fontfamily"
         style={{

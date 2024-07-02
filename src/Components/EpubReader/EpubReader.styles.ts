@@ -88,6 +88,7 @@ export const EpubReaderStyles: IEpubReaderStyles = {
     background: "#ffffff",
     padding: "10px 0",
     // marginTop: "120px",
+    overflowX: "hidden"
   },
   tocAreaWidth: {
     width: "280px",

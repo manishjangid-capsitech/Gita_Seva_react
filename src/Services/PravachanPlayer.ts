@@ -4,23 +4,6 @@ class PravachanPlayerService {
   route = "/posts";
   pravachanRoute = "/api/pravachans?lang=";
 
-  get = (id: string) => ApiUtility.getResult(`${this.route}/${id}`);
-
-  getList = (
-    start: number,
-    length: number,
-    sortCol?: string,
-    sortDir?: string,
-    search?: string
-  ) =>
-    ApiUtility.get(this.route, {
-      start,
-      length,
-      sortCol,
-      sortDir,
-      search,
-    });
-
   getPravachansById = (id: string) => {
     return ApiUtility.get(
       "/api/pravachans/" + id + "?lang=" + localStorage.getItem("lan")

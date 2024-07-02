@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useTranslation } from "react-i18next";
 import React from "react";
-import AboutService from "../Services/About";
+import AboutService from "../Services/OnePageServices";
 import "../Styles/About.css";
 import i18n, { _get_i18Lang } from "../i18n";
 import Loading from "../Components/Loading";

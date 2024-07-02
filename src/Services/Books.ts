@@ -10,8 +10,6 @@ class BooksService {
   bookdetailRoute = "/api/books/";
   faviroute = "/api/books/";
 
-  get = (id: string) => ApiUtility.getResult(`${this.route}/${id}`);
-
   getFilters = (productFor: string) => {
     return ApiUtility.get(
       this.categoryRoute +

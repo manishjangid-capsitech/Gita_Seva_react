@@ -2,15 +2,15 @@
   column-count: 1;
 }
 
-.carousel-content.show-2 > * {
+.carousel-content.show-2>* {
   width: 50%;
 }
 
-.carousel-content.show-3 > * {
+.carousel-content.show-3>* {
   width: calc(100% / 3);
 }
 
-.carousel-content.show-4 > * {
+.carousel-content.show-4>* {
   width: calc(100% / 4);
 }
 
@@ -61,6 +61,7 @@
   font-weight: bold;
   margin: 0 0 18px;
 }
+
 .gst-paragraph {
   color: #3f220d;
   font-size: 24px;
@@ -73,11 +74,13 @@
   padding-left: 35px;
   padding-top: 35px;
 }
+
 .imgcenter {
   display: block;
   margin-left: auto;
   margin-right: auto;
 }
+
 /* .headerbg {
   background: url(https://gitaseva.org/assets/img/headerBG.png) no-repeat top;
   padding-bottom: 10px;
@@ -165,6 +168,7 @@
   vertical-align: middle;
   transform: rotate(180deg);
 }
+
 .searchData {
   font-size: 25px;
   font-weight: 700;
@@ -179,6 +183,7 @@
 .panel-body ul li {
   color: #545454 !important;
 }
+
 .col-log-3 {
   padding-left: 0 !important;
 }
@@ -186,6 +191,7 @@
 .gst-page-content {
   margin-top: 30px;
 }
+
 .bgcolor {
   background: #fff;
   border-radius: 7px;
@@ -193,20 +199,21 @@
 
 
 ul.images {
-  display: grid;
+  /* display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   grid-gap: 50px;
-  list-style: inside;
+  list-style: inside; */
   margin: 0;
   padding: 0;
 }
 
-ul.images > li {
+ul.images>li {
   position: relative;
-  padding-top: 66%;
+  padding-top: 22%;
+  list-style: none;
 }
 
-ul.images > li img {
+ul.images>li img {
   position: absolute;
   top: 0;
   left: 0;

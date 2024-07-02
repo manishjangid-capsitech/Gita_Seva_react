@@ -9,16 +9,7 @@ class HomeServices {
   allauthorRoute = "/api/Authors/5bbc60101fd2d735b0087d36?lang=";
   quotesRoute = "/api/Quotes?usefor=2";
   contactRoute = "/api/Settings/contactus";
-  // contactRoute= "/api/Settings/contactuswithdevicedetails";
   sendfeedback = "/api/settings/contactus"
-
-  get = (id: string) => ApiUtility.getResult(`${this.route}/${id}`);
-
-  // GetHomeData = (lang: string, userid: string) => {
-  //   return ApiUtility.get(this.homeRoute + lang +
-  //     localStorage.getItem("u+serId")
-  //   )
-  // }
 
   getHomeData = (lang: string, userid: string) => {
     return ApiUtility.get(

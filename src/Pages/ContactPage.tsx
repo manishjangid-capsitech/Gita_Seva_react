@@ -9,8 +9,8 @@ import { Button, Modal } from "react-bootstrap";
 
 interface contactProps {
   name: string;
-  phoneNumber: string;
-  email: string;
+  phoneNumber: any;
+  email: any;
   messageContent: string;
   contactType: string;
   userId: string;
@@ -18,15 +18,14 @@ interface contactProps {
   deviceDetails: string;
 }
 
-
 export const ContactPage = () => {
   const { t } = useTranslation();
   const currentLanguage = _get_i18Lang();
 
   const [data, setData] = useState<contactProps>({
-    name: "",
-    phoneNumber: "",
-    email: "",
+    name: localStorage.getItem('userName') || "",
+    phoneNumber: localStorage.getItem('Phone') || "",
+    email: localStorage.getItem('Email') || "",
     messageContent: "",
     contactType: "1",
     userId: "",
@@ -55,27 +54,33 @@ export const ContactPage = () => {
 
   const isValidEmail = "[a-z0-9]+@[a-z]+.[a-z]{2,3}";
 
+  const [compareCaptcha, setCompareCaptcha] = useState("");
+
+  const [chechUser, setCheckUser] = useState<boolean>(false)
+
+  const characters = 'abc123';
+
   const handleSubmit = (e: any) => {
     e.preventDefault();
     handleValidation();
-
-    if (!error.email && !error.name && !error.note && !error.number && !error.captchaError) {
+    // if (localStorage?.getItem('Phone') === "" && localStorage?.getItem('Email') === "") {
+    // }
+    if (!error.name && !error.note && captchaValue === compareCaptcha) {
       let newEntry = {
         ...data,
         contactType: parseInt(data.contactType),
       };
-
-      if (data.messageContent.length > 0 && data.phoneNumber.length === 10) {
-        newEntry.messageContent =
-          "message from swamiji.gitaseva: " + newEntry.messageContent;
+      if (data.messageContent.length > 0) {
+        // newEntry.messageContent =
+        //   "message from swamiji.gitaseva: " + newEntry.messageContent;
         HomeService.postcontact(newEntry).then((result: any) => {
           if (result.status) {
             setShowSuccess(true)
             setCaptchaValue("")
             setData({
               name: "",
-              phoneNumber: "",
-              email: "",
+              phoneNumber: localStorage.getItem('Phone') || "",
+              email: localStorage?.getItem('Email') || "",
               messageContent: "",
               contactType: "1",
               userId: "",
@@ -96,7 +101,6 @@ export const ContactPage = () => {
     }
   };
 
-  const characters = 'abc123';
   const generateCaptcha = (length: any) => {
     let result = '';
     const charactersLength = characters.length;
@@ -107,38 +111,67 @@ export const ContactPage = () => {
   };
 
   const handleValidation = () => {
-    setError((e) => ({
-      ...e,
-      name: data.name?.trim() === "" ? "Please enter a valid name" : undefined,
-      number:
-        data.phoneNumber?.trim() === ""
-          ? "Please enter a valid mobile number"
-          : undefined,
-      email:
-        data.email?.trim() === ""
-          ? "Please enter a valid email address"
-          : error.email === undefined
-            ? undefined
-            : error.email,
-      note:
-        data.messageContent?.trim() === ""
-          ? "Please enter a valid message"
-          : undefined,
-      captchaError:
-        captchaValue !== compareCaptcha
-          ? "Please enter a valid captcha"
-          : undefined,
-    }));
+    if (localStorage.getItem('phone') || localStorage.getItem('Email')) {
+      setError((e) => ({
+        ...e,
+        name: data.name?.trim() === "" ? "Please enter a valid name" : undefined,
+        note:
+          data.messageContent?.trim() === ""
+            ? "Please enter a valid message"
+            : undefined,
+        captchaError:
+          captchaValue !== compareCaptcha
+            ? "Please enter a valid captcha"
+            : undefined,
+      }));
+    }
+    else {
+      setError((e) => ({
+        ...e,
+        name: data.name?.trim() === "" ? "Please enter a valid name" : undefined,
+
+        number:
+          data.phoneNumber?.trim() === ""
+            ? "Please enter a valid mobile number"
+            : undefined,
+        email:
+          data.email?.trim() === ""
+            ? "Please enter a valid email address"
+            : error.email === undefined
+              ? undefined
+              : error.email,
+        note:
+          data.messageContent?.trim() === ""
+            ? "Please enter a valid message"
+            : undefined,
+        captchaError:
+          captchaValue !== compareCaptcha
+            ? "Please enter a valid captcha"
+            : undefined,
+      }));
+    }
   };
 
   // captcha functions
-
-  const [compareCaptcha, setCompareCaptcha] = useState("");
 
   useEffect(() => {
     // Generate the CAPTCHA value when the component mounts
     generateCaptcha(6);
   }, [showSuccess]);
+
+  useEffect(() => {
+    if (localStorage?.getItem('UserId') && localStorage?.getItem('Email')) {
+      setData({ ...data, phoneNumber: 0 });
+      setCheckUser(true)
+    }
+    else if (localStorage?.getItem('Phone')) {
+      setData({ ...data, email: "@gmail.com" })
+      setCheckUser(true)
+    }
+    else {
+      setCheckUser(false)
+    }
+  }, [chechUser])
 
   return (
     <div className="row">
@@ -167,139 +200,165 @@ export const ContactPage = () => {
             <form>
               <div className="row" style={{ display: "flex" }}>
                 <div className="col-lg-6 col-md-12 col-xs-12">
-                  <input
-                    name="name"
-                    id="name"
-                    placeholder={t("Name_tr")}
-                    autoComplete="off"
-                    onChange={(e) => {
-                      setError((e) => ({ ...e, name: undefined }));
-                      let v = e.currentTarget?.value ?? undefined;
-                      setData({
-                        ...data,
-                        name: v,
-                      });
-                    }}
-                    value={data.name}
-                    className="contactContent"
-                    style={{
-                      marginRight: "22px",
-                      marginBottom: "15px",
-                      width: "-webkit-fill-available",
-                    }}
-                    onBlur={(e) => {
-                      let value = e.currentTarget?.value ?? undefined;
-                      if (value === undefined || value === "") {
-                        setError((e) => ({
-                          ...e,
-                          name: "Please enter a valid name",
-                        }));
-                      } else {
-                        setData({
-                          ...data,
-                          name: value?.trim(),
-                        });
-                      }
-                    }}
-                  />
-                  {error.name && (
-                    <small
-                      style={{ color: "red", marginLeft: 5, fontSize: "18px" }}
-                    >
-                      {error.name}
-                    </small>
-                  )}
+                  {localStorage.getItem('userName')
+                    ?
+                    <label className="contactContent" style={{ width: "96%", padding: "4px 0 0 15px", background: "#efefef" }}>
+                      {localStorage.getItem('userName')}
+                    </label>
+                    :
+                    <div>
+                      <input
+                        name="name"
+                        id="name"
+                        placeholder={t("Name_tr")}
+                        autoComplete="off"
+                        onChange={(e) => {
+                          setError((e) => ({ ...e, name: undefined }));
+                          let v = e.currentTarget?.value ?? undefined;
+                          setData({
+                            ...data,
+                            name: v,
+                          });
+                        }}
+                        value={data.name}
+                        className="contactContent"
+                        style={{
+                          marginRight: "22px",
+                          marginBottom: "15px",
+                          width: "-webkit-fill-available",
+                        }}
+                        onBlur={(e) => {
+                          let value = e.currentTarget?.value ?? undefined;
+                          if (value === undefined || value === "") {
+                            setError((e) => ({
+                              ...e,
+                              name: "Please enter a valid name",
+                            }));
+                          } else {
+                            setData({
+                              ...data,
+                              name: value?.trim(),
+                            });
+                          }
+                        }}
+                      />
+                      {error.name && (
+                        <small
+                          style={{ color: "red", marginLeft: 5, fontSize: "18px" }}
+                        >
+                          {error.name}
+                        </small>
+                      )}
+                    </div>
+                  }
                 </div>
                 <div className="col-lg-6 col-md-12 col-xs-12">
-                  <input
-                    name="phoneNumber"
-                    id="phoneNumber"
-                    type="number"
-                    maxLength={10}
-                    placeholder={t("Mobile_No_tr")}
-                    onChange={(e) => {
-                      setError((e) => ({ ...e, number: undefined }));
-                      let v = e.currentTarget?.value ?? undefined;
-                      if (data.phoneNumber?.trim().length <= 9) {
-                        setData({
-                          ...data,
-                          phoneNumber: v,
-                        });
-                      }
-                    }}
-                    value={data.phoneNumber}
-                    className="input contactContent"
-                    style={{
-                      marginRight: "22px",
-                      width: "-webkit-fill-available",
-                    }}
-                    onBlur={(e) => {
-                      let value = e.currentTarget?.value ?? undefined;
-                      if (value !== undefined && value.length !== 10) {
-                        setError((e) => ({
-                          ...e,
-                          number: "Please enter 10 digit mobile number",
-                        }));
-                      } else {
-                        setData({
-                          ...data,
-                          phoneNumber: value?.trim(),
-                        });
-                      }
-                    }}
-                  />
-                  {error.number && (
-                    <small
-                      style={{ color: "red", marginLeft: 5, fontSize: "18px" }}
-                    >
-                      {error.number}
-                    </small>
-                  )}
+                  {localStorage.getItem('Phone') || localStorage.getItem('Email')
+                    ?
+                    <label className="contactContent" style={{ width: "96%", padding: "4px 0 0 15px", background: "#efefef" }}>{localStorage.getItem('Phone') || t("Mobile_No_tr") }</label>
+                    :
+                    <div>
+                      <input
+                        name="phoneNumber"
+                        id="phoneNumber"
+                        type="number"
+                        disabled={chechUser}
+                        maxLength={10}
+                        placeholder={t("Mobile_No_tr")}
+                        onChange={(e) => {
+                          setError((e) => ({ ...e, number: undefined }));
+                          let v = e.currentTarget?.value ?? undefined;
+                          if (data.phoneNumber?.trim().length <= 9) {
+                            setData({
+                              ...data,
+                              phoneNumber: v,
+                            });
+                          }
+                        }}
+                        value={data.phoneNumber}
+                        className="input contactContent"
+                        style={{
+                          marginRight: "22px",
+                          width: "-webkit-fill-available",
+                        }}
+                        onBlur={(e) => {
+                          let value = e.currentTarget?.value ?? undefined;
+                          if (value !== undefined && value.length !== 10) {
+                            setError((e) => ({
+                              ...e,
+                              number: "Please enter 10 digit mobile number",
+                            }));
+                          } else {
+                            setData({
+                              ...data,
+                              phoneNumber: value?.trim(),
+                            });
+                          }
+                        }}
+                      />
+                      {error.number && (
+                        <small
+                          style={{ color: "red", marginLeft: 5, fontSize: "18px" }}
+                        >
+                          {error.number}
+                        </small>
+                      )}
+                    </div>
+                  }
                 </div>
               </div>
               <div className="row" style={{ marginTop: "15px" }}>
-                <div className="col-lg-6 col-md-12 col-xs-12" style={{ marginBottom: "15px" }}>
-                  <input
-                    name="email"
-                    type="email"
-                    placeholder={t("E_Mail_tr")}
-                    onChange={(e) => {
-                      setError((e) => ({ ...e, email: undefined }));
-                      let v = e.currentTarget?.value ?? undefined;
-                      setData({
-                        ...data,
-                        email: v,
-                      });
-                    }}
-                    value={data.email}
-                    className="contactContent"
-                    style={{
-                      marginRight: "22px",
-                      width: "-webkit-fill-available",
-                    }}
-                    onBlur={(e) => {
-                      let value = e.currentTarget?.value ?? undefined;
-                      if (value !== undefined && !value.match(isValidEmail)) {
-                        setError((e) => ({
-                          ...e,
-                          email: "Please enter a valid email address",
-                        }));
-                      } else {
-                        setData({
-                          ...data,
-                          email: value?.trim(),
-                        });
-                      }
-                    }}
-                    required
-                  />
-                  {error.email && (
-                    <small
-                      style={{ color: "red", marginLeft: 5, fontSize: "18px" }}
-                    >
-                      {error.email}
-                    </small>
-                  )}
+                <div className="col-lg-6 col-md-12 col-xs-12" style={{ marginBottom: localStorage.getItem('Email') === 'null' ? "6px" : "15px" }}>
+                  {localStorage.getItem('Email') || localStorage.getItem('Phone')
+                    ?
+                    localStorage.getItem('Email') === 'null' ? <label className="contactContent" style={{ width: "96%", padding: "4px 0 0 15px", background: "#efefef" }}>{t("E_Mail_tr")}</label> :
+                      <label className="contactContent" style={{ width: "96%", padding: "4px 0 0 15px", background: "#efefef" }}>{localStorage.getItem('Email')}</label>
+                    :
+                    <div>
+                      <input
+                        name="email"
+                        type="email"
+                        disabled={chechUser}
+                        placeholder={t("E_Mail_tr")}
+                        onChange={(e) => {
+                          setError((e) => ({ ...e, email: undefined }));
+                          let v = e.currentTarget?.value ?? undefined;
+                          setData({
+                            ...data,
+                            email: v,
+                          });
+                        }}
+                        value={data.email}
+                        className="contactContent"
+                        style={{
+                          marginRight: "22px",
+                          width: "-webkit-fill-available",
+                        }}
+                        onBlur={(e) => {
+                          let value = e.currentTarget?.value ?? undefined;
+                          if (value !== undefined && !value.match(isValidEmail)) {
+                            setError((e) => ({
+                              ...e,
+                              email: "Please enter a valid email address",
+                            }));
+                          } else {
+                            setData({
+                              ...data,
+                              email: value?.trim(),
+                            });
+                          }
+                        }}
+                        required
+                      />
+                      {error.email && (
+                        <small
+                          style={{ color: "red", marginLeft: 5, fontSize: "18px" }}
+                        >
+                          {error.email}
+                        </small>
+                      )}
+                    </div>
+                  }
                 </div>
                 <div className="col-lg-6 col-md-12 col-xs-12">
                   <select

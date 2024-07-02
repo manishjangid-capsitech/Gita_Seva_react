@@ -1,12 +1,37 @@
+/* divine quote home page */
+
+/* ul.images {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-gap: 50px;
+  list-style: inside;
+  margin: 0;
+  padding: 0;
+}
+
+ul.images > li {
+  position: relative;
+  padding-top: 66%;
+} */
+
 .htmlContent {
-  color: #212529 !important;
+  font-size: 20px !important;
+  color: #462f1f !important;
+}
+
+.htmlContent p {
+  font-size: 20px !important;
+  color: #462f1f !important;
 }
 
 .htmlContent span {
-  color: #212529 !important;
+  font-size: 20px !important;
+  color: #462f1f !important;
 }
 
 .htmlContent strong {
+  font-size: 20px !important;
+  color: #462f1f !important;
   font-weight: 500 !important;
 }
 
@@ -51,7 +76,7 @@
 
 .tab-data-magazine {
   cursor: pointer;
-  padding: 0 30px;
+  padding: 0 6px;
 }
 
 .ul.homedivine {
@@ -119,7 +144,7 @@
 .p-head-line {
   font-family: "ChanakyaUni";
   line-height: 19px;
-  color: #ff2e12;
+  color: #d11501;
   margin-bottom: 10px;
   font-size: 20px;
   font-weight: 600;
@@ -167,6 +192,8 @@ nav {
   border-top: 1px solid #ffc574;
   border-bottom: 1px solid #ffc574;
   padding: 0 45px;
+  display: flex;
+  justify-content: center;
 }
 
 .nav-tabs .nav-link {
@@ -177,10 +204,12 @@ nav {
   border-top-right-radius: 0 !important;
   border-bottom: 4px solid #ffffff !important;
   font-family: "VerdanaBold";
-  font-size: 18px;
+  /* font-size: 18px; */
   color: #3d2b31;
   padding: 16px 40px 10px;
   font-weight: 700;
+  font-family: 'ChanakyaUni';
+  font-size: 25px;
 }
 
 .nav-tabs .nav-item.show .nav-link,
@@ -215,7 +244,7 @@ nav {
 }
 
 .tab-data img {
-  border-radius: 5px;
+  border-radius: 5px; 
 }
 
 .tab-data-audios p,
@@ -482,7 +511,7 @@ input::-webkit-inner-spin-button {
 
 .messagebottom {
   border-bottom: 4px solid #D11501;
-  margin: -4px 20px 0px 67px;
+  margin: -4px 25px 0px 67px;
 }
 
 .p-subbutton {
@@ -531,9 +560,7 @@ input::-webkit-inner-spin-button {
   }
 }
 
-@media (min-width: 992px) and (max-width: 1200px) {
-  
-}
+@media (min-width: 992px) and (max-width: 1200px) {}
 
 /* @media only screen and (min-width: 992px) {
   .example {background: orange;}

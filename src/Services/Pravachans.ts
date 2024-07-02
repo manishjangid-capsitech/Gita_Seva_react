@@ -5,23 +5,6 @@ class PravachansService {
   pravachanRoute = "/api/pravachans?lang=";
   categoryRoute = "/api/settings/filters?lang=";
 
-  get = (id: string) => ApiUtility.getResult(`${this.route}/${id}`);
-
-  getList = (
-    start: number,
-    length: number,
-    sortCol?: string,
-    sortDir?: string,
-    search?: string
-  ) =>
-    ApiUtility.get(this.route, {
-      start,
-      length,
-      sortCol,
-      sortDir,
-      search,
-    });
-
   getFilters = (lang: string, productFor: string) => {
     return ApiUtility.get(
       this.categoryRoute + lang + "&productFor=" + productFor

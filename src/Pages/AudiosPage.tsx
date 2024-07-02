@@ -121,7 +121,7 @@ const AudiosPage = () => {
       SortValue,
       "",
       window.location.pathname === "/audios/special" ? true : false,
-      "audios",
+      "audio",
       LyricsId,
       "",
       "",
@@ -137,6 +137,14 @@ const AudiosPage = () => {
       }
     });
   }
+
+  const downloadAudio = (pravachanPath: any) => {
+    const imageUrl = pravachanPath;
+    const link = document.createElement('a');
+    link.href = imageUrl; link.download = 'image.jpg';
+    document.body.appendChild(link); link.click();
+    document.body.removeChild(link);
+  };
 
   useEffect(() => {
     ClickOnFilter(SingerId, CategoryId, LyricsId);
@@ -158,7 +166,6 @@ const AudiosPage = () => {
   useEffect(() => {
     AudiosService.getFilters("audio").then((res) => {
       if (res.status) {
-        debugger
         setSinger(res.result.authors);
         setLyrics(res.result);
       }
@@ -168,6 +175,9 @@ const AudiosPage = () => {
   useEffect(() => {
     AudiosService.getAudioCategories().then((res) => {
       if (res.status) {
+        debugger
+        console.log("setCategories",res.result);
+        
         setCategories(res.result);
       }
     });
@@ -621,13 +631,16 @@ const AudiosPage = () => {
                                   <a
                                     id="download"
                                     title="Download"
-                                    href={
-                                      `${process.env.REACT_APP_API_URL}/api/Audios/` +
-                                      audio.id +
-                                      "/audio?t=" +
-                                      audiohash +
-                                      "&download_attachment=true"
-                                    }
+                                    onClick={() => {
+                                      if (UserIdentity) {
+                                        downloadAudio(`${process.env.REACT_APP_API_URL}/api/Audio/` +
+                                          audio?.id +
+                                          "/audio?t=" +
+                                          "&download_attachment=true")
+                                      } else {
+                                        setLogIn(true);
+                                      }
+                                    }}                                   
                                   >
                                     <img
                                       alt="download"

@@ -1,3 +1,12 @@
+/* lyrics component */
+
+.hindi-text-white {
+color: #fff;
+} 
+.hindi-text-black{
+color: #000
+}
+
 @font-face {
   font-family: "VerdanaBold";
   src: url("../fonts/Verdana-Bold.woff2") format("woff2"),
@@ -421,10 +430,10 @@ img {
   font-family: 'ChanakyaUniBold';
 }
 
-.gst-menubar .hmenu li a.active,
+.gst-menubar .hmenu li .navLink.active,
 .gst-menubar .hmenu li a:focus,
 .gst-menubar .hmenu li a:hover {
-  color: #d11501;
+  color: #d11501 !important;
 }
 
 .gst-menubar .hmenu li::after {
@@ -483,13 +492,13 @@ img {
   */
 }
 
-.footer-intro ul li Link.active,
-.footer-author ul li Link.active,
-.footer-intro ul li Link:focus,
-.footer-author ul li Link:focus,
-.footer-intro ul li Link:hover,
-.footer-author ul li Link:hover {
-  color: #d11501;
+.footer-intro ul li navLink.active,
+.footer-author ul li navLink.active,
+.footer-intro ul li navLink:focus,
+.footer-author ul li navLink:focus,
+.footer-intro ul li navLink:hover,
+.footer-author ul li navLink:hover {
+  color: #d11501 !important;
 }
 
 .footermenu {
@@ -497,6 +506,10 @@ img {
   border-bottom: 1px solid #ffd78c;
   padding-bottom: 5px;
   display: flex;
+}
+
+.ftmenulink:hover {
+  color: #d11501 !important;
 }
 
 .footermenucoma {
@@ -507,11 +520,14 @@ img {
 }
 
 .ftmenulink {
-  color: #d11501;
   font-size: 21px;
   font-style: normal;
   margin-right: 13px;
   cursor: pointer;
+}
+
+.ftmenulink :hover {
+  color: #d11501 !important;
 }
 
 .app-icon {
@@ -671,6 +687,7 @@ img {
   position: relative;
   border-bottom: 5px solid #ec8600;
   height: 238px;
+  overflow: hidden;
 }
 
 @media (min-width: 1024px) and (max-width: 1400px) {

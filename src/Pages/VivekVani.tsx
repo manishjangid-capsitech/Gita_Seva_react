@@ -2,7 +2,6 @@
 /* eslint-disable array-callback-return */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useEffect, useState } from "react";
-import BooksService from "../Services/Books";
 import VivekService from "../Services/Vivekvani";
 import DefaultBook from "../Images/defaultBook.png";
 import ListPagination from "../Components/ListPagination";
@@ -20,6 +19,7 @@ import {
   AccordionSummary,
 } from "@material-ui/core";
 import ExpandMore from "@mui/icons-material/ExpandMore";
+import { Breadcrumbs, SidebarFilter } from "./E-BooksComponent";
 
 const VivekvaniPage = () => {
   const { isSelected, setItemColored } = useUser();
@@ -109,6 +109,7 @@ const VivekvaniPage = () => {
     });
   }, [i18n.language]);
 
+  console.log("language", language);
   useEffect(() => {
     setRefresh(false);
     VivekService.getVanis(
@@ -138,7 +139,7 @@ const VivekvaniPage = () => {
 
   return (
     <>
-      <div
+      {/* <div
         className="breadcrumbs-head newcontainer"
         style={{
           width: "100%",
@@ -181,7 +182,22 @@ const VivekvaniPage = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
+      <Breadcrumbs
+        mainsubBreadCrumb={writer
+          ? writer
+          : window.location.pathname === "/vivekvani/special"
+            ? t("Special_vivek_vani_tr")
+            : t("vivek_vani_tr")}
+        subBreadCrumb={t("Home_tr")}
+        navigatemainsubBreadCrumb={() => {
+          navigate(`/home`);
+        }}
+        subBreadCrumbTwo={t("vivek_vani_tr")}
+        navigatesubBreadCrumb={() => {
+        }}
+      />
+
       <div
         className="fontfamily"
         style={{
@@ -227,108 +243,6 @@ const VivekvaniPage = () => {
                     />
                   </div>
                   <div>
-                    {/* category */}
-                    {/* <Accordion elevation={0} defaultExpanded>
-                      <AccordionSummary
-                        expandIcon={<ExpandMore />}
-                        style={{
-                          height: "10px",
-                          background: "#FFFAF0",
-                        }}
-                      >
-                        <h2 className="filtertitle">{t("Category_tr")}</h2>
-                      </AccordionSummary>
-
-                      <AccordionDetails
-                        style={{
-                          display: "block",
-                          background: "#FFFAF0",
-                          padding: 0,
-                        }}
-                      >
-                        {Category && Category.length > 0
-                          ? Category?.map((category: any) => (
-                            <div
-                              key={`cat-${category.id}`}
-                              className="CategoryList"
-                              onClick={() => {
-                                setCategoryId(category.id);
-                              }}
-                            >
-                              <ul style={{ margin: 0 }}>
-                                <li>
-                                  <div
-                                    style={{
-                                      fontSize: "21px",
-                                      cursor: "pointer",
-                                      fontWeight: 400,
-                                      color: "#545454",
-                                      fontFamily: "ChanakyaUni",
-                                    }}
-                                    id={`cat-${category.id}`}
-                                  >
-                                    {category.name}
-                                  </div>
-                                </li>
-                              </ul>
-                            </div>
-                          ))
-                          : ""}
-                      </AccordionDetails>
-                    </Accordion> */}
-                    {/* author  */}
-
-                    {/* <Accordion
-                      elevation={0}
-                      style={{ display: state?.authorId ? "none" : "block" }}
-                    >
-                      <AccordionSummary
-                        expandIcon={<ExpandMore />}
-                        style={{
-                          height: "10px",
-                          background: "#FFFAF0",
-                        }}
-                      >
-                        <h2 className="filtertitle">{t("Authors_tr")}</h2>
-                      </AccordionSummary>
-                      <AccordionDetails
-                        style={{
-                          display: "block",
-                          background: "#FFFAF0",
-                          padding: 0,
-                        }}
-                      >
-                        {Author && Author.length > 0
-                          ? Author?.map((author: any) => (
-                            <div
-                              key={`c-${author.id}`}
-                              className="Authorlist"
-                              onClick={() => {
-                                setAuthorId(author?.id);
-                              }}
-                            >
-                              <ul style={{ margin: 0 }}>
-                                <li>
-                                  <div
-                                    style={{
-                                      fontSize: "21px",
-                                      cursor: "pointer",
-                                      fontWeight: 400,
-                                      color: "#545454",
-                                      fontFamily: "ChanakyaUni",
-                                    }}
-                                    id={`aut-${author.id}`}
-                                  >
-                                    {author.name}
-                                  </div>
-                                </li>
-                              </ul>
-                            </div>
-                          ))
-                          : ""}
-                      </AccordionDetails>
-                    </Accordion> */}
-                    {/* language */}
                     <Accordion elevation={0} defaultExpanded>
                       <AccordionSummary
                         expandIcon={<ExpandMore />}
@@ -470,7 +384,7 @@ const VivekvaniPage = () => {
                             </div>
                           ))}
                         </div>
-                        <div className="col-12" style={{ marginTop: "30px", display:pagination.totalRecords <= 12 ? "none" : "block" }}>
+                        <div className="col-12" style={{ marginTop: "30px", display: pagination.totalRecords <= 12 ? "none" : "block" }}>
                           <ListPagination
                             totalRecords={pagination.totalRecords}
                             recordsPerPage={pagination.recordsPerPage}

@@ -56,11 +56,12 @@ class TocItem extends PureComponent<ITocItemProps> {
 
   render() {
     const { label, styles, subitems } = this.props;
+    console.log("subitems", subitems);
 
     return (
       <div className="" style={{
         display: "flex",
-        marginRight: "5px",
+        borderBottom: "1px solid #ddd", width: "90%", margin: subitems?.length < 0 ? "0 0 0 10px" : "0"
       }}>
         <span style={{
           fontSize: 25,
@@ -68,7 +69,6 @@ class TocItem extends PureComponent<ITocItemProps> {
           color: "#ff4900",
           fontWeight: 600,
           padding: 0,
-          margin: "0 7px 0 7px"
         }} onClick={() => this.collapse()}
         >
           {
@@ -90,8 +90,9 @@ class TocItem extends PureComponent<ITocItemProps> {
               width: "100%",
               //fontSize: ".9em",
               textAlign: "left",
-              padding: "5px 0 0 5px",
-              borderBottom: "1px solid #ddd",
+              padding: "0 40px 0 10px",
+              // padding: "5px 0 0 5px",
+              // borderBottom: "1px solid #ddd",
               boxSizing: "border-box",
               outline: "none",
               cursor: "pointer",
@@ -117,10 +118,10 @@ class TocItem extends PureComponent<ITocItemProps> {
                     background: "none",
                     borderTop: "none",
                     borderRight: "none",
-                    borderBottom: "1px solid rgb(221, 221, 221)",
+                    borderBottom: "1px solid #ddd",
                     borderLeft: "none",
                     borderImage: "initial",
-                    width: "100%",
+                    // width: "100%",
                     textAlign: "left",
                     padding: "5px 0px 0px 5px",
                     boxSizing: "border-box",
@@ -128,6 +129,7 @@ class TocItem extends PureComponent<ITocItemProps> {
                     cursor: "pointer",
                     fontSize: "20px",
                     fontFamily: "ChanakyaUni, serif",
+                    width: "130%",
                   }
                   }>
                   {subitem?.label}

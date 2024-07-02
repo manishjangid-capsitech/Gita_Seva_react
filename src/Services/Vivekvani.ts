@@ -1,16 +1,11 @@
 import { ApiUtility } from "./ApiUtility";
 
 class VivekService {
-  route = "/posts";
   vaniRoute = "/api/vivekvanis?lang=";
   categoryRoute = "/api/settings/filters?lang=";
-  authorRoute = "/api/authors/slug-";
 
   vivekdetailRoute = "/api/VivekVanis/";           
   faviroute = "/api/VivekVanis/";
-
-
-  get = (id: string) => ApiUtility.getResult(`${this.route}/${id}`);
 
   getFilters = (productFor: string) => {
     return ApiUtility.get(

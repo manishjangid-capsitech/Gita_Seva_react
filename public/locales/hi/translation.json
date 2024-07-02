@@ -133,7 +133,7 @@
   "contact_tr": "सम्पर्क करें",
   "other_tr": "अन्य",
   "generalQuery_tr": "सामान्य प्रश्न",
-  "close_tr": "बंद करें",
+  "close_tr": "ठीक है",
   "thank_you_tr": "धन्यवाद",
   "All_Special_Audios_tr": "सभी विशेष ऑडियो",
   "vivek_vani_tr": "विवेक-वाणी",
@@ -156,5 +156,11 @@
   "Number_tr": "संख्या",
   "enter_otp_tr": "अपना ओटीपी दर्ज करें",
   "enter_mobile_no": "अपना मोबाइल नंबर दर्ज करें",
-  "otp_validation": "कृपया एक वैध ओटीपी दर्ज करें"
+  "otp_validation": "कृपया एक वैध ओटीपी दर्ज करें",
+  "MonthlyMagazine_lang_hindi_tr": "गीत-गोविंद (हिंदी)",
+  "MonthlyMagazine_lang_english_tr": "गीत-गोविंद (अंग्रेज़ी)",
+  "Kalyan_lang_tr": "कल्याण (हिंदी)",
+  "Kalpataru_lang_tr": "कल्याण कल्पतरु (अंग्रेज़ी)",
+  "vivek_vani_lang_tr": "विवेक-वाणी (बंगला)",
+  "back_tr":"पीछे"
 }

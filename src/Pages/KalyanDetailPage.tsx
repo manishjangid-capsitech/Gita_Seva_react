@@ -17,6 +17,7 @@ import leftArrow from "../assets/img/leftArrow1.png";
 import rightArrow from "../assets/img/rightArrow1.png"
 import closeicon from "../Images/close-round-border.svg"
 import EpubServices from "../Services/Epub";
+import { Breadcrumbs } from "./E-BooksComponent";
 
 const KalyanDetailPage = () => {
   const { t } = useTranslation();
@@ -118,11 +119,13 @@ const KalyanDetailPage = () => {
 
   useEffect(() => {
     if (kalyanId) {
+      debugger
       setRefresh(false);
       KalyansServices.getcurrentKalyan(
         state?.kalyanId,
         UserIdentity !== "" ? UserIdentity : ""
       ).then((res) => {
+        debugger
         if (res.status) {
           setKalyanDetail(res.result);
           setIsLiked(res.result.isFavourite);
@@ -164,52 +167,18 @@ const KalyanDetailPage = () => {
         marginTop: 0,
       }}
     >
-      <div
-        className="breadcrumbs-head newcontainer"
-        style={{
-          width: "100%",
-          marginTop: "-175px",
-          background: "none",
-          backgroundColor: "#ffedbc",
-          height: "240px",
-          borderBottom: "2px solid #fff",
-          paddingTop: 0,
+      <Breadcrumbs
+        mainsubBreadCrumb={t("Kalyan_tr")}
+        subBreadCrumb={t("Home_tr")}
+        navigatemainsubBreadCrumb={() => {
+          navigate(`/home`);
         }}
-      >
-        <div className="breadcrumbs">
-          <div
-            className="containers"
-            style={{
-              fontSize: "36px",
-              fontWeight: 700,
-              color: "rgb(209, 21, 1)",
-              top: "155px",
-              fontFamily: "ChanakyaUniBold"
-            }}
-          >
-            {t("Kalyan_tr")}
-            <div
-              style={{
-                fontSize: "19px",
-                fontWeight: 600,
-                color: "#2d2a29",
-                marginTop: "-8px",
-              }}
-            >
-              <Link style={{ marginRight: "4px", color: "#2d2a29" }} to="/">
-                {t("Home_tr")}
-              </Link>
-              <Link
-                style={{ margin: "0 5px 0 0", color: "#2d2a29" }}
-                to="/kalyans"
-              >
-                / {t("Kalyan_tr")}
-              </Link>
-              <span style={{ color: "#2d2a29" }}>/ {kalyanDetail?.name}</span>
-            </div>
-          </div>
-        </div>
-      </div>
+        subBreadCrumbTwo={t("Kalyan_tr")}
+        navigatesubBreadCrumb={() => {
+          navigate(`/kalyans`)
+        }}
+        subBreadCrumbThree={kalyanDetail?.name}
+      />
       <div className="container">
         <div className="row">
           <div>
@@ -387,7 +356,6 @@ const KalyanDetailPage = () => {
                                   kalyanDetailId: kalyanDetail.id,
                                   bookName: kalyanDetail.name,
                                   slug: kalyanDetail.slug,
-                                  label: kalyanDetail.label,
                                   type: BookContentType.kalyans,
                                 },
                               });

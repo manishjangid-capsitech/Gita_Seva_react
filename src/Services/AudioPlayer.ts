@@ -4,23 +4,6 @@ class AudioPlayerService {
   route = "/posts";
   audioRoute = "/api/" + localStorage.getItem("type") + "?lang=";
 
-  get = (id: string) => ApiUtility.getResult(`${this.route}/${id}`);
-
-  getList = (
-    start: number,
-    length: number,
-    sortCol?: string,
-    sortDir?: string,
-    search?: string
-  ) =>
-    ApiUtility.get(this.route, {
-      start,
-      length,
-      sortCol,
-      sortDir,
-      search,
-    });
-
   getAudiosById = (id: string, type: string) => {
     return ApiUtility.get(
       "/api/" + type + "/" + id + "?lang=" + localStorage.getItem("lan")
@@ -65,5 +48,17 @@ class AudioPlayerService {
         isSpecial
     );
   };
+
+  getlyrics = (id:any) =>{
+    return ApiUtility.getResponse(
+      `/api/Audios/${id}/lyrics`,
+       { Headers:{
+          authorization: localStorage.getItem("UserId"),
+          Accept: "application/json"
+        }}
+    )
+    // return ApiUtility.getAuthHeader(`/api/Audios/${id}/lyrics`)
+  }
 }
+
 export default new AudioPlayerService();

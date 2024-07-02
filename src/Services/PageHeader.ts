@@ -5,23 +5,6 @@ class HeaderService {
   headerauthorRoute = "/api/user/login";
   searchRoute ="/api/Settings/search"
 
-  get = (id: string) => ApiUtility.getResult(`${this.route}/${id}`);
-
-  getList = (
-    start: number,
-    length: number,
-    sortCol?: string,
-    sortDir?: string,
-    search?: string
-  ) =>
-    ApiUtility.get(this.route, {
-      start,
-      length,
-      sortCol,
-      sortDir,
-      search,
-    });
-
   searchData = (searchCategory: string, search: string, lang: string) => {
     return ApiUtility.get(
       "/api/settings/search?searchtext=" +

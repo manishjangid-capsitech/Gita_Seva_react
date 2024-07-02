@@ -8,21 +8,6 @@ class ArticlesService {
   categoryRoute = "/api/settings/filters?lang=";
   faviroute = "/api/articles/";
 
-  getList = (
-    start: number,
-    length: number,
-    sortCol?: string,
-    sortDir?: string,
-    search?: string
-  ) =>
-    ApiUtility.get(this.route, {
-      start,
-      length,
-      sortCol,
-      sortDir,
-      search,
-    });
-
   getFilters = (productFor: string) => {
     return ApiUtility.get(
       this.categoryRoute +
@@ -68,8 +53,6 @@ class ArticlesService {
   };
 
   // article detail
-
-  get = (id: string) => ApiUtility.getResult(`${this.route}/${id}`);
 
   getArticlesDetail = (id: string, userId: string) => {
     return ApiUtility.get(

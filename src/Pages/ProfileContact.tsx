@@ -81,11 +81,11 @@ export const ProfileContact = () => {
 
     if (data.name !== "" && data.comment !== "") {
       if (data?.comment?.length > 0) {
-        newEntry.comment = "message from Gita seva trust: " + newEntry.comment;
+        newEntry.comment = newEntry.comment;
         HomeService.sendFeedback(
           data.name,
-          data.phoneNumber,
-          data.email,
+          data.phoneNumber  || "",
+          data.email || "Email is not available",
           data.feedbacktype,
           data.comment
         ).then((result: any) => {

@@ -261,46 +261,46 @@ const AppRoutes = () => {
 
       <Route
         element={<WithHeaderFooter element={<GeetgovindPage />} />}
-        path="/monthlymagazine"
+        path="/geetgovind"
       ></Route>
       <Route
         element={<WithHeaderFooter element={<GeetgovindPage />} />}
-        path="/monthlymagazine/category/:catid"
+        path="/geetgovind/category/:catid"
       ></Route>
       <Route
         element={<WithHeaderFooter element={<GeetgovindPage />} />}
-        path="/monthlymagazine/special"
+        path="/geetgovind/special"
       ></Route>
       <Route
         element={<WithHeaderFooter element={<GeetgovindPage />} />}
-        path="/monthlymagazine/author/:id"
+        path="/geetgovind/author/:id"
       ></Route>
       <Route
         element={<WithHeaderFooter element={<GeetgovindPage />} />}
-        path="/monthlymagazine/language/:langid"
+        path="/geetgovind/language/:langid"
       ></Route>
 
       {/* GeetGovindDetailPage */}
 
       <Route
         element={<WithHeaderFooter element={<GeetGovindDetailPage />} />}
-        path="/monthlymagazine/:id"
+        path="/geetgovind/:id"
       ></Route>
       <Route
         element={<WithHeaderFooter element={<GeetGovindDetailPage />} />}
-        path="/monthlymagazine/special/:id"
+        path="/geetgovind/special/:id"
       ></Route>
       <Route
         element={<WithHeaderFooter element={<GeetGovindDetailPage />} />}
-        path="/monthlymagazine/author/:id"
+        path="/geetgovind/author/:id"
       ></Route>
       <Route
         element={<WithHeaderFooter element={<GeetGovindDetailPage />} />}
-        path="/monthlymagazine/category/:catid/:id"
+        path="/geetgovind/category/:catid/:id"
       ></Route>
       <Route
         element={<WithHeaderFooter element={<GeetGovindDetailPage />} />}
-        path="/monthlymagazine/language/:langid/:id"
+        path="/geetgovind/language/:langid/:id"
       ></Route>
 
       {/* pravachan page */}
@@ -376,7 +376,7 @@ const AppRoutes = () => {
 
       <Route
         element={<WithHeaderFooter element={<DivineQuotes />} />}
-        path="/divinequote"
+        path="/divinequotes"
       ></Route>
 
       <Route

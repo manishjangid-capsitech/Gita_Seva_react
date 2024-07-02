@@ -85,12 +85,14 @@ const HeaderPage = () => {
     setLoginState(newState);
   };
 
-  const UserId = localStorage.getItem("UserId")
+  const UserIdentity = localStorage.getItem("UserId")
+  const imgs = localStorage.getItem("Image")
 
   useEffect(() => {
-    if (UserId) {
+    let token = localStorage.getItem("Token")
+    if (UserIdentity && token) {
     }
-  }, [logIn, loginState]);
+  }, [logIn, loginState, imgs, localStorage, UserIdentity, loginState]);
 
   useEffect(() => {
     document.addEventListener("click", handleClickOutside);
@@ -99,7 +101,6 @@ const HeaderPage = () => {
     };
   }, [isOpened, showLang, menu]);
 
-  const imgs = localStorage.getItem("Image")
 
   return (
     <>
@@ -303,6 +304,7 @@ const HeaderPage = () => {
                       id="hmenu_home"
                       to={"/home"}
                       onClick={() => setMenu(false)}
+                      style={{ color: window?.location.pathname === "/" || window?.location.pathname === "/home" ? "#d11501" : "#472d1e" }}
                     >
                       <i
                         className="fa fa-home"
@@ -378,7 +380,7 @@ const HeaderPage = () => {
                           >
                             <NavLink
                               id="hmenu_Kalpataru"
-                              to="/monthlymagazine"
+                              to="/geetgovind"
                               onClick={() => setMenu(false)}
                               style={({ isActive }) => {
                                 return {
@@ -466,7 +468,7 @@ const HeaderPage = () => {
                   <li>
                     <NavLink
                       id="menu_vivek"
-                      to="/divinequote"
+                      to="/divinequotes"
                       style={({ isActive }) => {
                         return {
                           color: isActive ? "#d11501" : "#472d1e",

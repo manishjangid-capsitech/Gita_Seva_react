@@ -163,6 +163,9 @@ const EpubPage = () => {
     //`http://localhost:55049/v1/api/VivekVanis/64de212fd06c418558f180f2/epubstrem/`
   );
 
+  console.log("url",url);
+  
+
   // const sublocation = localStorage.getItem("location")
   const [location, setLocation] = useState<any>(undefined);
   const locationChanged = (epubcifi: any) => {
@@ -179,11 +182,9 @@ const EpubPage = () => {
       setFinalName(chapter ? chapter.label : undefined);
       // var els = $('a[href^="' + href + '"]');
       // const els = document.querySelectorAll(`a[href^="${href}"]`) as NodeListOf<HTMLAnchorElement>;
-      // debugger
       //@ts-ignore
       // console.log("--->", els?.prevObject[0]?.body?.innerText);
       // if (els?.length > 0) {
-      // debugger
 
       // var $e = els?.prevObject[0]?.body?.innerText as any
       // var title = els?.prevObject[0]?.body?.innerText?.split("#")[1];       
@@ -543,7 +544,7 @@ const EpubPage = () => {
       });
     }
     if (MagazineId) {
-      navigate(`/monthlymagazine/` + state.slug, {
+      navigate(`/geetgovind/` + state.slug, {
         state: { MonthId: state?.magazineDetailId },
       });
     }
@@ -1045,8 +1046,8 @@ const EpubPage = () => {
 
       <div
         style={{
-          margin: "50px 40% auto",
-          padding: "10px",
+          // margin: "50px 40% auto",
+          // padding: "10px",
           textAlign: "center",
           zIndex: 1,
           position: "absolute",
