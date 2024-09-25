@@ -9,8 +9,8 @@ import { Link, useLocation } from "react-router-dom";
 import "../Styles/Articles.css";
 import artimg from "../Images/atul-assets-img.png";
 import i18n, { _get_i18Lang } from "../i18n";
-import Favfill from "../assets/img/favadd.png";
-import Favempty from "../assets/img/fav.png";
+import Favfill from "../assets/img/favadd.svg";
+import Favempty from "../assets/img/fav.svg";
 import $ from "jquery";
 
 const ArticlesDetailPage = (props: any) => {

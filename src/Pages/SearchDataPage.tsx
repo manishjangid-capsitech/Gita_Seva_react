@@ -38,7 +38,6 @@ const SearchDataPage = () => {
     }
   };
 
-
   useEffect(() => {
     if (params?.usr !== undefined) {
       SearchDataService.searchData({
@@ -63,12 +62,11 @@ const SearchDataPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(12);
 
-
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = Searchdata?.slice(indexOfFirstItem, indexOfLastItem);
   const paginate = (pageNumber: any) => setCurrentPage(pageNumber);
-
+  
   return (
     <>
       <div
@@ -183,7 +181,7 @@ const SearchDataPage = () => {
                             })
                         }
                         if (search.product === "kalyan") {
-                          navigate("/kalyans/" + search.slug,
+                          navigate("/kalyan/" + search.slug,
                             {
                               state: {
                                 kalyanId: search.id,
@@ -204,7 +202,7 @@ const SearchDataPage = () => {
                               },
                             })
                         }
-                        if (search.product === "geetgovind") {
+                        if (search.product === "monthlymagazine") {
                           navigate("/geetgovind/" + search.slug,
                             {
                               state: {
@@ -227,7 +225,7 @@ const SearchDataPage = () => {
                             })
                         }
                         if (search.product === "audio") {
-                          navigate(`/audios/` + search.id,
+                          navigate(`/audio/` + search.id,
                             // `/audios/${search.id}`,
                             {
                               state: {
@@ -249,18 +247,6 @@ const SearchDataPage = () => {
                               },
                             })
                         }
-
-                        // onClick={() => {
-                        //   localStorage.setItem("type", "pravachans");
-                        //   navigate(`/pravachans/` + specialPravachan.id, {
-                        //     state: {
-                        //       audioId: specialPravachan.id,
-                        //       audioslug: specialPravachan.name,
-                        //     },
-                        //   });
-                        //   window.location.reload();
-                        // }}
-
                         if (search.product === "article") {
                           navigate(`/articles/` + search.slug,
                             {
@@ -285,12 +271,10 @@ const SearchDataPage = () => {
                           <a style={{ cursor: "pointer" }}>
                             <img
                               src={
-                                search.product === "book" || search.product === "kalyan" || search.product === "kalyankalpataru" || search.product === "monthlymagzine" || search.product === "vivekvani"
+                                search.product === "book" || search.product === "kalyan" || search.product === "kalyankalpataru" || search.product === "monthlymagazine" || search.product === "vivekvani"
                                   ? `${search?.thumbPath}`
-                                  : search.product === "audio" ||
-                                    search.product === "pravachan"
-                                    ? search.lyricsHash != null &&
-                                      search.lyricsHash !== ""
+                                  : search.product === "audio" || search.product === "pravachan"
+                                    ? search.lyricsHash != null && search.lyricsHash !== ""
                                       ? WithLyrics
                                       : WithoutLyrics
                                     : `${DefaultArticle}`

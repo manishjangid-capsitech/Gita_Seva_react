@@ -10,7 +10,6 @@ import FacebookLogin from "react-facebook-login";
 export const SignInFB = () => {
     const fbLibrary = () => {
         window.fbAsyncInit = function () {
-            // debugger
             window.FB.init({
                 appId: '291301805425699', // Replace with your Facebook App ID
                 cookie: true,

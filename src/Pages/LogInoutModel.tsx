@@ -25,18 +25,24 @@ import articalIcon from "../assets/img/article-icon.png";
 import LoginServices from "../Services/Login";
 import 'react-phone-number-input/style.css'
 import bookmarkedicon from "../Images/bookmarked.svg"
-import { Accordion, AccordionSummary, AccordionDetails } from '@mui/material';
-import ExpandMore from '@mui/icons-material/ExpandMore';
-import Reset from "../Images/reset.png";
+
 
 interface LogOutModalProps {
   open: boolean;
   onClose: () => void;
 }
+
 interface LogInModalProps {
   opens: boolean;
   onCloses: () => void;
   onLoginStateChange: (newState: string) => void;
+}
+
+declare global {
+  interface Window {
+    fbAsyncInit: () => void;
+    FB: any;
+  }
 }
 
 export const LogOutModel: React.FC<LogOutModalProps> = ({ open, onClose }) => {
@@ -160,8 +166,8 @@ export const LogInModel: React.FC<LogInModalProps> = ({
           localStorage.setItem('oldid', JSON.stringify(res.result));
           setResult(res.result);
           // console.log("localStorage",localStorage.setItem('resends', resends ? (parseInt(resends) + 1).toString() : '1'));
-          
-          res.resuult &&  localStorage.setItem('resends', resends ? (parseInt(resends) + 1).toString() : '1');
+
+          res.resuult && localStorage.setItem('resends', resends ? (parseInt(resends) + 1).toString() : '1');
         });
         setConfirmation(confirmation);
         setIsOTP(true);
@@ -179,7 +185,6 @@ export const LogInModel: React.FC<LogInModalProps> = ({
         if (res?.result === false) {
           setNotification(true);
         }
-        console.log('response----------------->', res);
         if (res.status && res.result) {
           LoginServices.getUserLogin(
             formattedValue,
@@ -190,7 +195,7 @@ export const LogInModel: React.FC<LogInModalProps> = ({
             "",
             ""
           ).then((res: any) => {
-            localStorage.setItem("Email", res?.result?.email);
+            localStorage.setItem("Email", "");
             localStorage.setItem("UserId", res?.result?.userId);
             localStorage.setItem("userName", res?.result?.name);
             localStorage.setItem("Image", res?.result?.imageThumbPath);
@@ -198,6 +203,8 @@ export const LogInModel: React.FC<LogInModalProps> = ({
             localStorage.setItem("Token", res?.result?.token);
             localStorage.setItem("SignKey", res?.result?.signKey);
             onLoginStateChange("loggedIn");
+            // localStorage.setItem("loginType", "PhoneNumberSe");
+            if (res?.status) localStorage.setItem("PhoneNumberSe", res?.status)
           });
           onClose();
           setPhoneModel(false);
@@ -273,6 +280,43 @@ export const LogInModel: React.FC<LogInModalProps> = ({
   };
 
   const formattedPhoneNumber = formatPhoneNumber(phoneNumber);
+
+  const handleFBLogin = () => {
+    // FB.login((response: { authResponse: any; }) => {
+    //   console.log("response", response);
+    //   if (response?.authResponse) {
+    //     debugger
+    //     console.log("Welcome! Fetching your information...");
+    //     window?.FB?.api('/me', function (response: { name: string; }) {
+    //       console?.log('Good to see you, ' + response.name + '.');
+    //     });
+    //   } else {
+    //     console?.log("User cancelled login or did not fully authorize.");
+    //   }
+    // }, { scope: 'public_profile,email' });
+    window.FB.login(function (response: any) {
+      console.log("response", response);
+
+      // Handle the response
+    });
+  };
+
+  useEffect(() => {
+    window.fbAsyncInit = function () {
+      window.FB.init({
+        appId: '291301805425699', // replace with your Facebook app ID
+        cookie: true,
+        xfbml: true,
+        version: 'v10.0' // Replace with the latest API version
+      });
+
+      // FB.login(function(response: any) {
+      //   console.log("response",response);
+
+      //   // Handle the response
+      // });
+    };
+  }, [handleFBLogin]);
 
   useEffect(() => {
     if (phoneModel) {
@@ -390,9 +434,9 @@ export const LogInModel: React.FC<LogInModalProps> = ({
                   const email = result?.user?.email;
                   if (email) {
                     LoginServices.getUserLogin("", "", email, 2, "", "", "").then(
-                      (res) => {
+                      (res: any) => {
+                        if (res?.status) localStorage.setItem("EmailIdSe", res.status)
                         if (res.status) {
-                          localStorage.removeItem("Phone");
                           localStorage.setItem("UserId", res?.result?.userId);
                           localStorage.setItem("userName", res?.result?.name);
                           localStorage.setItem("Image", res?.result?.imageThumbPath);
@@ -429,8 +473,12 @@ export const LogInModel: React.FC<LogInModalProps> = ({
           {/* facebook login */}
           <div
             className="loginbuttons"
-            style={{ cursor: "pointer", display: "none" }}  
-            onClick={SignInWithFB}
+            style={{
+              cursor: "pointer",
+               display: "none"
+            }}
+            // onClick={ () => SignInWithFB()}
+            onClick={handleFBLogin}
           >
             <img
               src={signinfacebook}
@@ -443,12 +491,12 @@ export const LogInModel: React.FC<LogInModalProps> = ({
                 marginTop: "3px",
               }}
             />
-            <label style={{ marginBottom: "0px" }}>
+            <label style={{ marginBottom: "0px", cursor: "pointer" }}>
               {t("login_With_Facebook_tr")}
               {/* <SignInFB /> */}
             </label>
           </div>
-          <div className="loginbuttons" onClick={() => setPhoneModel(true)}>
+          <div className="loginbuttons" onClick={() => setPhoneModel(true)} style={{ cursor: "pointer" }}>
             <img
               src={signinmobileno}
               alt="signinmobileno"
@@ -460,7 +508,7 @@ export const LogInModel: React.FC<LogInModalProps> = ({
                 marginTop: "3px",
               }}
             />
-            <label style={{ marginBottom: "0px" }}>
+            <label style={{ marginBottom: "0px", cursor: "pointer" }}>
               {t("login_With_MobileNo_tr")}
             </label>
           </div>
@@ -492,7 +540,7 @@ export const LogInModel: React.FC<LogInModalProps> = ({
             </div>
 
             <div style={{ margin: "5% 5" }}>
-              <div className="loginbuttons" style={{ border: "none", marginLeft: "12%", padding: "6% 0" }}>
+              <div className="loginbuttons" style={{ border: "none", marginLeft: "12%", padding: "6% 0", cursor: "pointer" }}>
                 {pnModel ?
                   <div style={{ margin: "5% 4px" }}>
                     <div
@@ -766,7 +814,7 @@ export const BookListButton = ({
                 </button>
               ) : (
                 <button className="favitems" onClick={showLessBooks}>
-                  Show Less
+                  {t("show_less_tr")}
                 </button>
               )}
             </div>
@@ -877,7 +925,7 @@ export const MarkList = ({
                 </button>
               ) : (
                 <button className="favitems" onClick={showLessBooks}>
-                  Show Less
+                  {t("show_less_tr")}
                 </button>
               )}
             </div>
@@ -1010,7 +1058,7 @@ export const AudioListButton = ({
                 </button>
               ) : (
                 <button className="favitems" onClick={showLessAudios}>
-                  Show Less
+                  {t("show_less_tr")}
                 </button>
               )}
             </div>
@@ -1130,7 +1178,7 @@ export const FavouriteArticals = ({
                 </button>
               ) : (
                 <button className="favitems" onClick={showLessButton}>
-                  Show Less
+                  {t("show_less_tr")}
                 </button>
               )}
             </div>

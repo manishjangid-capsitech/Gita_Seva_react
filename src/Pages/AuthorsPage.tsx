@@ -20,6 +20,7 @@ import artical from "../assets/img/article-icon.png";
 import BooksService from "../Services/Books";
 import AudiosService from "../Services/Audios";
 import ArticlesService from "../Services/Articles";
+import Spinner from "./Spinner";
 
 const AuthorsDataPage = () => {
   const settings = {
@@ -84,7 +85,7 @@ const AuthorsDataPage = () => {
     setRefresh(false);
     AuthorService.GetAuthorDataById(state?.authorId, "").then(
       (res) => {
-        if (res) {
+        if (res?.status) {
           setName(res?.result?.name);
           setAuthorIntro({ __html: res?.result?.authorContent });
           setBooks(res?.result?.books);
@@ -124,7 +125,7 @@ const AuthorsDataPage = () => {
     setRefresh(false);
     AudiosService.getAudios(
       0,
-      500,
+      5000,
       false,
       "",
       state?.authorId,
@@ -139,7 +140,7 @@ const AuthorsDataPage = () => {
       ""
     ).then((res) => {
       if (res.status)
-        setAudiosLength(res.result?.items?.length);
+      setAudiosLength(res.result?.items?.length);
     })
   }, [refresh, i18n.language, state?.authorId, state?.authorName])
 
@@ -147,7 +148,7 @@ const AuthorsDataPage = () => {
     setRefresh(false);
     AudiosService.getAudios(
       0,
-      500,
+      15000,
       false,
       "",
       state?.authorId,
@@ -469,12 +470,14 @@ const AuthorsDataPage = () => {
                         key={`related-${audio.id}`}
                         onClick={() => {
                           localStorage.setItem("type", "audios");
-                          navigate(`/audios/` + audio.id, {
+                          navigate(`/audios/` + audio.slug, {
                             state: {
                               audioId: audio.id,
                               audioslug: audio.name,
-                              index: i
-                            },
+                              index: i,
+                              audioAuthor: state?.authorId,
+                              authorName: state?.authorSlug
+                            },                            
                           });
                           window.location.reload();
                         }}
@@ -545,11 +548,13 @@ const AuthorsDataPage = () => {
                       key={`related-${audio.id}`}
                       onClick={() => {
                         localStorage.setItem("type", "audios");
-                        navigate(`/audios/` + audio.id, {
+                        navigate(`/audios/` + audio.slug, {
                           state: {
                             audioId: audio.id,
                             audioslug: audio.name,
-                            index: i
+                            index: i,
+                            audioAuthor: state?.authorId,
+                            authorName: state?.authorSlug
                           },
                         });
                         window.location.reload();
@@ -645,7 +650,7 @@ const AuthorsDataPage = () => {
                         key={`related-${pravachan.id}`}
                         onClick={() => {
                           localStorage.setItem("type", "pravachans");
-                          navigate(`/pravachans/` + pravachan.id, {
+                          navigate(`/pravachans/` + pravachan.slug, {
                             state: {
                               audioId: pravachan.id,
                               audioslug: pravachan.name,
@@ -738,7 +743,11 @@ const AuthorsDataPage = () => {
                   }}
                 >
                   {t("all_tr")}
-                  <p style={{ margin: "0 8px 0 8px" }}>{pravachanLength}</p>
+                  {/* {pravachanLength ?
+                    <Spinner />
+                    : */}
+                    <p style={{ margin: "0 8px" }}>{pravachanLength}</p>
+                  {/* } */}
                   {t("Pravachan_tr")}
                   <p style={{ margin: "0 0 0 10px" }}>{t("view_tr")}</p>
                 </div>

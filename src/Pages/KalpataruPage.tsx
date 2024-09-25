@@ -60,7 +60,7 @@ const KalpataruPage = () => {
       "",
       SortValue,
       "",
-      window.location.pathname === "/books/special" ? true : false
+      window.location.pathname === "/kalyanakalpataru/special" ? true : false
     ).then((res) => {
       if (res) {
         setKalpatru(res.result?.items);
@@ -109,7 +109,7 @@ const KalpataruPage = () => {
       "",
       SortValue, //sort
       "",
-      window.location.pathname === "/books/special" ? true : false
+      window.location.pathname === "/kalyanakalpataru/special" ? true : false
     ).then((res) => {
       if (res) {
         setKalpatru(res.result?.items);
@@ -123,46 +123,6 @@ const KalpataruPage = () => {
 
   return (
     <>
-      {/* <div
-        className="breadcrumbs-head newcontainer"
-        style={{
-          width: "100%",
-          marginTop: "-175px",
-          background: "none",
-          backgroundColor: "#ffedbc",
-          height: "240px",
-          borderBottom: "2px solid #fff",
-          paddingTop: 0,
-        }}
-      >
-        <div className="breadcrumbs">
-          <div
-            className="containers"
-            style={{
-              fontSize: "36px",
-              fontWeight: 700,
-              color: "rgb(209, 21, 1)",
-              top: "155px",
-              fontFamily: "ChanakyaUniBold"
-            }}
-          >
-            {t("Kalpataru_tr")}
-            <div
-              style={{
-                fontSize: "19px",
-                fontWeight: 600,
-                color: "#2d2a29",
-                marginTop: "-8px",
-              }}
-            >
-              <Link style={{ marginRight: "8px", color: "#2d2a29" }} to="/">
-                {t("Home_tr")}
-              </Link>
-              <label> / {t("Kalpataru_tr")}</label>
-            </div>
-          </div>
-        </div>
-      </div> */}
       <Breadcrumbs
         mainsubBreadCrumb= {t("Kalpataru_tr")}
         subBreadCrumb={t("Home_tr")}
@@ -226,7 +186,7 @@ const KalpataruPage = () => {
                         style={{
                           height: 0,
                           background: "#FFFAF0",
-                          // minHeight: "20px"
+                          minHeight: "25px"
                         }}
                       >
                         <h2 className="filtertitle" style={{ fontFamily: "ChanakyaUniBold" }}>
@@ -329,7 +289,7 @@ const KalpataruPage = () => {
                                 key={`book-${kalpatru.id}`}
                                 onClick={() => {
                                   navigate(
-                                    `/kalyanskalpataru/` + kalpatru.slug,
+                                    `/kalyanakalpataru/` + kalpatru.slug,
                                     {
                                       state: {
                                         kalpatruId: kalpatru.id,

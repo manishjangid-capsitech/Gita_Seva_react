@@ -109,7 +109,7 @@ export const SidebarFilter = ({
                     style={{
                         height: 0,
                         background: "#FFFAF0",
-                        minHeight: "20px",
+                        minHeight: "25px",
                         marginTop: "15px",
                     }}
                 >

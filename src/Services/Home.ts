@@ -7,7 +7,6 @@ class HomeServices {
   messageRoute = "/api/messages?lang=";
   messageIdRoute = "/api/articles/";
   allauthorRoute = "/api/Authors/5bbc60101fd2d735b0087d36?lang=";
-  quotesRoute = "/api/Quotes?usefor=2";
   contactRoute = "/api/Settings/contactus";
   sendfeedback = "/api/settings/contactus"
 
@@ -34,10 +33,6 @@ class HomeServices {
 
   getMessageId = (id: string, lang: string) => {
     return ApiUtility.get(this.messageIdRoute + id + "?lang=" + lang);
-  };
-
-  getQuotesData = (start: number, length: number) => {
-    return ApiUtility.get(this.quotesRoute + "&start=" + start + "&length=" + length);
   };
 
   postcontact = (params: any) => {

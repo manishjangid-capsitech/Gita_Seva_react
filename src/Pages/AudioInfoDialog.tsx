@@ -33,7 +33,7 @@ export const AudioInfoDialog: React.FC<audiologprops> = ({ showModal,
         <p></p>
       </Modal.Body>
       <Modal.Footer>
-        <Button onClick={() => onClose()}>{t("close_tr")}</Button>
+        <Button onClick={() => onClose()} style={{backgroundColor: "#FF7F1E", border: "none"}}>{t("close_tr")}</Button>
       </Modal.Footer>
     </Modal>
   );

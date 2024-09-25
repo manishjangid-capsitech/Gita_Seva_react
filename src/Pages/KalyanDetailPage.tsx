@@ -8,8 +8,8 @@ import "../Styles/BookDetail.css";
 import Slider from "react-slick";
 import { useTranslation } from "react-i18next";
 import i18n from "../i18n";
-import Favfill from "../assets/img/favadd.png";
-import Favempty from "../assets/img/fav.png";
+import Favfill from "../assets/img/favadd.svg";
+import Favempty from "../assets/img/fav.svg";
 import { BookContentType } from "./Epub";
 import { userId } from "../Contexts/LocaleContext";
 import { LogInModel, getMonthNameFromNumber } from "./LogInoutModel";
@@ -18,6 +18,7 @@ import rightArrow from "../assets/img/rightArrow1.png"
 import closeicon from "../Images/close-round-border.svg"
 import EpubServices from "../Services/Epub";
 import { Breadcrumbs } from "./E-BooksComponent";
+import bookmarkIcon from "../Images/Bookmark.svg"
 
 const KalyanDetailPage = () => {
   const { t } = useTranslation();
@@ -74,12 +75,12 @@ const KalyanDetailPage = () => {
 
   const handleLoginStateChange = (newState: any) => {
     setLoginState(newState);
-    navigate(`/reader/kalyans/` + kalyanDetail.slug, {
+    navigate(`/reader/kalyan/` + kalyanDetail.slug, {
       state: {
         kalyanDetailId: state?.kalyanId,
         bookName: state?.bookName,
         slug: state?.kalyanSlug,
-        type: BookContentType.kalyans,
+        type: BookContentType.kalyan,
       },
     });
   };
@@ -119,13 +120,11 @@ const KalyanDetailPage = () => {
 
   useEffect(() => {
     if (kalyanId) {
-      debugger
       setRefresh(false);
       KalyansServices.getcurrentKalyan(
         state?.kalyanId,
         UserIdentity !== "" ? UserIdentity : ""
       ).then((res) => {
-        debugger
         if (res.status) {
           setKalyanDetail(res.result);
           setIsLiked(res.result.isFavourite);
@@ -138,7 +137,7 @@ const KalyanDetailPage = () => {
     setRefresh(false);
     if (kalyanId) {
       KalyansServices.getRelatedKalyans(kalyanId, "").then((res) => {
-        if (res) {
+        if (res?.status) {
           setRelatedKalyans(res.result);
         }
       });
@@ -175,7 +174,7 @@ const KalyanDetailPage = () => {
         }}
         subBreadCrumbTwo={t("Kalyan_tr")}
         navigatesubBreadCrumb={() => {
-          navigate(`/kalyans`)
+          navigate(`/kalyan`)
         }}
         subBreadCrumbThree={kalyanDetail?.name}
       />
@@ -249,17 +248,11 @@ const KalyanDetailPage = () => {
                                   setBookMark(bookMark === true ? false : true)
                                 }}>
                                 <div>
+                                  <img src={bookmarkIcon} style={{ width: "45px", height: "45px" }} alt="bookmaarkicon" />
+                                </div>
+                                <div>
                                   {bookMark && userId && (
-                                    <div style={{
-                                      position: "absolute",
-                                      backgroundColor: "#fff6e1",
-                                      padding: "10px 5px",
-                                      top: "56px",
-                                      width: "162px",
-                                      borderRadius: "5px",
-                                      display: "grid",
-                                      zIndex: 1,
-                                    }}>
+                                    <div className="bkmarkicon-style">
                                       <div style={{
                                         display: "flex",
                                         backgroundColor: "#ff6427"
@@ -278,13 +271,13 @@ const KalyanDetailPage = () => {
                                       <ol style={{ paddingLeft: "20px" }}>
                                         {bookMarkData && bookMarkData?.map((item: any, index: number) => (
                                           <li onClick={() => {
-                                            navigate(`/reader/kalyans/` + kalyanDetail.slug, {
+                                            navigate(`/reader/kalyan/` + kalyanDetail.slug, {
                                               state: {
                                                 kalyanDetailId: kalyanDetail.id,
                                                 bookName: kalyanDetail.name,
                                                 slug: kalyanDetail.slug,
                                                 location: item?.cfi,
-                                                type: BookContentType.kalyans,
+                                                type: BookContentType.kalyan,
                                               },
                                             });
                                           }}>
@@ -306,6 +299,7 @@ const KalyanDetailPage = () => {
                               <img
                                 src={isLiked ? Favfill : Favempty}
                                 alt="Favicon"
+                                style={{ width: "45px" }}
                               />
                             </label>
                           </label>
@@ -345,18 +339,18 @@ const KalyanDetailPage = () => {
                           <label style={{ fontSize: "23px", color: "#ff731f" }}>{kalyanDetail?.editionNo}</label>
                         </div>
                       </div>
-                      <div className="next-read" style={{ marginTop: "50px" }}>
+                      <div className="next-read">
                         <p
                           style={{ cursor: "pointer", display: "inline" }}
                           onClick={() => {
                             setLogIn(true);
                             if (UserIdentity) {
-                              navigate(`/reader/kalyans/` + kalyanDetail.slug, {
+                              navigate(`/reader/kalyan/` + kalyanDetail.slug, {
                                 state: {
                                   kalyanDetailId: kalyanDetail.id,
                                   bookName: kalyanDetail.name,
                                   slug: kalyanDetail.slug,
-                                  type: BookContentType.kalyans,
+                                  type: BookContentType.kalyan,
                                 },
                               });
                             }
@@ -391,7 +385,7 @@ const KalyanDetailPage = () => {
                                 className="slider-books sidebarmargin"
                                 key={`related-${related.id}`}
                                 onClick={() => {
-                                  navigate(`/kalyans/` + related.slug, {
+                                  navigate(`/kalyan/` + related.slug, {
                                     state: {
                                       kalyanId: related.id,
                                       kalyanSlug: related?.slug
@@ -409,9 +403,10 @@ const KalyanDetailPage = () => {
                                       }}
                                       className="imgcenter"
                                       src={
-                                        related.kalyanThumbPath == null
-                                          ? DefaultBook
-                                          : related.kalyanThumbPath
+                                        related?.kalyanThumbPath
+                                        // related.kalyanThumbPath == null
+                                        //   ? DefaultBook
+                                        //   : related.kalyanThumbPath
                                       }
                                       onError={(e) => {
                                         e.currentTarget.src = DefaultBook;

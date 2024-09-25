@@ -9,8 +9,8 @@ import "../Styles/BookDetail.css";
 import Slider from "react-slick";
 import { useTranslation } from "react-i18next";
 import i18n, { _get_i18Lang } from "../i18n";
-import Favfill from "../assets/img/favadd.png";
-import Favempty from "../assets/img/fav.png";
+import Favfill from "../assets/img/favadd.svg";
+import Favempty from "../assets/img/fav.svg";
 import { BookContentType } from "./Epub";
 import { LogInModel, getMonthNameFromNumber } from "./LogInoutModel";
 import leftArrow from "../assets/img/leftArrow1.png";
@@ -18,6 +18,7 @@ import rightArrow from "../assets/img/rightArrow1.png"
 import closeicon from "../Images/close-round-border.svg"
 import EpubServices from "../Services/Epub";
 import { Breadcrumbs } from "./E-BooksComponent";
+import bookmarkIcon from "../Images/Bookmark.svg"
 
 const KalpataruDetailPage = (props: any) => {
   const { t } = useTranslation();
@@ -66,7 +67,7 @@ const KalpataruDetailPage = (props: any) => {
     setLoginState(newState);
 
     navigate(
-      `/reader/kalyanskalpataru/` +
+      `/reader/kalyanakalpataru/` +
       kalpatrauDetail.slug,
       {
         state: {
@@ -171,54 +172,6 @@ const KalpataruDetailPage = (props: any) => {
         marginTop: 0,
       }}
     >
-      {/* <div
-        className="breadcrumbs-head newcontainer"
-        style={{
-          width: "100%",
-          marginTop: "-175px",
-          background: "none",
-          backgroundColor: "#ffedbc",
-          height: "240px",
-          borderBottom: "2px solid #fff",
-          paddingTop: 0,
-        }}
-      >
-        <div className="breadcrumbs">
-          <div
-            className="containers"
-            style={{
-              fontSize: "36px",
-              fontWeight: 700,
-              color: "rgb(209, 21, 1)",
-              top: "155px",
-              fontFamily: "ChanakyaUniBold"
-            }}
-          >
-            {t("Kalpataru_tr")}
-            <div
-              style={{
-                fontSize: "19px",
-                fontWeight: 600,
-                color: "#2d2a29",
-                marginTop: "-8px",
-              }}
-            >
-              <Link style={{ marginRight: "4px", color: "#2d2a29" }} to="/">
-                {t("Home_tr")}
-              </Link>
-              <Link
-                style={{ margin: "0 5px 0 0", color: "#2d2a29" }}
-                to="/kalyanskalpataru"
-              >
-                / {t("Kalpataru_tr")}
-              </Link>
-              <span style={{ color: "#2d2a29" }}>
-                / {kalpatrauDetail?.name}
-              </span>
-            </div>
-          </div>
-        </div>
-      </div> */}
       <Breadcrumbs
         mainsubBreadCrumb={t("Kalpataru_tr")}
         subBreadCrumb={t("Home_tr")}
@@ -227,7 +180,7 @@ const KalpataruDetailPage = (props: any) => {
         }}
         subBreadCrumbTwo={t("Kalpataru_tr")}
         navigatesubBreadCrumb={() => {
-          navigate(`/kalyanskalpataru`)
+          navigate(`/kalyanakalpataru`)
         }}
         subBreadCrumbThree={kalpatrauDetail?.name}
       />
@@ -307,17 +260,11 @@ const KalpataruDetailPage = (props: any) => {
                                     setBookMark(bookMark === true ? false : true)
                                   }}>
                                   <div>
+                                    <img src={bookmarkIcon} style={{ width: "45px", height: "45px" }} alt="bookmaarkicon" />
+                                  </div>
+                                  <div>
                                     {bookMark && UserIdentity && (
-                                      <div style={{
-                                        position: "absolute",
-                                        backgroundColor: "#fff6e1",
-                                        padding: "10px 5px",
-                                        top: "56px",
-                                        width: "162px",
-                                        borderRadius: "5px",
-                                        display: "grid",
-                                        zIndex: 1,
-                                      }}>
+                                      <div className="bkmarkicon-style">
                                         <div style={{
                                           display: "flex",
                                           backgroundColor: "#ff6427"
@@ -337,7 +284,7 @@ const KalpataruDetailPage = (props: any) => {
                                           {bookMarkData && bookMarkData?.map((item: any, index: number) => (
                                             <li onClick={() => {
                                               navigate(
-                                                `/reader/kalyanskalpataru/` +
+                                                `/reader/kalyanakalpataru/` +
                                                 kalpatrauDetail.slug,
                                                 {
                                                   state: {
@@ -367,6 +314,7 @@ const KalpataruDetailPage = (props: any) => {
                                 <img
                                   src={isLiked ? Favfill : Favempty}
                                   alt="Favicon"
+                                  style={{ width: "45px" }}
                                 />
                               </label>
                             </label>
@@ -406,17 +354,14 @@ const KalpataruDetailPage = (props: any) => {
                             <label style={{ fontSize: "23px", color: "#ff731f" }}>{kalpatrauDetail?.editionNo}</label>
                           </div>
                         </div>
-                        <div
-                          className="next-read"
-                          style={{ marginTop: "50px" }}
-                        >
+                        <div className="next-read">
                           <p
                             style={{ cursor: "pointer", display: "inline" }}
                             onClick={() => {
                               setLogIn(true);
                               if (UserIdentity) {
                                 navigate(
-                                  `/reader/kalyanskalpataru/` +
+                                  `/reader/kalyanakalpataru/` +
                                   kalpatrauDetail.slug,
                                   {
                                     state: {
@@ -454,7 +399,7 @@ const KalpataruDetailPage = (props: any) => {
                                   key={`related-${related.id}`}
                                   onClick={() => {
                                     navigate(
-                                      `/kalyanskalpataru/` + related.slug,
+                                      `/kalyanakalpataru/` + related.slug,
                                       {
                                         state: {
                                           kalpatruId: related.id,

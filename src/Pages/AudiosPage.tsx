@@ -79,6 +79,7 @@ const AudiosPage = () => {
             sorting: SortValue,
             index: i,
             audiocat: CategoryId,
+            audioAuthor: state?.authorId || SingerId
           },
         })
       ))
@@ -89,15 +90,22 @@ const AudiosPage = () => {
     authorId: string;
     authorName: string;
     type: string;
+    audiocat: string;
+    audioAuthor: string;
   };
   const [bread, showBread] = useState<string>("");
+  const [disableChildColored, setDisableChildColored] = useState(false);
 
   function ResetData() {
+    setDisableChildColored(false);
     setCategoryId("");
     setSingerId("");
     setLyricsId("");
     setSortValue("3");
     setActiveIndex(null);
+    localStorage.removeItem("categoryId");
+    localStorage.removeItem("authorId");
+    localStorage.removeItem("sort");
     setPagination({
       ...pagination,
       pageNo: 0,
@@ -115,13 +123,13 @@ const AudiosPage = () => {
       0,
       pagination.recordsPerPage,
       false,
-      CategoryId,
-      SingerId || state?.authorId,
+      CategoryId || state?.audiocat || catId,
+      SingerId || state?.authorId || autId,
       "",
-      SortValue,
+      SortValue || sort,
       "",
       window.location.pathname === "/audios/special" ? true : false,
-      "audio",
+      "audios",
       LyricsId,
       "",
       "",
@@ -175,9 +183,6 @@ const AudiosPage = () => {
   useEffect(() => {
     AudiosService.getAudioCategories().then((res) => {
       if (res.status) {
-        debugger
-        console.log("setCategories",res.result);
-        
         setCategories(res.result);
       }
     });
@@ -187,6 +192,10 @@ const AudiosPage = () => {
     ResetData();
   }, [isSelected]);
 
+  const catId: any = localStorage.getItem("categoryId") || CategoryId || state?.audiocat;
+  const autId: any = localStorage.getItem("authorId") || SingerId || state?.authorId;
+  const sort: any = localStorage.getItem("sort") || SortValue;
+
   useEffect(() => {
     setRefresh(false);
     AudiosService.getAudios(
@@ -195,10 +204,10 @@ const AudiosPage = () => {
         : pagination.recordsPerPage * pagination.pageNo - 12,
       pagination.recordsPerPage,
       false,
-      CategoryId,
-      SingerId || state?.authorId,
+      catId,
+      autId,
       "",
-      SortValue,
+      sort,
       "",
       window.location.pathname === "/audios/special" ? true : false,
       "audios" || state?.type,
@@ -213,7 +222,7 @@ const AudiosPage = () => {
         totalRecords: res.result?.totalRecords,
       });
     });
-  }, [refresh, SortValue, i18n.language]);
+  }, [refresh, SortValue, i18n.language, CategoryId, SingerId,]);
 
   useEffect(() => {
     AuthorsService.GetAuthorDataById(state?.authorId, "").then((res) => {
@@ -362,7 +371,8 @@ const AudiosPage = () => {
                                     setCategoryId(value.id);
                                 }
                               }}
-                              onRefresh={ResetData}
+                              disableChildColored={false}
+                            // onRefresh={ResetData}
                             />
                           </div>
                         </AccordionDetails>
@@ -571,6 +581,10 @@ const AudiosPage = () => {
                                     title={audio.name}
                                     onClick={() => {
                                       if (UserIdentity) {
+                                        localStorage.setItem("categoryId", CategoryId || state?.audiocat)
+                                        localStorage.setItem("authorId", SingerId || state?.authorId)
+                                        localStorage.setItem("sort", SortValue)
+
                                         navigate(`/audios/` + audio.slug, {
                                           state: {
                                             audioId: audio.id,
@@ -578,6 +592,7 @@ const AudiosPage = () => {
                                             sorting: SortValue,
                                             index: i,
                                             audiocat: CategoryId,
+                                            audioAuthor: state?.authorId || SingerId
                                           },
                                         });
                                       } else {
@@ -592,6 +607,9 @@ const AudiosPage = () => {
                                   style={{ cursor: "pointer" }}
                                   onClick={() => {
                                     if (UserIdentity) {
+                                      localStorage.setItem("categoryId", CategoryId || state?.audiocat)
+                                      localStorage.setItem("authorId", SingerId || state?.authorId)
+                                      localStorage.setItem("sort", SortValue)
                                       navigate(`/audios/` + audio.slug, {
                                         state: {
                                           audioId: audio.id,
@@ -599,6 +617,7 @@ const AudiosPage = () => {
                                           sorting: SortValue,
                                           index: i,
                                           audiocat: CategoryId,
+                                          audioAuthor: state?.authorId || SingerId
                                         },
                                       });
                                     } else {
@@ -633,14 +652,14 @@ const AudiosPage = () => {
                                     title="Download"
                                     onClick={() => {
                                       if (UserIdentity) {
-                                        downloadAudio(`${process.env.REACT_APP_API_URL}/api/Audio/` +
+                                        downloadAudio(`${process.env.REACT_APP_API_URL}/api/Audios/` +
                                           audio?.id +
                                           "/audio?t=" +
                                           "&download_attachment=true")
                                       } else {
                                         setLogIn(true);
                                       }
-                                    }}                                   
+                                    }}
                                   >
                                     <img
                                       alt="download"
@@ -666,6 +685,7 @@ const AudiosPage = () => {
                                             sorting: SortValue,
                                             index: i,
                                             audiocat: CategoryId,
+                                            audioAuthor: state?.authorId || SingerId
                                           },
                                         });
                                       } else {

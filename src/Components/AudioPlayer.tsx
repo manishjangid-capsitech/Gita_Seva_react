@@ -21,6 +21,8 @@ import { AudioInfoDialog } from "../Pages/AudioInfoDialog";
 const AudioPlayer = () => {
   const navigate = useNavigate();
   const {
+    isMin,
+    setMin,
     currentAudio,
     isMinimise,
     setIsMinismise,
@@ -37,6 +39,8 @@ const AudioPlayer = () => {
   const [aLength, setALength] = useState(0);
   const [playing, setPlaying] = useState(false);
   const [audioinfoDialog, setAudioinfoDialog] = useState(false);
+  const [downloadTrue, setDownloadTrue] = useState<boolean>(false)
+  const [currentAudioId, setCurrentAudioId] = useState(currentAudio?.id);
 
   const closeInfoModel = () => {
     setAudioinfoDialog(false)
@@ -89,6 +93,31 @@ const AudioPlayer = () => {
   const repeataudio = () => {
     setIsRepeating(!isRepeating);
   };
+
+  const downloadAudio = (imagePath: any) => {
+    const imageUrl = imagePath;
+    const link = document.createElement('a');
+    link.href = imageUrl; link.download = 'image.jpg';
+    document.body.appendChild(link); link.click();
+    document.body.removeChild(link);
+  };
+
+  useEffect(() => {
+    // Re-enable the download button when the audioId changes
+    if (audioId !== currentAudioId) {
+      setDownloadTrue(false);
+      setCurrentAudioId(audioId);
+    }
+  }, [audioId, currentAudioId]);
+
+  // useEffect(() => {
+  //   if (isMin === false) {
+  //     setMin(true)
+  //   } else {
+  //     setMin(true)
+  //   }
+  // }, [isMin, setMin])
+
   return (
     <div>
       {currentAudio?.id ? (
@@ -133,7 +162,14 @@ const AudioPlayer = () => {
                   onLoad={(e: any) => (e.target.currentTime = 0)}
 
                 />
-                <div style={{ fontSize: "20px" }}>
+                <div style={{ fontSize: "20px", cursor: "pointer" }} onClick={() => {
+                  isMin && navigate(
+                    `/${localStorage.getItem("type")}/` + currentAudio?.id,
+                    {
+                      state: { audioId: currentAudio?.id },
+                    }
+                  );
+                }}>
                   {currentAudio?.name}
                 </div>
               </div>
@@ -158,16 +194,31 @@ const AudioPlayer = () => {
             className="column"
             style={{ margin: "0 5px" }}
           >
-            <a
+            <button
+              disabled={downloadTrue}
+              style={{
+                border: "none",
+                background: "none",
+                padding: 0,
+                margin: 0
+              }}
               id="download"
               title="Download"
-              href={
-                currentAudio != null
+              onClick={() => {
+                setDownloadTrue(true)
+                downloadAudio(currentAudio != null
                   ? currentAudio.audioPath != null
                     ? currentAudio.audioPath + "&download_attachment=true"
                     : currentAudio.pravachanPath + "&download_attachment=true"
-                  : "no record found"
-              }
+                  : "no record found")
+              }}
+            // href={
+            //   currentAudio != null
+            //     ? currentAudio.audioPath != null
+            //       ? currentAudio.audioPath + "&download_attachment=true"
+            //       : currentAudio.pravachanPath + "&download_attachment=true"
+            //     : "no record found"
+            // }
             >
               <img
                 alt="imgdownload"
@@ -175,13 +226,13 @@ const AudioPlayer = () => {
                 title="download"
                 width="30px"
               />
-            </a>
+            </button>
           </div>
           <label
             onClick={() => {
               favaddremove();
             }}
-            style={{ margin: "0 5px" }}
+            style={{ margin: "0 5px", cursor: "pointer" }}
           >
             <img
               src={isLiked ? Favadd : Favicon}
@@ -209,6 +260,7 @@ const AudioPlayer = () => {
               className="backcolor"
               onClick={() => {
                 prev();
+                setDownloadTrue(false)
               }}
             >
               <img alt="imgback" src={imgback} title="prev" width="30px" />
@@ -241,6 +293,7 @@ const AudioPlayer = () => {
               className="backcolor"
               onClick={() => {
                 next();
+                setDownloadTrue(false)
               }}
             >
               <img
@@ -301,12 +354,17 @@ const AudioPlayer = () => {
               0
             </span>
           </div>
-          <div className="column">
+          <div className="column"
+            //  style={{display: isMinimise ? "block" : "none" }}
+            style={{ display: isMin ? "block" : "none" }}
+
+          >
             <button
               className="backcolor"
-              style={isMinimise ? { display: "block" } : { display: "none" }}
+              // style={{display: isMinimise ? "block" : "none" }}
               onClick={() => {
-                setIsMinismise(false);
+                // setIsMinismise(false);
+                setMin(false)
                 navigate(
                   `/${localStorage.getItem("type")}/` + currentAudio?.id,
                   {
@@ -327,7 +385,9 @@ const AudioPlayer = () => {
 
           <div
             className="column"
-            style={isMinimise ? { display: "block" } : { display: "none" }}
+            // style={{display: isMinimise ? "block" : "none" }}
+            style={{ display: isMin ? "block" : "none" }}
+
           >
             <button
               className="backcolor"

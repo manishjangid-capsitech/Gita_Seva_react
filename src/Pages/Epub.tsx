@@ -26,7 +26,7 @@ import GeetGovindServices from "../Services/GeetGovind";
 
 export enum BookContentType {
   books,
-  kalyans,
+  kalyan,
   kalpatru,
   magazine,
   vivek,
@@ -110,6 +110,8 @@ const EpubPage = () => {
   const [toast, setToast] = useState<{ show: boolean, message: string }>({ show: false, message: '' })
   const { t } = useTranslation();
 
+  const [lastName, setLastName] = useState("")
+
   const [savedBookMark, setSavedBookMark] = useState<boolean>(false)
 
   const locationDetail = useLocation();
@@ -134,7 +136,7 @@ const EpubPage = () => {
       case BookContentType.books:
         value = `books/${state?.bookDetailId}`;
         break;
-      case BookContentType.kalyans:
+      case BookContentType.kalyan:
         value = `kalyans/${state?.kalyanDetailId}`;
         break;
       case BookContentType.kalpatru:
@@ -156,41 +158,25 @@ const EpubPage = () => {
     `${process.env.REACT_APP_API_URL}/api/${getUrlBytype(
       state.type
     )}/epubstrem/`
-    // `${process.env.REACT_APP_API_URL}/api/${state?.magazineDetailId}/epubstrem/`
-    // `${process.env.REACT_APP_API_URL}/api/MonthlyMagazines/633aa65c695a0c595f8579b9/epubstrem/`
-    // `${process.env.REACT_APP_API_URL}/api/MonthlyMagazines/633aa65c695a0c595f8579b9/epubstrem/`
-    // `${process.env.REACT_APP_API_URL}/api/VivekVanis/64de212fd06c418558f180f2/epubstrem/`
-    //`http://localhost:55049/v1/api/VivekVanis/64de212fd06c418558f180f2/epubstrem/`
   );
 
-  console.log("url",url);
-  
-
-  // const sublocation = localStorage.getItem("location")
   const [location, setLocation] = useState<any>(undefined);
   const locationChanged = (epubcifi: any) => {
 
     setLocation(epubcifi)
 
+
     if (renditionRef?.current && tocRef?.current) {
       const { displayed, href } = renditionRef?.current?.location?.start;
       const chapter = tocRef?.current?.find((item: any) => item?.href.includes(href));
+
       setPage(
         `Page ${displayed?.page} of ${displayed?.total} in chapter ${chapter ? chapter?.label : "n/a"
         }`
       );
-      setFinalName(chapter ? chapter.label : undefined);
-      // var els = $('a[href^="' + href + '"]');
-      // const els = document.querySelectorAll(`a[href^="${href}"]`) as NodeListOf<HTMLAnchorElement>;
-      //@ts-ignore
-      // console.log("--->", els?.prevObject[0]?.body?.innerText);
-      // if (els?.length > 0) {
 
-      // var $e = els?.prevObject[0]?.body?.innerText as any
-      // var title = els?.prevObject[0]?.body?.innerText?.split("#")[1];       
-      // }
+      setFinalName(chapter ? chapter.label : undefined);
     }
-    // console.log("title==>",title);
   };
 
   const head = {
@@ -224,8 +210,8 @@ const EpubPage = () => {
       if (res.status) {
         if (res.result != null && res.result !== "") {
           setcfi(res.result.cfi);
-          var currchapter = localStorage.getItem("title") as any;
-          setFinalName(currchapter)
+          // var currchapter = localStorage.getItem("title") as any;
+          // setFinalName(currchapter)
         }
       }
     });
@@ -246,7 +232,8 @@ const EpubPage = () => {
       location,
       "100",
     ).then((res) => {
-      if (res.status) localStorage.setItem("title", finalName)
+      // if (res.status) 
+      //   localStorage.setItem("title", finalName)
     });
   }
 
@@ -267,16 +254,9 @@ const EpubPage = () => {
         setLocation(cfiresult);
       }
       // location ? setLocation(state?.location) : setLocation(cfiresult);
+      // navigate('/' + cfiresult, { replace: true });      
     }, 400);
   }, [state, cfiresult, state?.location]);
-
-
-  // useEffect(() => { 
-  //   setTimeout(() => {
-  //     GetLstPosition(state?.bookDetailId);
-  //     setLocation(cfiresult);
-  //   }, 500);
-  // }, [state?.bookDetailId, cfiresult]);
 
   useEffect(() => {
     clickOnTheme(false);
@@ -534,12 +514,12 @@ const EpubPage = () => {
       navigate(-1);
     }
     if (KalyanId) {
-      navigate(`/kalyans/` + state.slug, {
+      navigate(`/kalyan/` + state.slug, {
         state: { kalyanId: state?.kalyanDetailId },
       });
     }
     if (KalpataruId) {
-      navigate(`/kalyanskalpataru/` + state.slug, {
+      navigate(`/kalyanakalpataru/` + state.slug, {
         state: { kalpatruId: state?.kalpatrauDetailId },
       });
     }
@@ -573,7 +553,7 @@ const EpubPage = () => {
           "bookmarks",
           state?.bookDetailId,
           location,
-          finalName
+          finalName || lastName
         );
       } else if (state?.kalyanDetailId) {
         res = await EpubServices.savebookmark(
@@ -598,6 +578,7 @@ const EpubPage = () => {
         );
       } else if (state?.vivekvaniDetailId) {
         res = await EpubServices.savevivekvanimark(
+          // "vivekvanimarks",
           state?.vivekvaniDetailId,
           location,
           finalName
@@ -845,6 +826,31 @@ const EpubPage = () => {
 
   const CurrentTheme = localStorage.getItem("epub-theme") as any;
 
+  // console.log("document.getElementById",document.getElementById("list-item"));
+  // console.log("document.getElementById",document.getElementById("subLabel"));
+
+  // var iframe = document?.getElementsByTagName("iframe");
+
+  //   const Name : string =
+  //     iframe[0]?.contentWindow?.document?.getElementsByClassName(
+  //       "Chapter-Heading"
+  //     )[0]?.innerHTML ||
+  //     iframe[0]?.contentWindow?.document?.getElementsByClassName("Heading")[0]
+  //     ?.innerHTML
+  //     ||
+  //     iframe[0]?.contentWindow?.document?.getElementsByClassName("char-style-override-1")[0]
+  //       ?.innerHTML || '';
+
+  const nameee = document?.getElementById("BName")?.innerHTML
+
+  // console.log("nameee",nameee);
+  const test = document.getElementsByClassName("Title-Page---Book-Name") as any
+  // console.log("test", test);
+  const testone = document.getElementsByClassName("Heading") as any
+  const testtwo = document.getElementsByClassName("Sub-Heading") as any
+  // console.log("testone", testone + testtwo);
+
+
   return (
     <div>
       <div
@@ -861,7 +867,9 @@ const EpubPage = () => {
           }}
         >
           <label id="BName" style={{ fontSize: "larger" }}>
-            {bookName ? bookName : state?.bookName} : {finalName}
+            {/* {bookName ? bookName : state?.bookName}
+            : {finalName}  */}
+            {bookName} : {lastName}
           </label>
         </div>
 
@@ -1046,7 +1054,7 @@ const EpubPage = () => {
 
       <div
         style={{
-          // margin: "50px 40% auto",
+          margin: "50px 40% auto",
           // padding: "10px",
           textAlign: "center",
           zIndex: 1,
@@ -1060,7 +1068,8 @@ const EpubPage = () => {
             color: "#fff",
             fontSize: "22px",
             fontFamily: "ChanakyaUni",
-            margin: "0 10px",
+            padding: "5px 8px",
+            // margin: "0 10px",
           }}
         >{toast.message}</div>}
       </div>
@@ -1069,14 +1078,15 @@ const EpubPage = () => {
         <EpubReader
           location={location}
           locationChanged={locationChanged}
-          // heading={(h) => setFinalName(h)}
-          // subHeading={(h) => setFinalName(h)}
+          // setFinalName={subitems}
+          // heading={(h) => setLastName(h)}
+          subHeading={(h) => setLastName(h)}
           //styles={ownStyles}
           //url='https://gerhardsletten.github.io/react-reader/files/alice.epub'
           url={url}
           epubInitOptions={{ requestHeaders: head }}
           tocChanged={(toc: any) => {
-            // if (!finalName) setFinalName('')
+            if (!finalName) setFinalName('')
             tocRef.current = toc;
           }}
           getRendition={(rendition) => {

@@ -83,13 +83,16 @@ export const EpubReaderStyles: IEpubReaderStyles = {
     // top: 0,
     zIndex: 1,
     width: 0,
-    overflowY: "auto",
     WebkitOverflowScrolling: "touch",
     background: "#ffffff",
     padding: "10px 0",
     // marginTop: "120px",
-    overflowX: "hidden"
+    overflowX: "hidden",
+    overflowY: "scroll"
   },
+  // tocArea: {
+
+  // },
   tocAreaWidth: {
     width: "280px",
     top: "55px",

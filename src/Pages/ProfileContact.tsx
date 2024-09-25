@@ -49,9 +49,9 @@ export const ProfileContact = () => {
   const currentLanguage = _get_i18Lang();
 
   const [data, setData] = useState<contactProps>({
-    name: "",
-    phoneNumber: "",
-    email: "",
+    name: localStorage.getItem("UserName") || "",
+    phoneNumber: localStorage.getItem("Phone") || "",
+    email: localStorage.getItem("Email") || "",
     feedbacktype: "",
     comment: "",
   });
@@ -69,37 +69,39 @@ export const ProfileContact = () => {
     email: undefined,
     note: undefined,
   });
+  console.log("error.name", error.name);
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
     handleValidation();
-    // if (!error.email || !error.number && !error.name && !error.note ) {
-    let newEntry = {
-      ...data,
-      feedbacktype: parseInt(data.feedbacktype),
-    };
+    if (!error.email || !error.number && !error.name && !error.note) {
+      let newEntry = {
+        ...data,
+        feedbacktype: parseInt(data.feedbacktype),
+      };
 
-    if (data.name !== "" && data.comment !== "") {
-      if (data?.comment?.length > 0) {
-        newEntry.comment = newEntry.comment;
-        HomeService.sendFeedback(
-          data.name,
-          data.phoneNumber  || "",
-          data.email || "Email is not available",
-          data.feedbacktype,
-          data.comment
-        ).then((result: any) => {
-          if (result.status) {
-            // setShowContactModel(true);
-            setData({
-              name: "",
-              phoneNumber: "",
-              email: "",
-              comment: "",
-              feedbacktype: "1",
-            });
-          }
-        });
+      if (data.name !== "" && data.comment !== "") {
+        if (data?.comment?.length > 0) {
+          newEntry.comment = newEntry.comment;
+          HomeService.sendFeedback(
+            data.name,
+            data.phoneNumber,
+            data.email,
+            data.feedbacktype,
+            data.comment
+          ).then((result: any) => {
+            if (result.status) {
+              // setShowContactModel(true);
+              setData({
+                name: "",
+                phoneNumber: "",
+                email: "",
+                comment: "",
+                feedbacktype: "1",
+              });
+            }
+          });
+        }
       }
     }
   };
@@ -107,6 +109,15 @@ export const ProfileContact = () => {
   const handleValidation = () => {
     setError((e) => ({
       ...e,
+      name: data.name?.trim() === "" ? "Please enter a valid name" : undefined,
+      number: data.phoneNumber?.trim() === ""
+        ? "Please enter a valid mobile number"
+        : undefined,
+      email: data.email?.trim() === ""
+        ? "Please enter a valid email address"
+        : error.email === undefined
+          ? undefined
+          : error.email,
       note:
         data.comment?.trim() === ""
           ? "Please enter a valid message"
@@ -125,7 +136,10 @@ export const ProfileContact = () => {
         });
       })
       .catch((error) => console.error("Error fetching data:", error));
-  }, [data.feedbacktype]);
+  }, [data.feedbacktype, localStorage.getItem("UserId")]);
+
+  console.log("localStorage.getItem('Email')", localStorage.getItem('Email'));
+
 
   return (
     <div>
@@ -193,12 +207,12 @@ export const ProfileContact = () => {
                   style={{ overflow: "hidden" }}
                   aria-labelledby="e-books-tab"
                 >
-                  <div className="tab-row">
-                    <div className="tabscroll">
+                  <div className="" style={{ display: "flex", paddingTop: "20px" }}>
+                    <div className="" >
                       <div
                         style={{
                           background: "#fffaf0",
-                          padding: "10px 20px",
+                          padding: "0px 10px 20px 20px",
                           boxShadow: "0 0 7px 1px #f5deb1!important",
                           height: "555px",
                           fontFamily: "ChanakyaUni",
@@ -226,14 +240,13 @@ export const ProfileContact = () => {
                           >
                             <form>
                               <div className="row" style={{ display: "flex" }}>
-                                <div style={{ display: "flex" }}>
+                                <div style={{ display: "grid", marginBottom: "15px" }}>
                                   <input
                                     style={{
                                       width: "500px",
                                       height: "35px",
                                       fontSize: "22px",
                                       paddingLeft: "15px",
-                                      marginBottom: "15px",
                                       border: "1px solid gray",
                                       borderRadius: "4px",
                                     }}
@@ -271,47 +284,67 @@ export const ProfileContact = () => {
                                       }
                                     }}
                                   />
+                                  {error.name && (
+                                    <small
+                                      style={{ color: "red", margin: "3px 0px -12px 5px", fontSize: "18px" }}
+                                    >
+                                      {error.name}
+                                    </small>
+                                  )}
                                 </div>
                                 <div>
-                                  <input
-                                    style={{
-                                      width: "500px",
-                                      height: "35px",
-                                      fontSize: "22px",
-                                      paddingLeft: "15px",
-                                      background:
-                                        data?.phoneNumber?.length > 0
-                                          ? "#E9ECEF"
-                                          : "#fff",
-                                      border: "1px solid gray",
-                                      borderRadius: "4px",
-                                    }}
-                                    name="phoneNumber"
-                                    id="phoneNumber"
-                                    type="number"
-                                    maxLength={10}
-                                    max={10}
-                                    placeholder={t("Mobile_No_tr")}
-                                    onClick={() => {
-                                      setShowModel(true);
-                                    }}
-                                    value={data.phoneNumber}
-                                    className="input contactContent"
-                                  />
+                                  {/* {localStorage.getItem("Phone") ?
+                                    <label className="contactContent" style={{ width: "500px", height: "35px", padding: "4px 0 0 15px", background: "#efefef" }}>{localStorage.getItem('Phone') || t("Mobile_No_tr")}</label>
+                                    : */}
+                                  <div style={{ display: "grid", marginBottom: "15px", }}>
+                                    <input
+                                      style={{
+                                        width: "500px",
+                                        height: "35px",
+                                        fontSize: "22px",
+                                        paddingLeft: "15px",
+                                        background:
+                                          data?.phoneNumber?.length > 0
+                                            ? "#E9ECEF"
+                                            : "#fff",
+                                        border: "1px solid gray",
+                                        borderRadius: "4px",
+                                      }}
+                                      name="phoneNumber"
+                                      id="phoneNumber"
+                                      type="number"
+                                      disabled={localStorage.getItem("PhoneNumberSe") === "true"}
+                                      maxLength={10}
+                                      max={10}
+                                      placeholder={t("Mobile_No_tr")}
+                                      onClick={() => {
+                                        setShowModel(true);
+                                      }}
+                                      value={data.phoneNumber}
+                                      className="input contactContent"
+                                    />
+                                    {error.number && (
+                                      <small
+                                        style={{ color: "red", margin: "3px 0 -12px 5px", fontSize: "18px" }}
+                                      >
+                                        {error.number}
+                                      </small>
+                                    )}
+                                  </div>
+                                  {/* } */}
                                 </div>
                               </div>
                               <div
                                 className="row"
-                                style={{ marginTop: "15px" }}
                               >
-                                <div>
+                                <div style={{ display: "grid", marginBottom: "15px" }}>
                                   <input
                                     style={{
                                       width: "500px",
                                       height: "35px",
                                       fontSize: "22px",
                                       paddingLeft: "15px",
-                                      marginBottom: "15px",
+
                                       background:
                                         data?.email?.length > 0
                                           ? "#E9ECEF"
@@ -321,6 +354,7 @@ export const ProfileContact = () => {
                                     }}
                                     name="email"
                                     type="email"
+                                    disabled={localStorage.getItem("EmailIdSe") === "true"}
                                     placeholder={t("E_Mail_tr")}
                                     onClick={() => {
                                       setShowModel(true);
@@ -329,6 +363,13 @@ export const ProfileContact = () => {
                                     className="contactContent"
                                     required
                                   />
+                                  {error.email && (
+                                    <small
+                                      style={{ color: "red", margin: "3px 0 -12px 5px", fontSize: "18px" }}
+                                    >
+                                      {error.email}
+                                    </small>
+                                  )}
                                 </div>
                                 <div>
                                   <select

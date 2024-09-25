@@ -443,7 +443,7 @@ const PravachansPage = () => {
                           style={{
                             height: 0,
                             background: "#FFFAF0",
-                            minHeight: "20px",
+                            minHeight: "25px",
                             marginTop: "15px",
                           }}
                         >
@@ -570,10 +570,6 @@ const PravachansPage = () => {
                       {/* Pravachanlist  */}
                       <Accordion elevation={0} defaultExpanded={state?.authorId ? true : false}>
                         <AccordionSummary
-                          // if (window?.location?.path === "/pravachans/author/honorable-shri-jayadayal-ji-goyandka") {
-                          //   defaultExpanded ? pravachans/author/honorable-shri-jayadayal-ji-goyandka
-                          //   defaultExpanded ? pravachans/author/honorable-shri-jayadayal-ji-goyandka
-                          // }
                           expandIcon={<ExpandMore />}
                           style={{
                             height: 0,
@@ -793,6 +789,7 @@ const PravachansPage = () => {
                                           sorting: SortValue,
                                           index: i,
                                           audiocat: CategoryId,
+                                          audioAuthor: state?.authorId || PreacherId
                                         },
                                       });
                                     } else {
@@ -877,6 +874,7 @@ const PravachansPage = () => {
                                             sorting: SortValue,
                                             index: i,
                                             audiocat: CategoryId,
+                                            audioAuthor: state?.authorId || PreacherId
                                           },
                                         });
                                       } else {

@@ -12,6 +12,7 @@ import "../Styles/Profile.css";
 import ProfileSidePanel from "./ProfileSidePanel";
 import { storage } from "./Firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import SearchDataService from "../Services/SearchData";
 
 export interface IUserModel {
   userId?: string;
@@ -35,7 +36,6 @@ export interface IUserModel {
 const Profile = () => {
   const { t } = useTranslation();
 
-  const UserImage = localStorage.getItem("Image");
   const [hide, setHide] = useState(false);
   const [states, setStates] = useState<any[]>([]);
   const [district, setDistrict] = useState<any[]>([]);
@@ -46,9 +46,10 @@ const Profile = () => {
 
   const [baseFile, setBaseFile] = useState<any>('');
 
+
   const [data, setData] = useState<IUserModel>({
-    name: "",
-    email: "",
+    name: localStorage.getItem('userName') || "",
+    email: localStorage.getItem('Email') || "",
     baseFile: "",
     address1: "",
     address2: "",
@@ -58,13 +59,17 @@ const Profile = () => {
     countrytype: "",
     pinCode: "",
     language: "",
-    phoneNumber: "",
+    phoneNumber: localStorage.getItem('Phone') || "",
     displaycity: "",
     displaycountry: "",
     displaystate: "",
   });
 
   const colors = "#FF9800";
+
+  const LocalEmail = localStorage?.getItem('Email') as string;
+
+  const PrifilePic = localStorage.getItem("Image")
 
   const handleSubmit = () => {
     const imageRef = ref(storage, "image");
@@ -129,6 +134,9 @@ const Profile = () => {
           displaycountry: res?.result?.addressDisplay?.country,
           displaystate: res?.result?.addressDisplay?.state,
         });
+        localStorage.setItem("userName", res.result?.name)
+        localStorage.setItem("Phone", res.result?.phoneNumber)
+        localStorage.setItem("Email", res.result?.email)
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
@@ -171,6 +179,10 @@ const Profile = () => {
       data.phoneNumber.slice(0, 3);
     }
   }, []);
+
+  console.log("type email", localStorage.getItem("EmailIdSe") === "true");
+  // console.log("type email false", localStorage.getItem("EmailIdSe") === "false");
+  console.log("PhoneNumberSe", localStorage.getItem("PhoneNumberSe") === "true");
 
   return (
     <div>
@@ -297,7 +309,7 @@ const Profile = () => {
                             }}
                           >
                             <img
-                              src={baseFile ? baseFile : UserImage}
+                              src={baseFile ? baseFile : image || PrifilePic}
                               alt="Selected Profile"
                               style={{ width: '140px' }}
                             />
@@ -342,7 +354,7 @@ const Profile = () => {
                                 {t("Mobile_No_tr")}
                               </h6>
                               <input
-                                disabled
+                                disabled={!hide || localStorage.getItem("PhoneNumberSe") === "true"}
                                 type="number"
                                 className="inputBoxStyle"
                                 // style={{ color: hide ? "#000" : "#ff731f" }}
@@ -369,19 +381,23 @@ const Profile = () => {
                               >
                                 {t("E_Mail_tr")}
                               </h6>
+                              {/* { LocalEmail ?
+                                <label className="contactContent" style={{ width: "500px", height: "35px", padding: "4px 0 0 15px", background: "#efefef" }}>{LocalEmail || t("E_Mail_tr")}</label>
+                                : */}
                               <input
-                                disabled={!data.phoneNumber || !hide}
+                                disabled={!hide || localStorage.getItem("EmailIdSe") === "true"}
                                 className="inputBoxStyle"
                                 value={data.email}
                                 style={{ color: hide ? "#000" : "#ff731f" }}
                                 onChange={(evt: any) => {
                                   let value = evt.target.value;
-                                    setData((d: IUserModel) => ({
-                                      ...d,
-                                      email: value!,
-                                    }));                                  
+                                  setData((d: IUserModel) => ({
+                                    ...d,
+                                    email: value!,
+                                  }));
                                 }}
                               />
+                              {/* } */}
                             </div>
 
                             <div
@@ -395,7 +411,6 @@ const Profile = () => {
                                 {t("Address_tr")}
                               </h6>
                               <div
-                                className=""
                                 style={{
                                   color: hide ? "#000" : "#ff731f",
                                   lineHeight: "25px",
@@ -581,7 +596,7 @@ const Profile = () => {
                                 </div>
                                 <button
                                   onClick={async () => {
-                                    debugger
+                                    debugger;
                                     await ProfileService.updateUserProfile(
                                       data.name,
                                       data.email,

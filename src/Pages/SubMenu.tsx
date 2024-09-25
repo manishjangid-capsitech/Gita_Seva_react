@@ -142,10 +142,12 @@ export const SideBar = ({
   items,
   onRefresh,
   onClick,
+  disableChildColored, // new prop
 }: {
   items: any[];
   onRefresh?: (event: React.FormEvent<any>) => void;
   onClick: (value: any) => void;
+  disableChildColored?: boolean; // new prop
 }) => {
   const [itemsArr, setItemsArr] = useState(items);
   const [sidebar, setSidebar] = useState(false);

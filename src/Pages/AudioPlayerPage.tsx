@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import { useEffect, useRef, useState } from "react";
 import { Button } from "react-bootstrap";
-import { useAudio } from "../Contexts/AudiosContext";
+import { IAudioItem, useAudio } from "../Contexts/AudiosContext";
 import AudioPlayer from "../Services/AudioPlayer";
 import closeimg from "../Images/close-C.png";
 import songplay from "../Images/songPlay.svg";
@@ -14,6 +14,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 const AudioPlayerPage = ({ match }: any) => {
   const navigate = useNavigate();
   const {
+    isMin,
+    setMin,
     setAudiosList,
     setIsMinismise,
     audiosList,
@@ -30,34 +32,39 @@ const AudioPlayerPage = ({ match }: any) => {
     sorting: string;
     index: number;
     audiocat: string;
+    audioAuthor: string
   };
 
   const catId = useRef<string | any>(state?.audiocat! || "");
   const auid = useRef<string | undefined>(state?.audioId! || "");
-  const [hide, setHide] = useState(false);
 
   const [Type, setType] = useState<any | undefined>(
     localStorage.getItem("type")
   );
 
   useEffect(() => {
+    // window?.location.pathname === "/audio" ? "audios" : "pravachans"
     setType(localStorage.getItem("type"));
     AudioPlayer.getAudioPlayer(
       _get_i18Lang(),
       0,
-      1000,
+      5000,
       false,
-      state?.audiocat,
-      "",
+      state?.audiocat || "",
+      state?.audioAuthor || "",
       "",
       state?.sorting! || "",
       "",
       false,
-      Type
+      Type,
+      // window?.location.pathname === "/audio" ? "audios" : "pravachans",
     ).then((res) => {
-      if (res?.status) {
+      if (res?.status) {       
         setIsMinismise(false);
-        setAudiosList(res.result.items);
+        setMin(false)
+        // state?.audioAuthor ? 
+        setAudiosList(res.result.items)
+        //  : setAudiosList(initialArray)
         playAudio(state?.audioId!, state?.index);
         const element = document.getElementById(state?.audioId);
         element?.scrollIntoView();
@@ -238,8 +245,9 @@ const AudioPlayerPage = ({ match }: any) => {
                 className="pe-sm-2"
                 onClick={() => {
                   setIsMinismise(true);
-                  setIsMinismise(true)
-                  navigate(`/${Type}/`)
+                  setMin(true)
+                  // navigate(`/${Type}/`)
+                  navigate(`/${Type}`);
                 }}
               ></img>
             </a>
@@ -249,9 +257,9 @@ const AudioPlayerPage = ({ match }: any) => {
                 alt=""
                 src={closeimg}
                 onClick={() => {
-                  setHide(true);
                   close();
-                  navigate(`/${Type}`);
+                  // navigate(`/${Type}`)
+                  navigate(-1)
                 }}
               />
             </a>

@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import KalyansServices from "../Services/Kalyan";
 import DefaultBook from "../Images/defaultBook.png";
 import ListPagination from "../Components/ListPagination";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "../Styles/Books.css";
 import i18n from "../i18n";
 import { useTranslation } from "react-i18next";
@@ -60,9 +60,9 @@ const KalyansPage = () => {
       "",
       SortValue,
       "",
-      window.location.pathname === "/kalyans/special" ? true : false
+      window.location.pathname === "/kalyan/special" ? true : false
     ).then((res) => {
-      if (res) {
+      if (res?.status) {
         setKalyan(res.result?.items);
         setPagination({
           ...pagination,
@@ -107,9 +107,9 @@ const KalyansPage = () => {
       "",
       SortValue, //sort
       "",
-      window.location.pathname === "/kalyans/special" ? true : false
+      window.location.pathname === "/kalyan/special" ? true : false
     ).then((res) => {
-      if (res) {
+      if (res?.status) {
         setKalyan(res.result?.items);
         setPagination({
           ...pagination,
@@ -121,46 +121,6 @@ const KalyansPage = () => {
 
   return (
     <>
-      {/* <div
-        className="breadcrumbs-head newcontainer"
-        style={{
-          width: "100%",
-          marginTop: "-175px",
-          background: "none",
-          backgroundColor: "#ffedbc",
-          height: "240px",
-          borderBottom: "2px solid #fff",
-          paddingTop: 0,
-        }}
-      >
-        <div className="breadcrumbs">
-          <div
-            className="containers"
-            style={{
-              fontSize: "36px",
-              fontWeight: 700,
-              color: "rgb(209, 21, 1)",
-              top: "155px",
-              fontFamily: "ChanakyaUniBold"
-            }}
-          >
-            {t("Kalyan_tr")}
-            <div
-              style={{
-                fontSize: "19px",
-                fontWeight: 600,
-                color: "#2d2a29",
-                marginTop: "-8px",
-              }}
-            >
-              <Link style={{ marginRight: "8px", color: "#2d2a29" }} to="/">
-                {t("Home_tr")}
-              </Link>
-              <label> / {t("Kalyan_tr")}</label>
-            </div>
-          </div>
-        </div>
-      </div> */}
       <Breadcrumbs
         mainsubBreadCrumb={t("Kalyan_tr")}
         subBreadCrumb={t("Home_tr")}
@@ -185,7 +145,7 @@ const KalyansPage = () => {
             style={{ backgroundColor: "#FFF6E1" }}
           >
             <div className="row">
-              <div className="col-lg-3">
+               <div className="col-lg-3">
                 <div
                   style={{
                     display: "block",
@@ -223,7 +183,7 @@ const KalyansPage = () => {
                         style={{
                           height: 0,
                           background: "#FFFAF0",
-                          minHeight: "20px"
+                          minHeight: "25px"
                         }}
                       >
                         <h2 className="filtertitle" style={{ fontFamily: "ChanakyaUniBold" }}>{t("Kalyan_Points_tr")}</h2>
@@ -323,7 +283,7 @@ const KalyansPage = () => {
                                 className="sidebarmargin"
                                 key={`kalyan-${kalyan.id}`}
                                 onClick={() => {
-                                  navigate(`/kalyans/` + kalyan.slug, {
+                                  navigate(`/kalyan/` + kalyan.slug, {
                                     state: {
                                       kalyanId: kalyan.id,
                                       kalyanSlug: kalyan.slug,

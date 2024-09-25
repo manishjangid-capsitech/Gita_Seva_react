@@ -85,12 +85,16 @@ const HomePage = () => {
   const refLrc = useRef<any>(null);
   const [hoverId, setHoverId] = useState<number | string>();
 
-  const [magazineData, setMagazineData] = useState<any[] | undefined>(undefined);
-  const [kalyanData, setKalyanData] = useState<any[] | undefined>(undefined);
-  const [kalpatruData, setKalpatruData] = useState<any[] | undefined>(undefined);
-  const [vivekVaniData, setVivekVaniData] = useState<any[] | undefined>(undefined);
+
   const [fetchArticle, setFetchArticle] = useState(false);
   const [articlesBox, setArticlesBox] = useState<any[] | undefined>(undefined);
+
+  const [isLoading, setLoading] = useState(false);
+  const [booklength, setBookLength] = useState("")
+  const [audiosLength, setAudiosLength] = useState("")
+  const [pravachanLength, setPravachanLength] = useState<any>("")
+  const [articleLength, setArticleLength] = useState("")
+  const [divineQuoteLength, setDivineLength] = useState("")
 
   const infinite = banners ? React.Children.count(banners?.length) > 0 : false;
   const settings = {
@@ -103,33 +107,6 @@ const HomePage = () => {
     autoplaySpeed: 2000,
     arrows: false,
     dotsClass: "button__bar"
-  };
-
-  const settingsWithModules = {
-    ...settings,
-    dotsClass: styles.button__bar,
-  };
-
-  const settingsbook = {
-    infinite: true,
-    speed: 500,
-    slidesToShow: 5,
-    slidesToScroll: 1,
-    autoplay: true,
-    autoplaySpeed: 1500,
-    prevArrow: <img src={leftArrow} alt="" height="40px" />,
-    nextArrow: <img src={rightArrow} alt="" height="40px" />
-  };
-
-  const settingsaudio = {
-    infinite: true,
-    speed: 500,
-    slidesToShow: 4,
-    slidesToScroll: 1,
-    autoplay: true,
-    autoplaySpeed: 2000,
-    prevArrow: <img src={leftArrow} alt="" height="40px" />,
-    nextArrow: <img src={rightArrow} alt="" height="40px" />
   };
 
   function createMarkuparticle(index: number) {
@@ -357,13 +334,6 @@ const HomePage = () => {
     });
   }, [refresh, i18n.language]);
 
-  const [isLoading, setLoading] = useState(false);
-  const [booklength, setBookLength] = useState("")
-  const [audiosLength, setAudiosLength] = useState("")
-  const [pravachansLength, setPravachansLength] = useState<any>("")
-  const [articleLength, setArticleLength] = useState("")
-  const [divineQuoteLength, setDivineLength] = useState("")
-
   useEffect(() => {
     setLoading(true);
     BooksService.getBooks(
@@ -394,7 +364,7 @@ const HomePage = () => {
       "",
       "",
       "",
-      window.location.pathname === "/audios/special" ? true : false,
+      false,
       "audios",
       0,
       "",
@@ -414,18 +384,19 @@ const HomePage = () => {
       "",
       "",
       "",
-      "0",
       "",
-      window.location.pathname === "/pravachans/special" ? true : false,
+      "",
+      false,
       "pravachans",
       0,
       "",
       "",
       ""
     ).then((res: any) => {
-      if (res.status) setPravachansLength(res?.result?.items?.length)
+      if (res.status)
+        setPravachanLength(res?.result?.items?.length)
     });
-  }, [refresh, i18n.language, pravachansLength]);
+  }, [refresh, i18n.language, pravachanLength]);
 
   useEffect(() => {
     setRefresh(false);
@@ -457,9 +428,8 @@ const HomePage = () => {
     });
   }, [refresh]);
 
-
   useEffect(() => {
-    HomeService.getQuotesData(0, 6).then((res: any) => {
+    DivineQuotesService.getDivineQuotes("", 0, 2000).then((res: any) => {
       if (res?.status) {
         setquotes(res?.result?.items)
       }
@@ -479,7 +449,6 @@ const HomePage = () => {
     fetch(text)
       .then((response) => response?.text())
       .then((textContent) => {
-        // console.log(textContent)
         var lyrics = textContent.replace(/\[[^\]]+\]/g, "").trim();
         setDefaultAudLyrics(lyrics);
       });
@@ -490,82 +459,6 @@ const HomePage = () => {
       new RabbitLyrics(refLrc.current, refAudio.current as any);
     }
   }, []);
-
-  useEffect(() => {
-    setRefresh(false);
-    GeetGovindServices.getMonthlyMagazine(
-      0,
-      5,
-      false,
-      "",
-      "",
-      "",
-      "0", //sort
-      "",
-      window.location.pathname === "/books/special" ? true : false
-    ).then((res) => {
-      if (res?.status) {
-        setMagazineData(res.result?.items);
-      }
-    })
-  }, [refresh, i18n.language]);
-
-  useEffect(() => {
-    setRefresh(false);
-    KalyansServices.getKalyans(
-      0,
-      5,
-      false,
-      "",
-      "",
-      "",
-      "0", //sort
-      "",
-      window.location.pathname === "/kalyans/special" ? true : false
-    ).then((res) => {
-      if (res) {
-        setKalyanData(res.result?.items);
-      }
-    });
-  }, [refresh, i18n.language]);
-
-  useEffect(() => {
-    setRefresh(false);
-    KalpatsruServices.getKalyansKalpataru(
-      0,
-      5,
-      false,
-      "",
-      "",
-      "",
-      "0", //sort
-      "",
-      window.location.pathname === "/books/special" ? true : false
-    ).then((res) => {
-      if (res) {
-        setKalpatruData(res.result?.items);
-      }
-    });
-  }, [refresh, i18n.language]);
-
-  useEffect(() => {
-    setRefresh(false);
-    VivekService.getVanis(
-      0,
-      5,
-      "",
-      false,
-      "2",
-      "",
-      "",
-      "",
-      window.location.pathname === "/vivekvani/special" ? true : false
-    ).then((res) => {
-      if (res.status) {
-        setVivekVaniData(res.result?.items);
-      }
-    });
-  }, [refresh, i18n.language]);
 
   const [saveActivtab, setSaveActivetab] = useState("")
 
@@ -633,6 +526,7 @@ const HomePage = () => {
       </div>
 
       <div className="section1">
+
         <div className="gst-homebg-image">
           <div>
             <div className="containers">
@@ -680,207 +574,7 @@ const HomePage = () => {
                         ))
                         : ""}
                     </Slider>
-                    {/* <div
-                      className="parentBox"
-                    >
-                      <div
-                        className="bgImg audioBox1"
-                        style={{
-                          backgroundColor: "#ffc72f",
-                        }}
-                      >
-                        <div
-                          id="audio1"
-                          style={{ margin: "70px 15px 0 -10px" }}
-                        >
-                          {playing ? (
-                            <img
-                              id="startIcon"
-                              src={playimg}
-                              alt="playimg"
-                              style={{
-                                color: "rgb(255, 233, 172)",
-                                fontSize: "33px",
-                                cursor: "pointer",
-                                margin: "15px 0px 0px 22px",
-                                paddingTop: "25%",
-                              }}
-                              onClick={() => {
-                                refAudio.current?.pause();
-                                // stopHomeAudio(2);
-                              }}
-                            />
-                          ) : (
-                            <i
-                              id="stopIcon"
-                              className="fa fa-play-circle"
-                              style={{
-                                color: "rgb(255, 233, 172)",
-                                fontSize: "33px",
-                                cursor: "pointer",
-                                margin: "15px 0 0 22px",
-                                paddingTop: "18%",
-                              }}
-                              onClick={() => {
-                                refAudio.current?.play();
-                                // stopHomeAudio(1);
-                              }}
-                            ></i>
-                          )}
-                        </div>
-                        <audio
-                          ref={refAudio}
-                          id="#audio1"
-                          onPlay={() => {
-                            setPlaying(true);
-                          }}
-                          onPause={() => {
-                            setPlaying(false);
-                          }}
-                          src={audio}
-                        />
-                        <div
-                          ref={refLrc}
-                          data-audio="#audio1"
-                          className="lyrics lyrics-enabled"
-                          style={{
-                            cursor: "pointer",
-                            padding: "18px 11px 0 10px",
-                          }}
-                          // data-audio="#audio1"
-                        >
-                          {defaultlyrics
-                            ?.replace(/\r/g, "")
-                            ?.split("\n")
-                            ?.map((l: any,index) => {
-                              return <span key={l?.id} style={{ fontSize: 23 }}>{l}</span>;
-                            })}
-                        </div> 
-                        <LyricsComponent/>
-                      </div>
-                      <div
-                        className="audioBox2"
-                      >
-                        <div
-                          className="partTwoDiv"
-                          id="div22"
-                          style={{
-                            overflowY: "hidden",
-                            fontSize: "24px",
-                            fontFamily: "ChanakyaUni",
-                          }}
-                        >
-                          { <div
-                            className="line"
-                            id="lineDiv1"
-                            data-start="2.48"
-                            data-end="52.00"
-                          >
-                            कंस और चाणूरका वध करने वाले, देवकीके आनन्दवर्धन,
-                            वसुदेवनन्दन जगद्गुरु श्रीकृष्णचन्द्रकी मैं वन्दना
-                            करता हूँ। <br />
-                          </div>}
-
-                         { <div
-                            className="line active"
-                            style={{ display: "none" }}
-                            id="lineDiv2"
-                            data-start="52.00"
-                            data-end="94.31"
-                          >
-                            मैं अजन्मा और अविनाशी स्वरूप होते हुए भी तथा समस्त
-                            प्राणियोंका ईश्वर होते हुए भी अपनी प्रकृतिको अधीन
-                            करके अपनी योगमायासे प्रकट होता हूँ।
-                            <br />
-                          </div>}
-
-                          <div
-                            className="line active"
-                            style={{ display: "none" }}
-                            id="lineDiv3"
-                            data-start="94.31"
-                            data-end="133.51"
-                          >
-                            हे भारत! जब-जब धर्मकी हानि और अधर्मकी वृद्धि होती
-                            है, तब-तब ही मैं अपने रूपको रचता हूँ अर्थात्
-                            साकाररूपसे लोगोंके सम्मुख प्रकट होता हूँ।
-                          </div>
-
-                          <div
-                            className="line active"
-                            style={{ display: "none" }}
-                            id="lineDiv4"
-                            data-start="133.51"
-                            data-end="171.84"
-                          >
-                            साधु पुरुषोंका उद्धार करनेके लिये, पाप-कर्म
-                            करनेवालोंका विनाश करनेके लिये और धर्मकी अच्छी तरहसे
-                            स्थापना करनेके लिये मैं युग-युगमें प्रकट हुआ करता
-                            हूँ।
-                          </div>
-
-                          <div
-                            className="line active"
-                            style={{ display: "none" }}
-                            id="lineDiv5"
-                            data-start="171.84"
-                            data-end="208.98"
-                          >
-                            हे अर्जुन! मेरे जन्म और कर्म दिव्य अर्थात् निर्मल और
-                            अलौकिक हैं—इस प्रकार जो मनुष्य तत्त्वसे जान लेता है,
-                            वह शरीरको त्यागकर फिर जन्मको प्राप्त नहीं होता,
-                            किंतु मुझे ही प्राप्त होता है।
-                          </div>
-
-                          <div
-                            className="line active"
-                            style={{ display: "none" }}
-                            id="lineDiv6"
-                            data-start="208.98"
-                            data-end="245.46"
-                          >
-                            पहले भी, जिनके राग, भय और क्रोध सर्वथा नष्ट हो गये
-                            थे और जो मुझमें अनन्यप्रेमपूर्वक स्थित रहते थे, ऐसे
-                            मेरे आश्रित रहनेवाले बहुत-से भक्त उपर्युक्त ज्ञानरूप
-                            तपसे पवित्र होकर मेरे स्वरूपको प्राप्त हो चुके हैं।
-                          </div>
-
-                          <div
-                            className="line active"
-                            style={{ display: "none" }}
-                            id="lineDiv7"
-                            data-start="245.46"
-                            data-end="289.86"
-                          >
-                            कंस और चाणूरका वध करने वाले, देवकीके आनन्दवर्धन,
-                            वसुदेवनन्दन जगद्गुरु श्रीकृष्णचन्द्रकी मैं वन्दना
-                            करता हूँ।
-                          </div>
-
-                          <div
-                            className="line active"
-                            style={{ display: "none" }}
-                            id="lineDiv8"
-                            data-start="289.86"
-                            data-end="306.91"
-                          >
-                            हरे राम हरे राम राम राम हरे हरे
-                          </div>
-
-                          <div
-                            className="line active"
-                            style={{ display: "none" }}
-                            id="lineDiv9"
-                            data-start="306.91"
-                            data-end="Infinity"
-                          >
-                            हरे कृष्ण हरे कृष्ण कृष्ण कृष्ण हरे हरे
-                          </div>
-                        </div>
-                      </div>
-                    </div> */}
                     <LyricsComponent />
-                    {/* <LyricsDB /> */}
                   </div>
                 </div>
                 <div
@@ -962,7 +656,6 @@ const HomePage = () => {
                               </p>
                             </div>
                           </div>
-
                         )
                       }
                       )}
@@ -1036,6 +729,7 @@ const HomePage = () => {
                               backgroundColor: "#ffcd44",
                             }}
                             onClick={() => {
+                              localStorage.setItem("type", "audios")
                               navigate(`/audios/author/` + author?.slug, {
                                 state: {
                                   authorId: author.id,
@@ -1055,6 +749,7 @@ const HomePage = () => {
                               backgroundColor: "#ffcd44",
                             }}
                             onClick={() => {
+                              localStorage.setItem("type", "pravachans")
                               navigate(`/pravachans/author/` + author?.slug, {
                                 state: {
                                   authorId: author.id,
@@ -1107,7 +802,7 @@ const HomePage = () => {
           <div className="container">
             <div className="homeNav">
               <nav>
-                <div className="nav nav-tabs" id="nav-tab" role="tablist">
+                <div className="nav nav-tabs" id="nav-tab" role="tablist" style={{ display: "flex", justifyContent: "space-around" }}>
                   <button
                     className="nav-link"
                     id="e-books-tab"
@@ -1234,14 +929,6 @@ const HomePage = () => {
                             >
                               <a
                                 onClick={() => {
-                                  // navigate(`/books/special/` + specialbook.slug, {
-                                  //   state: {
-                                  //     bookId: specialbook.id,
-                                  //     bookName: specialbook.name,
-                                  //     bookSlug: specialbook?.slug,
-                                  //     pathname: window.location?.pathname,
-                                  //   },
-                                  // });
                                   navigate(`/books/` + specialbook.slug, {
                                     state: {
                                       bookId: specialbook.id,
@@ -1304,15 +991,11 @@ const HomePage = () => {
                         marginBottom: "35px"
                       }}
                     >
-                      {/* {t("All_Special_E_books_tr")} */}
                       {t("all_tr")}
-                      {/* {booklength ?
-                        <Spinner />
-                        : */}
+
                       <p style={{
                         margin: "0px 8px"
                       }}>{booklength}</p>
-                      {/* } */}
                       {t("E_books_tr")}
                       <p style={{ margin: "0 0 0 10px" }}>{t("view_tr")}</p>
                     </Link>
@@ -1329,7 +1012,7 @@ const HomePage = () => {
 
                   <div className="tab-row">
                     <div className="tabscroll">
-                      {specialAudios?.map((specialaudio, index: number) => {
+                      {specialAudios && specialAudios.length > 0 && specialAudios?.map((specialaudio, index: number) => {
                         return (
                           <div
                             className="tab-col"
@@ -1417,16 +1100,11 @@ const HomePage = () => {
                       }}
                     >
                       {t("all_tr")}
-                      {/* {audiosLength ?
-                        <Spinner />
-                        : */}
                       <p style={{
                         margin: " 0px 8px"
                       }}>{audiosLength}</p>
-                      {/* } */}
                       {t("Audios_tr")}
                       <p style={{ margin: "0 0 0 10px" }}>{t("view_tr")}</p>
-                      {/* {t("All_Special_Audios_tr")} */}
                     </Link>
                   </div>
                 </div>
@@ -1526,7 +1204,7 @@ const HomePage = () => {
                         backgroundColor: "#ff4e2a",
                         borderRadius: "5px",
                         // color: "#fff",
-                        // cursor: pravachansLength ? "no-drop" : "pointer",
+                        // cursor: pravachanLength ? "no-drop" : "pointer",
                         fontFamily: "ChanakyaUni",
                         fontSize: "22px",
                         // padding: "5px 12px",
@@ -1537,13 +1215,12 @@ const HomePage = () => {
                       }}
                     >
                       {t("all_tr")}
-                      {pravachansLength ?
-                        <Spinner />
-                        :
-                        < p style={{
-                          margin: "0px 8px"
-                        }}>{pravachansLength}</p>
-                      }
+                      {/* {pravachanLength ?
+                        <h6>...</h6> : */}
+                      <p style={{
+                        margin: "0px 8px"
+                      }}>{pravachanLength}</p>
+                      {/* } */}
                       {t("Pravachan_tr")}
                       <p style={{ margin: "0 0 0 10px" }}>{t("view_tr")}</p>
                       {/* {t("All_Special_Pravachan_tr")} */}
@@ -1653,28 +1330,24 @@ const HomePage = () => {
                   >
                     <ImageGroup>
                       <ul className="images bgcolor" style={{
-                        width: "90%",
+                        // width: "90%",
                         display: "grid",
                         gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-                        gridGap: "50px",
+                        gridGap: "20px",
                         listStyle: "inside",
                         margin: 0,
                         padding: 0,
-                        height: "150px"
+                        height: "180px"
                       }}>
                         {quotes
-                          ?.slice(0, 4)
+                          ?.slice(0, 5)
                           ?.map((divquote: any, index: number) => {
                             return (
-                              <li key={divquote?.id} style={{
-                                position: "relative",
-                                paddingTop: "22%",
-                                listStyle: "none"
-                              }}>
+                              <li key={divquote?.id}>
                                 <Image
                                   src={divquote?.quotesPath}
                                   alt="image"
-                                  style={{ width: "90%" }}
+                                  style={{ width: "80%" }}
                                   onMouseEnter={() => {
                                     setHoverId(index);
                                   }}
@@ -1764,7 +1437,7 @@ const HomePage = () => {
                       clickevent={() => {
                         navigate(`/geetgovind`, {
                           state: {
-                            language: 0
+                            language: "hindi"
                           }
                         })
                       }}
@@ -1775,7 +1448,7 @@ const HomePage = () => {
                       clickevent={() => {
                         navigate(`/geetgovind`, {
                           state: {
-                            language: 1
+                            language: "english"
                           }
                         })
                       }}
@@ -1808,384 +1481,6 @@ const HomePage = () => {
             </div>
           </div>
         </section >
-
-
-        {/* विशेष ई-पुस्तकें */}
-
-        {/* <div
-          className="newcontainer"
-          style={{ margin: "2% 0 0", height: "550px" }}
-        >
-          <div className="containers">
-            <h2 className="specialtitle">{t("Special_E_books_tr")}</h2>
-            <div
-              className="row"
-            >
-              <Slider {...settingsbook}>
-                {specialBooks && specialBooks.length > 0
-                  ? specialBooks.map((specialBook) => (
-                    <div
-                      className="sliderbooks"
-                      key={`related-${specialBook.id}`}
-                      onClick={() => {
-                        navigate(`/books/special/` + specialBook.slug, {
-                          state: {
-                            bookId: specialBook.id,
-                            bookName: specialBook.name,
-                            bookSlug: specialBook?.slug,
-                            pathname: window.location?.pathname,
-                          },
-                        });
-                      }}
-                    >
-                      <div
-                        style={{ display: "flex", justifyContent: "center" }}
-                      >
-                        <a>
-                          <img
-                            style={{ cursor: "pointer" }}
-                            className="imgcenter"
-                            src={
-                              specialBook.bookThumbPath == null
-                                ? DefaultBook
-                                : specialBook.bookThumbPath
-                            }
-                            onError={(e) => {
-                              e.currentTarget.src = DefaultBook;
-                            }}
-                            alt={specialBook.name}
-                            title={specialBook.name}
-                            width="150"
-                            height="212"
-                          />
-                          <p>{specialBook?.name}</p>
-                        </a>
-                      </div>
-                    </div>
-                  ))
-                  : ""}
-              </Slider>
-            </div>
-            <div
-              style={{
-                margin: "auto",
-                width: "200px",
-                padding: "10px",
-                textAlign: "center",
-                marginTop: "30px",
-              }}
-            >
-              <div
-                style={{ padding: "5px 12px" }}
-                className="btnSubmit"
-                onClick={() => {
-                  navigate(`/books/special`);
-                }}
-              >
-                {t("All_Special_E_books_tr")}
-              </div>
-            </div>
-          </div>
-        </div> */}
-
-        {/* विशेष ऑडियो */}
-
-        {/* <div
-          className="newcontainer"
-          style={{
-            marginTop: "0px",
-            backgroundColor: "#fff6e1",
-            paddingTop: "20px",
-            paddingBottom: "20px",
-          }}
-        >
-          <div className="containers">
-            <h2 className="specialtitle">{t("Special_Audios_tr")}</h2>
-            <div className="row">
-              <Slider {...settingsaudio}>
-                {specialAudios && specialAudios.length > 0
-                  ? specialAudios.map((specialAudio) => (
-                    <div
-                      key={`related-${specialAudio.id}`}
-                      onClick={() => {
-                        localStorage.setItem("type", "audios");
-                        navigate(`/audios/` + specialAudio.slug, {
-                          state: {
-                            audioId: specialAudio.id,
-                            audioName: specialAudio?.name,
-                            audioslug: specialAudio.slug,
-                          },
-                        });
-                        window.location.reload();
-                      }}
-                    >
-                      <div
-                        className="pravchanslider"
-                        style={{
-                          display: "flex",
-                          justifyContent: "center",
-                          margin: "0 10px",
-                        }}
-                      >
-                        <a
-                          style={{
-                            margin: "0px 10px",
-                            height: "115px",
-                            color: "rgb(63, 34, 13)",
-                            fontSize: "18px",
-                            lineHeight: "22px",
-                            fontStyle: "normal",
-                            fontWeight: 600,
-                            overflow: "hidden",
-                            textAlign: "center",
-                          }}
-                        >
-                          {specialAudio.lyricsHash != null ? (
-                            <img
-                              style={{
-                                cursor: "pointer",
-                                width: "60px",
-                                margin: "5px auto auto",
-                              }}
-                              className="imgcenter"
-                              src={withlyrics}
-                              alt={specialAudio.name}
-                              title={specialAudio.name}
-                            />
-                          ) : (
-                            <img
-                              style={{
-                                cursor: "pointer",
-                                width: "60px",
-                                margin: "5px auto auto",
-                              }}
-                              className="imgcenter"
-                              src={nolyrics}
-                              alt={specialAudio.name}
-                              title={specialAudio.name}
-                            />
-                          )}
-
-                          <p>{specialAudio.name}</p>
-                        </a>
-                      </div>
-                    </div>
-                  ))
-                  : ""}
-              </Slider>
-            </div>
-            <div
-              style={{
-                margin: "auto",
-                width: "197px",
-                padding: "10px",
-                textAlign: "center",
-                marginTop: "30px",
-              }}
-            >
-              <div
-                style={{ padding: "5px 12px" }}
-                className="btnSubmit"
-                onClick={() => {
-                  navigate(`/audios/special`);
-                }}
-              >
-                {t("All_Special_Audios_tr")}
-              </div>
-            </div>
-          </div>
-        </div> */}
-
-        {/* विशेष प्रवचन */}
-
-        {/* <div
-          className="newcontainer"
-          style={{
-            marginTop: "0px",
-            paddingTop: "20px",
-            paddingBottom: "20px",
-          }}
-        >
-          <div className="containers">
-            <h2 className="specialtitle">{t("Special_Pravachan_tr")}</h2>
-            <div className="row">
-              <Slider {...settingsaudio}>
-                {specialPravachans && specialPravachans.length > 0
-                  ? specialPravachans.map((specialPravachan) => (
-                    <div
-                      key={`related-${specialPravachan.id}`}
-                      onClick={() => {
-                        localStorage.setItem("type", "pravachans");
-                        navigate(`/pravachans/` + specialPravachan.id, {
-                          state: {
-                            audioId: specialPravachan.id,
-                            audioslug: specialPravachan.name,
-                          },
-                        });
-                        window.location.reload();
-                      }}
-                    >
-                      <div
-                        className="pravchanslider"
-                        style={{
-                          display: "flex",
-                          justifyContent: "center",
-                          margin: "0 10px",
-                        }}
-                      >
-                        <a
-                          style={{
-                            margin: "0px 10px",
-                            height: "115px",
-                            color: "rgb(63, 34, 13)",
-                            fontSize: "18px",
-                            lineHeight: "22px",
-                            fontStyle: "normal",
-                            fontWeight: 600,
-                            overflow: "hidden",
-                            textAlign: "center",
-                          }}
-                        >
-                          {specialPravachan.lyricsHash != null ? (
-                            <img
-                              style={{
-                                cursor: "pointer",
-                                width: "60px",
-                                margin: "5px auto auto",
-                              }}
-                              className="imgcenter"
-                              src={withlyrics}
-                              alt={specialPravachan.name}
-                              title={specialPravachan.name}
-                            />
-                          ) : (
-                            <img
-                              style={{
-                                cursor: "pointer",
-                                width: "60px",
-                                margin: "5px auto auto",
-                              }}
-                              className="imgcenter"
-                              src={nolyrics}
-                              alt={specialPravachan.name}
-                              title={specialPravachan.name}
-                            />
-                          )}
-
-                          <p>{specialPravachan?.name}</p>
-                        </a>
-                      </div>
-                    </div>
-                  ))
-                  : ""}
-              </Slider>
-            </div>
-            <div
-              style={{
-                margin: "auto",
-                width: "250px",
-                padding: "10px",
-                textAlign: "center",
-                marginTop: "30px",
-              }}
-            >
-              <div
-                className="btnSubmit"
-                onClick={() => {
-                  navigate(`/pravachans/special`);
-                }}
-              >
-                {t("All_Special_Pravachan_tr")}
-              </div>
-            </div>
-          </div>
-        </div> */}
-
-        {/* विशेष अनमोल लेख */}
-
-        {/* <div
-          className="newcontainer"
-          style={{
-            marginTop: "0px",
-            backgroundColor: "#fff6e1",
-            paddingTop: "20px",
-            paddingBottom: "20px",
-          }}
-        >
-          <div className="containers">
-            <h2 className="specialtitle">{t("Special_Article_tr")}</h2>
-            <div className="row">
-              <Slider {...settingsaudio}>
-                {specialArticles && specialArticles.length > 0
-                  ? specialArticles.map((specialArticle) => (
-                    <div
-                      key={`related-${specialArticle.id}`}
-                      onClick={() => {
-                        navigate(`/articles/special/` + specialArticle.slug, {
-                          state: {
-                            articleId: specialArticle.id,
-                            articleName: specialArticle.name,
-                            articleSlug: specialArticle?.slug,
-                            special: window.location.pathname
-                          },
-                        });
-                        window.location.reload();
-                      }}
-                    >
-                      <div
-                        className="pravchanslider"
-                        style={{
-                          display: "flex",
-                          justifyContent: "center",
-                          backgroundColor: "#fff",
-                          height: "121px",
-                          margin: "0 10px",
-                        }}
-                      >
-                        <a>
-                          <img
-                            style={{
-                              cursor: "pointer",
-                              width: "28px",
-                              height: "34px",
-                              margin: "5px auto auto",
-                            }}
-                            className="imgcenter"
-                            src={artical}
-                            alt={specialArticle.name}
-                            title={specialArticle.name}
-                          />
-                          <p style={{ marginTop: "10px" }}>
-                            {specialArticle?.name}
-                          </p>
-                        </a>
-                      </div>
-                    </div>
-                  ))
-                  : ""}
-              </Slider>
-            </div>
-            <div
-              style={{
-                margin: "auto",
-                width: "230px",
-                padding: "10px",
-                textAlign: "center",
-                marginTop: "30px",
-              }}
-            >
-              <div
-                className="btnSubmit"
-                onClick={() => {
-                  navigate(`/articles/special`);
-                }}
-              >
-                {t("All_Special_Article_tr")}
-              </div>
-            </div>
-          </div>
-        </div> */}
-
         <div
           className="newcontainer"
           style={{ backgroundColor: "#fff0ce", marginTop: 0, paddingBottom: "40px" }}

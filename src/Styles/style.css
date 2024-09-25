@@ -408,7 +408,7 @@ img {
 
 /* end copycss */
 .gst-menubar .hmenu {
-  margin: 22px 30px 0 0;
+  margin: 22px 55px 0 0;
   /* float: right; */
   float: initial;
   padding-left: 0;
@@ -417,7 +417,7 @@ img {
 .gst-menubar .hmenu li {
   list-style-type: none;
   display: inline-block;
-  margin-left: 10px;
+  margin-left: 0;
 }
 
 .gst-menubar .hmenu li a {
@@ -428,6 +428,7 @@ img {
   font-style: normal;
   font-weight: 700;
   font-family: 'ChanakyaUniBold';
+  padding: 0 5px;
 }
 
 .gst-menubar .hmenu li .navLink.active,
@@ -438,7 +439,7 @@ img {
 
 .gst-menubar .hmenu li::after {
   content: "::";
-  padding-left: 15px;
+  padding: 0 3px;
 }
 
 .gst-menubar .hmenu li:last-child::after {

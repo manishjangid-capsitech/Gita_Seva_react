@@ -8,8 +8,8 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import "../Styles/BookDetail.css";
 import Slider from "react-slick";
 import i18n, { _get_i18Lang } from "../i18n";
-import Favfill from "../assets/img/favadd.png";
-import Favempty from "../assets/img/fav.png";
+import Favfill from "../assets/img/favadd.svg";
+import Favempty from "../assets/img/fav.svg";
 import { BookContentType } from "./Epub";
 import { useTranslation } from "react-i18next";
 import { userId } from "../Contexts/LocaleContext";
@@ -21,6 +21,7 @@ import rightArrow from "../assets/img/rightArrow1.png";
 import EpubServices from "../Services/Epub";
 import closeicon from "../Images/close-round-border.svg";
 import Loading from "../Components/Loading";
+import bookmarkIcon from "../Images/Bookmark.svg"
 
 const BookDetailPage = (props: any) => {
   const { t } = useTranslation();
@@ -381,9 +382,7 @@ const BookDetailPage = (props: any) => {
                                   marginRight: "10px",
                                 }}
                               >
-                                <div
-                                  className="bkmarkicon"
-                                  style={{ cursor: "pointer" }}
+                                <div style={{ cursor: "pointer" }}
                                   onClick={() => {
                                     setBookMark(
                                       bookMark === true ? false : true
@@ -391,19 +390,11 @@ const BookDetailPage = (props: any) => {
                                   }}
                                 >
                                   <div>
+                                    <img src={bookmarkIcon} style={{ width: "45px", height: "45px" }} alt="bookmaarkicon" />
+                                  </div>
+                                  <div>
                                     {bookMark && userId && (
-                                      <div
-                                        style={{
-                                          position: "absolute",
-                                          backgroundColor: "#fff6e1",
-                                          padding: "10px 5px",
-                                          top: "56px",
-                                          width: "162px",
-                                          borderRadius: "5px",
-                                          display: "grid",
-                                          zIndex: 1,
-                                        }}
-                                      >
+                                      <div className="bkmarkicon-style">
                                         <div
                                           style={{
                                             display: "flex",
@@ -487,6 +478,7 @@ const BookDetailPage = (props: any) => {
                                 <img
                                   src={isLiked ? Favfill : Favempty}
                                   alt="img"
+                                  style={{ width: "45px" }}
                                 />
                               </label>
                             </label>

@@ -3,12 +3,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import DefaultBook from "../Images/defaultBook.png";
 import VivekService from "../Services/Vivekvani";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import "../Styles/BookDetail.css";
 import Slider from "react-slick";
 import { _get_i18Lang } from "../i18n";
-import Favfill from "../assets/img/favadd.png";
-import Favempty from "../assets/img/fav.png";
+import Favfill from "../assets/img/favadd.svg";
+import Favempty from "../assets/img/fav.svg";
 import { BookContentType } from "./Epub";
 import { useTranslation } from "react-i18next";
 import { userId } from "../Contexts/LocaleContext";
@@ -17,8 +17,8 @@ import { LogInModel, getMonthNameFromNumber } from "./LogInoutModel";
 import { toast } from "react-toastify";
 import EpubServices from "../Services/Epub";
 import closeicon from "../Images/close-round-border.svg"
-import Vivekvani from "../Services/Vivekvani";
 import { Breadcrumbs } from "./E-BooksComponent";
+import bookmarkIcon from "../Images/Bookmark.svg"
 
 export interface ISingleBook {
   bookLanguageId: string;
@@ -186,55 +186,6 @@ const VivekvaniDetailPage = () => {
         }}
         subBreadCrumbThree={vaniDetail?.name}
       />
-      {/* <div
-        className="breadcrumbs-head newcontainer"
-        style={{
-          width: "100%",
-          marginTop: "-175px",
-          background: "none",
-          backgroundColor: "#ffedbc",
-          height: "240px",
-          borderBottom: "2px solid #fff",
-          paddingTop: 0,
-        }}
-      >
-        <div className="breadcrumbs">
-          <div
-            className="containers"
-            style={{
-              fontSize: "36px",
-              fontWeight: 700,
-              color: "rgb(209, 21, 1)",
-              top: "155px",
-              fontFamily: "ChanakyaUniBold"
-            }}
-          >
-            {t("vivek_vani_tr")}
-            <div
-              style={{
-                fontSize: "19px",
-                fontWeight: 600,
-                color: "#2d2a29",
-                marginTop: "-8px",
-              }}
-            >
-              <Link style={{ marginRight: "4px", color: "#2d2a29" }} to="/">
-                {t("Home_tr")}
-              </Link>
-              <Link
-                style={{ marginRight: "6px", color: "#2d2a29" }}
-                to="/vivekvani"
-              >
-                /{" "}
-                {window.location.pathname === "/vivekvani/special"
-                  ? t("Special_vivek_vani_tr")
-                  : t("vivek_vani_tr")}
-              </Link>
-              <span style={{ color: "#2d2a29" }}>/ {vaniDetail?.name}</span>
-            </div>
-          </div>
-        </div>
-      </div> */}
       <div className="container">
         <div>
           <div className="row">
@@ -313,17 +264,11 @@ const VivekvaniDetailPage = () => {
                                     setBookMark(bookMark === true ? false : true)
                                   }}>
                                   <div>
+                                    <img src={bookmarkIcon} style={{ width: "45px", height: "45px" }} alt="bookmaarkicon" />
+                                  </div>
+                                  <div>
                                     {bookMark && userId && (
-                                      <div style={{
-                                        position: "absolute",
-                                        backgroundColor: "#fff6e1",
-                                        padding: "10px 5px",
-                                        top: "56px",
-                                        width: "162px",
-                                        borderRadius: "5px",
-                                        display: "grid",
-                                        zIndex: 1,
-                                      }}>
+                                      <div className="bkmarkicon-style">
                                         <div style={{
                                           display: "flex",
                                           backgroundColor: "#ff6427"
@@ -373,6 +318,7 @@ const VivekvaniDetailPage = () => {
                                 <img
                                   src={isLiked ? Favfill : Favempty}
                                   alt="img"
+                                  style={{ width: "45px" }}
                                 />
                               </label>
                             </label>

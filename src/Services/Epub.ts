@@ -6,7 +6,7 @@ class EpubService {
   refreshtoken = "/api/user/refreshtoken?userId=";
   lastpositionRoute = "/api/user/";
   savevivekvanibookmarks = "/api/user/vivekvanimarks?vivekvaniId=";
-  getvivekvanibookmarks = "/api/user/vivekvanimarks?vivekvaniId=";
+  getvivekvanibookmarks =  "/api/user/vivekvanimarks?bookId=";
   removevanimark = "/api/user/vivekvanimarks?vivekvaniId=";
   removebkmark = "/api/user/bookmarks?bookId=";
   getbkmark = "/api/user/bookmarks?BookId=";

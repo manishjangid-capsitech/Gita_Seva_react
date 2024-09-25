@@ -68,7 +68,7 @@ const FooterPage = () => {
       setMenuName(t("E_books_tr"));
     } else if (menuname === "pravachans") {
       setMenuName(t("Pravachan_tr"));
-    } else if (menuname === "audios") {
+    } else if (menuname === "audio") {
       setMenuName(t("Audios_tr"));
     } else if (menuname === "articles") {
       setMenuName(t("Article_tr"));
@@ -160,7 +160,7 @@ const FooterPage = () => {
                 </NavLink>
                 <p className="footermenucoma">,</p>
                 <NavLink
-                  to="/audios"
+                  to="/audio"
                   className="ftmenulink"
                   style={({ isActive }) => {
                     return { color: isActive ? "#d11501" : "#472d1e" };
@@ -174,7 +174,21 @@ const FooterPage = () => {
               </div>
               <div className="footermenu">
                 <NavLink
-                  to="/kalyans"
+                  to="/audioPodcast"
+                  className="ftmenulink"
+                  style={({ isActive }) => {
+                    return { color: isActive ? "#d11501" : "#472d1e" };
+                  }}
+                  onClick={() => {
+                    localStorage.setItem("type", "audioPodcast");
+                  }}
+                >
+                  {t("daily_satsang_tr")}
+                </NavLink>
+              </div>
+              <div className="footermenu">
+                <NavLink
+                  to="/kalyan"
                   className="ftmenulink"
                   style={({ isActive }) => {
                     return { color: isActive ? "#d11501" : "#472d1e" };
@@ -184,7 +198,7 @@ const FooterPage = () => {
                 </NavLink>
                 <p className="footermenucoma">,</p>
                 <NavLink
-                  to="/kalyanskalpataru"
+                  to="/kalyanakalpataru"
                   className="ftmenulink"
                   style={({ isActive }) => {
                     return { color: isActive ? "#d11501" : "#472d1e" };
@@ -195,16 +209,6 @@ const FooterPage = () => {
               </div>
               <div className="footermenu">
                 <NavLink
-                  to="/vivekvani"
-                  className="ftmenulink"
-                  style={({ isActive }) => {
-                    return { color: isActive ? "#d11501" : "#472d1e" };
-                  }}
-                >
-                  {t("vivek_vani_tr")}
-                </NavLink>
-                <p className="footermenucoma">,</p>
-                <NavLink
                   to="/geetgovind"
                   className="ftmenulink"
                   style={({ isActive }) => {
@@ -212,6 +216,16 @@ const FooterPage = () => {
                   }}
                 >
                   {t("MonthlyMagazine_tr")}
+                </NavLink>
+                <p className="footermenucoma">,</p>
+                <NavLink
+                  to="/vivekvani"
+                  className="ftmenulink"
+                  style={({ isActive }) => {
+                    return { color: isActive ? "#d11501" : "#472d1e" };
+                  }}
+                >
+                  {t("vivek_vani_tr")}
                 </NavLink>
               </div>
 
@@ -260,6 +274,17 @@ const FooterPage = () => {
                   }}
                 >
                   {t("general_question_tr")}
+                </NavLink>
+              </div>
+              <div className="footermenu" style={{ display: "grid" }}>
+                <NavLink
+                  to={"/promotion"}
+                  className="ftmenulink"
+                  style={({ isActive }) => {
+                    return { color: isActive ? "#d11501" : "#472d1e" };
+                  }}
+                >
+                  {t("promotion_tr")}
                 </NavLink>
               </div>
             </div>

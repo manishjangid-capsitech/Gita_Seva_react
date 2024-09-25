@@ -7,13 +7,15 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import "../Styles/BookDetail.css";
 import { useTranslation } from "react-i18next";
 import i18n, { _get_i18Lang } from "../i18n";
-import Favfill from "../assets/img/favadd.png";
-import Favempty from "../assets/img/fav.png";
+import Favfill from "../assets/img/favadd.svg";
+import pdfimage from "../Images/PDF.svg";
+import Favempty from "../assets/img/fav.svg";
 import { BookContentType } from "./Epub";
 import { LogInModel, getMonthNameFromNumber } from "./LogInoutModel";
 import EpubServices from "../Services/Epub";
 import closeicon from "../Images/close-round-border.svg"
 import { Breadcrumbs } from "./E-BooksComponent";
+import bookmarkIcon from "../Images/Bookmark.svg"
 
 const GeetGovindDetailPage = (props: any) => {
   const { t } = useTranslation();
@@ -125,6 +127,7 @@ const GeetGovindDetailPage = (props: any) => {
         "monthlymagazinebookmarks",
         state?.MonthId,
       ).then((res: any) => {
+        debugger
         if (res.status) {
           setBookMarkData(res?.result)
         }
@@ -141,52 +144,6 @@ const GeetGovindDetailPage = (props: any) => {
         marginTop: 0,
       }}
     >
-      {/* <div
-        className="breadcrumbs-head newcontainer"
-        style={{
-          width: "100%",
-          marginTop: "-175px",
-          background: "none",
-          backgroundColor: "#ffedbc",
-          height: "240px",
-          borderBottom: "2px solid #fff",
-          paddingTop: 0,
-        }}
-      >
-        <div className="breadcrumbs">
-          <div
-            className="containers"
-            style={{
-              fontSize: "36px",
-              fontWeight: 700,
-              color: "rgb(209, 21, 1)",
-              top: "155px",
-              fontFamily: "ChanakyaUniBold"
-            }}
-          >
-            {t("MonthlyMagazine_tr")}
-            <div
-              style={{
-                fontSize: "19px",
-                fontWeight: 600,
-                color: "#2d2a29",
-                marginTop: "-8px",
-              }}
-            >
-              <Link style={{ marginRight: "4px", color: "#2d2a29" }} to="/">
-                {t("Home_tr")}
-              </Link>
-              <Link
-                style={{ margin: "0 5px 0 0", color: "#2d2a29" }}
-                to="/geetgovind"
-              >
-                / {t("MonthlyMagazine_tr")}
-              </Link>
-              <span style={{ color: "#2d2a29" }}>/ {magzineDetail?.name}</span>
-            </div>
-          </div>
-        </div>
-      </div> */}
       <Breadcrumbs
         mainsubBreadCrumb={t("MonthlyMagazine_tr")}
         subBreadCrumb={t("Home_tr")}
@@ -229,7 +186,7 @@ const GeetGovindDetailPage = (props: any) => {
                               background: "#fff",
                               borderRadius: "5px",
                               textAlign: "center",
-                              width: "125%",
+                              width: "131%",
                             }}
                           >
                             <img
@@ -278,17 +235,11 @@ const GeetGovindDetailPage = (props: any) => {
                                     setBookMark(bookMark === true ? false : true)
                                   }}>
                                   <div>
+                                    <img src={bookmarkIcon} style={{ width: "45px", height: "45px" }} alt="bookmaarkicon" />
+                                  </div>
+                                  <div>
                                     {bookMark && UserIdentity && (
-                                      <div style={{
-                                        position: "absolute",
-                                        backgroundColor: "#fff6e1",
-                                        padding: "10px 5px",
-                                        top: "56px",
-                                        width: "162px",
-                                        borderRadius: "5px",
-                                        display: "grid",
-                                        zIndex: 1,
-                                      }}>
+                                      <div className="bkmarkicon-style">
                                         <div style={{
                                           display: "flex",
                                           backgroundColor: "#ff6427"
@@ -330,6 +281,18 @@ const GeetGovindDetailPage = (props: any) => {
                                 </div>
                               </label>
 
+                              <label>
+                                {magzineDetail?.pdfPath != null ?
+                                  <a href={magzineDetail?.pdfPath} title="pdf" rel="noreferrer" target="_blank" >
+                                    <img
+                                      src={pdfimage}
+                                      alt="pdficon"
+                                      style={{ width: "45px", margin: "0 10px 0 0" }}
+                                    />
+                                  </a>
+                                  : ""}
+                              </label>
+
                               <label
                                 onClick={() => {
                                   toggleLike();
@@ -339,6 +302,7 @@ const GeetGovindDetailPage = (props: any) => {
                                 <img
                                   src={isLiked ? Favfill : Favempty}
                                   alt="Favicon"
+                                  style={{ width: "45px" }}
                                 />
                               </label>
                             </label>
@@ -378,10 +342,7 @@ const GeetGovindDetailPage = (props: any) => {
                             <label style={{ fontSize: "23px", color: "#ff731f" }}>{magzineDetail?.editionNo}</label>
                           </div>
                         </div>
-                        <div
-                          className="next-read"
-                          style={{ marginTop: "50px" }}
-                        >
+                        <div className="next-read">
                           <p
                             style={{ cursor: "pointer", display: "inline" }}
                             onClick={() => {

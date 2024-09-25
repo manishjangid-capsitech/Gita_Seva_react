@@ -21,8 +21,8 @@ const AudioLyrics = () => {
   }, [currentAudio, currentAudio?.lyricsHash, lyrt]);
 
   return (
-    <div style={{ marginTop: "-70px" }}>
-      <div className="header">
+    <div style={{ marginTop: "-55px" }}>
+      <div className="header" style={{ margin: "0 0 0 12%" }}>
         <span style={{ fontSize: 25, color: "#ff9c00", margin: "0 0 0 -15%" }}>
           {currentAudio?.name != null && currentAudio.name.length > 15
             ? currentAudio.name.slice(0, 100)

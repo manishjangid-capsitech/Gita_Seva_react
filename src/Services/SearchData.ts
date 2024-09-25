@@ -10,17 +10,24 @@ export interface ISearchParams {
 class SearchDataService {
   route = "/posts";
   searchRoute = "/api/settings/search?searchtext=";
+  profilepath = "/api/user/profilepicture?id="
+
+  profileimg = (userId: string) => {
+    return ApiUtility.get(
+      this.profilepath + userId + "&isThumb=" + 1
+    );
+  };
 
   searchData = (value: ISearchParams) => {
     return ApiUtility.get(
       this.searchRoute +
-        value.searchValue +
-        "&product=" +
-        value.productType +
-        "&lang=" +
-        localStorage.getItem("lan") +
-        "&authorId=" +
-        value.authorId
+      value.searchValue +
+      "&product=" +
+      value.productType +
+      "&lang=" +
+      localStorage.getItem("lan") +
+      "&authorId=" +
+      value.authorId
     );
   };
 }

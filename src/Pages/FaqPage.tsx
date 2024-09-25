@@ -18,9 +18,9 @@ const TermsOfUse = () => {
   const [tearms, setTearms] = React.useState<any>("");
 
   useEffect(() => {
-    FaqService.getFaqData(_get_i18Lang()).then((result) => {
-      if (result) {
-        setTearms(result.result.items);
+    FaqService.getFaqData(_get_i18Lang()).then((res) => {
+      if (res.status) {
+        setTearms(res.result.items);
       }
     });
   }, [i18n.language]);
@@ -106,7 +106,7 @@ const TermsOfUse = () => {
             General questions
           </span>
           {tearms ? (
-            tearms.slice(0, 8).map((tearm: any) => (
+            tearms.map((tearm: any) => (
               <div>
                 <div
                   style={{

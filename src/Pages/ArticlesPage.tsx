@@ -70,7 +70,6 @@ const ArticlesPage = () => {
     };
   }
 
-
   function ResetData() {
     setCategoryId("");
     setAuthorsId("");
@@ -266,7 +265,7 @@ const ArticlesPage = () => {
                         style={{
                           height: 0,
                           background: "#FFFAF0",
-                          minHeight: "20px"
+                          minHeight: "25px"
                         }}
                       >
                         <h2 className="filtertitle">{t("Article_List_tr")}</h2>

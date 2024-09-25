@@ -285,7 +285,7 @@ const BooksPage = () => {
                         style={{
                           height: 0,
                           background: "#FFFAF0",
-                          minHeight: "20px",
+                          minHeight: "25px",
                         }}
                       >
                         <h2 className="filtertitle">{t("E_books_list_tr")}</h2>
@@ -590,8 +590,11 @@ const BooksPage = () => {
                       </div>
                     ) : (
                       <div className="ebooks-category resultnotfound">
-                        <Loading />
-                        {t("result_not_found_tr")}
+                        {books?.length === 0 ? (
+                          <label>{t("result_not_found_tr")}</label>
+                        ) : (
+                          <Loading />
+                        )}
                       </div>
                     )}
                   </div>

@@ -1,17 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";
 import { NavLink } from "react-router-dom";
 import "../Styles/style.css";
 import { LogOutModel } from "./LogInoutModel";
+import SearchDataService from "../Services/SearchData";
 
 const ProfileSidePanel = ({ color }: { color: string }) => {
   
-  const UserImage = localStorage.getItem("Image");
   const navigate = useNavigate();
   const { t } = useTranslation();
 
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
+
+  const PrifilePic = localStorage.getItem("Image")
 
   const handleCloseDialog = () => {
     setIsDialogOpen(false);
@@ -35,10 +37,10 @@ const ProfileSidePanel = ({ color }: { color: string }) => {
             borderRadius: "2px",
           }}
         >
-          {UserImage ? (
+          {PrifilePic ? (
             <img
               id="userimg"
-              src={UserImage}
+              src={PrifilePic}
               // src="https://gitaseva.org/assets/img/profile-image1.png"
               title="User Login"
               alt="user"

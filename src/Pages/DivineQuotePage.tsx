@@ -107,8 +107,8 @@ const DivineQuotesPage = () => {
                                 fontStyle: "normal",
                                 fontWeight: "700",
                                 color: "#d11501",
-                                lineHeight: "41px",
-                                margin: "2% 0 0",
+                                // lineHeight: "41px",
+                                // margin: "2% 0 0",
                             }}>
                             {t("Amrit_Vachan_tr")}
                         </div>
@@ -153,7 +153,8 @@ const DivineQuotesPage = () => {
                     <div className="gst-page-content"
                         style={{
                             display: "block",
-                            padding: "25px 0 25px 25px",
+                            // padding: "25px 0 25px 25px",
+                            padding: "25px 0 25px 40px",
                             borderRadius: "4px",
                             background: "#fff6e1",
                             boxShadow: "0 0 7px 1px #f5deb1",
@@ -164,11 +165,11 @@ const DivineQuotesPage = () => {
                         <ImageGroup>
                             <ul className="images bgcolor row" style={{ backgroundColor: "#fff6e1" }}>
                                 {divinequotes?.map((divquote: any, index: number) => (
-                                    <li key={index} className="col-3">
+                                    <li key={index} className="col-3" style={{ marginBottom: "30px" }}>
                                         <Image
                                             src={divquote?.quotesPath}
                                             alt="image"
-                                            style={{ width: "90%" }}
+                                            style={{ width: "85%" }}
                                             onMouseEnter={() => {
                                                 setHoverId(index);
                                             }}

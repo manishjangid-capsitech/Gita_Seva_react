@@ -60,8 +60,7 @@ export const ProfileFav = () => {
       getKalyanMark(res?.result?.kalyanMarks);
       getKalpatruMark(res?.result?.kalyanKalpatarusMarks);
       getGeetGovindMark(res?.result?.monthlyMagazinesMarks);
-      getVivekMark(res?.result?.vivekVaniMarks);
-
+      getVivekMark(res?.result?.vivekVaniMarks);  
       getBookFav(res?.result?.books);
       getKalyan(res?.result?.kalyans);
       getKalpatru(res.result?.kalyansKalpataru);
@@ -138,11 +137,13 @@ export const ProfileFav = () => {
                 }}
                 aria-labelledby="e-books-tab"
               >
-                <div className="tab-row">
-                  <div className="tabscroll">
+                <div className="tab-row" style={{ marginTop: 0 }}>
+                  <div className="tabscroll" style={{ paddingTop: 0}}>
                     <div
                       className="row"
-                      style={{ background: "#FFFAF0", padding: "15px 10px" }}
+                      style={{
+                        //  background: "#FFFAF0",
+                          padding: "15px 10px" }}
                     >
                       {/* <div className="col-3"></div> */}
                       <BookListButton
@@ -186,7 +187,7 @@ export const ProfileFav = () => {
                         books={kalyan}
                         initialDisplayCount={initialDisplayCount}
                         getBook={(kalyan) => {
-                          navigate(`/kalyans/` + kalyan.slug, {
+                          navigate(`/kalyan/` + kalyan.slug, {
                             state: { kalyanId: kalyan.id },
                           });
                         }}
@@ -197,14 +198,14 @@ export const ProfileFav = () => {
                         bookMarks={kalyanMark}
                         marktitle={t("Kalyan_mark_tr")}
                         getMarks={(kalyanMark) => {
-                          navigate(`/reader/kalyans/` + kalyanMark.slug, {
+                          navigate(`/reader/kalyan/` + kalyanMark.slug, {
                             state: {
                               kalyanDetailId: kalyanMark.id,
                               titleName: kalyanMark.name,
                               location: kalyanMark.cfi,
                               slug: kalyanMark.slug,
                               label: kalyanMark.label,
-                              type: BookContentType.kalyans,
+                              type: BookContentType.kalyan,
                             },
                           });
                         }}
@@ -328,7 +329,7 @@ export const ProfileFav = () => {
                         initialDisplayCount={initialDisplayCount}
                         getAudios={(audio) => {
                           localStorage.setItem("type", "audios");
-                          navigate(`/audios/` + audio.slug, {
+                          navigate(`/audio/` + audio.slug, {
                             state: {
                               type: "audio",
                               audioId: audio.id,

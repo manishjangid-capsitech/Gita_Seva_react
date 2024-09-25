@@ -3,7 +3,7 @@
 /* eslint-disable react/jsx-no-undef */
 import { useEffect, useRef, useState } from "react";
 import i18n, { _get_i18Lang } from "../i18n";
-import { ISearchParams } from "../Services/SearchData";
+import SearchDataService, { ISearchParams } from "../Services/SearchData";
 import { Link, useNavigate, NavLink } from "react-router-dom";
 import "../Styles/style.css";
 // import "../Styles/PageHeader.css"
@@ -30,6 +30,8 @@ const HeaderPage = () => {
 
   const [showLang, setShowLang] = useState<boolean>(false);
   const [menu, setMenu] = useState<boolean>(false);
+
+  const [audiosdropdown, setAudiosdropdown] = useState<boolean>(false);
 
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
 
@@ -70,6 +72,10 @@ const HeaderPage = () => {
     setIsOpened((wasOpened) => !wasOpened);
   }
 
+  function toggleAudiodropdown() {
+    setAudiosdropdown((wasOpened) => !wasOpened);
+  }
+
   function changeLocale(l: string) {
     i18n.changeLanguage(l);
     localStorage.setItem("lan", _get_i18Lang());
@@ -85,8 +91,60 @@ const HeaderPage = () => {
     setLoginState(newState);
   };
 
-  const UserIdentity = localStorage.getItem("UserId")
-  const imgs = localStorage.getItem("Image")
+  const UserIdentity = localStorage.getItem("UserId") as string;
+  // const imgs = localStorage.getItem("Image")
+
+  const [imgs, setImgs] = useState<any>("")
+
+  useEffect(() => {
+    fetch(
+      'https://api.gitaseva.org/v1/api/user/profilepicture?id=' + UserIdentity + '&isThumb=1'
+    )
+      .then(response => {
+        response.status === 404 || response.statusText === "" || setImgs("https://gitaseva.org/assets/img/userWhite.png");
+        // Check the Content-Type of the response
+        const contentType = response.headers.get('Content-Type');
+
+        if (contentType && contentType.includes('application/json')) {
+          // If the response is JSON, parse it
+          return response.json();
+        } else if (contentType && contentType.includes('text/plain')) {
+          // If the response is plain text (e.g., a Base64 string), parse as text
+          return response.text();
+        } else {
+          // If the response is binary (e.g., image data), parse as blob
+          return response.blob();
+        }
+      })
+      .then(data => {
+        // Step 2: Process the data based on its type
+        if (typeof data === 'string') {
+          // If data is a Base64 string, decode and create a Blob
+          // const binaryString = atob(data);
+          // const len = binaryString.length;
+          // const bytes = new Uint8Array(len);
+
+          // for (let i = 0; i < len; i++) {
+          //   bytes[i] = binaryString.charCodeAt(i);
+          // }
+
+          // // Create a Blob from the binary data
+          // const blob = new Blob([bytes], { type: 'image/png' });
+          // const imageURL = URL.createObjectURL(blob);
+          // console.log('imageURL', imageURL);
+        } else if (data instanceof Blob) {
+          // If data is already a Blob, create a URL for it
+          const imageURL = URL.createObjectURL(data);
+          setImgs(imageURL);
+        } else {
+          throw new Error('Unsupported response type');
+        }
+      })
+      .catch(err => {
+        console.error('Error fetching the image:', err);
+        console.log('Failed to load image');
+      });
+  }, [UserIdentity])
 
   useEffect(() => {
     let token = localStorage.getItem("Token")
@@ -101,7 +159,9 @@ const HeaderPage = () => {
     };
   }, [isOpened, showLang, menu]);
 
-
+  const handleError = () => {
+    setImgs("https://gitaseva.org/assets/img/userWhite.png")
+  };
   return (
     <>
       <div className="gst-header" id="gstheader">
@@ -142,7 +202,7 @@ const HeaderPage = () => {
                     <option value="book" style={{ color: "#000" }}>
                       {t("E_books_tr")}
                     </option>
-                    <option value="monthlymagzine" style={{ color: "#000" }}>
+                    <option value="monthlymagazine" style={{ color: "#000" }}>
                       {t("MonthlyMagazine_tr")}
                     </option>
                     <option value="kalyan" style={{ color: "#000" }}>
@@ -172,7 +232,7 @@ const HeaderPage = () => {
                       name="search"
                       className="search-field"
                       value={searchValue.searchValue}
-                      style={{ width: "232px", padding: "8px 35px 8px 10px" }}
+                      style={{ width: "232px", padding: "8px 35px 8px 20px" }}
                       onChange={(e) => {
                         setSearchValue({
                           ...searchValue,
@@ -360,7 +420,7 @@ const HeaderPage = () => {
                           style={{
                             height: "12px",
                             width: "11px",
-                            margin: "-2px -5px 0 5px",
+                            margin: "-2px 4px 0 5px",
                           }}
                         />
                       </div>
@@ -393,7 +453,7 @@ const HeaderPage = () => {
                             </NavLink>
                             <NavLink
                               id="menu_klayan"
-                              to="/kalyans"
+                              to="/kalyan"
                               style={({ isActive }) => {
                                 return {
                                   color: isActive ? "#d11501" : "#472d1e",
@@ -405,7 +465,7 @@ const HeaderPage = () => {
                             </NavLink>
                             <NavLink
                               id="menu_Kalpataru"
-                              to="/kalyanskalpataru"
+                              to="/kalyanakalpataru"
                               style={({ isActive }) => {
                                 return {
                                   color: isActive ? "#d11501" : "#472d1e",
@@ -432,7 +492,6 @@ const HeaderPage = () => {
                       </div>
                     </div>
                   </li>
-
                   <li>
                     <NavLink
                       id="hmenu_pravachans"
@@ -448,7 +507,6 @@ const HeaderPage = () => {
                       {t("Pravachan_tr")}
                     </NavLink>
                   </li>
-
                   <li>
                     <NavLink
                       id="hmenu_audios"
@@ -459,12 +517,99 @@ const HeaderPage = () => {
                       onClick={() => {
                         localStorage.setItem("type", "audios");
                         setMenu(false);
+                        setAudiosdropdown(false)
                       }}
                     >
                       {t("Audios_tr")}
                     </NavLink>
                   </li>
+                  <li>
+                    <NavLink
+                      id="hmenu_satsang"
+                      to="/audioPodcast"
+                      style={({ isActive }) => {
+                        return { color: isActive ? "#d11501" : "#472d1e" };
+                      }}
+                      onClick={() => {
+                        localStorage.setItem("type", "audioPodcast");
+                        setMenu(false);
+                        setAudiosdropdown(false)
+                      }}
+                    >
+                      {t("daily_satsang_tr")}
+                    </NavLink>
+                  </li>
 
+                  {/* <li>
+                    <div style={{ display: "inline-block" }}>
+                      <div
+                        style={{
+                          fontSize: "22px",
+                          fontFamily: "ChanakyaUniBold",
+                          fontWeight: 600,
+                          cursor: "pointer",
+                          marginLeft: "10px",
+                        }}
+                        onClick={toggleAudiodropdown}
+                      >
+                        {t("Audios_tr")}
+                        <img
+                          src={arrowdownblack}
+                          alt="arrowdownblack"
+                          style={{
+                            height: "12px",
+                            width: "11px",
+                            margin: "-2px -5px 0 5px",
+                          }}
+                        />
+                      </div>
+                      <div>
+                        {audiosdropdown && (
+                          <div
+                            ref={dropdownRef}
+                            className="dropdownstyle"
+                            style={{
+                              display: "grid",
+                              position: "absolute",
+                              padding: "10px 9px 0px",
+                              zIndex: 1,
+                              background: "#FDA63B",
+                              borderRadius: "5px",
+                            }}
+                          >
+                            <NavLink
+                              id="hmenu_audios"
+                              to="/audios"
+                              style={({ isActive }) => {
+                                return { color: isActive ? "#d11501" : "#472d1e" };
+                              }}
+                              onClick={() => {
+                                localStorage.setItem("type", "audios");
+                                setMenu(false);
+                                setAudiosdropdown(false)
+                              }}
+                            >
+                              {t("Audios_tr")}
+                            </NavLink>
+                            <NavLink
+                              id="hmenu_satsang"
+                              to="/audioPodcast"
+                              style={({ isActive }) => {
+                                return { color: isActive ? "#d11501" : "#472d1e" };
+                              }}
+                              onClick={() => {
+                                localStorage.setItem("type", "audioPodcast");
+                                setMenu(false);
+                                setAudiosdropdown(false)
+                              }}
+                            >
+                              {t("daily_satsang_tr")}
+                            </NavLink>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </li> */}
                   <li>
                     <NavLink
                       id="menu_vivek"
@@ -500,21 +645,18 @@ const HeaderPage = () => {
                       margin: "15px 0 0 0",
                     }}
                   >
-                    {imgs ? (
+                    {UserIdentity ?
                       <img
                         id="userimg"
-                        src={
-                          imgs === null && undefined
-                            ? "https://gitaseva.org/assets/img/userWhite.png" :
-                            imgs
-                        }
+                        src={imgs}
+                        onError={handleError}
                         title="User Login"
                         className="nousericon"
                         alt="user"
                         onClick={toggle}
-                        style={{ width: "45px", height: "45px" }}
+                        style={{ width: "40px", height: "40px" }}
                       />
-                    ) : (
+                      :
                       <img
                         id="userimg"
                         src="https://gitaseva.org/assets/img/userWhite.png"
@@ -522,11 +664,11 @@ const HeaderPage = () => {
                         className="nousericon"
                         alt="user"
                         onClick={() => {
-                          setLogIn(true);
+                          setLogIn(true)
                         }}
-                        style={{ width: "45px", height: "45px" }}
+                        style={{ width: "40px", height: "40px" }}
                       />
-                    )}
+                    }
                   </a>
                   {isOpened && (
                     <div
@@ -688,7 +830,7 @@ const HeaderPage = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div >
     </>
   );
 };

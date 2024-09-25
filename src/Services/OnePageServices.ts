@@ -26,7 +26,6 @@ class OnePageService {
     return ApiUtility.get(this.privacypolicyRoute + lang);
   };
 
-
   // TermsOfUse
 
   termsofuseRoute = "/api/Settings/pageitem?id=2&lang=";
@@ -34,6 +33,14 @@ class OnePageService {
   getTermsOfUseData = (lang: string) => {
     return ApiUtility.get(this.termsofuseRoute + lang);
   };
+
+  // promotion page
+
+  promotionroute = "/api/Promotion?lang="
+
+  getPromotionPageData = (lang: string) => {
+    return ApiUtility.get(this.promotionroute + lang)
+  }
 
 }
 export default new OnePageService();

@@ -29,6 +29,8 @@ import { ProfileContact } from "../Pages/ProfileContact";
 import VivekvaniPage from "../Pages/VivekVani";
 import VivekvaniDetailPage from "../Pages/VivekVaniDetails";
 import DivineQuotes from "../Pages/DivineQuotePage";
+import DailySatsangPage from "../Pages/DailySatsang";
+import PromotionPage from "../Pages/PromotionPage";
 
 const HomePage = React.lazy(
   () => import("../Pages/HomePage" /* webpackChunkName: "home" */)
@@ -165,96 +167,96 @@ const AppRoutes = () => {
         path="/vivekvani/language/:langid"
       ></Route>
 
-      {/* Kalyans */}
+      {/* Kalyan */}
 
       <Route
         element={<WithHeaderFooter element={<KalyansPage />} />}
-        path="/kalyans"
+        path="/kalyan"
       ></Route>
       <Route
         element={<WithHeaderFooter element={<KalyansPage />} />}
-        path="/kalyans/category/:catid"
+        path="/kalyan/category/:catid"
       ></Route>
       <Route
         element={<WithHeaderFooter element={<KalyansPage />} />}
-        path="/kalyans/special"
+        path="/kalyan/special"
       ></Route>
       <Route
         element={<WithHeaderFooter element={<KalyansPage />} />}
-        path="/kalyans/author/:id"
+        path="/kalyan/author/:id"
       ></Route>
       <Route
         element={<WithHeaderFooter element={<KalyansPage />} />}
-        path="/kalyans/language/:langid"
+        path="/kalyan/language/:langid"
       ></Route>
 
       {/* Kalyan Detail  */}
 
       <Route
         element={<WithHeaderFooter element={<KalyanDetailPage />} />}
-        path="/kalyans/:kalyanid"
+        path="/kalyan/:kalyanid"
       ></Route>
       <Route
         element={<WithHeaderFooter element={<KalyanDetailPage />} />}
-        path="/kalyans/special/:kalyanid"
+        path="/kalyan/special/:kalyanid"
       ></Route>
       <Route
         element={<WithHeaderFooter element={<KalyanDetailPage />} />}
-        path="/kalyans/author/:id/:kalyanid"
+        path="/kalyan/author/:id/:kalyanid"
       ></Route>
       <Route
         element={<WithHeaderFooter element={<KalyanDetailPage />} />}
-        path="/kalyans/category/:catid/:kalyanid"
+        path="/kalyan/category/:catid/:kalyanid"
       ></Route>
       <Route
         element={<WithHeaderFooter element={<KalyanDetailPage />} />}
-        path="/kalyans/language/:langid/:kalyanid"
+        path="/kalyan/language/:langid/:kalyanid"
       ></Route>
 
       {/* Kalpataru Page */}
 
       <Route
         element={<WithHeaderFooter element={<KalpataruPage />} />}
-        path="/kalyanskalpataru"
+        path="/kalyanakalpataru"
       ></Route>
       <Route
         element={<WithHeaderFooter element={<KalpataruPage />} />}
-        path="/kalyanskalpataru/category/:catid"
+        path="/kalyanakalpataru/category/:catid"
       ></Route>
       <Route
         element={<WithHeaderFooter element={<KalpataruPage />} />}
-        path="/kalyanskalpataru/special"
+        path="/kalyanakalpataru/special"
       ></Route>
       <Route
         element={<WithHeaderFooter element={<KalpataruPage />} />}
-        path="/kalyanskalpataru/author/:id"
+        path="/kalyanakalpataru/author/:id"
       ></Route>
       <Route
         element={<WithHeaderFooter element={<KalpataruPage />} />}
-        path="/kalyanskalpataru/language/:langid"
+        path="/kalyanakalpataru/language/:langid"
       ></Route>
 
       {/* Kalpataru Detail  */}
 
       <Route
         element={<WithHeaderFooter element={<KalpataruDetailPage />} />}
-        path="/kalyanskalpataru/:kalyanid"
+        path="/kalyanakalpataru/:kalyanid"
       ></Route>
       <Route
         element={<WithHeaderFooter element={<KalpataruDetailPage />} />}
-        path="/kalyanskalpataru/special/:kalyanid"
+        path="/kalyanakalpataru/special/:kalyanid"
       ></Route>
       <Route
         element={<WithHeaderFooter element={<KalpataruDetailPage />} />}
-        path="/kalyanskalpataru/author/:id/:kalyanid"
+        path="/kalyanakalpataru/author/:id/:kalyanid"
       ></Route>
       <Route
         element={<WithHeaderFooter element={<KalpataruDetailPage />} />}
-        path="/kalyanskalpataru/category/:catid/:kalyanid"
+        path="/kalyanakalpataru/category/:catid/:kalyanid"
       ></Route>
       <Route
         element={<WithHeaderFooter element={<KalpataruDetailPage />} />}
-        path="/kalyanskalpataru/language/:langid/:kalyanid"
+        path="/kalyanakalpataru/language/:langid/:kalyanid"
       ></Route>
 
       {/* Geet Govind Page */}
@@ -341,6 +343,22 @@ const AppRoutes = () => {
 
       <Route element={<AudiosDetailPage />} path="/audios/:id"></Route>
       <Route element={<AudiosDetailPage />} path="/audios/:cat/:id"></Route>
+      <Route element={<AudiosDetailPage />} path="/audioPodcast/:id"></Route>
+
+      {/* daily satsang page */}
+
+      <Route
+        element={<WithHeaderFooter element={<DailySatsangPage />} />}
+        path="/audioPodcast"
+      ></Route>
+      {/* <Route
+        element={<WithHeaderFooter element={<AudiosPage />} />}
+        path="/audioPodcast/special"
+      ></Route>
+      <Route
+        element={<WithHeaderFooter element={<AudiosPage />} />}
+        path="/audioPodcast/author/:id"
+      ></Route> */}
 
       {/* artical page */}
 
@@ -410,6 +428,10 @@ const AppRoutes = () => {
       <Route
         element={<WithHeaderFooter element={<FaqPage />} />}
         path="/faq"
+      ></Route>
+
+      <Route element={<WithHeaderFooter element={<PromotionPage />} />}
+      path="/promotion"
       ></Route>
 
       <Route

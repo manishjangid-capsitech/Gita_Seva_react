@@ -1,7 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router";
 import AudioPlayer from "../Services/AudioPlayer";
+import AudiosService from "../Services/Audios";
+
 
 export interface IAudioItem {
   ctime: number;
@@ -18,6 +19,8 @@ export interface IAudioItem {
   index: number;
 }
 interface IAudiosContextProps {
+  isMin: boolean,
+  setMin: React.Dispatch<React.SetStateAction<boolean>>;
   isMinimise: boolean;
   setIsMinismise: React.Dispatch<React.SetStateAction<boolean>>;
   audiosList: IAudioItem[];
@@ -27,8 +30,10 @@ interface IAudiosContextProps {
   close: () => void;
   next: () => void;
   prev: () => void;
+  favaddremove: () => void;
+  isLiked: boolean,
+  message: string,
   lyrt: () => string;
-  repeat: () => void;
   playbackspeed: (e: any) => void;
   showList: boolean;
   setShowList: React.Dispatch<React.SetStateAction<boolean>>;
@@ -43,26 +48,23 @@ export function AudioProvider(props: { children: any }) {
   const [lyrtxt, setlyrtxt] = useState("");
   const [audioId, setaudioId] = useState("");
   const [Type, setType] = useState<any | undefined>(undefined);
-  const [suff, setSuff] = useState<boolean>(false);
   const [isMinimise, setIsMinismise] = useState<boolean>(false);
+  const [isMin, setMin] = useState<boolean>(false);
   const [showList, setShowList] = useState<boolean>(true);
+  const [isLiked, setIsLiked] = useState<boolean>(false);
+  const [message, setMessage] = useState("");
 
   const [isLoading, setLoading] = useState(false);
-
-  const navigate = useNavigate();
 
   const playAudio = (id: string, index: number) => {
     setAudioIndex(index);
     setaudioId(id);
   };
 
-  const [displayState, setDisplayState] = useState(false)
-
   const close = () => {
     setAudiosList([]);
     setaudioId("");
     setCurrentAudio(null);
-    setDisplayState(true)
   };
   const next = () => {
     setAudioIndex(
@@ -79,6 +81,47 @@ export function AudioProvider(props: { children: any }) {
     let dt = audiosList[ind];
     playAudio(dt?.id, ind);
   };
+
+  const getType = localStorage.getItem("type") as string
+  const UserIdentity = localStorage.getItem("UserId") as any;
+
+  const favaddremove = () => {
+    if (!isLiked) {
+      if (getType === "pravachans") {
+        AudiosService.addPravachanFavourite(audioId).then((res) => {
+          res.status && setIsLiked(true);
+          setMessage(localStorage.getItem("lan")
+            ? "ऑडियो को मेरे पसंदीदा में सफलतापूर्वक जोड़ा गया |"
+            : "Audio Added successfully in my favourite")
+        })
+      } else {
+        AudiosService.addAudioFavourite(audioId).then((res) => {
+          res.status && setIsLiked(true);
+          setMessage(localStorage.getItem("lan")
+            ? "ऑडियो को मेरे पसंदीदा में सफलतापूर्वक जोड़ा गया |"
+            : "Audio Added successfully in my favourite")
+        })
+      }
+    }
+    else {
+      if (getType === "pravachans") {
+        AudiosService.removePravachanFaviourite(audioId).then((res) => {
+          res.status && setIsLiked(false);
+          setMessage(localStorage.getItem("lan")
+            ? "ऑडियो को मेरे पसंदीदा से सफलतापूर्वक हटाया गया |"
+            : "Audio Removed successfully in my favourite");
+        })
+      } else {
+        AudiosService.removeAudioFavourite(audioId).then((res) => {
+          res.status && setIsLiked(false);
+          setMessage(localStorage.getItem("lan")
+            ? "ऑडियो को मेरे पसंदीदा से सफलतापूर्वक हटाया गया |"
+            : "Audio Removed successfully in my favourite");
+        });
+      };
+    }
+    setTimeout(() => setMessage(''), 5000);
+  }
 
   const prev = () => {
     setAudioIndex(
@@ -104,13 +147,8 @@ export function AudioProvider(props: { children: any }) {
           ? audioIndex - 1
           : 0;
     let dt = audiosList[ind];
-    playAudio(dt.id, ind);    
+    playAudio(dt.id, ind);
   };
-
-  const repeat = () => {
-    setSuff((x: boolean) => !x);
-  };
-
   const lyrt = () => {
     return lyrtxt;
   };
@@ -127,45 +165,60 @@ export function AudioProvider(props: { children: any }) {
   };
 
   const LoadLyrics = (id: string) => {
+    // Load lyrics script
     setTimeout(function () {
       const script = document.createElement("script");
       script.type = "text/javascript";
       script.id = "rabbitlyrics";
-      script.src = "/assets/rabbitLyrics/rabbit-lyrics.js";
+      script.src = "/assets/rabbitLyrics";
       document.body.appendChild(script);
       script.onload = function () {
       };
     }, 3000);
     var todayDate = new Date();
+
     var signKey = localStorage.getItem("SignKey");
+
     var token = localStorage.getItem("Token");
 
-    
-    
-    let securekey = window.btoa(
-      signKey + "|" + id + "|2|" + todayDate.toISOString().substr(0, 10)
-    );
+    let securekey =
+      window.btoa(
+        signKey + "|" + id + "|2|" + todayDate.toISOString().substr(0, 10)
+      );
+
+    console.log("securekey", securekey);
+
     var rawFile = new XMLHttpRequest();
-    var proc = //`${process.env.REACT_APP_API_URL}/api/Pravachans/`;
+    var proc = //`${process.env.REACT_APP_API_URL}/api/Pravachans/`
+
       localStorage.getItem("type") === "pravachans"
         ? `${process.env.REACT_APP_API_URL}/api/Pravachans/`
-        : `${process.env.REACT_APP_API_URL}/api/Audios/`;
+        : localStorage.getItem("type") === "audioPodcast"
+          ? `${process.env.REACT_APP_API_URL}/api/AudioPodcast/`
+          : `${process.env.REACT_APP_API_URL}/api/Audios/`;
+
+    console.log("proc", proc);
+
     rawFile.open(
 
       "GET",
+      // currentAudio?.lyricsPath == "" ? currentAudio.lyricsPath : "",
       proc + id + `/lyrics`,
       false
     );
+    console.log("path", proc + id + `/lyrics`);
     rawFile.setRequestHeader("Authorization", "Bearer " + token);
     rawFile.setRequestHeader("X-Signature", securekey);
-    rawFile.setRequestHeader("X-Plateform", "1");
+    rawFile.setRequestHeader("X-Plateform", "2");
     rawFile.onreadystatechange = function () {
       if (rawFile.readyState === 4) {
         if (rawFile.status === 200 || rawFile.status === 0) {
           var allText = "";
           allText = rawFile.responseText;
+          localStorage.setItem("lyricsText", allText);
           setlyrtxt(allText);
         } else if (rawFile.status === 404) {
+          //localStorage.setItem("lyricsText", "");
           setlyrtxt("");
           allText = "";
         }
@@ -173,6 +226,14 @@ export function AudioProvider(props: { children: any }) {
     };
     rawFile?.send();
   };
+
+  useEffect(() => {
+    AudiosService.getaudioandpravachanbyid(audioId, UserIdentity !== "" ? UserIdentity : "").then((res) => {
+      if (res.status) {
+        setIsLiked(res?.result?.isFavourite)
+      }
+    })
+  }, [isLiked, audioId])
 
   useEffect(() => {
     setIsLoaded(true);
@@ -195,15 +256,16 @@ export function AudioProvider(props: { children: any }) {
           setLoading(false);
         }
       });
+
       if (currentAudio?.lyricsPath !== "") LoadLyrics(audioId);
     }
-  }, [audioId, Type, suff]);
-
-  if (!isLoaded) return null;
+  }, [audioId, Type]);
 
   return (
     <AudioContext.Provider
       value={{
+        isMin,
+        setMin,
         isMinimise,
         setIsMinismise,
         currentAudio,
@@ -213,8 +275,10 @@ export function AudioProvider(props: { children: any }) {
         close,
         next,
         prev,
+        isLiked,
+        message,
+        favaddremove,
         lyrt,
-        repeat,
         playbackspeed,
         showList,
         setShowList,

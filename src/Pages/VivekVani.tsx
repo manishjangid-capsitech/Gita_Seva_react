@@ -19,7 +19,7 @@ import {
   AccordionSummary,
 } from "@material-ui/core";
 import ExpandMore from "@mui/icons-material/ExpandMore";
-import { Breadcrumbs, SidebarFilter } from "./E-BooksComponent";
+import { Breadcrumbs } from "./E-BooksComponent";
 
 const VivekvaniPage = () => {
   const { isSelected, setItemColored } = useUser();
@@ -109,7 +109,6 @@ const VivekvaniPage = () => {
     });
   }, [i18n.language]);
 
-  console.log("language", language);
   useEffect(() => {
     setRefresh(false);
     VivekService.getVanis(
@@ -139,50 +138,6 @@ const VivekvaniPage = () => {
 
   return (
     <>
-      {/* <div
-        className="breadcrumbs-head newcontainer"
-        style={{
-          width: "100%",
-          marginTop: "-175px",
-          background: "none",
-          backgroundColor: "#ffedbc",
-          height: "240px",
-          borderBottom: "2px solid #fff",
-          paddingTop: 0,
-        }}
-      >
-        <div className="breadcrumbs">
-          <div
-            className="containers"
-            style={{
-              fontSize: "36px",
-              fontWeight: 700,
-              color: "rgb(209, 21, 1)",
-              top: "155px",
-              fontFamily: "ChanakyaUniBold"
-            }}
-          >
-            {writer
-              ? writer
-              : window.location.pathname === "/vivekvani/special"
-                ? t("Special_vivek_vani_tr")
-                : t("vivek_vani_tr")}
-            <div
-              style={{
-                fontSize: "19px",
-                fontWeight: 600,
-                color: "#2d2a29",
-                marginTop: "-8px",
-              }}
-            >
-              <Link style={{ marginRight: "8px", color: "#2d2a29" }} to="/">
-                {t("Home_tr")}
-              </Link>
-              <label>/ {t("vivek_vani_tr")}</label>
-            </div>
-          </div>
-        </div>
-      </div> */}
       <Breadcrumbs
         mainsubBreadCrumb={writer
           ? writer
@@ -249,7 +204,7 @@ const VivekvaniPage = () => {
                         style={{
                           height: 0,
                           background: "#FFFAF0",
-                          minHeight: "20px",
+                          minHeight: "25px",
                           marginTop: "15px"
                         }}
                       >

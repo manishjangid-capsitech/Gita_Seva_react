@@ -39,8 +39,10 @@ const GeetgovindPage = () => {
 
   const location = useLocation();
   const state = location.state as {
-    language: number
+    language: any;
   };
+
+  const UserIdentity = localStorage.getItem("UserId") as any;
 
   function ResetData() {
     setSortValue("0");
@@ -55,17 +57,19 @@ const GeetgovindPage = () => {
   function ClickOnFilter(cat: string) {
     setRefresh(false);
     GeetGovindServices.getMonthlyMagazine(
+      "",
       0,
       pagination.recordsPerPage,
+      "",
       false,
-      "",
-      "",
-      "",
       SortValue,
+      "",
       LanguageId,
-      window.location.pathname === "/books/special" ? true : false
+      window.location.pathname === "/geetgovind/special" ? true : false,
+      "",
+      UserIdentity
     ).then((res) => {
-      if (res) {
+      if (res?.status) {
         setMonthly(res.result?.items);
         setPagination({
           ...pagination,
@@ -81,11 +85,11 @@ const GeetgovindPage = () => {
     ClickOnFilter(LanguageId);
     $(".LanguageList > ul > li > div").removeClass("listActive");
     $("#lan-" + LanguageId).addClass("listActive");
-  }, [LanguageId, refresh]);
+  }, [LanguageId]);
 
   useEffect(() => {
     setRefresh(false);
-    GeetGovindServices.getGeetFilters("geetgovind").then((res) => {
+    GeetGovindServices.getGeetFilters("monthlymagazine").then((res) => {
       if (res?.status) {
         setLanguage(res?.result?.languages);
       }
@@ -93,10 +97,10 @@ const GeetgovindPage = () => {
   }, [i18n.language]);
 
   useEffect(() => {
-    if (state?.language === 0) {
+    if (state?.language === "hindi") {
       setLanguageId("hindi")
     }
-    else if (state?.language === 1) {
+    else if (state?.language === "english") {
       setLanguageId("english")
     }
     else {
@@ -107,17 +111,19 @@ const GeetgovindPage = () => {
   useEffect(() => {
     setRefresh(false);
     GeetGovindServices.getMonthlyMagazine(
+      "",
       pagination.pageNo === 0
         ? 0
         : pagination.recordsPerPage * pagination.pageNo - 12,
       pagination.recordsPerPage,
+      "",
       false,
-      "",
-      "",
-      "",
       SortValue, //sort
-      LanguageId || state?.language,
-      window.location.pathname === "/books/special" ? true : false
+      "",
+      LanguageId,
+      window.location.pathname === "/geetgovind/special" ? true : false,
+      "",
+      UserIdentity
     ).then((res) => {
       if (res?.status) {
         setMonthly(res.result?.items);
@@ -127,50 +133,10 @@ const GeetgovindPage = () => {
         });
       }
     });
-  }, [refresh, i18n.language, SortValue]);
+  }, [refresh, i18n.language, SortValue, LanguageId]);
 
   return (
     <>
-      {/* <div
-        className="breadcrumbs-head newcontainer"
-        style={{
-          width: "100%",
-          marginTop: "-175px",
-          background: "none",
-          backgroundColor: "#ffedbc",
-          height: "240px",
-          borderBottom: "2px solid #fff",
-          paddingTop: 0,
-        }}
-      >
-        <div className="breadcrumbs">
-          <div
-            className="containers"
-            style={{
-              fontSize: "36px",
-              fontWeight: 700,
-              color: "rgb(209, 21, 1)",
-              top: "155px",
-              fontFamily: "ChanakyaUniBold"
-            }}
-          >
-            {t("MonthlyMagazine_tr")}
-            <div
-              style={{
-                fontSize: "19px",
-                fontWeight: 600,
-                color: "#2d2a29",
-                marginTop: "-8px",
-              }}
-            >
-              <Link style={{ marginRight: "8px", color: "#2d2a29" }} to="/">
-                {t("Home_tr")}
-              </Link>
-              <label> / {t("MonthlyMagazine_tr")}</label>
-            </div>
-          </div>
-        </div>
-      </div> */}
       <Breadcrumbs
         mainsubBreadCrumb={t("MonthlyMagazine_tr")}
         subBreadCrumb={t("Home_tr")}
@@ -233,7 +199,7 @@ const GeetgovindPage = () => {
                         style={{
                           height: 0,
                           background: "#FFFAF0",
-                          minHeight: "20px"
+                          minHeight: "25px"
                         }}
                       >
                         <h2 className="filtertitle">{t("Languages_tr")}</h2>
